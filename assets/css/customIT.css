@@ -1,0 +1,13 @@
+.file_menuCss li a {
+  color: #FFFFFF;
+  padding: 10px;
+  /*display: block;*/
+}
+
+.file_menuCss li a:hover {
+  padding: 10px;
+  font-weight: bold;
+  color: #F00880;
+  text-decoration: none;
+}
+

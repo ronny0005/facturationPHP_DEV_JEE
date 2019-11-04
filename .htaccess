@@ -1,0 +1,21 @@
+Header set Access-Control-Allow-Origin "*"
+
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteRule ^accueil$  indexMVC_New.php?module=1&action=1 [L]
+RewriteRule ^connexion$  index.php [L]
+
+RewriteRule ^listeFacture-([A-z]+)$  indexMVC_New.php?module=2&action=1&type=$1 [L]
+
+RewriteRule ^Document-Facture([A-z]+)$  indexMVC_New.php?module=2&action=3&type=$1 [L]
+RewriteRule ^Document-Mvt([A-z]+)$  indexMVC_New.php?module=4&action=7&type=$1 [L]
+
+RewriteRule ^Document-Facture([A-z]+)-([0-9]+)$  indexMVC_New.php?module=2&action=3&type=$1&cbMarq=$2 [L]
+RewriteRule ^Document-Mvt([A-z]+)-([0-9]+)$  indexMVC_New.php?module=2&action=3&type=$1&cbMarq=$2 [L]
+
+
+RewriteRule ^listeArticle$  indexMVC_New.php?module=3&action=3 [L]
+RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
+
+
