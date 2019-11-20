@@ -64,10 +64,12 @@ class FamilleClass Extends Objet{
     ,$cbCreateur
     ,$cbModification;
     public $table = 'F_Famille';
+    public $lien = 'ffamille';
 
     function __construct($id,$db=null)
     {
         parent::__construct($this->table, $id, 'FA_CodeFamille',$db);
+        $this->data = $this->getApiJson("/faCodeFamille=$id");
         if (sizeof($this->data) > 0) {
             $this->FA_CodeFamille = $this->data[0]->FA_CodeFamille;
             $this->FA_Type = $this->data[0]->FA_Type;
@@ -186,11 +188,12 @@ class FamilleClass Extends Objet{
     }
 
     public function getShortList() {
-        $query = "SELECT cbModification,FA_CodeFamille,FA_Intitule,FA_Type
-                  FROM F_FAMILLE  
-                  ORDER BY FA_CodeFamille";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getShortList");
+    }
+
+    public function getNextArticleByFam()
+    {
+        return $this->getApiJson("/getNextArticleByFam&faCodeFamille={$this->FA_CodeFamille}");
     }
 
     public function getFamilleCount()

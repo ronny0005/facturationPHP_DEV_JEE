@@ -19,14 +19,8 @@ $fcl_no4 = 0;
 $CT_PrixTTC = 0;
 $qte_gros="";
 $objet = new ObjetCollector();
-
-$result=$objet->db->requete($objet->typeArticle());
-$rows = $result->fetchAll(PDO::FETCH_OBJ);
-if($rows!=null){
-$CT_PrixTTC= $rows[0]->CT_PrixTTC;
-}
-
-
+$pCatTarif = new P_CatTarifClass(1);
+$CT_PrixTTC = $pCatTarif->CT_PrixTTC;
 
 if(isset($_GET["AR_Ref"])){
 $article = new ArticleClass($_GET["AR_Ref"]);
@@ -63,19 +57,14 @@ else return "HT";
 </head>
 <body>
 <?php
-include("module/Menu/BarreMenu.php");
-
 $flagProtected = $protection->protectedType("article");
 $flagSuppr = $protection->SupprType("article");
 $flagNouveau = $protection->NouveauType("article");
 $flagInfoLibreArticle = $protection->NouveauType("infoLibreArticle");
 
 ?>
-<div id="milieu">
-    <div class="container">
-
         <div class="container clearfix">
             <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-                <?php echo $texteMenu; ?>
+                FICHE ARTICLE
             </h4>
         </div>

@@ -272,8 +272,8 @@ if(strcmp($_GET["acte"],"listeArticle")==0){
 if(strcmp($_GET["acte"],"artStock")==0){
     $AR_Ref = $_GET["AR_Ref"];
     $DE_No = $_GET["DE_No"];
-    $article = new ArticleClass(0,$objet->db);
-    echo json_encode($article->getStockDepot($AR_Ref,$DE_No));
+    $article = new ArticleClass($AR_Ref,$objet->db);
+    echo json_encode($article->getStockDepot($DE_No));
 }
 
 if(strcmp($_GET["acte"],"updateF_ArtStockBorne")==0){
@@ -314,12 +314,12 @@ if(strcmp($_GET["acte"],"suppr_conditionnement") == 0){
 }
 
 if(strcmp($_GET["acte"],"suppr_article") == 0){
-    $result=$objet->db->requete($objet->isArticleLigne($_GET["AR_Ref"]));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-        $result=$objet->db->requete($objet->supprArticle($_GET["AR_Ref"]));
-        header('Location: ../indexMVC.php?module=3&action=3&acte=supprOK&AR_Ref='.$_GET["AR_Ref"]);
-    }else header('Location: ../indexMVC.php?module=3&action=3&acte=supprKO&AR_Ref='.$_GET["AR_Ref"]);
+    $article = new ArticleClass($_GET["AR_Ref"]);
+    $rows = $article->delete();
+    if($rows==1){
+        header('Location: ../listeArticle-supprOK-'.$_GET["AR_Ref"]);
+    }else
+        header('Location: ../listeArticle-supprKO-'.$_GET["AR_Ref"]);
 }
 
 if(strcmp($_GET["acte"],"liste_clientNum") == 0){
@@ -686,66 +686,60 @@ if(strcmp($_GET["acte"],"ajout_article") == 0){
         $article->AR_Design = str_replace("'", "''", $_GET["designation"]);
     if(isset($_GET["designationAjout"]))
         $article->AR_Design = str_replace("'", "''", $_GET["designationAjout"]);
-    $result=$objet->db->requete($objet->getArticleByRef($article->AR_Ref));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-        if(isset($_GET["pxAchat"]))
-            $article->AR_PrixAch = str_replace(" ","",str_replace(",",".",$_GET["pxAchat"]));
-        else
-            $article->AR_PrixAch =0;
-        if($article->AR_PrixAch =="") $article->AR_PrixAch =0;
-        $article->FA_CodeFamille = $_GET["famille"];
-        $article->AR_Condition=$_GET["conditionnement"];
-        if(isset($_GET["pxHT"]))
-            $article->AR_PrixVen = str_replace(" ","",str_replace(",",".",$_GET["pxHT"]));
-        else
-            $article->AR_PrixVen =0;
+    if(isset($_GET["pxAchat"]))
+        $article->AR_PrixAch = str_replace(" ","",str_replace(",",".",$_GET["pxAchat"]));
+    else
+        $article->AR_PrixAch =0;
+    if($article->AR_PrixAch =="")
+        $article->AR_PrixAch =0;
+    $article->FA_CodeFamille = $_GET["famille"];
+    $article->AR_Condition=$_GET["conditionnement"];
+    if(isset($_GET["pxHT"]))
+        $article->AR_PrixVen = str_replace(" ","",str_replace(",",".",$_GET["pxHT"]));
+    else
+        $article->AR_PrixVen =0;
 
-        if($article->AR_PrixVen=="") $article->AR_PrixVen=0;
-        if(isset($_GET["pxMin"]))
-            $article->Prix_Min = str_replace(" ","",str_replace(",",".",$_GET["pxMin"]));
-        else
-            $article->Prix_Min = 0;
-        if($article->Prix_Min=="") $article->Prix_Min=0;
-        if(isset($_GET["pxMax"]))
-            $article->Prix_Max = str_replace(" ","",str_replace(",",".",$_GET["pxMax"]));
-        else
-            $article->Prix_Max = 0;
+    if($article->AR_PrixVen=="")
+        $article->AR_PrixVen=0;
+    if(isset($_GET["pxMin"]))
+        $article->Prix_Min = str_replace(" ","",str_replace(",",".",$_GET["pxMin"]));
+    else
+        $article->Prix_Min = 0;
+    if($article->Prix_Min=="")
+        $article->Prix_Min=0;
+    if(isset($_GET["pxMax"]))
+        $article->Prix_Max = str_replace(" ","",str_replace(",",".",$_GET["pxMax"]));
+    else
+        $article->Prix_Max = 0;
 
-        if($article->Prix_Max=="") $article->Prix_Max=0;
-        $article->CL_No1 = 0;
-        $article->CL_No2 = 0;
-        $article->CL_No3 = 0;
-        $article->CL_No4 = 0;
-        $article->Qte_Gros = $_GET["qteGros"];
-        if(isset($_GET["AR_PrixTTC"]))
+    if($article->Prix_Max=="") $article->Prix_Max=0;
+    $article->CL_No1 = 0;
+    $article->CL_No2 = 0;
+    $article->CL_No3 = 0;
+    $article->CL_No4 = 0;
+    $article->Qte_Gros = 0;
+    $article->Qte_Gros = $_GET["qteGros"];
+    if($article->Qte_Gros=="")
+        $article->Qte_Gros=0;
+    if(isset($_GET["AR_PrixTTC"]))
         $article->AR_PrixTTC=$_GET["AR_PrixTTC"];
-        else
-            $article->AR_PrixTTC = 0;
-        if(isset($_GET["catalniv1"])  && $_GET["catalniv2"]!="null")
-            $article->CL_No1 = $_GET["catalniv1"];
-        if(isset($_GET["catalniv2"]) && $_GET["catalniv2"]!="null")
-            $article->CL_No2 = $_GET["catalniv2"];
-        if(isset($_GET["catalniv3"])  && $_GET["catalniv3"]!="null")
-            $article->CL_No3 = $_GET["catalniv3"];
-        if(isset($_GET["catalniv4"])  && $_GET["catalniv4"]!="null")
-            $article->CL_No4 = $_GET["catalniv4"];
-        $article->AR_Nomencl=0;
-        $article->AR_QteOperatoire=1;
-        $article->AR_QteComp=1;
-        $article->AR_SaisieVar=0;
-        $article->AR_PUNet=0;
-        $article->setuserName("","");
-        $article->insertArticle();
-        $article->insertFArtClient(1);
-        $article->insertFArtClient(2);
-        $article->insertFArtModele();
-        $article->majQteGros();
-        $data = array('AR_Ref' => $article->AR_Ref);
-        echo json_encode($data);
-    }else {
-        echo $article->AR_Ref." existe déjà !";
-    }
+    else
+        $article->AR_PrixTTC = 0;
+    if(isset($_GET["catalniv1"])  && $_GET["catalniv2"]!="null")
+        $article->CL_No1 = $_GET["catalniv1"];
+    if(isset($_GET["catalniv2"]) && $_GET["catalniv2"]!="null")
+        $article->CL_No2 = $_GET["catalniv2"];
+    if(isset($_GET["catalniv3"])  && $_GET["catalniv3"]!="null")
+        $article->CL_No3 = $_GET["catalniv3"];
+    if(isset($_GET["catalniv4"])  && $_GET["catalniv4"]!="null")
+        $article->CL_No4 = $_GET["catalniv4"];
+    $article->AR_Nomencl=0;
+    $article->AR_QteOperatoire=1;
+    $article->AR_QteComp=1;
+    $article->AR_SaisieVar=0;
+    $article->AR_PUNet=0;
+    $article->setuserName("","");
+    echo json_encode($article->insertArticle());
 }
 
 
@@ -759,31 +753,26 @@ if(strcmp($_GET["acte"],"catalog_article") == 0){
     $cl_int2="";
     $cl_int3="";
     $cl_int4="";
-    $result=$objet->db->requete($objet->getFamilleByCode($code));     
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    $cl1 = $rows[0]->CL_No1;
-    $cl2 = $rows[0]->CL_No2;
-    $cl3 = $rows[0]->CL_No3;
-    $cl4 = $rows[0]->CL_No4;
+    $famille = new FamilleClass($code);
+    $cl1 = $famille ->CL_No1;
+    $cl2 = $famille->CL_No2;
+    $cl3 = $famille->CL_No3;
+    $cl4 = $famille->CL_No4;
     if($cl1!=0){
-        $result=$objet->db->requete($objet->getCatalogueByCL($cl1));     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $cl_int1 = $rows[0]->CL_Intitule;
+        $fcatalogue = new F_CatalogueClass($cl1);
+        $cl_int1 = $fcatalogue->CL_Intitule;
     }
     if($cl2!=0){
-        $result=$objet->db->requete($objet->getCatalogueByCL($cl2));     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $cl_int2 = $rows[0]->CL_Intitule;
+        $fcatalogue = new F_CatalogueClass($cl2);
+        $cl_int2 = $fcatalogue->CL_Intitule;
     }
     if($cl3!=0){
-        $result=$objet->db->requete($objet->getCatalogueByCL($cl3));     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $cl_int3 = $rows[0]->CL_Intitule;
+        $fcatalogue = new F_CatalogueClass($cl3);
+        $cl_int3 = $fcatalogue->CL_Intitule;
     }
     if($cl4!=0){
-        $result=$objet->db->requete($objet->getCatalogueByCL($cl4));     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $cl_int4 = $rows[0]->CL_Intitule;
+        $fcatalogue = new F_CatalogueClass($cl4);
+        $cl_int4 = $fcatalogue->CL_Intitule;
     }
     echo '{"CL_No1" : '.$cl1.',"CL_Intitule1" : "'.$cl_int1.'","CL_No2" : '.$cl2.',"CL_Intitule2" : "'.$cl_int2.'","CL_No3" : '.$cl3.',"CL_Intitule3" : "'.$cl_int3.'","CL_No4" : '.$cl4.',"CL_Intitule4" : "'.$cl_int4.'"}';
 }

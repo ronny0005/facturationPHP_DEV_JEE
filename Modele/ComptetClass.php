@@ -387,10 +387,10 @@ class ComptetClass Extends Objet{
             $liste = $this->allFournisseur();
         $html="";
         foreach ($liste as $row) {
-            $html = $html ."<option value='".$row->CT_Num."'";
+            $html = $html ."<option value='{$row->CT_Num}'";
             if ($value == $row->CT_Num)
                 $html." selected";
-            $html = $html.">".$row->CT_Intitule."</option>";
+            $html = $html.">{$row->CT_Intitule}</option>";
         }
         return $html;
     }

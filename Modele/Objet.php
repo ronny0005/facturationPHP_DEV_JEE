@@ -69,6 +69,11 @@ class Objet {
     function __construct() {
     }
 
+    public function afficheSelect($rows,$value,$code,$intitule)
+    {
+
+    }
+
     function formatAmount($valeur){
         return str_replace(" ","",$valeur);
     }
@@ -101,7 +106,7 @@ class Objet {
     }
 
     public function all(){
-
+        return $this->getApiJson("/all");
     }
 
 

@@ -296,7 +296,10 @@ jQuery(function($) {
                 dataType: 'json',
                 data: $("#formArticle").serialize(),
                 success: function (data) {
-                    window.location.replace("indexMVC.php?module=3&action=3&acte=ajoutOK&AR_Ref=" + data.AR_Ref);
+                    if(data.code==0)
+                        window.location.replace("indexMVC.php?module=3&action=3&acte=ajoutOK&AR_Ref=" + $("#reference").val());
+                    else
+                        alert(data.message)
                 },
                 error: function (resultat, statut, erreur) {
                     alert(resultat.responseText);
@@ -760,7 +763,17 @@ jQuery(function($) {
             }
         });
     });
-
+/*
+    $("#famille").autocomplete({
+        source: "indexServeur.php?page=getNextArticleByFam&codeFam="+$( "#famille" ).val(),
+        autoFocus: true,
+        closeOnSelect: true,
+        select: function (event, ui) {
+            event.preventDefault();
+            $("#reference").val(data[0].AR_Ref)
+        }
+    })
+*/
     $("#p_catcompta").change(function() {
         var type = $(this).val().slice(-1);
         var fcp_type = 0;

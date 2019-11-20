@@ -964,7 +964,8 @@ switch ($val) {
         include("pages/Structure/CreationArticle.php");
         break;
     case "getNextArticleByFam":
-        envoiRequete($objet->getNextArticleByFam($_GET['codeFam']),$objet);
+        $famille = new FamilleClass($_GET['codeFam']);
+        echo json_encode($famille->getNextArticleByFam());
         break;
     case "getCaisseByCA_No":
         envoiRequete($objet->getCaisseByCA_No($_GET['CA_No']),$objet);

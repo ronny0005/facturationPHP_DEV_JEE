@@ -37,15 +37,15 @@ jQuery(function($){
     }
 
     $("#sommeil").change(function(){
-        window.location.replace("indexMVC.php?module=3&action=3&sommeil="+$(this).val()+"&stockFlag="+$("#stockFlag").val()+"&prixFlag="+$("#prixFlag").val())      ;
+        window.location.replace("listeArticle-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
     });
 
     $("#stockFlag").change(function(){
-        window.location.replace("indexMVC.php?module=3&action=3&sommeil="+$("#sommeil").val()+"&stockFlag="+$(this).val()+"&prixFlag="+$("#prixFlag").val())      ;
+        window.location.replace("listeArticle-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
     });
 
     $("#prixFlag").change(function(){
-        window.location.replace("indexMVC.php?module=3&action=3&sommeil="+$("#sommeil").val()+"&stockFlag="+$("#stockFlag").val()+"&prixFlag="+$(this).val())      ;
+        window.location.replace("listeArticle-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
     });
 
     $('#table').dynatable({
@@ -68,23 +68,18 @@ referencement();
 
 
 var protect = 0;
-var sommeil = -1;
-var prixFlag = -1;
-var stockFlag = -1;
-if($_GET("sommeil")!=undefined)
-    sommeil = $_GET("sommeil");
-if($_GET("prixFlag")!=undefined)
-    prixFlag = $_GET("prixFlag");
-if($_GET("stockFlag")!=undefined)
-    stockFlag = $_GET("stockFlag");
-    var info = [            {"data": "AR_Ref",
-        "render": function(data, type, row, meta) {
-            if (type === 'display') {
-                data = '<a href="indexMVC.php?module=3&action=1&AR_Ref=' + data + '">' + data + '</a>';
+var sommeil = $("#Inputsommeil").val();
+var prixFlag = $("#InputprixFlag").val();
+var stockFlag = $("#InputstockFlag").val();
+    var info = [
+        {"data": "AR_Ref",
+            "render": function(data, type, row, meta) {
+                if (type === 'display') {
+                    data = '<a href="indexMVC.php?module=3&action=1&AR_Ref=' + data + '">' + data + '</a>';
+                }
+                return data;
             }
-            return data;
-        }
-    },
+        },
         {"data": "AR_Design"},
         {"data": "AS_QteSto",
             "render": function(data, type, row, meta) {

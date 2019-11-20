@@ -1003,13 +1003,6 @@ SELECT DISTINCT 0 DL_NoIn,0 cbMarq,fArt.AR_Ref,fArt.AR_Design DL_Design,0 AG_No1
                 WHERE DC_Domaine=$domaine AND DC_Souche=$souche AND DC_IdCol=$type),0) as DC_Piece";
     }
 
-    public function getNextArticleByFam($codeFam)
-    {
-        return "SELECT F.FA_CodeFamille,CONCAT(F.FA_CodeFamille,RIGHT('000000000000'+CAST((CASE WHEN MAX(AR_Ref) IS NOT NULL THEN count(*) ELSE 0 END)+1 AS VARCHAR(100)),
-                (SELECT GE_ArtLen FROM P_GENAUTO)-LEN(F.FA_CodeFamille))) AR_Ref 
-                FROM F_FAMILLE F LEFT JOIN F_ARTICLE A ON F.FA_CodeFamille = A.FA_CodeFamille  WHERE F.FA_CodeFamille='$codeFam'
-                GROUP BY F.FA_CodeFamille";
-    }
 
     public function getEnteteDispo($domaine, $type, $do_piece)
     {
@@ -3865,21 +3858,6 @@ SELECT	P.cbMarq
                  ORDER BY CT_Num";
     }
 
-    public function affichePDevise($value)
-    {
-        $result = $this->db->query($this->getDevise());
-        $liste = $result->fetchAll(PDO::FETCH_OBJ);
-
-        $html="";
-        foreach ($liste as $row) {
-            $html = $html ."<option value='".$row->cbIndice."'";
-            if ($value == $row->cbIndice)
-                $html." selected";
-            $html = $html.">".$row->D_Intitule."</option>";
-        }
-        return $html;
-    }
-
     public function allFournisseur() {
         return "SELECT CT_Sommeil,C.CT_Intitule,CT_Num,CG_NumPrinc,N_CatTarif,N_CatCompta,P.CT_Intitule AS LibCatTarif,LibCatCompta,
                 CT_Adresse,CG_NumPrinc,CT_Telephone,CT_CodeRegion,CT_Ville,CT_Siret,CT_Identifiant,MR_No,DE_No,CA_Num
@@ -4169,12 +4147,6 @@ SELECT	P.cbMarq
                 WHERE TE_Intitule='$intitule'";
     }
 
-
-    public function getP_Unite(){
-        return "SELECT cbIndice,U_Intitule
-                FROM P_UNITE
-                WHERE U_Intitule<>''";
-    }
     public function getInfoRAFDGCommerciaux(){
         return"SELECT CO_No,CO_Nom,CO_EMail,CO_Telephone,PROT_User
                 FROM ( SELECT P.* FROM F_PROTECTIONCIAL P 
@@ -4524,16 +4496,6 @@ LEFT JOIN (SELECT cbMarq,DO_Piece AS DO_Piece_Dest,DL_PrixUnitaire AS DL_PrixUni
         return "SELECT CONVERT(char(10), CAST(DO_Date AS DATE),126) AS DO_Date FROM F_DOCENTETE WHERE DO_Piece='" . $do_piece . "'";
     }
 
-    public function getCatCompta() {
-        return "select  row_number() over (order by u.subject) as idcompta,u.marks
-            from P_CATCOMPTA
-            unpivot
-            (
-              marks
-              for subject in (CA_ComptaVen01, CA_ComptaVen02,CA_ComptaVen03,CA_ComptaVen04,CA_ComptaVen05,CA_ComptaVen06,CA_ComptaVen07,CA_ComptaVen08,CA_ComptaVen09,CA_ComptaVen10,CA_ComptaVen11,CA_ComptaVen12,CA_ComptaVen13,CA_ComptaVen14,CA_ComptaVen15,CA_ComptaVen16,CA_ComptaVen17,CA_ComptaVen18,CA_ComptaVen19,CA_ComptaVen20,CA_ComptaVen21,CA_ComptaVen22)
-            ) u
-            WHERE marks<>''";
-    }
     public function getDevise() {
         return "SELECT D_Intitule,D_Format,cbIndice
                 FROM P_DEVISE
@@ -4580,44 +4542,6 @@ LEFT JOIN (SELECT cbMarq,DO_Piece AS DO_Piece_Dest,DL_PrixUnitaire AS DL_PrixUni
                   for subject in (CA_ComptaVen01, CA_ComptaVen02,CA_ComptaVen03,CA_ComptaVen04,CA_ComptaVen05,CA_ComptaVen06,CA_ComptaVen07,CA_ComptaVen08,CA_ComptaVen09,CA_ComptaVen10,CA_ComptaVen11,CA_ComptaVen12,CA_ComptaVen13,CA_ComptaVen14,CA_ComptaVen15,CA_ComptaVen16,CA_ComptaVen17,CA_ComptaVen18,CA_ComptaVen19,CA_ComptaVen20,CA_ComptaVen21,CA_ComptaVen22)
                 ) u
                 WHERE marks<>'')A";
-    }
-    public function getCatComptaByArRef($AR_Ref,$ACP_Champ,$ACP_Type){
-        return "SELECT ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.ACP_Champ ELSE B.ACP_Champ END,0) ACP_Champ,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.CG_Num ELSE B.CG_Num END,'') CG_Num,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.CG_Intitule ELSE B.CG_Intitule END,'') CG_Intitule,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.CG_NumA ELSE B.CG_NumA END,'') CG_NumA,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.CG_IntituleA ELSE B.CG_IntituleA END,'') CG_IntituleA,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.Taxe1 ELSE B.Taxe1 END,'') Taxe1,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.TA_Intitule1 ELSE B.TA_Intitule1 END,'') TA_Intitule1,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.Taxe2 ELSE B.Taxe2 END,'') Taxe2,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.TA_Intitule2 ELSE B.TA_Intitule2 END,'') TA_Intitule2,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.Taxe3 ELSE B.Taxe3 END,'') Taxe3,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.TA_Intitule3 ELSE B.TA_Intitule3 END,'') TA_Intitule3,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.TA_Taux1 ELSE B.TA_Taux1 END,0) TA_Taux1,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.TA_Taux2 ELSE B.TA_Taux2 END,0) TA_Taux2,
-                ISNULL(CASE WHEN B.AR_Ref IS NULL THEN A.TA_Taux3 ELSE B.TA_Taux3 END,0) TA_Taux3
-                FROM (
-                SELECT A.FA_CodeFamille,FCP_Type ACP_Type,AR_Ref,FCP_Champ ACP_Champ,FCP_ComptaCPT_CompteG CG_Num,CG.CG_Intitule,FCP_ComptaCPT_CompteA CG_NumA,CA.CG_Intitule CG_IntituleA,FCP_ComptaCPT_Taxe1 Taxe1,TU.TA_Intitule TA_Intitule1,TU.TA_Taux TA_Taux1
-                ,FCP_ComptaCPT_Taxe2 Taxe2,TD.TA_Intitule TA_Intitule2,TD.TA_Taux TA_Taux2,FCP_ComptaCPT_Taxe3 Taxe3,TT.TA_Intitule TA_Intitule3,TT.TA_Taux TA_Taux3
-                FROM F_FAMCOMPTA A 
-                INNER JOIN F_ARTICLE AR ON AR.FA_CodeFamille = A.FA_CodeFamille
-                LEFT JOIN F_TAXE TU ON A.FCP_ComptaCPT_Taxe1 = TU.TA_Code
-                LEFT JOIN F_TAXE TD ON A.FCP_ComptaCPT_Taxe2 = TD.TA_Code
-                LEFT JOIN F_TAXE TT ON A.FCP_ComptaCPT_Taxe3 = TT.TA_Code
-                LEFT JOIN F_COMPTEG CG ON A.FCP_ComptaCPT_CompteG = CG.CG_Num
-                LEFT JOIN F_COMPTEG CA ON A.FCP_ComptaCPT_CompteA = CA.CG_Num) A
-                LEFT JOIN (SELECT A.AR_Ref,ACP_Type,FA_CodeFamille,ACP_Champ,ACP_ComptaCPT_CompteG CG_Num,CG.CG_Intitule,ACP_ComptaCPT_CompteA CG_NumA,CA.CG_Intitule CG_IntituleA,ACP_ComptaCPT_Taxe1 Taxe1,TU.TA_Intitule TA_Intitule1,TU.TA_Taux TA_Taux1
-                ,ACP_ComptaCPT_Taxe2 Taxe2,TD.TA_Intitule TA_Intitule2,TD.TA_Taux TA_Taux2,ACP_ComptaCPT_Taxe3 Taxe3,TT.TA_Intitule TA_Intitule3,TT.TA_Taux TA_Taux3
-                FROM F_ARTCOMPTA A 
-                INNER JOIN F_ARTICLE AR ON AR.AR_Ref = A.AR_Ref
-                LEFT JOIN F_TAXE TU ON A.ACP_ComptaCPT_Taxe1 = TU.TA_Code
-                LEFT JOIN F_TAXE TD ON A.ACP_ComptaCPT_Taxe2 = TD.TA_Code
-                LEFT JOIN F_TAXE TT ON A.ACP_ComptaCPT_Taxe3 = TT.TA_Code
-                LEFT JOIN F_COMPTEG CG ON A.ACP_ComptaCPT_CompteG = CG.CG_Num
-                LEFT JOIN F_COMPTEG CA ON A.ACP_ComptaCPT_CompteA = CA.CG_Num)B ON A.FA_CodeFamille=B.FA_CodeFamille AND A.AR_Ref=B.AR_Ref AND A.ACP_Champ=B.ACP_Champ AND A.ACP_Type=B.ACP_Type
-                WHERE A.AR_Ref='$AR_Ref'
-                AND A.ACP_Type=$ACP_Type
-                AND A.ACP_Champ=$ACP_Champ";
     }
 
     public function getCatComptaByCodeFamille($CodeFamille,$ACP_Champ,$ACP_Type){
@@ -4920,14 +4844,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
             . " WHERE C.CT_Num like '%$val%' ";
     }
 
-    public function getArticleAndDepot($val){
-        return "SELECT A.AR_Ref,AR_Design,DE_Intitule,CASE WHEN ISNULL(AS_QteSto,0) =0 THEN 0 ELSE ISNULL(AS_MontSto,0)/ISNULL(AS_QteSto,0) END AS_MontSto,
-                    ISNULL(AS_QteSto,0) AS_QteSto ,AR_PrixAch,AR_PrixVen 
-                    FROM F_ARTICLE A 
-                    LEFT JOIN f_artstock S on S.AR_Ref=A.AR_Ref 
-                    INNER JOIN  F_DEPOT D ON D.DE_No =S.DE_No
-                    WHERE A.AR_Ref='$val'";
-    }
     public function getArticleAndDepotUser($val,$protNo){
         return "SELECT A.AR_Ref,AR_Design,DE_Intitule,CASE WHEN ISNULL(AS_QteSto,0) =0 THEN 0 ELSE ISNULL(AS_MontSto,0)/ISNULL(AS_QteSto,0) END AS_MontSto,
                     ISNULL(AS_QteSto,0) AS_QteSto ,AR_PrixAch,AR_PrixVen 
@@ -4947,19 +4863,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
         return "SELECT COUNT(*) Nb FROM(SELECT 'Aucun' AS P_Conditionnement,0 AS cbIndice 
                                         UNION 
                                         SELECT P_Conditionnement,cbIndice FROM P_CONDITIONNEMENT WHERE P_Conditionnement<>'')A ";
-    }
-
-    public function getPrixConditionnement($val){
-        return "SELECT  cbIndice
-                        ,AC_Categorie
-                        ,CT_Intitule
-                        ,AC_PrixTTC as AC_PrixTTCExist
-                        ,AC_Coef
-                        ,ISNULL(AC_PrixTTC,(SELECT AR_PrixTTC FROM F_ARTICLE WHERE AR_Ref='$val')) AC_PrixTTC
-                        ,CASE WHEN AC_PrixVen IS NULL OR AC_PrixVen=0 THEN (SELECT AR_PrixVen FROM F_ARTICLE WHERE AR_Ref='$val') ELSE AC_PrixVen END AC_PrixVen 
-                    FROM P_CATTARIF C 
-                    LEFT JOIN (SELECT AR_Ref,AC_Categorie,AC_Coef,AC_PrixVen,AC_PrixTTC FROM F_ARTCLIENT WHERE ar_ref='$val') A ON C.cbIndice=AC_Categorie
-                    where CT_Intitule <>''";
     }
 
     public function majPrixDetail($prix,$ac_coef,$ref,$val,$pxTTC){
@@ -4998,16 +4901,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
     }
     public function supprFTarifCond($ar_ref,$co_no){
         return "DELETE FROM F_TarifCond WHERE AR_Ref='$ar_ref' AND CO_No='$co_no'";
-    }
-    public function supprArticle($ar_ref){
-        return "DELETE FROM F_ARTCLIENT WHERE AR_Ref='$ar_ref';
-                    DELETE FROM F_CONDITION WHERE AR_Ref='$ar_ref';
-                    DELETE FROM F_ARTMODELE WHERE AR_Ref='$ar_ref';
-                    IF EXISTS(SELECT * FROM sys.objects WHERE NAME='TG_CBDEL_F_ARTICLE')
-                    ALTER TABLE F_ARTICLE DISABLE TRIGGER TG_CBDEL_F_ARTICLE;
-                    DELETE FROM F_ARTICLE WHERE AR_Ref='$ar_ref';
-                    IF EXISTS(SELECT * FROM sys.objects WHERE NAME='TG_CBDEL_F_ARTICLE')
-                    ALTER TABLE F_ARTICLE ENABLE TRIGGER TG_CBDEL_F_ARTICLE;";
     }
 
     public function supprFamille($codeFam){
@@ -5073,14 +4966,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
                         ,/*cbProt*/0,/*cbCreateur, char(4),*/'AND',/*cbModification*/GETDATE(),/*cbReplication*/0,/*cbFlag*/0)
              ";
     }
-    public function detailConditionnement($ref,$val){
-        return "SELECT C.AR_Ref,EC_Enumere,EC_Quantite,TC_Prix
-                    FROM F_CONDITION C
-                    INNER JOIN F_TARIFCOND T ON T.AR_Ref=C.AR_Ref
-                    where C.ar_ref='$ref' AND C.CO_No=T.CO_No
-                    AND TC_RefCF LIKE '%$val'";
-    }
-
 
     public function majDetailConditionnement($prix,$ref,$val,$enum,$qte,$AEnum){
         return "UPDATE F_TARIFCOND SET TC_Prix=$prix,cbModification=GETDATE()
@@ -5094,42 +4979,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
         return "select AR_Sommeil,A.AR_Ref,AR_Design,CASE WHEN ISNULL(AS_QteSto,0) =0 THEN 0 ELSE ISNULL(AS_MontSto,0)/ISNULL(AS_QteSto,0) END AS_MontSto,ISNULL(AS_QteSto,0) AS_QteSto ,AR_PrixAch,AR_PrixVen ".
             " from F_ARTICLE A ".
             " LEFT join (SELECT DE_No,AR_Ref,ISNULL(AS_MontSto,0) AS_MontSto,AS_QteSto FROM f_artstock S WHERE DE_No=$depot) S on S.AR_Ref=A.AR_Ref ";
-    }
-
-
-    public function getCatalogue($niv){
-        return "SELECT CL_No,CL_Intitule FROM F_CATALOGUE WHERE CL_Niveau=$niv";
-    }
-
-    public function getCatalogueByCL($cl){
-        return "SELECT CL_No,CL_Intitule FROM F_CATALOGUE WHERE CL_No=$cl";
-    }
-
-    public function getCatalogueChildren($niv,$no){
-        return "SELECT CL_No,CL_Intitule FROM F_CATALOGUE WHERE CL_Niveau=$niv AND CL_NoParent=$no";
-    }
-
-    public function getLastCatalogue(){
-        return "SELECT top 1 CL_No,CL_Intitule FROM F_CATALOGUE ORDER by Cbmarq desc";
-    }
-
-    public function insertFCatalogue($intitule,$no_parent,$niveau){
-        return"INSERT INTO [dbo].[F_CATALOGUE]
-            ([CL_No],[CL_Intitule],[CL_Code],[CL_Stock]
-            ,[CL_NoParent],[cbCL_NoParent],[CL_Niveau],[cbProt]
-            ,[cbCreateur],[cbModification],[cbReplication],[cbFlag])
-      VALUES
-            (/*CL_No*/(SELECT ISNULL(MAX(CL_No),0)+1 FROM F_CATALOGUE),/*CL_Intitule*/'$intitule',/*CL_Code*/'',/*CL_Stock*/0
-            ,/*CL_NoParent*/$no_parent,/*cbCL_NoParent*/(SELECT(CASE WHEN $no_parent=0 THEN NULL ELSE $no_parent END)),/*CL_Niveau*/$niveau,/*cbProt*/0
-            ,/*cbCreateur*/'AND',/*cbModification*/GETDATE(),/*cbReplication*/0,/*cbFlag*/0)";
-    }
-
-    public function updateFCatalogue($no,$intitule){
-        return "UPDATE F_CATALOGUE SET CL_Intitule='$intitule',cbModification=GETDATE() WHERE CL_No=$no";
-    }
-
-    public function deleteFCatalogue($no){
-        return "DELETE FROM F_CATALOGUE WHERE CL_No=$no";
     }
 
     public function getAllCollaborateurs(){

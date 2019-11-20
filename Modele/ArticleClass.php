@@ -321,83 +321,8 @@ class ArticleClass Extends Objet{
         $this->majcbModification();
         parent::maj("cbCreateur" , $this->cbCreateur);
     }
-
-    public function insertArticle() {
-        $query = "INSERT INTO [dbo].[F_ARTICLE] 
-                    ([AR_Ref],[AR_Design],[FA_CodeFamille],[AR_Substitut],[AR_Raccourci]
-                    ,[AR_Garantie],[AR_UnitePoids],[AR_PoidsNet],[AR_PoidsBrut],[AR_UniteVen] 
-                    ,[AR_PrixAch],[AR_Coef],[AR_PrixVen],[AR_PrixTTC],[AR_Gamme1],[AR_Gamme2]
-                    ,[AR_SuiviStock],[AR_Nomencl],[AR_Stat01],[AR_Stat02],[AR_Stat03],[AR_Stat04],[AR_Stat05] 
-                    ,[AR_Escompte],[AR_Delai],[AR_HorsStat],[AR_VteDebit],[AR_NotImp],[AR_Sommeil],[AR_Langue1],[AR_Langue2],[AR_CodeEdiED_Code1]
-                    ,[AR_CodeEdiED_Code2],[AR_CodeEdiED_Code3],[AR_CodeEdiED_Code4],[AR_CodeBarre],[AR_CodeFiscal],[AR_Pays] 
-                    ,[AR_Frais01FR_Denomination],[AR_Frais01FR_Rem01REM_Valeur],[AR_Frais01FR_Rem01REM_Type],[AR_Frais01FR_Rem02REM_Valeur] 
-                    ,[AR_Frais01FR_Rem02REM_Type],[AR_Frais01FR_Rem03REM_Valeur],[AR_Frais01FR_Rem03REM_Type],[AR_Frais02FR_Denomination] 
-                    ,[AR_Frais02FR_Rem01REM_Valeur],[AR_Frais02FR_Rem01REM_Type],[AR_Frais02FR_Rem02REM_Valeur],[AR_Frais02FR_Rem02REM_Type] 
-                    ,[AR_Frais02FR_Rem03REM_Valeur],[AR_Frais02FR_Rem03REM_Type],[AR_Frais03FR_Denomination],[AR_Frais03FR_Rem01REM_Valeur] 
-                    ,[AR_Frais03FR_Rem01REM_Type],[AR_Frais03FR_Rem02REM_Valeur],[AR_Frais03FR_Rem02REM_Type],[AR_Frais03FR_Rem03REM_Valeur] 
-                    ,[AR_Frais03FR_Rem03REM_Type],[AR_Condition],[AR_PUNet],[AR_Contremarque],[AR_FactPoids],[AR_FactForfait],[AR_DateCreation],[AR_SaisieVar] 
-                    ,[AR_Transfere],[AR_Publie],[AR_DateModif],[AR_Photo],[AR_PrixAchNouv],[AR_CoefNouv],[AR_PrixVenNouv],[AR_DateApplication] 
-                    ,[AR_CoutStd],[AR_QteComp],[AR_QteOperatoire],[CO_No],[cbCO_No],[AR_Prevision],[CL_No1],[cbCL_No1],[CL_No2],[cbCL_No2],[CL_No3],[cbCL_No3] 
-                    ,[CL_No4],[cbCL_No4],[AR_Type],[RP_CodeDefaut],[cbProt],[cbCreateur] 
-                    ,[cbModification],[cbReplication],[cbFlag],Prix_Min,Prix_Max) 
-              VALUES 
-                    (/*AR_Ref*/'".$this->AR_Ref."',/*AR_Design*/'".$this->AR_Design."' 
-                    ,/*FA_CodeFamille*/'".$this->FA_CodeFamille."',/*AR_Substitut*/NULL,/*AR_Raccourci, varchar(7)*/NULL,/*AR_Garantie*/0 
-                    ,/*AR_UnitePoids*/2,/*AR_PoidsNet*/0,/*AR_PoidsBrut*/0,/*AR_UniteVen*/(SELECT FA_UniteVen FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                   ,/*AR_PrixAch*/".$this->AR_PrixAch.",/*AR_Coef*/(SELECT FA_Coef FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_PrixVen*/".$this->AR_PrixVen.",/*AR_PrixTTC*/".$this->AR_PrixTTC." 
-                    ,/*AR_Gamme1*/0,/*AR_Gamme2*/0,/*AR_SuiviStock*/(SELECT FA_SuiviStock FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Nomencl*/".$this->AR_Nomencl." 
-                    ,/*AR_Stat01*/(SELECT FA_Stat01 FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Stat02*/(SELECT FA_Stat02 FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Stat03*/(SELECT FA_Stat03 FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Stat04*/(SELECT FA_Stat04 FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                   ,/*AR_Stat05*/(SELECT FA_Stat05 FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Escompte*/(SELECT FA_Escompte FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Delai*/(SELECT FA_Delai FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_HorsStat*/(SELECT FA_HorsStat FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                    ,/*AR_VteDebit*/(SELECT FA_VteDebit FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_NotImp*/(SELECT FA_NotImp FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Sommeil*/0,/*AR_Langue1*/'' 
-                    ,/*AR_Langue2*/'',/*AR_CodeEdiED_Code1, varchar(35)*/'',/*AR_CodeEdiED_Code2*/'',/*AR_CodeEdiED_Code3*/'' 
-                    ,/*AR_CodeEdiED_Code4*/'',/*AR_CodeBarre*/NULL,/*AR_CodeFiscal, varchar(25)*/(SELECT FA_CodeFiscal FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Pays, varchar(35)*/(SELECT FA_Pays FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                    ,/*AR_Frais01FR_Denomination*/(SELECT FA_Frais01FR_Denomination FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais01FR_Rem01REM_Valeur*/(SELECT FA_Frais01FR_Rem01REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais01FR_Rem01REM_Type*/(SELECT FA_Frais01FR_Rem01REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais01FR_Rem02REM_Valeur*/(SELECT FA_Frais01FR_Rem02REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                    ,/*AR_Frais01FR_Rem02REM_Type*/(SELECT FA_Frais01FR_Rem02REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais01FR_Rem03REM_Valeur*/(SELECT FA_Frais01FR_Rem03REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais01FR_Rem03REM_Type*/(SELECT FA_Frais01FR_Rem03REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais02FR_Denomination*/(SELECT FA_Frais02FR_Denomination FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                   ,/*AR_Frais02FR_Rem01REM_Valeur*/(SELECT FA_Frais02FR_Rem01REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') ,/*AR_Frais02FR_Rem01REM_Type*/(SELECT FA_Frais02FR_Rem01REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais02FR_Rem02REM_Valeur*/(SELECT FA_Frais02FR_Rem02REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais02FR_Rem02REM_Type*/(SELECT FA_Frais02FR_Rem02REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                    ,/*AR_Frais02FR_Rem03REM_Valeur*/(SELECT FA_Frais02FR_Rem03REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') ,/*AR_Frais02FR_Rem03REM_Type*/(SELECT FA_Frais02FR_Rem03REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais03FR_Denomination*/(SELECT FA_Frais03FR_Denomination FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais03FR_Rem01REM_Valeur*/(SELECT FA_Frais03FR_Rem01REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                   ,/*AR_Frais03FR_Rem01REM_Type*/(SELECT FA_Frais03FR_Rem01REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais03FR_Rem02REM_Valeur*/(SELECT FA_Frais03FR_Rem02REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais03FR_Rem02REM_Type*/(SELECT FA_Frais03FR_Rem02REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Frais03FR_Rem03REM_Valeur*/(SELECT FA_Frais03FR_Rem03REM_Valeur FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                    ,/*AR_Frais03FR_Rem03REM_Type*/(SELECT FA_Frais03FR_Rem03REM_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_Condition*/".$this->AR_Condition.",/*AR_PUNet*/".$this->AR_PUNet.",/*AR_Contremarque*/(SELECT FA_Contremarque FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."') 
-                    ,/*AR_FactPoids*/(SELECT FA_FactPoids FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_FactForfait*/(SELECT FA_FactForfait FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_DateCreation*/CAST(GETDATE() AS DATE),/*AR_SaisieVar*/ ".$this->AR_SaisieVar." 
-                    ,/*AR_Transfere*/0,/*AR_Publie*/(SELECT FA_Publie FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*AR_DateModif*/CAST(GETDATE() AS DATE),/*AR_Photo*/'' 
-                    ,/*AR_PrixAchNouv*/0,/*AR_CoefNouv*/0,/*AR_PrixVenNouv*/0,/*AR_DateApplication*/'1900-01-01' 
-                    ,/*AR_CoutStd*/0,/*AR_QteComp*/".$this->AR_QteComp.",/*AR_QteOperatoire*/".$this->AR_QteOperatoire.",/*CO_No*/0
-                    ,/*cbCO_No*/NULL,/*AR_Prevision*/0,/*CL_No1*/".$this->CL_No1.",/*cbCL_No1*/(SELECT CASE WHEN ".$this->CL_No1."=0 THEN NULL ELSE ".$this->CL_No1." END),/*CL_No2*/".$this->CL_No2.",/*cbCL_No2*/(SELECT CASE WHEN ".$this->CL_No2."=0 THEN NULL ELSE ".$this->CL_No2." END),/*CL_No3*/".$this->CL_No3.",/*cbCL_No3*/(SELECT CASE WHEN ".$this->CL_No3."=0 THEN NULL ELSE ".$this->CL_No3." END) 
-                   ,/*CL_No4*/".$this->CL_No4.",/*cbCL_No4*/(SELECT CASE WHEN ".$this->CL_No4."=0 THEN NULL ELSE ".$this->CL_No4." END),/*AR_Type*/(SELECT FA_Type FROM F_Famille WHERE FA_CodeFamille='".$this->FA_CodeFamille."'),/*RP_CodeDefaut*/NULL,/*cbProt*/0,/*cbCreateur, char(4)*/'".$this->userName."' 
-                    ,/*cbModification*/GETDATE(),/*cbReplication*/0,/*cbFlag*/0,".$this->Prix_Min.",".$this->Prix_Max.") ";
-        $this->db->query($query);
-    }
-
-    public function majQteGros(){
-        parent::maj("Qte_Gros" , $this->Qte_Gros);
-    }
-
-    public function insertFArtClient($ncat){
-        $query= "INSERT INTO [dbo].[F_ARTCLIENT]
-                            ([AR_Ref],[AC_Categorie],[AC_PrixVen],[AC_Coef]
-                            ,[AC_PrixTTC],[AC_Arrondi],[AC_QteMont],[EG_Champ]
-                            ,[AC_PrixDev],[AC_Devise],[CT_Num],[AC_Remise]
-                            ,[AC_Calcul],[AC_TypeRem],[AC_RefClient],[AC_CoefNouv]
-                            ,[AC_PrixVenNouv],[AC_PrixDevNouv],[AC_RemiseNouv],[AC_DateApplication]
-                            ,[cbProt],[cbCreateur],[cbModification],[cbReplication],[cbFlag])
-                      VALUES
-                            (/*AR_Ref, varchar(19),*/'".$this->AR_Ref."',/*AC_Categorie*/$ncat,/*AC_PrixVen*/0,/*AC_Coef*/0
-                            ,/*AC_PrixTTC*/".$this->AR_PrixTTC.",/*AC_Arrondi*/0,/*AC_QteMont*/0,/*EG_Champ*/0
-                            ,/*AC_PrixDev*/0,/*AC_Devise*/0,/*CT_Num*/NULL,/*AC_Remise*/0
-                            ,/*AC_Calcul*/0,/*AC_TypeRem*/0,/*AC_RefClient*/'',/*AC_CoefNouv*/0
-                            ,/*AC_PrixVenNouv*/0,/*AC_PrixDevNouv*/0,/*AC_RemiseNouv*/0,/*AC_DateApplication*/'1900-01-01'
-                            ,/*cbProt*/0,/*cbCreateur, char(4),*/'".$this->userName."',/*cbModification*/GETDATE(),/*cbReplication*/0,/*cbFlag*/0)
-                 ";
-        $this->db->query($query);
-    }
-
-    public function insertFArtModele(){
-        $query ="INSERT INTO [dbo].[F_ARTMODELE]
-                    ([AR_Ref],[MO_No],[AM_Domaine],[cbProt]
-                    ,[cbCreateur],[cbModification],[cbReplication],[cbFlag])
-              VALUES
-                    (/*AR_Ref*/'".$this->AR_Ref."',/*MO_No*/(SELECT MAX(MO_No) FROM F_MODELE),/*AM_Domaine*/0,/*cbProt*/0
-                    ,/*cbCreateur*/'".$this->userName."',/*cbModification*/CAST(GETDATE() AS DATE),/*cbReplication*/0,/*cbFlag*/0)";
-        $this->db->query($query);
+    public function insertArticle(){
+        return $this->getApiJson("/ajout_article&reference={$this->AR_Ref}&designation={$this->AR_Design}&pxAchat={$this->AR_PrixAch}&faCodeFamille={$this->FA_CodeFamille}&condition={$this->AR_Condition}&pxHt={$this->AR_PrixTTC}&pxMin={$this->Prix_Min}&pxMax={$this->Prix_Max}&qteGros={$this->Qte_Gros}&arPrixTTC={$this->AR_PrixTTC}&clNo1={$this->CL_No1}&clNo2={$this->CL_No2}&clNo3={$this->CL_No3}&clNo4={$this->CL_No4}&cbCreateur={$this->cbCreateur}");
     }
 
     public function updateF_ArtStockBorne($AR_Ref,$DE_No,$QteMin,$QteMax){
@@ -429,53 +354,13 @@ class ArticleClass Extends Objet{
         $this->db->query($query);
     }
 
-    public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$prot_no){
-        $valAchat = "";
-        if($flagPxRevient!=2 && $flagPxAchat==0)
-            $valAchat = ",AR_PrixAch,AR_PrixVen";
-        if($flagPxAchat !=0 && $flagPxRevient!=2)
-            $valAchat = ",AR_PrixVen";
-        if($flagPxAchat ==0 && $flagPxRevient==2)
-            $valAchat = ",AR_PrixAch";
-        $query="
-                
-                BEGIN
-                SET NOCOUNT ON;
-                DECLARE @Sommeil AS INT,
-                            @Stock AS INT,
-                            @Prix AS INT,
-                            @prot_admin AS INT;
-    
-                    SET @Sommeil = $ar_sommeil
-                    SET @Stock = $stockFlag
-                    SET @Prix = $prixFlag
-                    
-                    SELECT * 
-                    FROM(select           AR_Sommeil
-                                          ,A.AR_Ref
-                                          ,AR_Design
-                                          ,FA_CodeFamille
-                                          ,ROUND(ISNULL(AS_QteSto,0),2) AS_QteSto
-                                          ,ROUND(ISNULL(AS_QteStoCumul,0),0) AS_QteStoCumul
-                                          ,ROUND(ISNULL(AS_MontSto,0),2) AS_MontSto
-                                          ,Prix_Min
-                                          ,Prix_Max
-                                          ,PROT_User
-                                          $valAchat
-             FROM F_ARTICLE A 
-             LEFT JOIN F_PROTECTIONCIAL P ON A.cbCreateur = CAST(P.PROT_No AS VARCHAR(5))
-             LEFT JOIN (SELECT		AR_Ref
-                                    ,SUM(ISNULL(AS_MontSto,0)) AS_MontSto
-                                    ,SUM(ISNULL(AS_QteSto,0)) AS_QteSto
-                                    ,0 AS AS_QteStoCumul
-                        FROM		F_ARTSTOCK S 
-                        GROUP BY    AR_Ref) S on S.AR_Ref=A.AR_Ref
-             WHERE (-1 = @Sommeil OR AR_Sommeil=@Sommeil) 
-             AND      (-1 = @Stock OR (@Stock=1 AND AS_QteSto<>0) OR (@Stock=0 AND (AS_QteSto IS NULL OR AS_QteSto = 0)) ) 
-             AND      (-1 = @Prix OR (@Prix=1 AND (Prix_Min<>0 AND Prix_Max<>0)) OR (@Prix=0 AND (Prix_Min=0 OR Prix_Min IS NULL OR Prix_Max IS NULL OR Prix_Max=0))) 
-                      ) A  
-               ";
-        return $query;
+    public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql){
+        $url = "/queryListeArticle&flagPxAchat=$flagPxAchat&flagPxRevient=$flagPxRevient&arSommeil=$ar_sommeil&prixFlag=$prixFlag&stockFlag=$stockFlag&sql=".str_replace(" ","!","$sql");
+        return $this->getApiJson($url);
+    }
+
+    public function delete(){
+        return $this->getApiJson("/deleteArticle&cbMarq={$this->cbMarq}");
     }
 
     public function getPxMinMaxCatCompta($catCompta){
@@ -511,9 +396,7 @@ class ArticleClass Extends Objet{
             if(isset($_GET['prixFlag']))
                 $prixFlag = $_GET['prixFlag'];
 
-            $query = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$prot_no);
-            $result = $this->db->query($query."END;");
-            $recordsTotal = count($result->fetchAll(PDO::FETCH_OBJ));
+            $recordsTotal = sizeof($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,""));
 
             /* SEARCH CASE : Filtered data */
             if(!empty($_POST['search']['value'])){
@@ -525,25 +408,17 @@ class ArticleClass Extends Objet{
 
                 $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
                 /* End WHERE */
-
-                $sql = sprintf("$query %s", $where);//Search query without limit clause (No pagination)
-                $result = $this->db->query($sql." END; ");
-
-                $recordsFiltered = count($result->fetchAll(PDO::FETCH_OBJ));//Count of search result
+                $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
+                $recordsFiltered = count($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql));//Count of search result
 
                 /* SQL Query for search with limit and orderBy clauses*/
-                $sql = sprintf("$query %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
-                //$sql = sprintf("$query %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY %d , %d ", $where ,$orderBy, $orderType ,$start,$length  );
-//            $sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $result = $this->db->query($sql." END;");
-                $data = $result->fetchAll(PDO::FETCH_OBJ);
+                $sql = sprintf(" %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
+                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql);
             }
             /* END SEARCH */
             else {
-                $sql = sprintf("$query ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
-                //$sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $result = $this->db->query($sql." END;");
-                $data = $result->fetchAll(PDO::FETCH_OBJ);
+                $sql = sprintf("ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
+                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql);
                 $recordsFiltered = $recordsTotal;
             }
 
@@ -642,14 +517,21 @@ class ArticleClass Extends Objet{
         return $this->getApiJson("/getShortList");
     }
 
-    public function  getStockDepot($AR_Ref,$DE_No) {
-        $query = "
-                      SELECT ISNULL(AS_QteMini,0) AS_QteMini,ISNULL(AS_QteMaxi,0) AS_QteMaxi,ISNULL(AS_QteSto,0) AS_QteSto
-                      FROM F_ARTSTOCK
-                      WHERE AR_Ref='$AR_Ref' AND DE_No=$DE_No;
-                    ";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+    public function getArticleAndDepot(){
+        return $this->getApiJson("/getArticleAndDepot&arRef={$this->AR_Ref}");
+    }
+
+    public function getCatComptaByArRef($acpChamp,$acpType){
+        return $this->getApiJson("/getCatComptaByArRef&arRef={$this->AR_Ref}&acpChamp=$acpChamp&acpType=$acpType");
+    }
+
+    public function detailConditionnement($tcRefCf){
+        return $this->getApiJson("/detailConditionnement&arRef={$this->AR_Ref}&tcRefCf=$tcRefCf");
+    }
+
+
+    public function  getStockDepot($DE_No) {
+        return $this->getApiJson("/getStockDepot&arRef={$this->AR_Ref}&deNo=$DE_No");
     }
 
     public function ArticleDoublons(){
@@ -668,11 +550,7 @@ class ArticleClass Extends Objet{
     }
 
     public function getArticleByIntitule($intitule){
-        $query="SELECT AR_Ref
-                FROM F_ARTICLE
-                WHERE AR_Design='$intitule'";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getArticleByIntitule&arIntitule=$intitule");
     }
 
     public function isStock($de_no){

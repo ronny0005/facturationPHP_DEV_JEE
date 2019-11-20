@@ -72,17 +72,8 @@
                         <label>Conditionnement : </label>
                         <select id="conditionnement" name="conditionnement" class="form-control" <?php if(!$flagProtected) echo "readonly"; ?>>
                             <?php
-                            $result=$objet->db->requete($objet->getConditionnement());
-                            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                            $depot="";
-                            if($rows==null){
-                            }else{
-                                foreach($rows as $row){
-                                    echo "<option value=".$row->cbIndice."";
-                                    if($row->cbIndice==$ar_cond) echo " selected";
-                                    echo ">".$row->P_Conditionnement."</option>";
-                                }
-                            }
+                            $pconditionnement = new P_ConditionnementClass(0);
+                            $pconditionnement->afficheSelect($pconditionnement->all(),$ar_cond);
                             ?>
                         </select>
                     </div>
@@ -116,19 +107,13 @@
                             </tr>
                             <tbody>
                             <?php
-
-                            $result=$objet->db->requete($objet->getArticleAndDepot($ref));
-                            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                            $i=0;
-                            $classe="";
+                            $articleClass = new ArticleClass($ref);
+                            $rows = $articleClass->getArticleAndDepot();
                             if($rows==null){
                                 echo "<tr><td>Aucun élément trouvé ! </td></tr>";
                             }else{
                                 foreach ($rows as $row){
-                                    $i++;
-                                    if($i%2==0) $classe = "info";
-                                    else $classe="";
-                                    echo "<tr class='article $classe' id='article_".$row->AR_Ref."'>"
+                                    echo "<tr class='article' id='article_".$row->AR_Ref."'>"
                                         . "<td>".$row->DE_Intitule."</td>"
                                         . "<td>".round($row->AS_QteSto,2)."</td>";
                                     if($flagPxAchat==0) echo "<td>".round($row->AS_MontSto,2)."</td>";
@@ -153,7 +138,7 @@
                                             $rows = $depot->alldepotShortDetail();
                                         }
                                         foreach ($rows as $row) {
-                                            echo "<option value='".$row->DE_No."'>".$row->DE_Intitule."</option>";
+                                            echo "<option value='{$row->DE_No}'>{$row->DE_Intitule}</option>";
                                         }
                                         ?>
                                     </select>
@@ -184,22 +169,22 @@
                                     </tr>
                                 </thead>
                                 <?php
-                                $result=$objet->db->requete($objet->getPrixConditionnement($ref));
-                                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                                $depot="";
+                                $pconditionnement = new P_ConditionnementClass(0);
+                                $rows = $pconditionnement->getPrixConditionnement($ref);
                                 $i=0;
                                 if($rows==null){
                                 }else{
                                     foreach($rows as $row){
                                         $i++;
-                                        echo'<tr id="detailCond_'.$row->CT_Intitule.'">
-                                                <td id="intitule_cond" >'.$row->CT_Intitule.'</td>
-                                                <td>'.ROUND($row->AC_Coef,2).'</td>
-                                                <td><span id="id="prix_cond">'.ROUND($row->AC_PrixVen,2).'</span>
-                                                <span id="Cat_PrixTTC"> '. valTTC($row->AC_PrixTTC).'</span></td>
-                                                <td><input type="hidden" value="'.$i.'" id="value_cond"/></td>
-                                                <td id="AC_PrixTTC" style="visibility:hidden">'.$row->AC_PrixTTC.'</td>
-                                                <td id="AC_PrixTTCExist" style="visibility:hidden">'.$row->AC_PrixTTCExist.'</td></tr>';
+                                        echo"<tr id='detailCond_{$row->CT_Intitule}'>
+                                                <td id='intitule_cond' >{$row->CT_Intitule}</td>
+                                                <td>".ROUND($row->AC_Coef,2)."</td>
+                                                <td><span id='prix_cond'>".ROUND($row->AC_PrixVen,2)."</span>
+                                                <span id='Cat_PrixTTC'> ". valTTC($row->AC_PrixTTC)."</span></td>
+                                                <td><input type='hidden' value='$i' id='value_cond'/></td>
+                                                <td id='AC_PrixTTC' style='visibility:hidden'>{$row->AC_PrixTTC}</td>
+                                                <td id='AC_PrixTTCExist' style='visibility:hidden'>{$row->AC_PrixTTCExist}</td>
+                                            </tr>";
                                     }
                                 }
                                 ?>
@@ -251,8 +236,8 @@
                 $taxe1 =" - ";$taxe2 =" - ";$taxe3 =" - ";$cgnum=" - ";$cgnuma=" - ";
                 $libtaxe1 ="";$libtaxe2 ="";$libtaxe3 ="";$libcgnum="";$libcgnuma="";
                 $taux1 =0;$taux2 =0;$taux3 =0;
-                $result=$objet->db->requete($objet->getCatComptaByArRef($ref,1,0));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                $articleClass = new ArticleClass($ref);
+                $rows = $articleClass->getCatComptaByArRef(1,0);
                 if($rows!=null){
                     if($rows[0]->Taxe1!="")
                         $taxe1 =$rows[0]->Taxe1;
@@ -274,29 +259,58 @@
                 ?>
                     <table id="table_compteg" class="table" style="">
                         <thead>
-                        <tr style="background-color: #dbdbed;"><th>
-                                <select name="p_catcompta" id="p_catcompta" class="form-control">
-                                    <?php
-                                    $result=$objet->db->requete($objet->getCatCompta());
-                                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                                    foreach ($rows as $row) {
-                                        echo "<option value='".$row->idcompta."V'>".$row->marks."</option>";
-                                    }
-                                    $result=$objet->db->requete($objet->getCatComptaAchat());
-                                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                                    foreach ($rows as $row) {
-                                        echo "<option value='".$row->idcompta."A'>".$row->marks."</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </th><th>Compte/Code</th><th>Intitulé</th><th>Taux</th></tr>
+                            <tr style="background-color: #dbdbed;">
+                                <th>
+                                    <select name="p_catcompta" id="p_catcompta" class="form-control">
+                                        <?php
+                                        $pcatCompta = new P_CatComptaClass(0);
+                                        $rows = $pcatCompta->getCatComptaVente();
+                                        foreach ($rows as $row) {
+                                            echo "<option value='{$row->idcompta}V'>{$row->marks}</option>";
+                                        }
+                                        $rows = $pcatCompta->getCatComptaAchat();
+                                        foreach ($rows as $row) {
+                                            echo "<option value='{$row->idcompta}A'>{$row->marks}</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </th>
+                                <th>Compte/Code</th>
+                                <th>Intitulé</th>
+                                <th>Taux</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr><td id='libCompte'>Compte général</td><td id="codeCompte" style='text-decoration: underline;color:blue'><?php echo $cgnum; ?></td><td id="intituleCompte"><?php echo $libcgnum; ?></td><td id="valCompte"></td></tr>
-                        <tr><td id='libCompte'>Section analytique</td><td id="codeCompte" style='text-decoration: underline;color:blue'><?php echo $cgnuma; ?></td><td id="intituleCompte"><?php echo $libcgnuma; ?></td><td id="valCompte"></td></tr>
-                        <tr><td id='libCompte'>Code taxe 1</td><td id="codeCompte" style='text-decoration: underline;color:blue'><?php echo $taxe1; ?></td><td id="intituleCompte"><?php echo $libtaxe1; ?></td><td id="valCompte"><?php echo $objet->formatChiffre($taux1); ?></td></tr>
-                        <tr><td id='libCompte'>Code taxe 2</td><td id="codeCompte" style='text-decoration: underline;color:blue'><?php echo $taxe2; ?></td><td id="intituleCompte"><?php echo $libtaxe2; ?></td><td id="valCompte"><?php echo $objet->formatChiffre($taux2); ?></td></tr>
-                        <tr><td id='libCompte'>Code taxe 3</td><td id="codeCompte" style='text-decoration: underline;color:blue'><?php echo $taxe3; ?></td><td id="intituleCompte"><?php echo $libtaxe3; ?></td><td id="valCompte"><?php echo $objet->formatChiffre($taux3); ?></td></tr>
+                            <tr>
+                                <td id='libCompte'>Compte général</td>
+                                <td id="codeCompte" style='text-decoration: underline;color:blue'><?= $cgnum; ?></td>
+                                <td id="intituleCompte"><?= $libcgnum; ?></td>
+                                <td id="valCompte"></td>
+                            </tr>
+                            <tr>
+                                <td id='libCompte'>Section analytique</td>
+                                <td id="codeCompte" style='text-decoration: underline;color:blue'><?= $cgnuma; ?></td>
+                                <td id="intituleCompte"><?= $libcgnuma; ?></td>
+                                <td id="valCompte"></td>
+                            </tr>
+                            <tr>
+                                <td id='libCompte'>Code taxe 1</td>
+                                <td id="codeCompte" style='text-decoration: underline;color:blue'><?= $taxe1; ?></td>
+                                <td id="intituleCompte"><?= $libtaxe1; ?></td>
+                                <td id="valCompte"><?= $objet->formatChiffre($taux1); ?></td>
+                            </tr>
+                            <tr>
+                                <td id='libCompte'>Code taxe 2</td>
+                                <td id="codeCompte" style='text-decoration: underline;color:blue'><?= $taxe2; ?></td>
+                                <td id="intituleCompte"><?= $libtaxe2; ?></td>
+                                <td id="valCompte"><?= $objet->formatChiffre($taux2); ?></td>
+                            </tr>
+                            <tr>
+                                <td id='libCompte'>Code taxe 3</td>
+                                <td id="codeCompte" style='text-decoration: underline;color:blue'><?= $taxe3; ?></td>
+                                <td id="intituleCompte"><?= $libtaxe3; ?></td>
+                                <td id="valCompte"><?= $objet->formatChiffre($taux3); ?></td>
+                            </tr>
                         </tbody>
                     </table>
                     <div id="formSelectCompte" style="">
@@ -317,18 +331,10 @@
                         <select id="catalniv1" name="catalniv1" class="form-control">
                             <option value="0"></option>
                             <?php
-                            $objet = new ObjetCollector();
-
-                            $result=$objet->db->requete($objet->getCatalogueByCL($cl_no1));
-                            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                            if($rows==null){
-                            }else{
-                                foreach ($rows as $row){
-                                    echo "<option value='".$row->CL_No."'";
-                                    if($row->CL_No==$cl_no1) echo " selected";
-                                    echo">".$row->CL_Intitule."</option>";
-                                }
-                            }
+                            $fcatalogue = new F_CatalogueClass($cl_no1);
+                            echo "<option value='{$fcatalogue->CL_No}'";
+                            if($fcatalogue->CL_No==$cl_no1) echo " selected";
+                            echo">{$fcatalogue->CL_Intitule}</option>";
                             ?>
                         </select>
                     </div><div style="clear:both"></div>
@@ -337,18 +343,16 @@
                         <select id="catalniv2" name="catalniv2" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                             <option value="0"></option>
                             <?php
-                            $objet = new ObjetCollector();
-                            $result=$objet->db->requete($objet->getCatalogueChildren(1,$cl_no1));
-                            $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                            $rows = $fcatalogue->getCatalogueChildren(1,$cl_no1);
                             if($rows==null){
                             }else{
                                 if($cl_no2==0) echo '<option value="0"></option>';
                                 foreach ($rows as $row){
                                     if($cl_no2==0){
-                                        echo "<option value='".$row->CL_No."'>".$row->CL_Intitule."</option>";
+                                        echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
                                     }else{
                                         if($row->CL_No==$cl_no2)
-                                            echo "<option value='".$row->CL_No."'>".$row->CL_Intitule."</option>";
+                                            echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
                                     }
                                 }
                             }
@@ -360,18 +364,16 @@
                         <select id="catalniv3" name="catalniv3" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                             <option value="0"></option>
                             <?php
-                            $objet = new ObjetCollector();
-                            $result=$objet->db->requete($objet->getCatalogueChildren(2,$cl_no2));
-                            $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                            $rows = $fcatalogue->getCatalogueChildren(2,$cl_no2);
                             if($rows==null){
                             }else{
                                 if($cl_no3==0) echo '<option value="0"></option>';
                                 foreach ($rows as $row){
                                     if($cl_no3==0){
-                                        echo "<option value='".$row->CL_No."'>".$row->CL_Intitule."</option>";
+                                        echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
                                     }else{
                                         if($row->CL_No==$cl_no3)
-                                            echo "<option value='".$row->CL_No."'>".$row->CL_Intitule."</option>";
+                                            echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
                                     }
                                 }
                             }
@@ -383,18 +385,16 @@
                         <select id="catalniv4" name="catalniv4" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                             <option value="0"></option>
                             <?php
-                            $objet = new ObjetCollector();
-                            $result=$objet->db->requete($objet->getCatalogueChildren(3,$cl_no3));
-                            $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                            $rows = $fcatalogue->getCatalogueChildren(3,$cl_no3);
                             if($rows==null){
                             }else{
                                 if($cl_no4==0) echo '<option value="0"></option>';
                                 foreach ($rows as $row){
                                     if($cl_no4==0){
-                                        echo "<option value='".$row->CL_No."'>".$row->CL_Intitule."</option>";
+                                        echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
                                     }else{
                                         if($row->CL_No==$cl_no4)
-                                            echo "<option value='".$row->CL_No."'>".$row->CL_Intitule."</option>";
+                                            echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
                                     }
                                 }
                             }
@@ -424,17 +424,18 @@
                         <tr style="background-color: #dbdbed;"><td>Intitulé</td><td>Quantité</td><td>Prix</td><td></td></tr>
                         <tbody id="TbDetail_cond">
                         <?php
-                        $result=$objet->db->requete($objet->detailConditionnement($ref,1));
-                        $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                        $articleClass = new ArticleClass($ref);
+                        $rows = $articleClass->detailConditionnement(1);
                         $i=0;
-                        $classe="";
                         if($rows==null){
                             echo "<tr><td>Aucun élément trouvé ! </td></tr>";
                         }else{
                             foreach ($rows as $row){
-                                echo "<tr><td>".$row->EC_Enumere."</td>"
-                                    . "<td>".round($row->EC_Quantite,2)."</td>"
-                                    . "<td>".round($row->TC_Prix,2)."</td></tr>";
+                                echo "<tr>
+                                        <td>{$row->EC_Enumere}</td>
+                                        <td>".round($row->EC_Quantite,2)."</td>
+                                        <td>".round($row->TC_Prix,2)."</td>
+                                      </tr>";
                             }
                         }
                         ?>
@@ -489,7 +490,10 @@
             <label>Devise</label>
             <select id="AF_Devise" name="AF_Devise" class="form-control" >
                 <option value='0' selected>Aucune</option>
-                <?= $objet->affichePDevise(0); ?>
+                <?php
+                    $pDeviseClass = new P_DeviseClass(0);
+                    echo $pDeviseClass->afficheSelect($pDeviseClass->all(),0);
+                ?>
             </select>
         </div>
     </div>
@@ -523,14 +527,8 @@
             <label>Unité d'achat</label>
             <select id="AF_Unite" name="AF_Unite" class="form-control">
                 <?php
-                    $result=$objet->db->requete($objet->getP_Unite());
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows!=null)
-                        foreach($rows as $row){
-                                echo "<option value=" . $row->cbIndice . "";
-                                if ($row->cbIndice == $cbIndice) echo " selected";
-                                echo ">" . $row->U_Intitule . "</option>";
-                        }
+                    $puniteClass = new P_UniteClass(0);
+                    echo $pDeviseClass->afficheSelect($puniteClass->all(),$cbIndice);
                 ?>
             </select>
             <div style="float:left;width:25%">

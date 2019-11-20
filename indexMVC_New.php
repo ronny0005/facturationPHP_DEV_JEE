@@ -37,6 +37,7 @@ if(!isset($_SESSION))
 <script src="assets/js/theme.js"></script>
 <script src="assets/js/My-Date-Picker.js"></script>
 <script src="assets/js/customIT.js"></script>
+<script src="js/scriptCombobox.js"></script>
 <?php
     include("module/includeHeader.php");
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);

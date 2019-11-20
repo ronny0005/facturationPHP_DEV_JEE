@@ -21,15 +21,12 @@ $depot=$_SESSION["DE_No"];
 </head>
 
 <body>    
-<?php
-include("module/Menu/BarreMenu.php");
-?>
-<div id="milieu">    
+<div id="milieu">
     <div class="container">
     
 <div class="container clearfix">
     <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
+        Liste article
     </h4>
 </div>
 <div class="corps">
@@ -42,7 +39,9 @@ include("module/Menu/BarreMenu.php");
     <input type="hidden" id="protected" value="<?= $protected; ?>"/>
     <input type="hidden" id="supprProtected" value="<?= $flagSuppr; ?>"/>
     <input type="hidden" id="flagCreateur" value="<?= $protection->PROT_Right; ?>"/>
-
+    <input type="hidden" id="Inputsommeil" value="<?= (isset($_GET['sommeil'])) ?  $_GET['sommeil'] : -1 ?>"/>
+    <input type="hidden" id="InputprixFlag" value="<?= (isset($_GET['prixFlag'])) ?  $_GET['prixFlag'] : -1 ?>"/>
+    <input type="hidden" id="InputstockFlag" value="<?= (isset($_GET['stockFlag'])) ?  $_GET['stockFlag'] : -1 ?>"/>
     <div class="col-md-12">
 
 <fieldset class="entete">
@@ -75,11 +74,11 @@ include("module/Menu/BarreMenu.php");
                 <option value="0" <?php if($prixFlag==-0) echo " selected "; ?> >Non</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <input type="button" class="btn btn-primary" id="imprimer" value="Exporter excel"/>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" id="imprimer">Exporter excel</button>
         </div>
         <div style="float:right">
-            <a href="indexMVC.php?module=3&action=1"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a>
+            <a href="ficheArticle"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a>
         </div>
 
     </div>
