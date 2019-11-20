@@ -91,48 +91,16 @@ class CollaborateurClass Extends Objet{
         return "";
     }
 
-    public function insertCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement)
+    public function insertCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $cbCreateur)
     {
-        $requete = "INSERT INTO [dbo].[F_COLLABORATEUR]
-           ([CO_No],[CO_Nom],[CO_Prenom],[CO_Fonction],[CO_Adresse]
-           ,[CO_Complement],[CO_CodePostal],[CO_Ville],[CO_CodeRegion]
-           ,[CO_Pays],[CO_Service],[CO_Vendeur],[CO_Caissier]
-           ,[CO_DateCreation],[CO_Acheteur],[CO_Telephone],[CO_Telecopie]
-           ,[CO_EMail],[CO_Receptionnaire],[PROT_No],[cbPROT_No]
-           ,[CO_TelPortable],[CO_ChargeRecouvr],[cbProt],[cbCreateur]
-           ,[cbModification],[cbReplication],[cbFlag])
-     VALUES
-           (/*CO_No*/ISNULL((SELECT MAX(CO_No)CO_No FROM F_COLLABORATEUR),0)+1,/*CO_Nom*/'$nom',/*CO_Prenom*/'$prenom'
-           ,/*CO_Fonction*/'$fonction',/*CO_Adresse*/'$adresse'
-           ,/*CO_Complement*/'$complement',/*CO_CodePostal*/'$codepostal'
-           ,/*CO_Ville*/'$ville',/*CO_CodeRegion*/'$region'
-           ,/*CO_Pays*/'$pays',/*CO_Service*/'$service'
-           ,/*CO_Vendeur*/$vendeur,/*CO_Caissier*/$caissier
-           ,/*CO_DateCreation*/GETDATE(),/*CO_Acheteur*/$acheteur
-           ,/*CO_Telephone*/'$telephone',/*CO_Telecopie*/'$telecopie'
-           ,/*CO_EMail*/'$email',/*CO_Receptionnaire*/$controleur
-           ,/*PROT_No*/0,/*cbPROT_No*/NULL
-           ,/*CO_TelPortable*/'',/*CO_ChargeRecouvr*/$recouvrement
-           ,/*cbProt*/0,/*cbCreateur*/'AND'
-           ,/*cbModification*/GETDATE(),/*cbReplication*/0,/*cbFlag*/0)
-";
-        $this->db->query($requete);
+	$this->getApiJson("/insertCollaborateur&coNom=$nom&coPrenom=$prenom&coFonction=$fonction&coAdresse=$adresse&coComplement=$complement&coVille=$ville&coCodeRegion=$region&coPays=$pays&coService=$service&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail=$email&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur");
+        
     }
 
 
-    public function modifCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $co_no)
+    public function modifCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $co_no,$cbCreateur)
     {
-        $requete = "UPDATE [dbo].[F_COLLABORATEUR]
-                SET [CO_Nom] = '$nom',[CO_Prenom] = '$prenom',[CO_Fonction] = '$fonction',[CO_Adresse] = '$adresse'
-                   ,[CO_Complement] = '$complement',[CO_CodePostal] = '$codepostal',[CO_Ville] = '$ville',[CO_CodeRegion] = '$region'
-                   ,[CO_Pays] = '$pays',[CO_Service] = '$service',[CO_Vendeur] = $vendeur,[CO_Caissier] = $caissier
-                   ,[CO_Acheteur] = $acheteur,[CO_Telephone] = '$telephone'
-                   ,[CO_Telecopie] = '$telecopie',[CO_EMail] = '$email',[CO_Receptionnaire] = $controleur
-                   ,[CO_ChargeRecouvr] = $recouvrement
-                   ,[cbModification] = GETDATE()
-             WHERE [CO_No] = $co_no
-             ";
-        $this->db->query($requete);
+		$this->getApiJson("/modifCollaborateur&coNom=$nom&coPrenom=$prenom&coFonction=$fonction&coAdresse=$adresse&coComplement=$complement&coVille=$ville&coCodeRegion=$region&coPays=$pays&coService=$service&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail=$email&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur&coNo=$coNo");
     }
 
 

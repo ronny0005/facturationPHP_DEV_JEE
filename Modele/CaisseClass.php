@@ -30,8 +30,7 @@ class CaisseClass Extends Objet{
     }
 
     public function insertDepotCaisse($DE_No){
-        $query = "INSERT INTO Z_DEPOTCAISSE VALUES ($DE_No,{$this->CA_No})";
-        $this->db->query($query);
+		$this->getApiJson("/insertDepotCaisse&caNo={$this->CA_No}&deNo={$DE_No}");
     }
 
     public function allCaisse(){
@@ -57,60 +56,22 @@ class CaisseClass Extends Objet{
     }
 
     public function insertCaisse(){
-        $query = "
-                  BEGIN 
-                  SET NOCOUNT ON;
-                  INSERT INTO [dbo].[F_CAISSE]
-                ([CA_No],[CA_Intitule],[DE_No],[CO_No]
-                ,[cbCO_No],[CO_NoCaissier],[cbCO_NoCaissier],[CT_Num]
-                ,[JO_Num],[CA_IdentifCaissier],[CA_DateCreation],[N_Comptoir]
-                ,[N_Clavier],[CA_LignesAfficheur],[CA_ColonnesAfficheur],[CA_ImpTicket]
-                ,[CA_SaisieVendeur],[CA_Souche],[cbProt],[cbCreateur]
-                ,[cbModification],[cbReplication],[cbFlag])
-          VALUES
-                (/*CA_No*/ISNULL((SELECT MAX(CA_No) FROM F_CAISSE)+1,0),/*CA_Intitule*/'{$this->CA_Intitule}',/*DE_No*/1
-                ,/*CO_No*/0,/*cbCO_No*/NULL,/*CO_NoCaissier*/{$this->CO_NoCaissier}
-                ,/*cbCO_NoCaissier*/(SELECT CASE WHEN {$this->CO_NoCaissier}=0 THEN NULL ELSE {$this->CO_NoCaissier} END)
-                ,/*CT_Num*/(SELECT TOP 1 CT_Num
-                            FROM F_COMPTET
-                            WHERE CT_Num LIKE '%DIVERS%'
-                            AND CT_Type=0),/*JO_Num*/'{$this->JO_Num}',/*CA_IdentifCaissier*/0
-                ,/*CA_DateCreation*/CAST(GETDATE() AS DATE),/*N_Comptoir*/1,/*N_Clavier*/1
-                ,/*CA_LignesAfficheur*/0,/*CA_ColonnesAfficheur*/0,/*CA_ImpTicket*/0
-                ,/*CA_SaisieVendeur*/0,/*CA_Souche*/0,/*cbProt*/0
-                ,/*cbCreateur*/'AND',/*cbModification*/CAST(GETDATE() AS DATE),/*cbReplication*/0,/*cbFlag*/0)
-                SELECT *
-                FROM F_CAISSE WHERE cbMarq =@@IDENTITY; 
-                END
-                ";
-        $result=$this->db->query($query);
-        $row = $result->fetchAll(PDO::FETCH_OBJ);
-        $this->majcbModification();
-        return $row[0];
+		 $this->getApiJson("/insertCaisse&caIntitule={$this->CA_Intitule}&coNoCaissier={$this->CO_NoCaissier}&joNum={$this->JO_Num}&cbCreateur={$this->cbCreateur}");
+//        return $row[0];
     }
 
     public function supprDepotCaisse()
     {
-        $query = "DELETE FROM Z_DEPOTCAISSE WHERE CA_No={$this->CA_No}";
-        $this->db->query($query);
+		$this->getApiJson("/supprDepotCaisse&caNo={$this->CA_No}");
     }
 
     public function listeCaisseShort(){
-        $query = "SELECT JO_Num,CA_Intitule,CA_No,CO_NoCaissier,CA_Souche,CT_Num,cbModification 
-                  FROM F_CAISSE";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+		return $this->getApiJson("/listeCaisseShort");
     }
 
 public function getCaissierByCaisse($ca_no)
 {
-    $query = "SELECT CO.CO_No,CO_Nom
-                FROM " . $this->db->baseCompta . ".dbo.F_COLLABORATEUR CO
-                LEFT JOIN F_CAISSECAISSIER CA ON CO.CO_No = CA.CO_No
-                WHERE CO_Caissier=1 AND (0 = $ca_no OR CA_No = $ca_no)
-                GROUP BY CO.CO_No,CO_Nom";
-    $result= $this->db->query($query);
-    return $result->fetchAll(PDO::FETCH_OBJ);
+	return $this->getApiJson("/getCaissierByCaisse&caNo={$ca_no}");
 }
     public function __toString() {
         return "";

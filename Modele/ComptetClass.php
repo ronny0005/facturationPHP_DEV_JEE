@@ -242,23 +242,7 @@ class ComptetClass Extends Objet{
     }
 
     public function allClientsSelect() {
-        $query = "
-                SELECT 'Tout' CT_Intitule,'0' CT_Num
-                UNION
-                SELECT C.CT_Intitule,CT_Num
-                FROM ".$this->db->baseCompta.".dbo.F_COMPTET C 
-                LEFT JOIN P_CATTARIF P ON P.cbIndice = C.N_CatTarif 
-                 LEFT JOIN (select  row_number() over (order by u.subject) as idcompta, u.LibCatCompta 
-                 from P_CATCOMPTA 
-                 unpivot 
-                       ( 
-                        LibCatCompta 
-                 for subject in (CA_ComptaVen01, CA_ComptaVen02, CA_ComptaVen03, CA_ComptaVen04, CA_ComptaVen05, CA_ComptaVen06, CA_ComptaVen07, CA_ComptaVen08, CA_ComptaVen09, CA_ComptaVen10, CA_ComptaVen11, CA_ComptaVen12, CA_ComptaVen13, CA_ComptaVen14, CA_ComptaVen15, CA_ComptaVen16, CA_ComptaVen17, CA_ComptaVen18, CA_ComptaVen19, CA_ComptaVen20, CA_ComptaVen21, CA_ComptaVen22)
-                 ) u) M ON M.idcompta = C.N_CatCompta WHERE CT_Type=0
-                 ORDER BY CT_Num";
-        $result= $this->db->query($query);
-        $this->list = array();
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/allClientsSelect");
     }
 
     public function allFournisseur($sommeil = -1) {
@@ -266,91 +250,16 @@ class ComptetClass Extends Objet{
     }
 
     public function createClientMin(){
-        $requete = "INSERT INTO [F_COMPTET] 
-             ([CT_Num],[CT_Intitule],[CT_Type],[CG_NumPrinc],[CT_Qualite],[CT_Classement] 
-             ,[CT_Contact],[CT_Adresse],[CT_Complement],[CT_CodePostal],[CT_Ville],[CT_CodeRegion] 
-             ,[CT_Pays],[CT_Raccourci],[BT_Num],[N_Devise],[CT_Ape],[CT_Identifiant],[CT_Siret],[CT_Statistique01] 
-             ,[CT_Statistique02],[CT_Statistique03],[CT_Statistique04],[CT_Statistique05],[CT_Statistique06],[CT_Statistique07] 
-             ,[CT_Statistique08],[CT_Statistique09],[CT_Statistique10],[CT_Commentaire],[CT_Encours],[CT_Assurance] 
-             ,[CT_NumPayeur],[N_Risque],[CO_No],[cbCO_No],[N_CatTarif],[CT_Taux01] 
-             ,[CT_Taux02],[CT_Taux03],[CT_Taux04],[N_CatCompta],[N_Period],[CT_Facture] 
-             ,[CT_BLFact],[CT_Langue],[CT_Edi1],[CT_Edi2],[CT_Edi3],[N_Expedition]
-             ,[N_Condition],[CT_DateCreate],[CT_Saut],[CT_Lettrage],[CT_ValidEch],[CT_Sommeil] 
-             ,[DE_No],[cbDE_No],[CT_ControlEnc],[CT_NotRappel],[N_Analytique],[cbN_Analytique] 
-             ,[CA_Num],[CT_Telephone],[CT_Telecopie],[CT_EMail],[CT_Site],[CT_Coface] 
-             ,[CT_Surveillance],[CT_SvDateCreate],[CT_SvFormeJuri],[CT_SvEffectif],[CT_SvCA],[CT_SvResultat] 
-             ,[CT_SvIncident],[CT_SvDateIncid],[CT_SvPrivil],[CT_SvRegul],[CT_SvCotation],[CT_SvDateMaj] 
-             ,[CT_SvObjetMaj],[CT_SvDateBilan],[CT_SvNbMoisBilan],[N_AnalytiqueIFRS],[cbN_AnalytiqueIFRS],[CA_NumIFRS] 
-             ,[CT_PrioriteLivr],[CT_LivrPartielle],[MR_No],[cbMR_No],[CT_NotPenal],[EB_No] 
-             ,[cbEB_No],[CT_NumCentrale],[CT_DateFermeDebut],[CT_DateFermeFin],[CT_FactureElec],[CT_TypeNIF] 
-             ,[CT_RepresentInt],[CT_RepresentNIF],[cbProt],[cbCreateur],[cbModification],[cbReplication] 
-             ,[cbFlag]) 
-             VALUES  
-                (/*CT_Num*/LEFT('{$this->CT_Num}',17),/*CT_Intitule*/LEFT('{$this->CT_Intitule}',35),/*CT_Type,*/{$this->CT_Type}
-                ,/*CG_NumPrinc*/(SELECT CASE WHEN '{$this->CG_NumPrinc}'='' THEN NULL ELSE '{$this->CG_NumPrinc}' END) 
-                ,/*CT_Qualite*/'',/*CT_Classement*/LEFT('{$this->CT_Intitule}',17),/*CT_Contact*/''
-                ,/*CT_Adresse*/LEFT('".str_replace("'","''",$this->CT_Adresse)."',35),/*CT_Complement*/''
-                ,/*CT_CodePostal*/LEFT('{$this->CT_CodePostal}',9),/*CT_Ville*/LEFT('{$this->CT_Ville}',35)
-                ,/*CT_CodeRegion*/LEFT('{$this->CT_CodeRegion}',9),/*CT_Pays*/'',/*CT_Raccourci*/''
-                ,/*BT_Num*/0,/*N_Devise*/0 ,/*CT_Ape*/'',/*CT_Identifiant*/LEFT('{$this->CT_Identifiant}',25)
-                ,/*CT_Siret*/LEFT('{$this->CT_Siret}',15),/*CT_Statistique01*/'',/*CT_Statistique02*/''
-                ,/*CT_Statistique03*/'',/*CT_Statistique04*/'',/*CT_Statistique05*/'',/*CT_Statistique06*/''
-                ,/*CT_Statistique07*/'',/*CT_Statistique08*/'',/*CT_Statistique09*/'',/*CT_Statistique10*/''
-                ,/*CT_Commentaire*/'',/*CT_Encours*/0,/*CT_Assurance*/0,/*CT_NumPayeur*/LEFT('{$this->CT_Num}',17)
-                ,/*N_Risque*/1,/*CO_No*/(CASE WHEN {$this->CO_No}='' OR {$this->CO_No}='0' THEN NULL ELSE {$this->CO_No} END)
-                ,/*cbCO_No*/(CASE WHEN {$this->CO_No}='' OR {$this->CO_No}='0' THEN NULL ELSE {$this->CO_No} END)
-                ,/*N_CatTarif*/'{$this->N_CatTarif}',/*CT_Taux01*/0,/*CT_Taux02*/0,/*CT_Taux03*/0 
-                ,/*CT_Taux04*/0,/*N_CatCompta*/'{$this->N_CatCompta}',/*N_Period*/1,/*CT_Facture*/1 
-                ,/*CT_BLFact*/0,/*CT_Langue*/0,/*CT_Edi1*/'',/*CT_Edi2*/''
-                ,/*CT_Edi3*/'',/*N_Expedition*/1,/*N_Condition*/1,/*CT_DateCreate*/GETDATE()
-                ,/*CT_Saut*/1,/*CT_Lettrage*/1,/*CT_ValidEch*/0,/*CT_Sommeil*/0 
-                ,/*DE_No*/(SELECT CASE WHEN '{$this->DE_No}'='0' THEN NULL ELSE '{$this->DE_No}' END)
-                ,/*cbDE_No*/(SELECT CASE WHEN '{$this->DE_No}'='0' THEN NULL ELSE '{$this->DE_No}' END)
-                ,/*CT_ControlEnc*/0,/*CT_NotRappel*/0,/*N_Analytique*/(CASE WHEN '{$this->CA_Num}'='' THEN NULL ELSE (SELECT N_Analytique FROM F_COMPTEA WHERE CA_Num='{$this->CA_Num}') END)
-                ,/*cbN_Analytique*/(CASE WHEN '{$this->CA_Num}'='' THEN NULL ELSE (SELECT N_Analytique FROM F_COMPTEA WHERE CA_Num='{$this->CA_Num}') END)
-                ,/*CA_Num*/(CASE WHEN '{$this->CA_Num}'='' THEN NULL ELSE '{$this->CA_Num}' END)
-                ,/*CT_Telephone*/LEFT('{$this->CT_Telephone}',21),/*CT_Telecopie*/'' 
-                ,/*CT_EMail*/'',/*CT_Site*/'',/*CT_Coface*/'',/*CT_Surveillance*/0
-                ,/*CT_SvDateCreate*/'1900-01-01',/*CT_SvFormeJuri*/'',/*CT_SvEffectif*/'',/*CT_SvCA*/0
-                ,/*CT_SvResultat*/0,/*CT_SvIncident*/0,/*CT_SvDateIncid*/'1900-01-01',/*CT_SvPrivil*/0
-                ,/*CT_SvRegul*/'',/*CT_SvCotation*/'',/*CT_SvDateMaj*/'1900-01-01',/*CT_SvObjetMaj*/''
-                ,/*CT_SvDateBilan*/'1900-01-01',/*CT_SvNbMoisBilan*/0,/*N_AnalytiqueIFRS*/0,/*cbN_AnalytiqueIFRS*/NULL
-                ,/*CA_NumIFRS*/NULL,/*CT_PrioriteLivr*/0,/*CT_LivrPartielle*/0,/*MR_No*/{$this->MR_No}
-                ,/*cbMR_No*/(CASE WHEN {$this->MR_No}=0 THEN NULL ELSE {$this->MR_No} END),/*CT_NotPenal*/0,/*EB_No*/0,/*cbEB_No*/NULL
-                ,/*CT_NumCentrale*/NULL,/*CT_DateFermeDebut*/'1900-01-01',/*CT_DateFermeFin*/'1900-01-01',/*CT_FactureElec*/0 
-                ,/*CT_TypeNIF*/0,/*CT_RepresentInt*/'',/*CT_RepresentNIF*/'',/*cbProt*/0 
-                ,/*cbCreateur*/'{$this->userName}',/*cbModification*/GETDATE(),/*cbReplication*/0,/*cbFlag*/0)";
-        $this->db->query($requete);
+		
+        $this->getApiJson("/createClientMin&ctNum={$this->CT_Num}&ctIntitule={$this->CT_Intitule}&ctType={$this->CT_Type}&cgNumPrinc={$this->CG_NumPrinc}&ctAdresse={$this->CT_Adresse}&ctCodePostal={$this->CT_CodePostal}&ctVille={$this->CT_Ville}&ctCodeRegion={$this->CT_CodeRegion}&ctIdentifiant={$this->CT_Identifiant}&ctSiret={$this->CT_Siret}&coNo={$this->CO_No}&nCatTarif={$this->nCatTarif}&nCatCompta={$this->nCatCompta}&deNo={$this->DE_No}&caNum={$this->CA_Num}&ctTelephone={$this->CT_Telephone}&mrNo={$this->MR_No}&cbCreateur={$this->cbCreateur}");
     }
 
     public function allFournisseurSelect() {
-        $query = "  SELECT 'Tout' CT_Intitule,'0' CT_Num
-                    UNION
-                    SELECT C.CT_Intitule,CT_Num
-                    FROM ".$this->db->baseCompta.".dbo.F_COMPTET C
-                    LEFT JOIN P_CATTARIF P ON P.cbIndice = C.N_CatTarif 
-                    LEFT JOIN (select  row_number() over (order by u.subject) as idcompta, u.LibCatCompta 
-                    FROM P_CATCOMPTA 
-                    UNPIVOT
-                          ( 
-                            LibCatCompta 
-                            for subject in (CA_ComptaAch01, CA_ComptaAch02, CA_ComptaAch03, CA_ComptaAch04, CA_ComptaAch05, CA_ComptaAch06, CA_ComptaAch07, CA_ComptaAch08, CA_ComptaAch09, CA_ComptaAch10, CA_ComptaAch11, CA_ComptaAch12, CA_ComptaAch13, CA_ComptaAch14, CA_ComptaAch15, CA_ComptaAch16, CA_ComptaAch17, CA_ComptaAch18, CA_ComptaAch19, CA_ComptaAch20, CA_ComptaAch21, CA_ComptaAch22) 
-                     ) u) M ON M.idcompta = C.N_CatCompta WHERE CT_Type=1
-                     ORDER BY CT_Intitule";
-        $result= $this->db->query($query);
-        $this->list = array();
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/allFournisseurSelect");
     }
 
     public function getCodeAuto($type) {
-        $query = "  SELECT T_Racine
-                    FROM  P_TIERS
-                    WHERE ('$type'='Client' AND T_Val01T_Intitule='Cl.')
-                    OR   ('$type'='Fournisseur' AND T_Val01T_Intitule='Fr.')
-                    OR   ('$type'='Salarie' AND T_Val01T_Intitule='Sal.')";
-        $result= $this->db->query($query);
-        $this->list = array();
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
+		$rows = $this->getApiJson("/allFournisseurSelect&type=$type");
         if(sizeof($rows)>0)
             return $rows[0]->T_Racine;
         else
@@ -358,20 +267,12 @@ class ComptetClass Extends Objet{
     }
 
     public function getFLivraisonByCTNum($ct_num) {
-        $query = "SELECT  ISNULL((SELECT  Max(LI_No) 
-                                  FROM    F_LIVRAISON 
-                                  WHERE   CT_Num ='{$ct_num}'),0) AS LI_No";
-        $result= $this->db->query($query);
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-
+        return $this->getApiJson("/getFLivraisonByCTNum&ctNum=$ct_num");
     }
 
     public function tiersByCTIntitule($val) {
-        $query = "  SELECT cbMarq
-                    FROM  F_COMPTET
-                    WHERE CT_Intitule='$val'";
-        $result= $this->db->query($query);
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
+		
+        $rows= $this->getApiJson("/tiersByCTIntitule&ctIntitule=$val");
         if(sizeof($rows)>0)
             return $rows[0]->cbMarq;
         else
@@ -395,6 +296,11 @@ class ComptetClass Extends Objet{
         return $html;
     }
 
+
+    public function queryListeClient($type,$sommeil,$sql){
+        $url = "/queryListeClient&ctType=$type&ctSommeil=$sommeil&sql=".str_replace(" ","!","$sql");
+        return $this->getApiJson($url);
+    }
     public function listeClientPagination(){
         if (!empty($_POST) ) {
             /* Useful $_POST Variables coming from the plugin */
@@ -405,21 +311,7 @@ class ComptetClass Extends Objet{
             $start  = $_POST["start"];//Paging first record indicator.
             $length = $_POST['length'];//Number of records that the table can display in the current draw
             /* END of POST variables */
-            $query="SELECT * FROM (SELECT CT_Num,C.CT_Intitule,CG_NumPrinc,P.CT_Intitule AS LibCatTarif,LibCatCompta,PROT_User
-                                            FROM F_COMPTET C 
-                                            LEFT JOIN P_CATTARIF P ON P.cbIndice = C.N_CatTarif 
-                                            LEFT JOIN F_PROTECTIONCIAL Pr ON CAST(Pr.PROT_No AS VARCHAR(5)) = C.cbCreateur
-                                             LEFT JOIN (select  row_number() over (order by u.subject) as idcompta, u.LibCatCompta 
-                                             from P_CATCOMPTA 
-                                             unpivot 
-                                                   ( 
-                                                    LibCatCompta 
-                                             for subject in (CA_ComptaVen01, CA_ComptaVen02, CA_ComptaVen03, CA_ComptaVen04, CA_ComptaVen05, CA_ComptaVen06, CA_ComptaVen07, CA_ComptaVen08, CA_ComptaVen09, CA_ComptaVen10, CA_ComptaVen11, CA_ComptaVen12, CA_ComptaVen13, CA_ComptaVen14, CA_ComptaVen15, CA_ComptaVen16, CA_ComptaVen17, CA_ComptaVen18, CA_ComptaVen19, CA_ComptaVen20, CA_ComptaVen21, CA_ComptaVen22)
-                                             ) u) M ON M.idcompta = C.N_CatCompta WHERE CT_Type=".$_GET['CT_Type']." AND (-1 = ".$_GET['CT_Sommeil']." OR CT_Sommeil=".$_GET['CT_Sommeil']."))A 
-                                             ";
-            $result = $this->db->query($query);
-            $recordsTotal = count($result->fetchAll(PDO::FETCH_OBJ));
-
+            $recordsTotal = sizeof($this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],""));
             /* SEARCH CASE : Filtered data */
             if(!empty($_POST['search']['value'])){
 
@@ -431,24 +323,20 @@ class ComptetClass Extends Objet{
                 $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
                 /* End WHERE */
 
-                $sql = sprintf("$query %s", $where);//Search query without limit clause (No pagination)
-                $result = $this->db->query($sql);
-
-                $recordsFiltered = count($result->fetchAll(PDO::FETCH_OBJ));//Count of search result
+                $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
+                $recordsFiltered = count($this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql));//Count of search result
 
                 /* SQL Query for search with limit and orderBy clauses*/
-                $sql = sprintf("$query %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
+                $sql = sprintf("%s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
                 //$sql = sprintf("$query %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY %d , %d ", $where ,$orderBy, $orderType ,$start,$length  );
 //            $sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $result = $this->db->query($sql);
-                $data = $result->fetchAll(PDO::FETCH_OBJ);
+                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql));
             }
             /* END SEARCH */
             else {
-                $sql = sprintf("$query ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
+                $sql = sprintf("ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
                 //$sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $result = $this->db->query($sql);
-                $data = $result->fetchAll(PDO::FETCH_OBJ);
+                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql);
                 $recordsFiltered = $recordsTotal;
             }
 
@@ -469,30 +357,7 @@ class ComptetClass Extends Objet{
     }
 
     public function TiersDoublons(){
-        $query="SELECT CT_Intitule
-                FROM (
-                SELECT CT_Intitule,COUNT(CT_Num) Nb
-                FROM F_COMPTET
-                GROUP BY CT_Intitule)A
-                WHERE Nb>1";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    public function getTiersByIntitule($intitule){
-        $query="SELECT CT_Num
-                FROM F_COMPTET
-                WHERE CT_Intitule='$intitule'";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    public function getTiersByNum($num){
-        $query="SELECT CT_Intitule
-                FROM F_COMPTET
-                WHERE CT_Num='$num'";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/TiersDoublons");
     }
 
     public function getTiersByNumIntitule($intitule,$type){
@@ -507,42 +372,7 @@ class ComptetClass Extends Objet{
     }
 
     public function remplacementTiers($CT_NumAncien,$CT_NumNouveau){
-        $query="
-            BEGIN 
-                SET NOCOUNT ON;
-                DECLARE @nouveau as VARCHAR(200)
-                DECLARE @ancien as VARCHAR(200)
-                DECLARE @LI_No as INT
-                DECLARE @LI_NoOld as INT
-                set @nouveau ='$CT_NumNouveau'
-                set @ancien ='$CT_NumAncien'
-                                
-                SELECT @LI_NoOld=LI_No
-                FROM F_LIVRAISON
-                WHERE CT_Num=@ancien   
-                
-                SELECT @LI_No=LI_No
-                FROM F_LIVRAISON
-                WHERE CT_Num=@nouveau
-                 
-                update F_CREGLEMENT set CT_NumPayeur=@nouveau WHERE CT_NumPayeur=@ancien
-                update F_CREGLEMENT set CT_NumPayeurOrig=@nouveau WHERE CT_NumPayeurOrig=@ancien
-                update F_DOCENTETE set LI_No=@LI_No WHERE LI_No=@LI_NoOld
-                update F_DOCENTETE set CT_NumPayeur=@nouveau WHERE CT_NumPayeur=@ancien
-                update F_DOCENTETE set DO_Tiers=@nouveau WHERE DO_Tiers=@ancien
-                UPDATE F_DOCLIGNE set CT_Num=@nouveau WHERE CT_Num=@ancien
-                UPDATE F_TICKETARCHIVE set CT_Num=@nouveau WHERE CT_Num=@ancien
-                UPDATE F_ECRITUREC set CT_Num=@nouveau WHERE CT_Num=@ancien
-                UPDATE F_ECRITUREC set CT_NumCont=@nouveau WHERE CT_NumCont=@ancien
-                DELETE FROM F_REGLEMENTT WHERE CT_Num=@ancien
-                DELETE FROM F_LIVRAISON WHERE CT_Num=@ancien
-                DELETE FROM F_COMPTETG WHERE CT_Num=@ancien
-                DELETE FROM F_COMPTETMEDIA WHERE CT_Num=@ancien
-                DELETE FROM F_COMPTETMODELE WHERE CT_Num=@ancien
-                DELETE FROM F_COMPTETRAPPEL WHERE CT_Num=@ancien   
-                UPDATE F_COMPTET SET CT_Sommeil=1 WHERE CT_Num=@ancien  
-            END";
-        $this->db->query($query);
+        $this->getApiJson("/remplacementTiers&ctNumNouveau=$CT_NumNouveau&ctNumAncien=$CT_NumAncien");
     }
 
     public function __toString() {

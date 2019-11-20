@@ -18,6 +18,7 @@ class CompteGClass Extends Objet{
     ,$cbReplication,$cbFlag;
 
     public $table = 'dbo.F_COMPTEG';
+    public $lien = 'fcompteg';
 
     function __construct($id,$mode="all",$db=null)
     {

@@ -326,32 +326,7 @@ class ArticleClass Extends Objet{
     }
 
     public function updateF_ArtStockBorne($AR_Ref,$DE_No,$QteMin,$QteMax){
-        $query ="   IF EXISTS (SELECT 1 FROM F_ARTSTOCK WHERE AR_Ref='$AR_Ref' AND DE_No=$DE_No)
-                    BEGIN
-                        UPDATE F_ARTSTOCK SET AS_QteMini=$QteMin,AS_QteMaxi=$QteMax,cbCreateur='{$this->cbCreateur}' WHERE AR_Ref='$AR_Ref' AND DE_No=$DE_No;
-                    END
-                    ELSE 
-                        INSERT INTO [dbo].[F_ARTSTOCK]
-                           ([AR_Ref],[DE_No],[AS_QteMini],[AS_QteMaxi]
-                           ,[AS_MontSto],[AS_QteSto],[AS_QteRes],[AS_QteCom]
-                           ,[AS_Principal],[AS_QteResCM],[AS_QteComCM],[AS_QtePrepa]
-                           ,[DP_NoPrincipal],[cbDP_NoPrincipal],[DP_NoControle],[cbDP_NoControle]
-                           ,[AS_QteAControler],[cbProt],[cbCreateur],[cbModification]
-                           ,[cbReplication],[cbFlag])
-                     VALUES
-                     (/*AR_Ref*/'$AR_Ref',/*DE_No*/$DE_No
-                         ,/*AS_QteMini*/$QteMin,/*AS_QteMaxi*/$QteMax
-                         ,/*AS_MontSto*/0,/*AS_QteSto*/0
-                         ,/*AS_QteRes*/0,/*AS_QteCom*/0
-                         ,/*AS_Principal*/0,/*AS_QteResCM*/0
-                         ,/*AS_QteComCM*/0,/*AS_QtePrepa*/0
-                         ,/*DP_NoPrincipal*/0,/*cbDP_NoPrincipal*/NULL
-                         ,/*DP_NoControle*/0,/*cbDP_NoControle*/NULL
-                         ,/*AS_QteAControler*/0,/*cbProt*/0
-                         ,/*cbCreateur*/'{$this->cbCreateur}',/*cbModification*/GETDATE()
-                         ,/*cbReplication*/0,/*cbFlag*/0)
-                    ;";
-        $this->db->query($query);
+        $this->getApiJson("/updateF_ArtStockBorne&asQteMini=$QteMin&asQteMaxi=$QteMax&cbCreateur={$this->cbCreateur}&arRef=$AR_Ref&deNo=$DE_No")
     }
 
     public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql){
@@ -534,15 +509,8 @@ class ArticleClass Extends Objet{
         return $this->getApiJson("/getStockDepot&arRef={$this->AR_Ref}&deNo=$DE_No");
     }
 
-    public function ArticleDoublons(){
-        $query="SELECT AR_Design
-                FROM (
-                SELECT AR_Design,COUNT(AR_Ref) Nb
-                FROM F_ARTICLE
-                GROUP BY AR_Design)A
-                WHERE Nb>1";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+    public function ArticleDoublons(){		
+        return $this->getApiJson("/articleDoublons");		
     }
 
     public function stockMinDepasse($de_no){
@@ -560,26 +528,8 @@ class ArticleClass Extends Objet{
 
     public function insertF_ArtStock($de_no, $montStock, $qte)
     {
-        $query= "INSERT INTO [dbo].[F_ARTSTOCK]
-           ([AR_Ref],[DE_No],[AS_QteMini],[AS_QteMaxi]
-           ,[AS_MontSto],[AS_QteSto],[AS_QteRes],[AS_QteCom]
-           ,[AS_Principal],[AS_QteResCM],[AS_QteComCM],[AS_QtePrepa]
-           ,[DP_NoPrincipal],[cbDP_NoPrincipal],[DP_NoControle],[cbDP_NoControle]
-           ,[AS_QteAControler],[cbProt],[cbCreateur],[cbModification]
-           ,[cbReplication],[cbFlag])
-     VALUES
-           (/*AR_Ref*/'{$this->AR_Ref}',/*DE_No*/$de_no
-           ,/*AS_QteMini*/0,/*AS_QteMaxi*/0
-           ,/*AS_MontSto*/ROUND($montStock,2),/*AS_QteSto*/$qte
-           ,/*AS_QteRes*/0,/*AS_QteCom*/0
-           ,/*AS_Principal*/0,/*AS_QteResCM*/0
-           ,/*AS_QteComCM*/0,/*AS_QtePrepa*/0
-           ,/*DP_NoPrincipal*/0,/*cbDP_NoPrincipal*/NULL
-           ,/*DP_NoControle*/0,/*cbDP_NoControle*/NULL
-           ,/*AS_QteAControler*/0,/*cbProt*/0
-           ,/*cbCreateur*/'AND',/*cbModification*/GETDATE()
-           ,/*cbReplication*/0,/*cbFlag*/0)";
-        $this->db->query($query);
+        $this->lien = "fartstock";
+        $this->getApiExecute("/insertF_ArtStock&arRef={$this->AR_Ref}&deNo=$de_no&montant=$$montStock&qte=$qte&cbCreateur={$this->cbCreateur}");
     }
 
     public function updateArtStockReel($de_no, $qte)
@@ -606,41 +556,7 @@ class ArticleClass Extends Objet{
     }
 
     public function majRefArticle($newRef){
-        $query="BEGIN 
-                    SET NOCOUNT ON;
-                        DECLARE @ref_ancien AS VARCHAR(30)
-                        DECLARE @ref_nouveau AS VARCHAR(30)
-                        SET @ref_ancien='{$this->AR_Ref}'
-                        SET @ref_nouveau='$newRef'
-                        
-                        UPDATE [F_DOCLIGNE] SET AR_Ref=@ref_nouveau WHERE AR_Ref= @ref_ancien
-                        UPDATE [F_LIGNEARCHIVE] SET AR_Ref=@ref_nouveau WHERE AR_Ref= @ref_ancien
-                        UPDATE F_ARTSTOCK SET	AS_QteSto= F_ARTSTOCK.AS_QteSto+A.AS_QteSto
-                                                ,AS_MontSto=F_ARTSTOCK.AS_MontSto+A.AS_MontSto
-                                                ,AS_QteRes=F_ARTSTOCK.AS_QteRes+A.AS_QteRes
-                                                ,AS_QteCom=F_ARTSTOCK.AS_QteCom+A.AS_QteCom
-                        FROM (	SELECT AR_Ref,DE_No,AS_QteSto,AS_MontSto,AS_QteRes,AS_QteCom
-                                FROM F_ARTSTOCK
-                                WHERE AR_Ref=@ref_ancien)A
-                        WHERE	A.DE_No = F_ARTSTOCK.DE_No 
-                                AND F_ARTSTOCK.AR_Ref=@ref_nouveau
-                        
-                        UPDATE [F_ARTSTOCK] SET AS_QteSto = 0
-                                                ,AS_QteRes = 0
-                                                ,AS_QteCom = 0
-                                                ,AS_QteResCM = 0
-                                                ,AS_QteComCM = 0
-                                                ,AS_QtePrepa = 0
-                                                ,AS_QteAControler = 0
-                                                ,AS_MontSto = 0
-                        WHERE AR_Ref= @ref_ancien
-                      
-                        DELETE FROM [F_ARTSTOCK] WHERE AR_Ref= @ref_ancien
-                      
-                        UPDATE F_ARTICLE SET AR_Sommeil = 1 WHERE AR_Ref = @ref_ancien;      
-                    END;";
-        $this->db->query($query);
-
+		$this->getApiExecute("/majRefArticle&newArRef=$newRef&arRef={$this->AR_Ref}");
     }
 
     public function getAllArticleDispoByArRef($de_no,$codeFamille=0,$intitule = "")
@@ -651,27 +567,7 @@ class ArticleClass Extends Objet{
     }
 
     public function all($sommeil=-1,$intitule="",$top=0,$arPublie=-1){
-        $valeurSaisie =str_replace(" ","%",$intitule);
-        $value = "";
-        if($top!=0)
-            $value = "TOP $top";
-        $query = "SELECT  $value AR_Type
-                          ,AR_Sommeil
-                          ,AR_Ref
-                          ,AR_Design
-                          ,AR_Ref as id
-                          ,CONCAT(CONCAT(AR_Ref,' - '),AR_Design) as text
-                          ,CONCAT(CONCAT(AR_Ref,' - '),AR_Design) as value
-                        ,AR_PrixAch
-                        ,AR_PrixVen
-                  FROM F_ARTICLE
-                  WHERE -1=$arPublie OR AR_Publie=$arPublie
-                  AND -1=$sommeil OR AR_Sommeil=$sommeil
-                  AND CONCAT(CONCAT(AR_Ref,' - '),AR_Design) LIKE '%{$valeurSaisie}%'";
-        $result= $this->db->query($query);
-        $this->list = Array();
-        $this->list = $result->fetchAll(PDO::FETCH_OBJ);
-        return $this->list;
+        return $this->getApiJson("/all&intitule=$intitule&top=$top&sommeil=$sommeil&arPublie=$arPublie");
     }
 
     public function allSearch($arPublie,$sommeil,$intitule){
