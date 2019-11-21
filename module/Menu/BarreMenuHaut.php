@@ -8,7 +8,7 @@ $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav">
                         <li class="nav-item dropdown"><a class="dropdown-toggle nav-link active" data-toggle="dropdown" aria-expanded="false" href="#">Règlement</a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Clients</a><a class="dropdown-item" role="presentation" href="#">Fournisseurs</a><a class="dropdown-item" role="presentation" href="#">Bon de caisse</a></div>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="listeClient">Clients</a><a class="dropdown-item" role="presentation" href="#">Fournisseurs</a><a class="dropdown-item" role="presentation" href="#">Bon de caisse</a></div>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav">

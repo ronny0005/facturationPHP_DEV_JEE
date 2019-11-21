@@ -326,7 +326,7 @@ class ArticleClass Extends Objet{
     }
 
     public function updateF_ArtStockBorne($AR_Ref,$DE_No,$QteMin,$QteMax){
-        $this->getApiJson("/updateF_ArtStockBorne&asQteMini=$QteMin&asQteMaxi=$QteMax&cbCreateur={$this->cbCreateur}&arRef=$AR_Ref&deNo=$DE_No")
+        $this->getApiJson("/updateF_ArtStockBorne&asQteMini=$QteMin&asQteMaxi=$QteMax&cbCreateur={$this->cbCreateur}&arRef=$AR_Ref&deNo=$DE_No");
     }
 
     public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql){

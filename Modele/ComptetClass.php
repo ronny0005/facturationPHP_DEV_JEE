@@ -320,7 +320,9 @@ class ComptetClass Extends Objet{
                     $column = $_POST['columns'][$i]['data'];//we get the name of each column using its index from POST request
                     $where[]=" (CT_Num like '%".$_POST['search']['value']."%' OR CT_Intitule like '%".$_POST['search']['value']."%') ";
                 }
-                $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
+//                $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
+                $where = " WHERE (CT_Num like '%".$_POST['search']['value']."%' OR CT_Intitule like '%".$_POST['search']['value']."%') ";//.implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
+
                 /* End WHERE */
 
                 $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
@@ -330,7 +332,7 @@ class ComptetClass Extends Objet{
                 $sql = sprintf("%s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
                 //$sql = sprintf("$query %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY %d , %d ", $where ,$orderBy, $orderType ,$start,$length  );
 //            $sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql));
+                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql);
             }
             /* END SEARCH */
             else {

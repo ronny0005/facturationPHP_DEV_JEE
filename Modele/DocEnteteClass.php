@@ -1331,7 +1331,8 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         $client = ($client=="") ? "%20" : $client ;
         $ca_no = ($ca_no=="") ? 0 : $ca_no;
         $type_fac=$typeFacG;
-        $docEntete = new DocEnteteClass(0,$this->db);
+        $docEntete = new DocEnteteClass(0);
+
         $url = "/ajoutEntete&protNo=$protNo&doPiece={$this->formatString($do_piece)}&typeFacture=$type_fac&doDate=$doDate&doSouche=$souche&caNum={$this->formatString($affaire)}&ctNum={$this->formatString($client)}&machineName={$this->formatString($machine_pc)}&doCoord01=$DO_Coord04&doCoord02=$DO_Coord02&doCoord03=$DO_Coord03&doCoord04=$DO_Coord04&doStatut=$doStatut&catTarif=$catTarif&catCompta=$catCompta&deNo=$de_no&caNo=$ca_no&coNo=$co_no&reference={$this->formatString($reference)}&longitude=$longitude&latitude=$latitude";
         $docEntete = $this->getApiJson($url);
         $data = array();
