@@ -56,8 +56,8 @@ $docEntete->type_fac=$type;
         $affaire= $docEntete->CA_Num;
         $dateEntete = $docEntete->DO_Date;
     }
-$isModif = $docEntete->isModif($protection->PROT_Administrator,$protection->PROT_Right,$protection->protectedType($type),$flagProtApresImpression);
-$isVisu = $docEntete->isVisu($protection->PROT_Administrator,$protection->protectedType($type),$flagProtApresImpression);
+$isModif = $docEntete->isModif($_SESSION["id"],$type);
+$isVisu = $docEntete->isVisu($_SESSION["id"],$type);
 
 ?>
 <div id="milieu">    

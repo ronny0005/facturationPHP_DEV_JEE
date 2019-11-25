@@ -325,6 +325,19 @@ class DocEnteteClass Extends Objet{
     public function dr_regle(){
         return $this->getApiString("/drRegle&cbMarq={$this->cbMarq}");
     }
+    public function getEnteteTable($typeFac,$doSouche){
+        return $this->getApiString("/getEnteteTable&typeFac=$typeFac&doSouche=$doSouche");
+    }
+    public function doImprim(){
+        return $this->getApiJson("/doImprim&cbMarq={$this->cbMarq}");
+    }
+    public function maj_collaborateur($coNo){
+        return $this->getApiJson("/majCollaborateur&coNo=$coNo&cbMarq={$this->cbMarq}");
+    }
+    public function maj_affaire($caNum){
+        return $this->getApiJson("/majAffaire&caNum=$caNum&cbMarq={$this->cbMarq}");
+    }
+	
 
     public function getDocReglByDO_Piece() {
         $query = "SELECT  * 
@@ -377,31 +390,7 @@ class DocEnteteClass Extends Objet{
     }
 
     public function getLigneFacture() {
-        $val = "";
-        $query = "SELECT DL_PUDevise,CA_Num,DL_TTC,$val DL_PUTTC,DL_MvtStock,CT_Num,cbMarq,DL_TypeTaux1,DL_TypeTaux2,DL_TypeTaux3,cbCreateur,DL_NoColis
-        ,CASE WHEN DL_TypeTaux1=0 THEN DL_MontantHT*(DL_Taxe1/100) ELSE CASE WHEN DL_TypeTaux1=1 THEN DL_Taxe1*DL_Qte ELSE DL_Taxe1 END END MT_Taxe1
-        ,CASE WHEN DL_TypeTaux2=0 THEN DL_MontantHT*(DL_Taxe2/100) ELSE CASE WHEN DL_TypeTaux2=1 THEN DL_Taxe2*DL_Qte ELSE DL_Taxe2 END END MT_Taxe2
-        ,CASE WHEN DL_TypeTaux3=0 THEN DL_MontantHT*(DL_Taxe3/100) ELSE CASE WHEN DL_TypeTaux3=1 THEN DL_Taxe3*DL_Qte ELSE DL_Taxe3 END END MT_Taxe3
-	    ,DL_MontantHT,DO_Piece,
-        AR_Ref,DE_No,DL_CMUP AS AR_PrixAch,DL_Design,DL_Qte,DL_PrixUnitaire,DL_CMUP,DL_Taxe1,DL_Taxe2,DL_Taxe3,DL_MontantTTC,DL_Ligne,DL_Remise01REM_Valeur,DL_Remise01REM_Type,
-        CASE WHEN DL_Remise01REM_Type=0 THEN ''  ELSE CASE WHEN DL_Remise01REM_Type=1 THEN cast(cast(DL_Remise01REM_Valeur as numeric(9,2)) as varchar(10))+'%' ELSE cast(cast(DL_Remise01REM_Valeur as numeric(9,2)) as varchar(10))+'U' END END DL_Remise,
-        DL_PrixUnitaire -(CASE WHEN DL_Remise01REM_Type= 0 THEN DL_PrixUnitaire
-	ELSE CASE WHEN DL_Remise01REM_Type=1 THEN  DL_PrixUnitaire * DL_Remise01REM_Valeur / 100
-		ELSE CASE WHEN DL_Remise01REM_Type=2 THEN DL_Remise01REM_Valeur ELSE 0 END END END) DL_PrixUnitaire_Rem,
-        DL_PUTTC -(CASE WHEN DL_Remise01REM_Type= 0 THEN DL_PUTTC
-	ELSE CASE WHEN DL_Remise01REM_Type=1 THEN  DL_PrixUnitaire * DL_Remise01REM_Valeur / 100
-		ELSE CASE WHEN DL_Remise01REM_Type=2 THEN DL_Remise01REM_Valeur ELSE 0 END END END) DL_PUTTC_Rem,
-		DL_PrixUnitaire -(CASE WHEN DL_Remise01REM_Type= 0 THEN 0
-	ELSE CASE WHEN DL_Remise01REM_Type=1 THEN  DL_PrixUnitaire * DL_Remise01REM_Valeur / 100
-		ELSE CASE WHEN DL_Remise01REM_Type=2 THEN DL_Remise01REM_Valeur ELSE 0 END END END) DL_PrixUnitaire_Rem0,
-        DL_PUTTC -(CASE WHEN DL_Remise01REM_Type= 0 THEN 0
-	ELSE CASE WHEN DL_Remise01REM_Type=1 THEN  DL_PrixUnitaire * DL_Remise01REM_Valeur / 100
-		ELSE CASE WHEN DL_Remise01REM_Type=2 THEN DL_Remise01REM_Valeur ELSE 0 END END END) DL_PUTTC_Rem0
-        FROM F_DOCLIGNE  
-        WHERE DO_Piece ='{$this->DO_Piece}' AND DO_Domaine={$this->DO_Domaine} AND DO_Type = {$this->DO_Type}
-        ORDER BY cbMarq";
-        $result = $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+            return $this->getApiJson("/getLigneFacture&cbMarq={$this->cbMarq}");
     }
 
     public function testCorrectLigneA()
@@ -1041,38 +1030,7 @@ class DocEnteteClass Extends Objet{
     }
 
     public function redirectToListe($type){
-        $element = array();
-        if($type=="Vente" || $type=="VenteC" || $type=="VenteT")
-            $element = array('action' => 1,'module' => 2);
-        if($type=="Achat" || $type=="AchatC" || $type=="AchatT")
-            $element = array('action' => 1,'module' => 7);
-        if($type=="AchatRetour" || $type=="AchatRetourC" || $type=="AchatRetourT")
-            $element = array('action' => 7,'module' => 7);
-        if($type=="BonLivraison")
-            $element = array('action' => 5,'module' => 2);
-        if($type=="Retour")
-            $element = array('action' => 9,'module' => 2);
-        if($type=="Avoir")
-            $element = array('action' => 7,'module' => 2);
-        if($type=="AchatPreparationCommande")
-            $element = array('action' => 5,'module' => 7);
-        if($type=="PreparationCommande")
-            $element = array('action' => 3,'module' => 7);
-        if($type=="Devis")
-            $element = array('action' => 2,'module' => 2);
-        if($type=="Entree")
-            $element = array('action' => 3,'module' => 4);
-        if($type=="Sortie")
-            $element = array('action' => 4,'module' => 4);
-        if($type=="Transfert")
-            $element = array('action' => 1,'module' => 4);
-        if($type=="TransfertDetail")
-            $element = array('action' => 13,'module' => 2);
-        if($type=="TransfertDetail")
-            $element = array('action' => 9,'module' => 4);
-        if($type=="Ticket")
-            $element = array('action' => 14,'module' => 2);
-        return "indexMVC.php?module=".$element["module"]."&action=".$element["action"]."&type=$type";
+        return "listeFacture-$type";
     }
 
     public function getListeFacture($de_no,$do_provenance, $datedeb, $datefin,$client,$do_domaine,$do_type){
@@ -1363,50 +1321,6 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/getLigneFactureTransfert&cbMarq={$this->cbMarq}");
     }
 
-    public function  clotureVente($ca_num){
-        $query = "SELECT TOP 1 DO_Ref,DO_Piece,DO_Domaine,DO_Type,DO_Statut,DO_Tiers,CAST(GETDATE() AS DATE) DO_Date,DE_No,CA_Num,CO_No,CA_No,N_CatCompta,DO_Statut,DO_Souche,DO_Cours
-                    FROM F_DOCENTETE
-                    WHERE CA_Num='$ca_num'
-                    AND DO_Domaine=0
-                    ORDER BY CBMARQ DESC";
-        $result= $this->db->query($query);
-        $infoEntete=Array();
-        foreach($result->fetchAll(PDO::FETCH_OBJ) as $res)
-            $infoEntete= $res;
-
-        $var = $this->ajoutEntete($infoEntete->DO_Type,$infoEntete->DO_Piece,"Vente",$infoEntete->DO_Date,$infoEntete->DO_Date,
-            $ca_num,$infoEntete->DO_Tiers,"","","","","",$infoEntete->DO_Statut,"0","0",$infoEntete->DE_No,
-            0,$infoEntete->N_CatCompta,$infoEntete->DO_Souche,$infoEntete->CA_No,$infoEntete->CO_No,"cloture ".$infoEntete->DO_Ref);
-        $docEntete = new DocEnteteClass($var["cbMarq"]);
-        $query = "SELECT MAX(AR_Ref)AR_Ref,SUM(QTE) QTE,SUM(CARAT)CARAT,SUM(CIOJ)CIOJ
-        FROM(
-            SELECT MAX(AR_Ref)AR_Ref,SUM(CASE WHEN A.DO_Domaine=1 THEN -DL_Qte ELSE DL_Qte END) QTE,null carat,MAX(CIOJ) CIOJ
-        FROM F_DOCENTETE A
-        INNER JOIN F_DOCLIGNE B ON A.DO_Domaine=B.DO_Domaine AND A.DO_Type=B.DO_Type AND A.DO_Piece=B.DO_Piece
-        WHERE A.CA_Num='$ca_num'
-        union
-        SELECT null AR_Ref,null qte, AVG(carat) carat, null CIOJ
-        FROM F_DOCENTETE A
-        INNER JOIN F_DOCLIGNE B ON A.DO_Domaine=B.DO_Domaine AND A.DO_Type=B.DO_Type AND A.DO_Piece=B.DO_Piece
-        WHERE A.CA_Num='$ca_num'
-                AND a.DO_Domaine=0)A";
-        $result= $this->db->query($query);
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-
-        $docligne = new DocLigneClass(0);
-        $data = $docligne->ajout_ligneFacturation($rows[0]->QTE,0,
-            $docEntete->cbMarq,$docEntete->DE_No,$rows[0]->AR_Ref,"Vente",
-            0,$docEntete->DO_Domaine,$docEntete->DO_Piece,0,$docEntete->N_CatCompta,$rows[0]->CARAT,0,
-            '','',0,
-            0,$rows[0]->CARAT,0,$rows[0]->CIOJ,
-            "","ajout_ligne",0,0,
-            0,0);
-        if($data!=null) {
-            $docEntete->deleteEntete();
-        }else
-            $this->db->query($this->objetCollection->miseEnSommeil($ca_num));
-    }
-
     public function deleteEntete(){
         $result = $this->db->requete( "
             DELETE FROM F_DOCREGL WHERE DO_Piece='".$this->DO_Piece."' AND DO_Domaine=".$this->DO_Domaine." 
@@ -1532,58 +1446,13 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/avanceDoPiece&cbMarq={$this->cbMarq}");
     }
 
-    public function isVisu($PROT_Administrator,$protectedDocP,$flagProtApresImpressionP)
+    public function isVisu($protNo,$typeFacture)
     {
-        if ($PROT_Administrator == 1) {
-            if ($this->statut == "comptant")
-                return 1;
-            else
-                return 0;
-        }
-        else {
-            if($this->DO_Modif==1){
-                return 1;
-            }
-            else{
-                if($protectedDocP==0){
-                    return 1;
-                }else{
-                    if($this->DO_Imprim==1 && $flagProtApresImpressionP!=0){
-                        return 1;
-                    }else{
-                        if($this->statut=="comptant" || $this->avance>"0"){
-                            return 1;
-                        }
-                    }
-                }
-            }
-        }
-        return 0;
+		return $this->getApiJson("/isVisu&cbMarq={$this->cbMarq}&protNo={$protNo}&typeFacture={$typeFacture}");
     }
 
-    public function isModif($PROT_Administrator,$PROT_Right,$protectedDocP,$flagProtApresImpressionP){
-        if($PROT_Administrator==1 || $PROT_Right==1) {
-            if ($this->avance == 0)
-                return 1;
-        }else{
-            if($this->DO_Modif==1) {
-                return 0;
-            }
-            else{
-                if($protectedDocP==0){
-                    return 0;
-                }else{
-                    if($this->DO_Imprim==1 && $flagProtApresImpressionP!=0){
-                        return 0;
-                    }else{
-                        if($this->avance<>0){
-                            return 0;
-                        }
-                    }
-                }
-            }
-        }
-        return 0;
+    public function isModif($protNo,$typeFacture){
+        return $this->getApiJson("/isModif&cbMarq={$this->cbMarq}&protNo={$protNo}&typeFacture={$typeFacture}");
     }
 
     public function getEnteteDispo(){
@@ -1650,7 +1519,7 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
             return new DocEnteteClass($rowsTour[0]->cbMarq);
         return null;
     }
-
+/*
     public function getEnteteTable($souche){
         $query = "SELECT ISNULL((SELECT DC_Piece
                 from F_DOCCURRENTPIECE D
@@ -1661,7 +1530,7 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
             return $rows[0]->DC_Piece;
         return null;
     }
-
+*/
     public function getDO_DateC(){
         $result = $this->db->requete("SELECT CONVERT(char(10), CAST(DO_Date AS DATE),126) AS DO_DateC
                                         from F_DOCENTETE

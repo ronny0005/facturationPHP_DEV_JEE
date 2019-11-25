@@ -93,25 +93,13 @@ class Objet {
             $this->userName = $login;
     }
 
-    public function __get($name) {
-        $query = "SELECT $name FROM $this->table WHERE ".$this->idLib."='".$this->id."'";
-        $result= $this->db->query($query);
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        return $rows[0]->$name;
-    }
-
-    public function __set($name,$value) {
-        $query = "UPDATE $this->table set $name='$value' where ".$this->idLib."='".$this->id."'";
-        $this->db->query($query);
-    }
-
     public function all(){
         return $this->getApiJson("/all");
     }
 
 
     public function maj($name,$value){
-        $this->getApiJson("/maj/$name/".htmlspecialchars_decode($value)."/".$this->cbMarq);
+        $this->getApiJson("/maj&name=$name&value=".htmlspecialchars_decode($value)."&cbMarq={$this->cbMarq}&cbCreateur={$this->userName}");
     }
 
     public function majCbMarq($name,$value,$cbMarq){
@@ -128,7 +116,7 @@ class Objet {
     }
 
     public function delete(){
-        $this->getApiJson("/delete/".$this->cbMarq);
+        $this->getApiJson("/delete&cbMarq=".$this->cbMarq);
     }
 
     public function formatDate($val){

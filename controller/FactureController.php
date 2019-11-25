@@ -56,11 +56,11 @@ $nomdepot="";
 $isModif = 1;
 $isVisu = 1;
 $isLigne = 0;
-$docEntete = new DocEnteteClass(0,$objet->db);
+$docEntete = new DocEnteteClass(0);
 if(isset($_GET["cbMarq"])){
-$docEntete = new DocEnteteClass($_GET["cbMarq"],$objet->db);
+$docEntete = new DocEnteteClass($_GET["cbMarq"]);
 $do_imprim = $docEntete->DO_Imprim;
-$client = new ComptetClass($docEntete->DO_Tiers,$objet->db);
+$client = new ComptetClass($docEntete->DO_Tiers);
 $cat_tarif = $client->N_CatTarif;
 $total_regle = $docEntete->ttc;
 $avance=$docEntete->avance;
@@ -69,8 +69,8 @@ if(sizeof($docEntete->listeLigneFacture())>1)
 $isLigne=1;
 }
 $type=$_GET["type"];
-$isModif = $docEntete->isModif($protection->PROT_Administrator,$protection->PROT_Right,$protection->protectedType($type),$flagProtApresImpression);
-$isVisu = $docEntete->isVisu($protection->PROT_Administrator,$protection->protectedType($type),$flagProtApresImpression);
+$isModif = $docEntete->isModif($_SESSION["id"],$type);
+$isVisu = $docEntete->isVisu($_SESSION["id"],$type);
 $protected = $protection->PROT_Right;
 
 if($docEntete->DO_Modif==1 && $isVisu)

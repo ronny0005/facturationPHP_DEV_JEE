@@ -441,7 +441,6 @@ class ProtectionClass extends Objet{
         return $this->getApiJson("/getSoucheDepotGrpSouche&protNo=$prot_no&type=$type");
     }
     public function getSoucheDepotCaisse($prot_no,$type,$souche,$ca_no,$depot,$ca_num){
-        if($ca_num=="") $ca_num=" ";
         return $this->getApiJson("/getSoucheDepotCaisse&protNo=$prot_no&type=$type&doSouche=$souche&caNo=$ca_no&deNo=$depot&caNum={$this->formatString($ca_num)}");
     }
 

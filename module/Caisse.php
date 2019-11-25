@@ -26,6 +26,7 @@ class Caisse {
     }
 
     public function Mouvement_caisse() {
+        include("controller/MouvementCaisseController.php");
         include("pages/Caisse/Mouvement_Caisse.php");
     }
    

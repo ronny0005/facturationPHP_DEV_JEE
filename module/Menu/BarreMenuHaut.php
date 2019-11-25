@@ -41,10 +41,13 @@ $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
                         </li>
                     </ul>
                     <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Caisse</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="mvtCaisse">Caisse</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
 </nav>
+<?php
+include("BarreMenu.php");
+?>

@@ -71,8 +71,8 @@ $isLigne = 0;
             $isLigne=1;
     }
     $type=$_GET["type"];
-    $isModif = $docEntete->isModif($protection->PROT_Administrator,$protection->PROT_Right,$protection->protectedType($type),$flagProtApresImpression);
-    $isVisu = $docEntete->isVisu($protection->PROT_Administrator,$protection->protectedType($type),$flagProtApresImpression);
+    $isModif = $docEntete->isModif($_SESSION["id"],$type);
+    $isVisu = $docEntete->isVisu($_SESSION["id"],$type);
     $protected = $protection->PROT_Right;
 
 ?>

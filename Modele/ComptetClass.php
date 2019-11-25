@@ -248,6 +248,10 @@ class ComptetClass Extends Objet{
     public function allFournisseur($sommeil = -1) {
         return $this->getApiJson("/allFournisseurShort&sommeil=$sommeil");
     }
+	
+	public function rafraichir_listeClient($typeFacture){
+        return $this->getApiJson("/rafraichir_listeClient&typeFacture=$typeFacture");
+	}
 
     public function createClientMin(){
 		
@@ -362,9 +366,9 @@ class ComptetClass Extends Objet{
         return $this->getApiJson("/TiersDoublons");
     }
 
-    public function getTiersByNumIntitule($intitule,$type){
-        $value =str_replace(" ","%",$intitule);
-        $value= $this->getApiJson("/getTiersByNumIntitule&ctNum=$value&ctType=$type");
+    public function getTiersByNumIntitule($term,$typeFac){
+        $value =str_replace(" ","%",$term);
+        $value= $this->getApiJson("/getTiersByNumIntitule&typeFacture=$typeFac&term=$value");
 
         foreach ($value as $val){
             $rows[] = array("label" => $val->CT_Intitule

@@ -126,7 +126,7 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
         if (isset($_GET["PROT_No"])) {
             $protection = new ProtectionClass("", "", $objet->db);
             $protection->connexionProctectionByProtNo($_GET["PROT_No"]);
-            $isVisu = $docEntete->isVisu($protection->PROT_Administrator, $protection->protectedType("Transfert"), $protection->PROT_APRES_IMPRESSION);
+            $isVisu = $docEntete->isVisu($_GET["PROT_No"],$typefac);
             if (!$isVisu) {
 
 

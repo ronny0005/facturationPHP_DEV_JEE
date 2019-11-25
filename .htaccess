@@ -25,5 +25,6 @@ RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4 [L]
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4&CT_Num=$1 [L]
 
+RewriteRule ^mvtCaisse$  indexMVC_New.php?module=6&action=1 [L]
 
 

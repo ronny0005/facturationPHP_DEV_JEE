@@ -119,17 +119,7 @@ switch ($val) {
         break;
     case "getTiersByNumIntitule":
         $client = new ComptetClass(0);
-        $docEntete = new DocEnteteClass(0);
-        $docEntete->setTypeFac($_GET["TypeFac"]);
-        $varClient = 0;
-        if($docEntete->DO_Domaine == 1)
-            $varClient = 1;
-        if(!isset($_GET['term'])){
-            $rows = $client->getTiersByNumIntitule("",$varClient);
-        }else{
-            $rows = $client->getTiersByNumIntitule($_GET['term'],$varClient);
-        }
-        echo json_encode($rows);
+        echo json_encode($client->getTiersByNumIntitule($_GET["term"],$_GET["TypeFac"]));
         break;
 
     case "getDepotByIntitule":
@@ -148,15 +138,8 @@ switch ($val) {
         $de_no = $_GET["DE_No"];
         $searchTerm = "";
         if(isset($_GET['term']))
-            $searchTerm = $_GET['term'];
-        if($de_no!="null") {
-            if ($_GET["type"] == "Ticket" || $_GET["type"] == "AchatRetour" || $_GET["type"] == "Vente" || $_GET["type"] == "BonLivraison" || $_GET["type"] == "Sortie" || $_GET["type"] == "Transfert"  || $_GET["type"] == "Transfert_confirmation" || $_GET["type"] == "Transfert_detail") {
-                echo json_encode($article->getAllArticleDispoByArRef($de_no, 0, $searchTerm));
-            }
-            else {
-                echo json_encode($article->allSearch(-1, -1,$searchTerm));
-            }
-        }
+            $searchTerm = str_replace(" ","%",$_GET['term']);
+        echo json_encode($article->getApiJson("/getArticleByRefDesignation&deNo=$de_no&term=$searchTerm&typeFacture=".$_GET["type"]));
         break;
 
     case "getDepotByDENoIntitule":

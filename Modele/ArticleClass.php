@@ -574,4 +574,8 @@ class ArticleClass Extends Objet{
         $valeurSaisie =str_replace(" ","%",$intitule);
         return $this->getApiJson("/allSearch&arPublie{$arPublie}&sommeil={$sommeil}&valeurSaisie={$this->formatString($valeurSaisie)}");
     }
+	
+	public function liste_article_source($type,$depot){
+	    return $this->getApiJson("/liste_article_source&type=$type&depot=$depot");
+	}
 }
