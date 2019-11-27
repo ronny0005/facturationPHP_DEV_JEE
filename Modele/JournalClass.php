@@ -13,6 +13,7 @@ class JournalClass Extends Objet{
     ,$JO_Sommeil,$JO_IFRS,$JO_Reglement
     ,$JO_SuiviTreso,$cbCreateur,$cbModification;
     public $table = 'F_JOURNAUX';
+    public $lien = "fjournaux";
 
     function __construct($id,$db=null) {
         parent::__construct($this->table, $id,'JO_Num',$db);
@@ -53,27 +54,15 @@ class JournalClass Extends Objet{
     }
 
     public function getJournaux($val){
-        $query = "SELECT JO_Num,JO_Intitule,CG_Num,cbModification
-                FROM ".$this->db->baseCompta.".dbo.F_JOURNAUX
-                WHERE ($val=0 AND 1=1) OR ($val=1 AND JO_Sommeil=0) OR ($val=2 AND JO_Sommeil=1)";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/fjournaux&joSommeil=$val");
     }
 
     public function getJournauxSaufTotaux(){
-        $query = "SELECT JO_Num,JO_Intitule,CG_Num,cbModification
-                FROM F_JOURNAUX
-                WHERE JO_Type<>0";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getJournauxSaufTotaux");
     }
 
-    public function getJournauxType($type){
-        $query = "SELECT JO_Num,JO_Intitule,CG_Num,cbModification
-                FROM F_JOURNAUX
-                WHERE JO_Type=$type";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+    public function getJournauxType($type,$sommeil=-1){
+        return $this->getApiJson("/getJournauxType&joType=$type&joSommeil=$sommeil");
     }
 
     public function __toString() {

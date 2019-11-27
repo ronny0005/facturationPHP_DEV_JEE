@@ -76,33 +76,30 @@ if(isset($_POST["libelle"])){
         $banque=1;
     }
     if($modif==0)
+        $date = $objet->getDate($_POST['date']);
+        $caNo = $_POST['CA_No'];
         if($rg_typereg!=16) {
             $rg_typeregVal = $rg_typereg;
             if($rg_typereg==6)
                 $rg_typeregVal = 4;
-            //$result = $objet->db->requete($objet->addCReglement('NULL', $_POST['date'], $montant, $jo_num, $cg_num, $_POST['CA_No'], $co_nocaissier, $_POST['date'], $libelle, 0, 2, 1, $rg_typeregVal, 1, $banque, $login));
-
 
             if($rg_typereg==6){
-//                  $result = $objet->db->requete($objet->addCReglement('NULL', $_POST['date'], $montant, $_POST["journalRec"], $cg_num, $_POST['CA_No'], $co_nocaissier, $_POST['date'], $libelle, 0, 2, 1, 5, 1, 1, $login));
-                $caisse = new CaisseClass($_POST['CA_No']);
-                $creglement->setReglement('NULL', $objet->getDate($_POST['date']), $montant, $_POST["journalRec"], $cg_num, $_POST['CA_No'], $co_nocaissier, $objet->getDate($_POST['date']), $libelle, 0, 2, 1, $rg_typeregVal, 1, 1, $login);
+                $caisse = new CaisseClass($caNo);
+                $creglement->setReglement('NULL', $date, $montant, $_POST["journalRec"], $cg_num, $caNo, $co_nocaissier, $date, $libelle, 0, 2, 1, $rg_typeregVal, 1, 1, $login);
                 $rg_no = $creglement->insertF_Reglement();
-                $creglement->setReglement('NULL', $objet->getDate($_POST['date']), $montant, $caisse->JO_Num, $cg_num, $_POST['CA_No'], $co_nocaissier, $objet->getDate($_POST['date']), $libelle."_".$caisse->JO_Num, 0, 2, 8, $rg_typeregVal, 1, 1, $login);
+                $creglement->setReglement('NULL', $date, $montant, $caisse->JO_Num, $cg_num, $caNo, $co_nocaissier, $date, $libelle."_".$caisse->JO_Num, 0, 2, 8, $rg_typeregVal, 1, 1, $login);
                 $rg_noDest = $creglement->insertF_Reglement();
                 $creglement->insertF_ReglementVrstBancaire($rg_no,$rg_noDest);
             }else{
-                $creglement->setReglement('NULL', $objet->getDate($_POST['date']), $montant, $jo_num, $cg_num, $_POST['CA_No'], $co_nocaissier, $objet->getDate($_POST['date']), $libelle, 0, 2, 1, $rg_typeregVal, 1, $banque, $login);
+                $creglement->setReglement('NULL', $date, $montant, $jo_num, $cg_num, $caNo, $co_nocaissier, $objet->getDate($_POST['date']), $libelle, 0, 2, 1, $rg_typeregVal, 1, $banque, $login);
                 $rg_no = $creglement->insertF_Reglement();
             }
         }
         else {
-            //$result = $objet->db->requete($objet->addCReglement('NULL', $_POST['date'], $montant , $jo_num, $cg_num, $_POST['CA_No'], $co_nocaissier, $_POST['date'], $libelle, 0, 2, 1, 4, 1, $banque, $login));
-            $creglement->setReglement('NULL', $objet->getDate($_POST['date']), $montant , $jo_num, $cg_num, $_POST['CA_No'], $co_nocaissier, $objet->getDate($_POST['date']), $libelle, 0, 2, 1, 4, 1, $banque, $login);
+            $creglement->setReglement('NULL', $date, $montant , $jo_num, $cg_num, $caNo, $co_nocaissier, $date, $libelle, 0, 2, 1, 4, 1, $banque, $login);
             $rg_no = $creglement->insertF_Reglement();
             $caisseDest = new CaisseClass($_POST['CA_No_Dest']);
-            //$result = $objet->db->requete($objet->addCReglement('NULL', $_POST['date'], $montant , $caisseDest->JO_Num , $cg_num, $caisseDest->CA_No, $caisseDest->CO_NoCaissier, $_POST['date'], $libelle, 0, 2, 1, 5, 1, $banque, $login));
-            $creglement->setReglement('NULL', $objet->getDate($_POST['date']), $montant , $caisseDest->JO_Num , $cg_num, $caisseDest->CA_No, $caisseDest->CO_NoCaissier, $objet->getDate($_POST['date']), $libelle, 0, 2, 1, 5, 1, $banque, $login);
+            $creglement->setReglement('NULL', $date, $montant , $caisseDest->JO_Num , $cg_num, $caisseDest->CA_No, $caisseDest->CO_NoCaissier, $date, $libelle, 0, 2, 1, 5, 1, $banque, $login);
             $rg_no = $creglement->insertF_Reglement();
         }
 
@@ -175,40 +172,22 @@ if(isset($_POST["libelle"])){
             $objet->incrementeCOLREGLEMENT();
 
     if($modif==1){
-        if($_POST["rg_typeregModif"]==4 || $_POST["rg_typeregModif"]==2 || $_POST["rg_typeregModif"]==5) {
-            $creglement = new ReglementClass($_POST["RG_NoLigne"]);
-            $creglement->RG_Date = $objet->getDate($_POST["date"]);
-            $caisse = new CaisseClass($_POST["CA_No"]);
-            $creglement->JO_Num = $caisse->JO_Num;
-            $creglement->CA_No = $_POST["CA_No"];
-            $creglement->RG_Libelle = $_POST["libelle"];
-            $creglement->CG_Num = $_POST["CG_NumBanque"];
-            $creglement->RG_Montant = str_replace(" ", "", $_POST["montant"]);
-            $creglement->maj_reglement();
-        }
+        $creglement = new ReglementClass($_POST["RG_NoLigne"]);
+        $creglement->RG_Date = $objet->getDate($_POST["date"]);
+        $caisse = new CaisseClass($_POST["CA_No"]);
+        $creglement->JO_Num = $caisse->JO_Num;
+        $creglement->CA_No = $_POST["CA_No"];
+        $creglement->RG_Libelle = $_POST["libelle"];
+        $creglement->CG_Num = $_POST["CG_NumBanque"];
+        $creglement->RG_Montant = str_replace(" ", "", $_POST["montant"]);
 
         if($_POST["rg_typeregModif"]==6) {
-            $creglement = new ReglementClass($_POST["RG_NoLigne"]);
-            $creglement->RG_Date = $objet->getDate($_POST["date"]);
-            $creglement->CA_No = $_POST["CA_No"];
-            $creglement->RG_Libelle = $_POST["libelle"];
-            $creglement->CG_Num = $_POST["CG_NumBanque"];
             $creglement->RG_TypeReg = 5;
-            $creglement->RG_Montant = str_replace(" ", "", $_POST["montant"]);
             $creglement->JO_Num = $_POST["journalRec"];
-            $creglement->maj_reglement();
         }
 
         if($_POST["rg_typeregModif"]==16) {
-            $creglement = new ReglementClass($_POST["RG_NoLigne"]);
-            $creglement->RG_Date = $objet->getDate($_POST["date"]);
-            $creglement->CA_No = $_POST["CA_No"];
-            $caisse = new CaisseClass($_POST["CA_No"]);
-            $creglement->JO_Num = $caisse->JO_Num;
-            $creglement->RG_Libelle = $_POST["libelle"];
-            $creglement->CG_Num = $_POST["CG_NumBanque"];
             $creglement->RG_TypeReg = 4;
-            $creglement->RG_Montant = str_replace(" ", "", $_POST["montant"]);
             $creglement->maj_reglement();
 
             $creglement = new ReglementClass($_POST["RG_NoDestLigne"]);
@@ -220,8 +199,9 @@ if(isset($_POST["libelle"])){
             $creglement->CG_Num = $_POST["CG_NumBanque"];
             $creglement->RG_TypeReg = 5;
             $creglement->RG_Montant = str_replace(" ", "", $_POST["montant"]);
-            $creglement->maj_reglement();
         }
+        $creglement->maj_reglement();
+
     }
 }
 

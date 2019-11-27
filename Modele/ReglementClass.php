@@ -94,7 +94,7 @@ class ReglementClass Extends Objet{
 		return $this->getApiJson("/setMajAnalytique&dateDeb=$datedeb&dateFin=$datefin&caNum=$caNum&cbCreateur={$this->userName}");
     }
 
-    public function insertF_Reglement(){
+    public function  insertF_Reglement(){
         $requete = "BEGIN 
                 SET NOCOUNT ON;
 				DECLARE @CT_NumPayeur AS VARCHAR(50) = ?
