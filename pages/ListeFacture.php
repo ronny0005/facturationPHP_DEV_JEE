@@ -1,58 +1,61 @@
 <script src="js/script_listeFacture.js?d=<?php echo time(); ?>"></script>
 <script src="js/jquery.dynatable.js?d=<?php echo time(); ?>" type="text/javascript"></script>
 
-<h1 class="text-uppercase text-center" style="background-color: #4e73df;color: rgb(246,247,249);padding-top: 5px;padding-bottom: 5px;"><?= $protection->listeFactureNom($type) ?></h1>
+<section style="background-color: rgb(19,72,34);margin: 0px;padding: 5px;">
+    <h1 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?= $protection->listeFactureNom($type) ?></h1>
+</section>
+<section style="margin-top: 20px;">
 <form id="valideLigne" action="listeFacture-<?= $type ?>" method="POST">
-    <div class="row">
-    <div class="col-md-6 col-xl-3 mb-4"><label>&nbsp;Début :&nbsp;</label>
-        <div id="datetimepicker1" class="input-group date">
-            <input type="text" id="datedebut" name="datedebut" class="form-control" inputmode="numeric" maxlength="6" value="<?= $datedeb ?>">
-                <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3 mb-4"><label>&nbsp;Fin :&nbsp;</label>
-        <div id="datetimepicker1" class="input-group date">
-            <input type="text" id="datefin" name="datefin" class="form-control" inputmode="numeric" maxlength="6" value="<?= $datefin ?>">
-            <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3 mb-4"><label>Dépot :</label>
-        <input type="hidden" value="<?= sizeof($_POST) ?>" name="post" id="post"/>
-        <input type="hidden" value="<?= $protection->lienMenuNouveau($type) ?>" name="lienMenuNouveau" id="lienMenuNouveau"/>
-        <input type="hidden" value="<?= $type ?>" name="typeDoc" id="typeDoc"/>
-
-        <div class="field">
-                <select class="form-control" id="depot" name="depot">
-                        <?= $listeDepot ?>
-                </select>
+    <div class="row m-1">
+        <div class="col-xs-6 col-sm-5 col-md-2"><label>Début</label>
+            <div class="input-group">
+                <input class="form-control" type="text" id="datedebut" name="datedebut" inputmode="numeric" maxlength="6" value="<?= $datedeb ?>">
+                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
             </div>
-    </div>
-    <div <?= $afficheListeTiers ?> class="col-md-6 col-xl-3 mb-4"><label><?= $libTiers ?></label>
-            <div class="field">
+        </div>
+        <div class="col-xs-6 col-sm-5 col-md-2"><label>Fin</label>
+            <div class="input-group">
+                <input class="form-control" type="text" id="datefin" name="datefin" inputmode="numeric" maxlength="6" value="<?= $datefin ?>">
+                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-5 col-md-3"><label>Dépot</label>
+            <div class="input-group">
+                <input type="hidden" value="<?= sizeof($_POST) ?>" name="post" id="post"/>
+                <input type="hidden" value="<?= $protection->lienMenuNouveau($type) ?>" name="lienMenuNouveau" id="lienMenuNouveau"/>
+                <input type="hidden" value="<?= $type ?>" name="typeDoc" id="typeDoc"/>
+                <select class="form-control" id="depot" name="depot">
+                    <?= $listeDepot ?>
+                </select>
+                <span
+                        class="input-group-append"><span class="input-group-text bg-transparent"><i class="fas fa-industry"></i></span></span>
+            </div>
+        </div>
+
+        <div <?= $afficheListeTiers ?> class="col-xs-6 col-sm-5 col-md-3"><label><?= $libTiers ?></label>
+            <div class="input-group">
                 <input type="hidden" id="CT_Num" value ="<?= $client ?>" name="client">
                 <input type="text"  id="client" value ="<?= $libClient ?>" name="libClient" class="form-control">
+                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="fas fa-users"></i></span></span>
             </div>
-    </div>
-</div>
-<div class="row">
-    <div <?= $afficheTypeFacture ?> class="col-md-6 col-xl-3 mb-4"><label>Type facture</label>
-            <div class="field">
-                <select class="form-control" id="type" name="type">
-                    <?= $listeTypeFacture ?>
-                </select>
-            </div>
-    </div>
+        </div>
 
-    <div class="col-md-6 col-xl-3 mb-4"></div>
-    <div class="col-md-6 col-xl-3 mb-4"></div>
-    <div class="col-md-6 col-xl-3 text-right mb-4"><button class="btn btn-primary" id="valider" type="button">Valider</button></div>
-</div>
+        <div <?= $afficheTypeFacture ?> class="col-xs-6 col-sm-5 col-md-2">
+            <label>Type</label>
+            <select class="form-control" id="type" name="type">
+                <?= $listeTypeFacture ?>
+            </select>
+        </div>
+
+        <div class="mt-3 col-xs-6">
+            <button class="btn btn-primary" id="valider" type="button">Valider</button>
+        </div>
 </form>
-</div>
+</section>
 
 
-<div class="container-fluid" style="margin-bottom: 30px;">
-    <div><button <?= $afficheBoutonNouveau ?> class="btn btn-primary" id="nouveau" type="button">Nouveau</button>
+    <div>
+        <button <?= $afficheBoutonNouveau ?> class="btn btn-primary" id="nouveau" type="button">Nouveau</button>
 
         <div class="table-responsive" style="margin-top: 30px;clear:both">
             <table id="tableListeFacture" class="table table-striped">
@@ -131,7 +134,6 @@
         </div>
 
     </div>
-</div>
 </div>
     <div style="text-align: center" id="menu_transform">
         <div class="form-group col-lg-4">

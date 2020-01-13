@@ -22,7 +22,7 @@ class CompteGClass Extends Objet{
 
     function __construct($id,$mode="all",$db=null)
     {
-        parent::__construct($this->table, $id, 'CG_Num',$db);
+        $this->data = $this->getApiJson("/cgNum=$id");
         if (sizeof($this->data) > 0) {
             $this->CG_Num = $this->data[0]->CG_Num;
             $this->CG_Type = $this->data[0]->CG_Type;
@@ -53,33 +53,8 @@ class CompteGClass Extends Objet{
         }
     }
 
-    public function maj_caisse(){
-        parent::maj(CG_Num,$this->CG_Num);
-        parent::maj(CG_Type,$this->CG_Type);
-        parent::maj(CG_Intitule,$this->CG_Intitule);
-        parent::maj(CG_Classement,$this->CG_Classement);
-        parent::maj(N_Nature,$this->N_Nature);
-        parent::maj(CG_Report,$this->CG_Report);
-        parent::maj(CR_Num,$this->CR_Num);
-        parent::maj(CG_Raccourci,$this->CG_Raccourci);
-        parent::maj(CG_Saut,$this->CG_Saut);
-        parent::maj(CG_Regroup,$this->CG_Regroup);
-        parent::maj(CG_Analytique,$this->CG_Analytique);
-        parent::maj(CG_Echeance,$this->CG_Echeance);
-        parent::maj(CG_Quantite,$this->CG_Quantite);
-        parent::maj(CG_Lettrage,$this->CG_Lettrage);
-        parent::maj(CG_Tiers,$this->CG_Tiers);
-        parent::maj(CG_DateCreate,$this->CG_DateCreate);
-        parent::maj(CG_Devise,$this->CG_Devise);
-        parent::maj(N_Devise,$this->N_Devise);
-        parent::maj(TA_Code,$this->TA_Code);
-        parent::maj(CG_Sommeil,$this->CG_Sommeil);
-        parent::maj(cbProt,$this->cbProt);
-        parent::maj(cbMarq,$this->cbMarq);
-        parent::maj(cbCreateur,$this->cbCreateur);
-        parent::maj(cbModification,$this->cbModification);
-        parent::maj(cbReplication,$this->cbReplication);
-        parent::maj(cbFlag,$this->cbFlag);
+    public function getComptegByType($type=0){
+        return $this->getApiJson("/getComptegByType&cgType=$type");
     }
 
     public function __toString() {

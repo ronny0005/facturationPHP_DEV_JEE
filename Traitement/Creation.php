@@ -246,7 +246,7 @@ if(strcmp($_GET["acte"],"articleByDesign") == 0){
 if(strcmp($_GET["acte"],"clientByIntitule") == 0){
     $client = new ComptetClass(0,$objet->db);
     $rows = $client->getTiersByIntitule($_POST["CT_Intitule"]);
-    if (sizeof($rows)>1){
+    if (sizeof($rows)>0){
         echo "Ce nom est déjà utilisé pour un tier !";
     }
 }

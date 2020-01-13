@@ -27,9 +27,12 @@ class ComptetClass Extends Objet{
     public $table = 'dbo.F_COMPTET';
     public $lien = 'fcomptet';
 
-    function __construct($id,$mode="all")
+    function __construct($id,$mode="all",$type="ctNum")
     {
-        $this->data = $this->getApiJson("/ctNum=$id");
+        if($type=="ctNum")
+            $this->data = $this->getApiJson("/ctNum=$id");
+        else
+            $this->data = $this->getApiJson("/cbMarq=$id");
         if(sizeof($this->data)>0){
             $this->CT_Num = $this->data[0]->CT_Num;
             $this->CT_Intitule = $this->data[0]->CT_Intitule;
@@ -133,11 +136,7 @@ class ComptetClass Extends Objet{
         }
     }
 
-    public function initVal(){
-
-    }
-
-    public function maj_caisse(){
+    public function maj_Tier(){
         parent::maj(CT_Num , $this->CT_Num);
         parent::maj(CT_Intitule , $this->CT_Intitule);
         parent::maj(CT_Type , $this->CT_Type);
@@ -248,14 +247,19 @@ class ComptetClass Extends Objet{
     public function allFournisseur($sommeil = -1) {
         return $this->getApiJson("/allFournisseurShort&sommeil=$sommeil");
     }
-	
-	public function rafraichir_listeClient($typeFacture){
+
+    public function rafraichir_listeClient($typeFacture){
         return $this->getApiJson("/rafraichir_listeClient&typeFacture=$typeFacture");
-	}
+    }
+
+    public function getTiersByIntitule($intitule){
+        return $this->getApiJson("/tiersByCTIntitule&ctIntitule=$intitule");
+    }
+
 
     public function createClientMin(){
 		
-        $this->getApiJson("/createClientMin&ctNum={$this->CT_Num}&ctIntitule={$this->CT_Intitule}&ctType={$this->CT_Type}&cgNumPrinc={$this->CG_NumPrinc}&ctAdresse={$this->CT_Adresse}&ctCodePostal={$this->CT_CodePostal}&ctVille={$this->CT_Ville}&ctCodeRegion={$this->CT_CodeRegion}&ctIdentifiant={$this->CT_Identifiant}&ctSiret={$this->CT_Siret}&coNo={$this->CO_No}&nCatTarif={$this->nCatTarif}&nCatCompta={$this->nCatCompta}&deNo={$this->DE_No}&caNum={$this->CA_Num}&ctTelephone={$this->CT_Telephone}&mrNo={$this->MR_No}&cbCreateur={$this->cbCreateur}");
+        $this->getApiJson("/createClientMin&ctNum={$this->CT_Num}&ctIntitule={$this->CT_Intitule}&ctType={$this->CT_Type}&cgNumPrinc={$this->CG_NumPrinc}&ctAdresse={$this->CT_Adresse}&ctCodePostal={$this->CT_CodePostal}&ctVille={$this->CT_Ville}&ctCodeRegion={$this->CT_CodeRegion}&ctIdentifiant={$this->CT_Identifiant}&ctSiret={$this->CT_Siret}&coNo={$this->CO_No}&nCatTarif={$this->N_CatTarif}&nCatCompta={$this->N_CatCompta}&deNo={$this->DE_No}&caNum={$this->CA_Num}&ctTelephone={$this->CT_Telephone}&mrNo={$this->MR_No}&cbCreateur={$this->cbCreateur}");
     }
 
     public function allFournisseurSelect() {

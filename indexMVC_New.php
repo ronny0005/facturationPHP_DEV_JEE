@@ -10,44 +10,38 @@ if(!isset($_SESSION))
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Dashboard - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="assets/css/-Login-form-Page-BS4-.css">
-    <link rel="stylesheet" href="assets/css/customIT.css">
-    <link rel="stylesheet" href="assets/css/Data-Table-1.css">
-    <link rel="stylesheet" href="assets/css/Data-Table.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/input.css">
-    <link rel="stylesheet" href="assets/css/select.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
-    <link href="css/jquery-ui.theme.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
 </head>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/chart.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/Bootstrap-DateTime-Picker-2.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
-<script src="assets/js/bs-charts.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
-<script src="assets/js/theme.js"></script>
-<script src="assets/js/My-Date-Picker.js"></script>
-<script src="assets/js/customIT.js"></script>
-<script src="js/scriptCombobox.js"></script>
+<script src="assets/js/menu.js"></script>
 <?php
     include("module/includeHeader.php");
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 ?>
 <body id="page-top">
 <div id="wrapper">
-    <?php include ("module/Menu/barreMenuGauche.php"); ?>
     <div class="d-flex flex-column" id="content-wrapper">
         <div id=""><!-- content -->
-            <?php include ("module/Menu/barreMenuHaut.php");
+            <?php include ("module/Menu/barreMenuHaut.php"); ?>
+            <div class="container clearfix p-3">
+            <?php
+
 
             $module = new Menu(); // Par defaut on fait l'action 1 du module 1
             $action = 1;
@@ -105,6 +99,7 @@ if(!isset($_SESSION))
                 header("location:index.php");
             }
             ?>
+            </div>
         </div>
 
         <footer class="bg-white sticky-footer">

@@ -25,7 +25,7 @@ jQuery(function($){
             {"data": "CT_Num",
                 "render": function(data, type, row, meta) {
                     if (type === 'display') {
-                        data = '<a href="indexMVC.php?module=3&action='+lien+'&CT_Num=' + data + '">' + data + '</a>';
+                        data = '<a href="FicheClient-' + data + '">' + data + '</a>';
                     }
                     return data;
                 }

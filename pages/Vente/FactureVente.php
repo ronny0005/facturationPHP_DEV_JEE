@@ -1,6 +1,8 @@
 <script src="js/scriptFactureVente.js?d=<?php echo time(); ?>"></script>
 <div class="container-fluid">
-    <h1 class="text-uppercase text-center" style="background-color: #4e73df;color: rgb(246,247,249);padding-top: 5px;padding-bottom: 5px;"><?= $protection->listeFactureNom($type) ?></h1>
+    <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
+        <h1 class="text-center text-uppercase"><?= $protection->listeFactureNom($type) ?></h1>
+    </section>
     <fieldset class="border rounded">
         <legend>Entête</legend>
         <form id="form-entete" action="indexMVC.php?module=2&amp;action=3" method="get">
@@ -38,18 +40,23 @@
                 <div></div>
 
                 <div class="form-row">
-                    <div class="col-md-6 col-xl-4 mb-4">
+                    <div class="col-xs-12 col-sm-6 col-md-4">
                         <label>&nbsp;<?= $libclient ?></label>
+                        <div class="input-group-append">
                             <input type="hidden" class="form-control" name="CT_Num" id="CT_Num" value="<?= $client->CT_Num ?>"/>
-                            <input class="form-control" type="text" id="client" name="client" value="<?= $client->CT_Intitule ?>" <?= $clientDisabled ?>><span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
+                            <input class="form-control" type="text" id="client" name="client" value="<?= $client->CT_Intitule ?>" <?= $clientDisabled ?>>
+                            <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="fa fa-user"></i></span></span>
+                        </div>
+
+                    <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
-                    <div class="col-md-6 col-xl-4 mb-4"><label>Cat tarif</label>
+                    <div class="col-6 col-xs-6 col-sm-3 col-md-4"><label>Cat tarif</label>
                         <div class="field">
                             <select class="form-control" id="cat_tarif" name="cat_tarif" <?= $accesCatTarif ?>>
                                 <?= $listeCatTarif ?>
                             </select></div>
                     </div>
-                    <div class="col-md-6 col-xl-4 mb-4"><label>Cat compta</label>
+                    <div class="col-6 col-xs-6 col-sm-3 col-md-4"><label>Cat compta</label>
                         <div class="field">
                             <select class="form-control form-control" id="cat_compta" inputmode="numeric" maxlength="6" name="cat_compta"  <?= $accessCatCompta ?>>
                                 <?= $listeCatCompta ?>

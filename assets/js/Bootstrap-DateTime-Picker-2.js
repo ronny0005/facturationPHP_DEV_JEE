@@ -17,4 +17,6 @@ jQuery(function ($) {
 		firstDay: 1
 	};
 	$.datepicker.setDefaults($.datepicker.regional['fr']);
+    $("#datedebut").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
+    $("#datefin").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
 }); // End of use strict

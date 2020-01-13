@@ -3887,7 +3887,7 @@ SELECT	P.cbMarq
 
     public function selectDefautCompte($type){
         return "SELECT * 
-                FROM ".$this->db->baseCompta.".dbo.P_TIERS 
+                FROM P_TIERS 
                 WHERE ('Fr.'='$type' AND T_Val01T_Intitule='$type')
                 OR ('Cl.'='$type' AND T_Val01T_Intitule='$type')
                 OR ('Sal.'='$type' AND T_Val01T_Intitule='$type')";
@@ -5577,7 +5577,11 @@ GROUP BY A.CA_No,A.CA_Intitule,B.NB
     }
 
     function getCompteg() {
-        return "SELECT CG_Num,CG_Intitule,TA_Code,cbModification FROM ".$this->db->baseCompta.".dbo.F_COMPTEG WHERE CG_Type=0 ORDER BY CG_Num";
+        return "SELECT  CG_Num,CG_Intitule
+                        ,TA_Code,cbModification 
+                FROM    F_COMPTEG 
+                WHERE   CG_Type=0 
+                ORDER BY CG_Num";
     }
 
     function getComptegCount() {

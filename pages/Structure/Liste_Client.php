@@ -36,7 +36,7 @@ include("module/Menu/BarreMenu.php");
     
 <div class="container clearfix">
     <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
+        Liste client
     </h4>
 </div>
 
@@ -72,7 +72,7 @@ if($type=="salarie")
                     <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
                 </select>
             </td>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="<?php if($type=="fournisseur") echo "indexMVC.php?module=3&action=9"; if($type=="client") echo "indexMVC.php?module=3&action=2"; if($type=="salarie") echo "indexMVC.php?module=3&action=17"; ?>"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
+        <?php if($flagNouveau){ ?><td style="float:right"><a href="<?php if($type=="fournisseur") echo "indexMVC.php?module=3&action=9"; if($type=="client") echo "FicheClient"; if($type=="salarie") echo "indexMVC.php?module=3&action=17"; ?>"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>
