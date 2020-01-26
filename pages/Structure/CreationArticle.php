@@ -18,7 +18,7 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane active" id="FichePrincipale" role="tabpanel" style="padding-top: 20px" aria-labelledby="home-tab">
                 <div class="row">
-                    <div class="col-sm-2">
+                    <div class="col-12 col-sm-12 col-md-4">
                         <label>Famille : </label>
                         <select name="famille" class="form-control" id="famille">
                             <?php
@@ -35,18 +35,18 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-sm-4">
-                        <label>Référence : </label>
+                    <div class="col-4 col-sm-6 col-md-3">
+                        <label>Référence </label>
                         <input maxlength="19" style="text-transform: uppercase" onkeyup="this.value=this.value.replace(' ','')" type="text" value="<?= $ref; ?>" name="reference" class="form-control only_alpha_num" id="reference" placeholder="Référence" <?php if(isset($_GET["AR_Ref"])) echo "readonly"; ?>/>
                     </div>
-                    <div class="col-sm-6">
-                        <label>Désignation : </label>
+                    <div class="col-8 col-sm-6 col-md-5">
+                        <label>Désignation </label>
                         <input maxlength="69" type="text" value="<?= $design; ?>"  name="designation" class="form-control" id="designation" placeholder="Désignation"/>
                     </div>
                 </div>
                 <div class="row">
-                        <div class="col-sm-2">
-                            <label>Prix de vente affiché : </label>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <label>Prix de vente affiché</label>
                             <select id="AR_PrixTTC" name="AR_PrixTTC" class="form-control">
                                 <option value="0" <?php if($CT_PrixTTC==0) echo "selected"; ?> >PV HT</option>
                                 <option value="1" <?php if($CT_PrixTTC==1) echo "selected"; ?> >PV TTC</option>
@@ -54,22 +54,22 @@
                             <input type="text" value="<?= $pxVtHT; ?>" name="pxHT" class="form-control" id="pxHT" placeholder="Prix de vente" <?php if(!$flagInfoLibreArticle  || (!$flagProtected)) echo "readonly"; ?>/>
                         </div>
                     <?php if($flagPxAchat==0){?>
-                        <div class="col-sm-2">
-                            <label>Prix d'achat : </label>
+                        <div class="col-4 col-sm-6 col-md-3">
+                            <label>Prix d'achat </label>
                             <input type="text" value="<?= $pxAch; ?>" name="pxAchat" class="form-control" id="pxAchat" placeholder="Prix d'achat" <?php if(!$flagInfoLibreArticle) echo "readonly"; ?>/>
                         </div>
                     <?php }?>
 
-                        <div class="col-sm-2">
-                            <label>Prix gros : </label>
+                        <div class="col-4 col-sm-6 col-md-3">
+                            <label>Prix gros </label>
                             <input type="text" value="<?= $pxMin; ?>" name="pxMin" class="form-control" id="pxMin" placeholder="Prix gros" <?php if(!$flagInfoLibreArticle || (!$flagProtected)) echo " readonly"; ?>/>
                         </div>
-                        <div class="col-sm-2">
-                            <label>Prix détails : </label>
+                        <div class="col-4 col-sm-6 col-md-3">
+                            <label>Prix détails</label>
                             <input type="text" value="<?= $pxMax; ?>" name="pxMax" class="form-control" id="pxMax" placeholder="Prix détails" <?php if(!$flagInfoLibreArticle==2  || (!$flagProtected)) echo "readonly"; ?>/>
                         </div>
-                    <div class="col-sm-2">
-                        <label>Conditionnement : </label>
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <label>Conditionnement</label>
                         <select id="conditionnement" name="conditionnement" class="form-control" <?php if(!$flagProtected) echo "readonly"; ?>>
                             <?php
                             $pconditionnement = new P_ConditionnementClass(0);
@@ -77,8 +77,8 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-sm-2">
-                        <label>Qté min gros :</label>
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <label>Qté min gros</label>
                         <input type="texte" name="qteGros" id="qteGros" class="form-control" value="<?= $qte_gros; ?>" <?php if(!$flagInfoLibreArticle  || (!$flagProtected)) echo "readonly"; ?>/>
                     </div>
                 </div>

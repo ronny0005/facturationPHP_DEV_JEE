@@ -1,23 +1,18 @@
-<a href="Mouvement_Caisse.php"></a>
 <script src="js/scriptCombobox.js?d=<?php echo time(); ?>"></script>
 <script src="js/script_caisse.js?d=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="js/jquery.js?d=<?php echo time(); ?>"></script>
 
-        <div class="container clearfix">
-            <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-                Mouvement de caisse
-            </h4>
+<section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">Mouvement de caisse</h3>
+</section>
 
-            <input type="hidden" class="form-control" id="flagAffichageValCaisse" value="<?= $flagAffichageValCaisse;/*$flagModifSupprComptoir;*/ ?>" />
-            <input type="hidden" class="form-control" id="flagCtrlTtCaisse" value="<?= $flagCtrlTtCaisse/*$flagModifSupprComptoir;*/ ?>" />
-
-        </div>
+    <input type="hidden" class="form-control" id="flagAffichageValCaisse" value="<?= $flagAffichageValCaisse;/*$flagModifSupprComptoir;*/ ?>" />
+    <input type="hidden" class="form-control" id="flagCtrlTtCaisse" value="<?= $flagCtrlTtCaisse/*$flagModifSupprComptoir;*/ ?>" />
         <fieldset class="entete">
             <legend class="entete">Entete</legend>
             <form class="form-horizontal" action="indexMVC.php?module=6&action=1" method="POST">
-                <div class="form-group">
-                    <div class="form-group">
-                        <div class="col-md-2">
+                <div class="row">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
                             <label>Caisse</label>
                             <input type="hidden" id="action" name="action" value="1"/>
                             <input type="hidden" id="module" name="module" value="6"/>
@@ -56,7 +51,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
                             <label>Type</label>
                             <select class="form-control" name="type_mvt_ent" id="type_mvt_ent">
                                 <option value="-1">Sélectionner un type</option>
@@ -73,25 +68,27 @@
                                 <option value='6'<?php if($type=="6") echo " selected"; ?>>Verst bancaire</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2">
                             <label>Début</label>
-                            <input  type="text"  class="form-control" id="dateReglementEntete_deb" name="dateReglementEntete_deb" placeholder="Date" value="<?= $datedeb; ?>"/>
+                            <div class="input-group">
+                                <input  type="text"  class="form-control" id="dateReglementEntete_deb" name="dateReglementEntete_deb" placeholder="Date" value="<?= $datedeb; ?>"/>
+                                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                            </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2">
                             <label>Fin</label>
-                            <input  type="text"  class="form-control" id="dateReglementEntete_fin" name="dateReglementEntete_fin" placeholder="Date" value="<?= $datefin; ?>"/>
+                            <div class="input-group">
+                                <input  type="text"  class="form-control" id="dateReglementEntete_fin" name="dateReglementEntete_fin" placeholder="Date" value="<?= $datefin; ?>"/>
+                                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                            </div>
                         </div>
-                        <div class="col-lg-2">
-                            <button type="submit" class="btn btn-primary" id="recherche" name="recherche">Rechercher</button>
+                        <div class="col-6 col-sm-6 col-md-4 mt-3">
+                            <button type="submit" class="btn btn-primary bgcolorApplication" id="recherche" name="recherche">Rechercher</button>
                         </div>
-                        <div class="col-lg-2">
-                            <button type="button" class="btn btn-primary" id="imprimer">Imprimer</button>
+                        <div class="col-6 col-sm-6 col-md-4  mt-3">
+                            <button type="button" class="btn btn-primary bgcolorApplication" id="imprimer">Imprimer</button>
                         </div>
-                    </div>
                 </div>
-
             </form>
         </fieldset>
 
@@ -101,9 +98,7 @@
             if(1==1){
             ?>
             <form class="form-horizontal" action="indexMVC.php?module=6&action=1" method="POST" name="form_ligne" id="form_ligne">
-                <div class="form-group">
-
-                    <div class="form-group">
+                <div class="row">
                         <input type="hidden" id="action" name="action" value="1"/>
                         <input type="hidden" id="module" name="module" value="6"/>
                         <input type="hidden" id="caisseComplete_ligne" name="caisseComplete" value=""/>
@@ -118,22 +113,22 @@
                         <input type="hidden" id="dateReglementEntete_fin_ligne" name="dateReglementEntete_fin" value=""/>
                         <input type="hidden" id="cg_num_ligne" name="cg_num" value=""/>
                         <?php //if($flagDateMvtCaisse!=2){ ?>
-                        <div class="col-lg-2">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2">
                             <input type="text"  class="form-control" id="dateReglement" name="date" placeholder="Date" <?php if($flagDateMvtCaisse==2) echo "readonly"; ?>/>
                         </div>
                         <?php //} ?>
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2">
                             <select class="form-control" name="CA_No" id="caisseLigne" placeholder="caisse">
                                 <?php
 
                                 /*
-                                                                        $isPrincipal = 0;
-                                                                        if($admin==0){
-                                                                            $isPrincipal = 1;
-                                                                            $result=$objet->db->requete($objet->getCaisseDepot($_SESSION["id"]));
-                                                                        }else{
-                                                                            $result=$objet->db->requete($objet->caisse());
-                                                                        }
+                                    $isPrincipal = 0;
+                                    if($admin==0){
+                                        $isPrincipal = 1;
+                                        $result=$objet->db->requete($objet->getCaisseDepot($_SESSION["id"]));
+                                    }else{
+                                        $result=$objet->db->requete($objet->caisse());
+                                    }
                                 */
                                 $caisseClass = new CaisseClass(0);
                                 if($admin==0){
@@ -164,18 +159,15 @@
                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-8">
                             <input type="text" maxlength="27" class="form-control" id="libelleRec" name="libelle" placeholder="Libelle" />
                         </div>
-                    </div>
-                    <div class="form-group">
-
-                        <div class="col-md-2">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                             <input type="hidden" class="form-control" name="CG_NumBanque" id="CG_NumBanque" value=""/>
                             <input type="hidden" class="form-control" name="CG_Analytique" id="CG_Analytique" value="0"/>
                             <input type="text" class="form-control" name="banque" id="banque" value="" placeholder="Compte générale"/>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                             <select class="form-control" name="rg_typereg" id="type_mvt_lig">
                                 <?php
                                 if(1==1){
@@ -189,16 +181,16 @@
                                 <option value='6'>Verst bancaire</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
                             <input type="text" class="form-control" id="montantRec" name="montant" placeholder="Montant" />
                         </div>
 
-                        <div class="col-md-2" id="divCA_Num" style="display:none">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2" id="divCA_Num" style="display:none">
 
                             <input type="hidden" class="form-control" name="CA_Num" id="CA_Num" value=""/>
                             <input type="text" class="form-control" name="CA_Intitule" id="CA_Intitule" value="" placeholder="Compte analytique"/>
                         </div>
-                        <div class="col-md-2" id="divJournalDest">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2" id="divJournalDest">
                             <select class="form-control" id="journalRec" name="journalRec">
                                 <option value=""></option>
                                 <?php
@@ -212,7 +204,7 @@
                                 ?>
                             </select>
                         </div>
-                        <div class='col-md-2' id="divCaisseDest">
+                        <div class='col-12 col-sm-6 col-md-6 col-lg-2' id="divCaisseDest">
                             <label>Caisse dest. :</label>
                             <select style="float:left" class="form-control" name="CA_No_Dest" id="CA_No_Dest" placeholder="caisse">
 
@@ -246,9 +238,8 @@
                         </div>
 
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-primary" id = "validerRec" name= "validerRec">Valider</button>
+                            <button type="button" class="btn btn-primary bgcolorApplication" id = "validerRec" name= "validerRec">Valider</button>
                         </div>
-                    </div>
                 </div>
                 <?php
                 echo "</form>";

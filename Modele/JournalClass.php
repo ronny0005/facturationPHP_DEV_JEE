@@ -54,7 +54,7 @@ class JournalClass Extends Objet{
     }
 
     public function getJournaux($val){
-        return $this->getApiJson("/fjournaux&joSommeil=$val");
+        return $this->getApiJson("/getJournaux&joSommeil=$val");
     }
 
     public function getJournauxSaufTotaux(){

@@ -75,7 +75,7 @@ var stockFlag = $("#InputstockFlag").val();
         {"data": "AR_Ref",
             "render": function(data, type, row, meta) {
                 if (type === 'display') {
-                    data = '<a href="indexMVC.php?module=3&action=1&AR_Ref=' + data + '">' + data + '</a>';
+                    data = '<a href="ficheArticle-' + data + '">' + data + '</a>';
                 }
                 return data;
             }

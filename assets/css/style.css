@@ -1,0 +1,64 @@
+body{
+    font-size: 14px;
+}
+
+.form-control{
+    font-size: 14px;
+}
+
+.bgcolorApplication{
+    background-color : #024e05;
+}
+
+.bgcolorApplication:disabled{
+    background-color : #024e05;
+    boder-color : #024e05;
+}
+
+.bgcolorApplication:hover{
+    background-color : #003302;
+    boder-color : #003302;
+}
+
+.bgcolorApplication.clicked{
+    background-color : #003302;
+    boder-color : #003302;
+}
+
+.dropdown-item.clicked{
+    background-color : #003302;
+    boder-color : #003302;
+}
+
+.colorApplication{
+    color : #024e05;
+}
+
+.customDropdown-item{
+    display:block;width:100%;
+    padding:.25rem 1.5rem;
+    clear:both;
+    font-weight:400;
+    color:#212529;
+    text-align:inherit;
+    white-space:nowrap;
+    background-color:transparent;
+    border:0
+}
+
+.customDropdown-item:focus,.customDropdown-item:hover{
+    color:#16181b;
+    text-decoration:none;
+    background-color:#f8f9fa
+}
+
+.customDropdown-item.active,.customDropdown-item:active{
+    color:#fff;
+    text-decoration:none;
+    background-color: #003302
+}
+
+.customDropdown-item.disabled,.customDropdown-item:disabled{
+    color: #024e05;
+    background-color:transparent
+}

@@ -483,7 +483,7 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
                     FROM F_CREGLEMENT C
                     LEFT JOIN F_CAISSE CA ON CA.CA_No=C.CA_No 
                       LEFT JOIN F_PROTECTIONCIAL Pr ON CAST(Pr.PROT_No AS VARCHAR(5)) = C.cbCreateur
-                    LEFT JOIN ".$this->db->baseCompta.".dbo.F_COLLABORATEUR CO ON C.CO_NoCaissier = CO.CO_No
+                    LEFT JOIN F_COLLABORATEUR CO ON C.CO_NoCaissier = CO.CO_No
                     LEFT JOIN (	SELECT A.RG_No,SUM(RC_Montant) AS RC_Montant
                                 FROM(	SELECT RG_No,sum(RC_Montant) AS RC_Montant 
                                         FROM F_REGLECH

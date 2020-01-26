@@ -5,8 +5,10 @@ include("controller/structure/TiersController.php");
 
 
     <form id="form-creationClient" action="FicheClient" method="GET">
-        <div><h1><?php if($type=="client") echo "Fiche client"; if($type=="fournisseur") echo "Fiche fournisseur"; if($type=="salarie") echo "Fiche salarié"; ?></h1></div>
-        <div class="row" >
+        <section style="background-color: rgb(19,72,34);margin: 0px;padding: 5px;">
+            <h1 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php if($type=="client") echo "Fiche client"; if($type=="fournisseur") echo "Fiche fournisseur"; if($type=="salarie") echo "Fiche salarié"; ?></h1>
+        </section>
+        <div class="row mt-3" >
             <div class="col" >
                     <input type="hidden" id="type" name="type" type="hidden" value="<?php if($type=="fournisseur") echo "1"; if($type=="client") echo "0";if($type=="salarie") echo "2"; ?>"/>
                 <input type="hidden" id="DE_No" name="DE_No" type="hidden" value="1"/>

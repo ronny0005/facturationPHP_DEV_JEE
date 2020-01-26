@@ -1,7 +1,5 @@
 <script src="js/scriptRecouvrement.js?d=<?php echo time(); ?>"></script>
 <script src="js/scriptCombobox.js?d=<?php echo time(); ?>" type="text/javascript"></script>
-</head>
-<body>
 <?php
 include("module/Menu/BarreMenu.php");
 $objet = new ObjetCollector();
@@ -21,16 +19,7 @@ $datefin="";
 $typeRegl = "Client";
 if(isset($_GET["typeRegl"]))
     $typeRegl = $_GET["typeRegl"];
-$result=$objet->db->requete($objet->getParametre($_SESSION["id"]));
-$rows = $result->fetchAll(PDO::FETCH_OBJ);
-if($rows==null){
-}else{
-    if($profil_caisse==1)$caisse=$rows[0]->CA_No;
-    $souche=$rows[0]->CA_Souche;
-    $co_no=$rows[0]->CO_No;
-    $depot_no=$rows[0]->DE_No;
-    $caissier = $rows[0]->CO_NoCaissier;
-}
+
 if(isset($_GET["client"])) $client=$_GET["client"];
 if(isset($_GET["type"])) $type=$_GET["type"];
 if(isset($_GET["caisse"])) $caisse=$_GET["caisse"];
@@ -53,23 +42,20 @@ else {
 
 <div id="protectionPage" style="visibility: hidden;"><?php echo $flagProtected;?></div>
 <div id="protectionSupprPage" style="visibility: hidden;"><?php echo $flagSuppr;?></div>
-<div id="milieu">
-    <div class="container">
 
-        <div class="container clearfix">
-            <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-                <?php echo $texteMenu; ?>
-            </h4>
-        </div>
+<section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php echo $texteMenu; ?></h3>
+</section>
+
         <?php
-        $lienForm="indexMVC.php?action=2&module=1";
+        $lienForm="Reglement-client";
         $actionForm="2";
         if($typeRegl=="Fournisseur"){
-            $lienForm="indexMVC.php?action=4&module=1";
+            $lienForm="Reglement-fournisseur";
             $actionForm = "4";
         }
         if($typeRegl=="Collaborateur"){
-            $lienForm="indexMVC.php?action=5&module=1";
+            $lienForm="Reglement-bonCaisse";
             $actionForm = "5";
         }
         ?>
@@ -82,20 +68,19 @@ else {
             <input type="hidden" value="<?php echo $actionForm; ?>" name="action"/>
             <input type="hidden" value="<?php echo $caissier; ?>" name="caissier" id="caissier" />
             <input type="hidden" value="<?php echo $typeRegl; ?>" name="typeRegl" id="typeRegl" />
-
-            <div class="form-group col-lg-2" >
+<div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3" >
                 <label><?php echo $typeRegl; ?></label>
                 <select class="form-control" name="client" id="client">
                     <option value=""></option>
                     <?php
+                    $clientClass = new ComptetClass(0);
                     if($typeRegl=="Client")
-                        $result=$objet->db->requete($objet->allClients());
+                        $rows=$clientClass->allClients();
                     if($typeRegl=="Fournisseur")
-                        $result=$objet->db->requete($objet->allFournisseur());
+                        $rows=$clientClass->allFournisseur();
                     if($typeRegl=="Collaborateur")
-                        $result=$objet->db->requete($objet->getAllCollaborateursVendeur());
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    $depot="";
+                    $result=$objet->db->requete($objet->getAllCollaborateursVendeur());
                     if($rows==null){
                     }else{
                         foreach($rows as $row){
@@ -109,62 +94,64 @@ else {
                             else
                                 $ct_intitule = $row->CT_Intitule;
 
-                            echo "<option value=".$ct_num."";
+                            echo "<option value='{$ct_num}'";
                             if($ct_num==$client) echo " selected";
-                            echo ">".$ct_intitule."</option>";
+                            echo ">{$ct_intitule}</option>";
                         }
                     }
                     ?>
                 </select>
             </div>
-            <div class="form-group col-lg-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Début</label>
-                <input  type="text"  class="form-control" id="dateReglementEntete_deb" name="dateReglementEntete_deb" placeholder="Date" value="<?php echo $datedeb; ?>"/>
+                <div class="input-group">
+                    <input  type="text"  class="form-control" id="dateReglementEntete_deb" name="dateReglementEntete_deb" placeholder="Date" value="<?php echo $datedeb; ?>"/>
+                    <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                </div>
             </div>
-            <div class="form-group col-lg-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Fin</label>
-                <input  type="text" class="form-control" id="dateReglementEntete_fin" name="dateReglementEntete_fin" placeholder="Date" value="<?php echo $datefin; ?>"/>
+                <div class="input-group">
+                    <input  type="text" class="form-control" id="dateReglementEntete_fin" name="dateReglementEntete_fin" placeholder="Date" value="<?php echo $datefin; ?>"/>
+                    <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                </div>
             </div>
 
             <!-- Text input-->
-            <div class="form-group col-lg-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Type Règlement</label>
-                <select style="width:165px" type="checkbox" id="mode_reglement" name="mode_reglement" class="form-control">
+                <select type="checkbox" id="mode_reglement" name="mode_reglement" class="form-control">
 
                     <?php
-                    $result = $objet->db->requete( $objet->listeTypeReglement());
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                    $pReglement = new P_ReglementClass(0);
+                    $rows = $pReglement->all();
                     //if($flagRisqueClient!=0)
                     echo "<option value='0'";
                     if($treglement==0) echo " selected ";
                     echo ">TOUT REGLEMENTS</option>";
                     if($rows !=null){
                         foreach ($rows as $row){
-                            echo "<option value='".$row->R_Code."' ";
+                            echo "<option value='{$row->R_Code}' ";
                             if ($row->R_Code == $treglement) echo "selected";
-                            echo ">" . $row->R_Intitule . "</option>";
-
+                            echo ">{$row->R_Intitule}</option>";
                         }
                     }
                     ?>
                     <!--           <option value="07">REMBOURSEMENT CLIENT</option> -->
                 </select>
             </div>
-            <div class="form-group col-lg-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-3" >
                 <label>Journal</label>
                 <select class="form-control" name="journal" id="journal">
                     <?php
-                    $result=$objet->db->requete($objet->getJournaux(1));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows==null){
-                    }else{
-                        foreach($rows as $row)
-                            echo "<option value='" . $row->JO_Num . "'>" . $row->JO_Intitule . "</option>";
-                    }
+                    $journalClass = new JournalClass(0);
+                    $rows = $journalClass->getJournaux(1);
+                    foreach($rows as $row)
+                        echo "<option value='{$row->JO_Num}'>{$row->JO_Intitule}</option>";
                     ?>
                 </select>
             </div>
-            <div class="form-group col-lg-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-3" >
                 <?php
                 $isPrincipal = 0;
                 $caisseClass = new CaisseClass(0);
@@ -183,14 +170,14 @@ else {
                     if($rows!=null){
                         foreach($rows as $row) {
                             if ($isPrincipal == 0) {
-                                echo "<option value=" . $row->CA_No . "";
+                                echo "<option value='{$row->CA_No}'";
                                 if ($row->CA_No == $caisse) echo " selected";
-                                echo ">" . $row->CA_Intitule . "</option>";
+                                echo ">{$row->CA_Intitule}</option>";
                             } else {
                                 if ($row->IsPrincipal == 1) {
-                                    echo "<option value=" . $row->CA_No . "";
+                                    echo "<option value='{$row->CA_No}'";
                                     if ($row->CA_No == $caisse) echo " selected";
-                                    echo ">" . $row->CA_Intitule . "</option>";
+                                    echo ">{$row->CA_Intitule}</option>";
                                 }
                             }
                         }
@@ -199,7 +186,7 @@ else {
                 </select>
             </div>
 
-            <div class="form-group col-lg-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Type réglement</label>
                 <select class="form-control" name="type" id="type">
                     <option value="-1" <?php if ($type==-1) echo "selected"; ?> >Tout les règlements</option>
@@ -208,12 +195,15 @@ else {
                 </select>
             </div>
 
-            <div class="form-group col-lg-1" >
-                <input type="button" id="imprimer" class="btn btn-primary" value="Imprimer"/>
+            <div class="mt-0 col-0 col-sm-0 col-md-0 col-lg-7" >
             </div>
-            <div class="form-group col-lg-2" >
-                <input type="submit" class="btn btn-primary" value="Rechercher"/>
+            <div class="mt-2 col-6 col-sm-8 col-md-10 col-lg-10" >
+                <input type="button" id="imprimer" class="btn btn-primary bgcolorApplication" value="Imprimer"/>
             </div>
+            <div class="mt-2 col-6 col-sm-4 col-md-2 col-lg-2" >
+                <input type="submit" class="btn btn-primary bgcolorApplication" value="Rechercher"/>
+            </div>
+</div>
         </form>
         <div style="clear: both">
         </div>
@@ -239,33 +229,33 @@ else {
                 <input type="hidden" value="0" name="impute" id="impute"/>
                 <legend class="entete">Ligne</legend>
                 <?php if($flagProtected) { ?>
-                    <div class="form-group">
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" id="dateRec" name="dateRec" value="<?php echo $datesaisie;?>"placeholder="Date" <?php if($flagDateRglt!=0) echo "readonly"; ?>/>
+                    <div class="row">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="dateRec" name="dateRec" value="<?php echo $datesaisie;?>"placeholder="Date" <?php if($flagDateRglt!=0) echo "readonly"; ?>/>
+                                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                            </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-12 col-sm-8 col-md-8 col-lg-4">
                             <input type="text" maxlength="25" class="form-control" id="libelleRec" name="libelleRec" placeholder="Libelle"/>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
                             <input type="text" class="form-control" id="montantRec" name="montantRec" placeholder="Montant"/>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
                             <select type="checkbox" id="mode_reglementRec" name="mode_reglementRec" class="form-control">
                                 <?php
-                                $result = $objet->db->requete( $objet->listeTypeReglement());
-                                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                                if($rows !=null) {
+                                $pReglmeentClass = new P_ReglementClass(0);
+                                $rows = $pReglement->all();
                                     foreach ($rows as $row) {
-
                                         if ($row->R_Code == "01") {
-                                            echo "<option value='" . $row->R_Code . "'>" . $row->R_Intitule . "</option>";
+                                            echo "<option value='{$row->R_Code}'>{$row->R_Intitule}</option>";
                                         } else {
                                             if ($flagRisqueClient == 0) {
-                                                echo "<option value='" . $row->R_Code . "'>" . $row->R_Intitule . "</option>";
+                                                echo "<option value='{$row->R_Code}'>{$row->R_Intitule}</option>";
                                             }
                                         }
                                     }
-                                }
                                 //echo "<option value='07'>REMBOURSEMENT CLIENT</option>";
                                 if($typeRegl=="Collaborateur")
                                     echo"<option value='10'>RETOUR BON DE CAISSE</option>";
@@ -273,9 +263,9 @@ else {
                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-1 col-lg-1 mt-2">
                             <input name="client" id="client_valide" type="hidden" value="2" name="action"/>
-                            <input type="button" class="btn btn-primary" name="acte" id = "validerRec" value="Valider"/>
+                            <input type="button" class="btn btn-primary bgcolorApplication" name="acte" id = "validerRec" value="Valider"/>
                         </div>
                     </div>
                 <?php } ?>

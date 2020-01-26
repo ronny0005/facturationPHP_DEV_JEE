@@ -40,7 +40,7 @@ include("module/PlanComptable.php");
     <meta charset="UTF-8">
     <title>Menu</title>
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css" media="screen" />
+    <link rel="stylesheet" href="assets/css/style.css" media="screen" />
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/jquery-ui.css" rel="stylesheet">
     <link href="css/jquery-ui.theme.css" rel="stylesheet">

@@ -18,18 +18,11 @@ $depot=$_SESSION["DE_No"];
 ?>
 <script src="js/jquery.dynatable.js?d=<?php echo time(); ?>" type="text/javascript"></script>
 <script src="js/script_listeArticle.js?d=<?php echo time(); ?>"></script>
-</head>
 
-<body>    
-<div id="milieu">
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        Liste article
-    </h4>
-</div>
-<div class="corps">
+<section style="background-color: rgb(19,72,34);margin: 0px;padding: 5px;">
+    <h1 class="text-center" style="color: rgb(255,255,255);">LISTE ARTICLE</h1>
+</section>
+<div class="mt-4">
     <input type="hidden" id="mdp" value="<?= $_SESSION["mdp"]; ?>"/>
     <input type="hidden" id="login" value="<?= $_SESSION["login"]; ?>"/>
     <input type="hidden" id="flagInfoLibreArticle" value="<?= $flagInfoLibreArticle; ?>"/>
@@ -45,7 +38,6 @@ $depot=$_SESSION["DE_No"];
     <div class="col-md-12">
 
 <fieldset class="entete">
-<legend class="entete">Liste article</legend>
 
 <div class="form-group">
 <form action="indexMVC.php?module=2&action=2" method="GET">

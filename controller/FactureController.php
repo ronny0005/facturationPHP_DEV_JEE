@@ -382,7 +382,7 @@ $listeReglement = "";
 $creglement  = new ReglementClass(0);
 $rows = $creglement->getReglementByClientFacture($docEntete->cbMarq);
 if($rows==null){
-    $listeReglement = $listeReglement. "<tr><td>Aucun élément trouvé ! </td></tr>";
+    $listeReglement = $listeReglement. "<tr><td colspan='5' class='text-center'>Aucun élément trouvé ! </td></tr>";
 }else{
     foreach ($rows as $row){
         $date=date("d-m-Y", strtotime($row->RG_Date));

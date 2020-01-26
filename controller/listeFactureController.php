@@ -182,7 +182,6 @@ if($type=="Achat" || $type=="AchatC"|| $type=="AchatT"
     if($type=="AchatT") {$selectedT="selected";}
     if($type=="Achat") {$selected="selected";}
     if($type=="AchatC") {$selectedC="selected";}
-
     $listeTypeFacture=$listeTypeFacture."<option value='$valueT' $selectedT>Tous</option>";
     $listeTypeFacture=$listeTypeFacture."<option value='$value' $selected >Facture</option>";
     $listeTypeFacture=$listeTypeFacture."<option value='$valueC' $selectedC >Facture comptabilisée</option>";

@@ -2,11 +2,18 @@
 
 require 'Send/class.phpmailer.php';
 $CA_Num="-1";
+$objet = new ObjetCollector();
+$flagDateMvtCaisse = 0;
+
 $datedeb= date("dmy");
 $datefin= date("dmy");
 $ca_no=-1;
 $type=-1;
 $protection = new ProtectionClass($_SESSION["login"],$_SESSION["mdp"]);
+$flagCtrlTtCaisse = $protection->PROT_CTRL_TT_CAISSE;
+$flagDateMvtCaisse = $protection->PROT_DATE_MVT_CAISSE;
+$flagAffichageValCaisse = $protection->PROT_AFFICHAGE_VAL_CAISSE;
+
 $admin=0;
 if($protection->PROT_Right==1)
     $admin=1;

@@ -33,6 +33,7 @@ include("Modele/PTiersClass.php");
 include("Modele/CompteGClass.php");
 include("Modele/FModeleRClass.php");
 include("Modele/FCompteaClass.php");
+include("Modele/P_ReglementClass.php");
 include("module/Menu.php");
 include("module/Facturation.php");
 include("module/MenuAchat.php");
@@ -42,4 +43,5 @@ include("module/Caisse.php");
 include("module/Etat.php");
 include("module/Admin.php");
 include("module/PlanComptable.php");
+require 'Send/class.phpmailer.php';
 ?>

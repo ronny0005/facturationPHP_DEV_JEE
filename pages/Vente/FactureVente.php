@@ -1,11 +1,11 @@
 <script src="js/scriptFactureVente.js?d=<?php echo time(); ?>"></script>
 <div class="container-fluid">
     <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
-        <h1 class="text-center text-uppercase"><?= $protection->listeFactureNom($type) ?></h1>
+        <h3 class="text-center text-uppercase bgcolorApplication"><?= $protection->listeFactureNom($type) ?></h3>
     </section>
     <fieldset class="border rounded">
         <legend>Entête</legend>
-        <form id="form-entete" action="indexMVC.php?module=2&amp;action=3" method="get">
+        <form id="form-entete" action="Document-Facture<?=$type ?>" method="get">
             <input type="hidden" id="flagMinMax" value="<?php if($type=="Vente" || $type=="BonLivraison") echo $flag_minMax; else echo "0"; ?>"/>
             <input type="hidden" id="flagDelai" value="<?= $protection->getDelai(); ?>"/>
             <input type="hidden" id="flagPxRevient" value="<?= $flagPxRevient; ?>"/>
@@ -40,7 +40,7 @@
                 <div></div>
 
                 <div class="form-row">
-                    <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="col-12 col-sm-6 col-md-4">
                         <label>&nbsp;<?= $libclient ?></label>
                         <div class="input-group-append">
                             <input type="hidden" class="form-control" name="CT_Num" id="CT_Num" value="<?= $client->CT_Num ?>"/>
@@ -50,13 +50,13 @@
 
                     <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
-                    <div class="col-6 col-xs-6 col-sm-3 col-md-4"><label>Cat tarif</label>
+                    <div class="col-6 col-sm-3 col-md-4"><label>Cat tarif</label>
                         <div class="field">
                             <select class="form-control" id="cat_tarif" name="cat_tarif" <?= $accesCatTarif ?>>
                                 <?= $listeCatTarif ?>
                             </select></div>
                     </div>
-                    <div class="col-6 col-xs-6 col-sm-3 col-md-4"><label>Cat compta</label>
+                    <div class="col-6 col-sm-3 col-md-4"><label>Cat compta</label>
                         <div class="field">
                             <select class="form-control form-control" id="cat_compta" inputmode="numeric" maxlength="6" name="cat_compta"  <?= $accessCatCompta ?>>
                                 <?= $listeCatCompta ?>
@@ -65,14 +65,14 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-6 col-xl-4 mb-4"><label>Souche</label>
+                    <div class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Souche</label>
                         <div class="field">
                             <select class="form-control" id="souche" name="souche" <?= $accessSouche ?>>
                                 <?= $listeSouche ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xl-4 mb-4"><label>Affaire</label>
+                    <div class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Affaire</label>
                         <select class="form-control" id="affaire" name="affaire">
                             <?= $listeAffaire ?>
                         </select>
@@ -80,26 +80,26 @@
                                 id="datetimepicker1" class="input-group date"><span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xl-4 mb-4"><label>Date</label>
+                    <div class="col-12 col-xs-6 col-sm-4 col-md-4"><label>Date</label>
                         <form>
                             <div class="field"><input class="form-control" type="text" id="dateentete" name="dateentete" <?= $accesDate ?> value="<?= $valueDate ?>"></div>
                         </form>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-6 col-xl-4 mb-4"><label>&nbsp;Depot</label>
+                    <div class="col-12 col-xs-12 col-sm-4 col-md-4"><label>&nbsp;Depot</label>
                         <select class="form-control" id="depot" name="depot" <?=$accesDepot ?>>
                             <?= $listeDepot ?>
                         </select>
                     </div>
                     <div
-                            class="col-md-6 col-xl-4 mb-4"><label>Collaborateur</label>
+                            class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Collaborateur</label>
                                 <select class="form-control" id="collaborateur" name="collaborateur" <?=$accesCollaborateur ?>>
                                     <?=$listeCollaborateur ?>
                                 </select>
                     </div>
                     <div
-                            class="col-md-6 col-xl-4 mb-4"><label>Caisse</label>
+                            class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Caisse</label>
                         <div class="field">
                             <select class="form-control" id="caisse" name="caisse" <?=$accesCaisse ?>>
                                 <?= $listeCaisse ?>
@@ -108,20 +108,20 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-6 col-xl-4 mb-4"><label>&nbsp;Référence</label>
+                    <div class="col-6 col-xs-12 col-sm-4 col-md-4"><label>&nbsp;Référence</label>
                         <div id="datetimepicker1" class="input-group date">
                             <input maxlength="17" value= "<?=$accessReference ?>" class="form-control form-control" type="text" id="ref" inputmode="numeric" name="reference" <?=$accessReference ?>>
                             <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xl-4 mb-4"><label>N° Doc</label>
+                    <div class="col-6 col-xs-6 col-sm-4 col-md-4"><label>N° Doc</label>
                         <div id="datetimepicker1" class="input-group date">
                             <input class="form-control form-control" type="text" id="n_doc" name="n_doc" value="<?= $docEntete->DO_Piece; ?>" disabled>
                             <input type="hidden" id="modifClient" class="modifClient" value="<?= $flagModifClient ?>"/>
                             <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xl-4 mb-4"><label>Statut</label>
+                    <div class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Statut</label>
                         <div class="field">
                             <select class="form-control" id="do_statut" name="do_statut">
                                 <?= $listeStatut ?>
@@ -141,7 +141,7 @@
                     <input type="hidden" value="<?php echo $qte_negative; ?>" name="qte_negative" id="qte_negative"/>
                     <input type="hidden" value="<?php echo $do_imprim; ?>" name="do_imprim" id="do_imprim"/>
                     <div class="form-row">
-                        <div class="col-md-6 col-xl-2 mb-4"><label>Référence</label>
+                        <div class="col-3 col-sm-3 col-md-2 col-lg-2"><label>Référence</label>
                             <div id="datetimepicker1" class="input-group date">
                                 <input type="text" id="reference" name="reference" class="form-control" placeholder="Référence" <?= $accessARRef ?>/>
                                 <input type="hidden" class="form-control" id="AR_Ref" name="AR_Ref" value="" />
@@ -149,14 +149,14 @@
                                 <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xl-3 mb-4"><label>Désignation</label>
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3"><label>Désignation</label>
                             <input class="form-control" type="text" id="designation" placeholder="Désignation" name="designation" <?= $accessDesignation ?>>
                             <div class="field"></div>
                         </div>
-                        <div class="col-md-6 col-xl-1 mb-4 <?= $classQte; ?>"><label>Qté</label><input class="form-control" type="text" id="quantite" placeholder="<?= $libQte ?>" name="quantite" <?=$accessQte ?>></div>
-                        <div class="col-md-6 col-xl-2 mb-4"><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
-                        <div class="col-md-6 col-xl-2 mb-4"><label>Qté en stock</label><input class="form-control" type="text" id="quantite_stock" placeholder="Qté en stock" name="quantite_stock" disabled></div>
-                        <div class="col-md-6 col-xl-2 mb-4"><label>Remise</label><input class="form-control" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
+                        <div class="col-3 col-sm-3 col-md-2 col-lg-1 <?= $classQte; ?>"><label>Qté</label><input class="form-control" type="text" id="quantite" placeholder="<?= $libQte ?>" name="quantite" <?=$accessQte ?>></div>
+                        <div class="col-4 col-sm-5 col-md-4 col-lg-2"><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
+                        <div class="col-3 col-sm-3 col-md-2 col-lg-2"><label>Qté en stock</label><input class="form-control" type="text" id="quantite_stock" placeholder="Qté en stock" name="quantite_stock" disabled></div>
+                        <div class="col-5 col-sm-4 col-md-4 col-lg-2"><label>Remise</label><input class="form-control" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
                         <input type="hidden" name="taxe1" id="taxe1" value="0" />
                         <input type="hidden" name="taxe2" id="taxe2" value="0"/>
                         <input type="hidden" name="taxe3" id="taxe3" value="0"/>
@@ -366,9 +366,9 @@ if (!$isVisu)
         <input type="hidden" name="montant_total" id="montant_total" value="<?= $totalttc; ?>"/>
         <input type="hidden" name="PROT_Reglement" id="PROT_Reglement" value="<?= $protection->PROT_DOCUMENT_REGLEMENT; ?>"/>
         <input type="hidden" id="imprime_val" name="imprime_val" value="0"/>
-        <div class="col-xl-2"><button class="btn btn-primary" id="annuler" type="button">Annuler</button></div>
-        <div class="col-xl-2" <?php if(!$isModif) echo"style='display:none'" ?>><button class="btn btn-primary" id="valider" type="button">Valider</button></div>
-        <div class="col"><button class="btn btn-primary" id="imprimer" type="button">Imprimer</button></div>
+        <div class="col-xl-2"><button class="btn btn-primary bgcolorApplication" id="annuler" type="button">Annuler</button></div>
+        <div class="col-xl-2" <?php if(!$isModif) echo"style='display:none'" ?>><button class="btn btn-primary bgcolorApplication" id="valider" type="button">Valider</button></div>
+        <div class="col"><button class="btn btn-primary bgcolorApplication" id="imprimer" type="button">Imprimer</button></div>
     </div>
     </form>
 </div>
@@ -481,9 +481,9 @@ if (!$isVisu)
                 if($rows==null){
                 }else{
                     foreach($rows as $row){
-                        echo "<option value=".$row->cbIndice."";
+                        echo "<option value='{$row->cbIndice}'";
                         //if($row->cbIndice == $N_Analytique) echo " selected";
-                        echo ">".$row->A_Intitule."</option>";
+                        echo ">{$row->A_Intitule}</option>";
                     }
                 }
                 ?>

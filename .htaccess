@@ -20,7 +20,7 @@ RewriteRule ^listeArticle-([A-z]+)-([A-z]+)  indexMVC_New.php?module=3&action=3&
 RewriteRule ^listeArticle-(-?[0-9]+)-(-?[0-9]+)-(-?[0-9]+)  indexMVC_New.php?module=3&action=3&sommeil=$1&stockFlag=$2&prixFlag=$3 [L]
 
 RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1 [L]
-RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
+RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
 
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4 [L]
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4&CT_Num=$1 [L]
@@ -30,4 +30,5 @@ RewriteRule ^FicheClient-([0-z]+)$  indexMVC_New.php?module=3&action=2&CT_Num=$1
 
 RewriteRule ^mvtCaisse$  indexMVC_New.php?module=6&action=1 [L]
 
+RewriteRule ^Reglement-([0-z]+)$  indexMVC_New.php?module=1&action=2&typeRegl=$1 [L]
 

@@ -1,25 +1,24 @@
 <script src="js/script_listeFacture.js?d=<?php echo time(); ?>"></script>
-<script src="js/jquery.dynatable.js?d=<?php echo time(); ?>" type="text/javascript"></script>
 
-<section style="background-color: rgb(19,72,34);margin: 0px;padding: 5px;">
-    <h1 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?= $protection->listeFactureNom($type) ?></h1>
+<section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?= $protection->listeFactureNom($type) ?></h3>
 </section>
 <section style="margin-top: 20px;">
 <form id="valideLigne" action="listeFacture-<?= $type ?>" method="POST">
     <div class="row m-1">
-        <div class="col-xs-6 col-sm-5 col-md-2"><label>Début</label>
+        <div class="col-6 col-sm-6 col-md-6 col-lg-2"><label>Début</label>
             <div class="input-group">
                 <input class="form-control" type="text" id="datedebut" name="datedebut" inputmode="numeric" maxlength="6" value="<?= $datedeb ?>">
                 <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
             </div>
         </div>
-        <div class="col-xs-6 col-sm-5 col-md-2"><label>Fin</label>
+        <div class="col-6 col-sm-6 col-md-6 col-lg-2"><label>Fin</label>
             <div class="input-group">
                 <input class="form-control" type="text" id="datefin" name="datefin" inputmode="numeric" maxlength="6" value="<?= $datefin ?>">
                 <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
             </div>
         </div>
-        <div class="col-xs-6 col-sm-5 col-md-3"><label>Dépot</label>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3"><label>Dépot</label>
             <div class="input-group">
                 <input type="hidden" value="<?= sizeof($_POST) ?>" name="post" id="post"/>
                 <input type="hidden" value="<?= $protection->lienMenuNouveau($type) ?>" name="lienMenuNouveau" id="lienMenuNouveau"/>
@@ -32,7 +31,7 @@
             </div>
         </div>
 
-        <div <?= $afficheListeTiers ?> class="col-xs-6 col-sm-5 col-md-3"><label><?= $libTiers ?></label>
+        <div <?= $afficheListeTiers ?> class="col-12 col-sm-6 col-md-6 col-lg-3"><label><?= $libTiers ?></label>
             <div class="input-group">
                 <input type="hidden" id="CT_Num" value ="<?= $client ?>" name="client">
                 <input type="text"  id="client" value ="<?= $libClient ?>" name="libClient" class="form-control">
@@ -40,22 +39,22 @@
             </div>
         </div>
 
-        <div <?= $afficheTypeFacture ?> class="col-xs-6 col-sm-5 col-md-2">
+        <div <?= $afficheTypeFacture ?> class="col-12 col-sm-6 col-md-6 col-lg-2">
             <label>Type</label>
             <select class="form-control" id="type" name="type">
                 <?= $listeTypeFacture ?>
             </select>
         </div>
-
-        <div class="mt-3 col-xs-6">
-            <button class="btn btn-primary" id="valider" type="button">Valider</button>
+    </div>
+        <div class="text-right">
+            <button class="btn btn-primary bgcolorApplication" id="valider" type="button">Valider</button>
         </div>
 </form>
 </section>
 
 
     <div>
-        <button <?= $afficheBoutonNouveau ?> class="btn btn-primary" id="nouveau" type="button">Nouveau</button>
+        <button <?= $afficheBoutonNouveau ?> class="btn btn-primary bgcolorApplication" id="nouveau" type="button">Nouveau</button>
 
         <div class="table-responsive" style="margin-top: 30px;clear:both">
             <table id="tableListeFacture" class="table table-striped">
@@ -128,13 +127,11 @@
                     }
                 }
                     ?>
-
                 </tbody>
             </table>
         </div>
 
     </div>
-</div>
     <div style="text-align: center" id="menu_transform">
         <div class="form-group col-lg-4">
             <label>Type<br/></label>

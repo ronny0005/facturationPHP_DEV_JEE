@@ -26,6 +26,7 @@ $("#menu_transform").hide();
     }
 
     function referencement(){
+        alert($("#tableListeFacture_filter").find(":input").html())
     }
 
 $("table.table > tbody > tr #transform").on('click', function() {
@@ -126,6 +127,7 @@ $("table.table > tbody > tr #transform").on('click', function() {
         }
     );
 
+    $("#tableListeFacture_filter").find(":input").addClass("form-control")
     if($("#date_transform").val()=="")
         $("#date_transform").datepicker({dateFormat:"ddmmy"}).datepicker("setDate",new Date());
 

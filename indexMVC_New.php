@@ -18,6 +18,7 @@ if(!isset($_SESSION))
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
     <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 
 </head>
@@ -35,12 +36,16 @@ if(!isset($_SESSION))
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 ?>
 <body id="page-top">
-<div id="wrapper">
-    <div class="d-flex flex-column" id="content-wrapper">
-        <div id=""><!-- content -->
-            <?php include ("module/Menu/barreMenuHaut.php"); ?>
-            <div class="container clearfix p-3">
-            <?php
+    <div id="wrapper">
+        <?php include ("module/Menu/barreMenuGauche.php"); ?>
+
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <?php include ("module/Menu/barreMenuHaut.php"); ?>
+                <div class="container-fluid">
+                    <div class=" justify-content-between align-items-center">
+
+                    <?php
 
 
             $module = new Menu(); // Par defaut on fait l'action 1 du module 1
@@ -99,16 +104,15 @@ if(!isset($_SESSION))
                 header("location:index.php");
             }
             ?>
+                </div>
             </div>
         </div>
-
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2019</span></div>
+                <div class="text-center my-auto copyright"><span>Copyright © IT-Solution 2020</span></div>
             </div>
         </footer>
-    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-</div>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
 </body>
 
 </html>
