@@ -1,6 +1,6 @@
 <?php
 
-require 'Send/class.phpmailer.php';
+//require 'Send/class.phpmailer.php';
 $CA_Num="-1";
 $objet = new ObjetCollector();
 $flagDateMvtCaisse = 0;

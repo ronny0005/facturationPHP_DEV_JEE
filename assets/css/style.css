@@ -46,6 +46,10 @@ body{
     border:0
 }
 
+.dropdown-toggle:active {
+    background-color : #e8e8e8;
+}
+
 .customDropdown-item:focus,.customDropdown-item:hover{
     color:#16181b;
     text-decoration:none;
@@ -61,4 +65,8 @@ body{
 .customDropdown-item.disabled,.customDropdown-item:disabled{
     color: #024e05;
     background-color:transparent
+}
+
+.activeMenu {
+    background-color : #e8e8e8;
 }

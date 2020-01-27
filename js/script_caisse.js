@@ -2,8 +2,8 @@ jQuery(function ($) {
     var sommeTotal=0;
     var jeton=0;
     var admin=0;
-    var datedeb = $.datepicker.formatDate('yy-mm-dd', new Date());
-    var datefin = $.datepicker.formatDate('yy-mm-dd', new Date());
+    var datedeb = $.datepicker.formatDate('ddmmy', new Date());
+    var datefin = $.datepicker.formatDate('ddmmy', new Date());
     var nomFichier = "";
     var pendingList = [];
 
@@ -357,7 +357,7 @@ jQuery(function ($) {
                 else $("#libelleRecModif").attr("readonly", false);
                 if (elem.find("#RG_TypeReg").html() == "Vrst bancaire" && !check_vrst.is(':checked')) {
                     if (!$("#caisseComplete").is(':disabled')) {
-                        $("#libelle_date").val($.datepicker.formatDate('yy-mm-dd', new Date()));
+                        $("#libelle_date").val($.datepicker.formatDate('ddmmy', new Date()));
                         $("#valide_vrst").dialog({
                             resizable: false,
                             height: "auto",
@@ -453,16 +453,16 @@ jQuery(function ($) {
         allowPlus: true,
         allowMinus: true
     });
-    $("#dateReglementEntete_deb").datepicker({dateFormat: "yy-mm-dd", altFormat: "yy-mm-dd"});
-    $("#dateReglementEntete_fin").datepicker({dateFormat: "yy-mm-dd", altFormat: "yy-mm-dd"});
-    $("#dateReglement").datepicker({dateFormat: "yy-mm-dd", altFormat: "yy-mm-dd"});
-    $("#libelle_date").datepicker({dateFormat: "yy-mm-dd", altFormat: "yy-mm-dd"});
+    $("#dateReglementEntete_deb").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
+    $("#dateReglementEntete_fin").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
+    $("#dateReglement").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
+    $("#libelle_date").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
     if($("#postData").val()==0) {
-        $("#dateReglementEntete_deb").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
-        $("#dateReglementEntete_fin").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
+        $("#dateReglementEntete_deb").datepicker({dateFormat: "ddmmy"}).datepicker("setDate", new Date());
+        $("#dateReglementEntete_fin").datepicker({dateFormat: "ddmmy"}).datepicker("setDate", new Date());
     }
-    $("#dateReglement").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
+    $("#dateReglement").datepicker({dateFormat:"ddmmy"}).datepicker("setDate",new Date());
     if($("#dateReglement").is('[readonly]'))
         $("#dateReglement").unbind();
-    $("#libelle_date").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
+    $("#libelle_date").datepicker({dateFormat:"ddmmy"}).datepicker("setDate",new Date());
 });

@@ -31,6 +31,7 @@ if(!isset($_SESSION))
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
 <script src="assets/js/menu.js"></script>
+<script src="js/jquery.fileupload.js"></script>
 <?php
     include("module/includeHeader.php");
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);

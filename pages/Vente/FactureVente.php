@@ -81,9 +81,10 @@
                         </div>
                     </div>
                     <div class="col-12 col-xs-6 col-sm-4 col-md-4"><label>Date</label>
-                        <form>
-                            <div class="field"><input class="form-control" type="text" id="dateentete" name="dateentete" <?= $accesDate ?> value="<?= $valueDate ?>"></div>
-                        </form>
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="dateentete" name="dateentete" <?= $accesDate ?> value="<?= $valueDate ?>">
+                            <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">

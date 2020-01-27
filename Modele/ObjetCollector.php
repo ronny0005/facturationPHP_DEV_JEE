@@ -4057,7 +4057,7 @@ SELECT	P.cbMarq
     }
 
     public function envoiMailComplete($body,$sujet,$email){
-        require_once('../Send/class.phpmailer.php');
+    //    require_once('../Send/class.phpmailer.php');
         /*$mail = new PHPMailer();
         $mail->IsHTML(true); // if you are going to send HTML formatted emails
         $mail->SingleTo = true; // if you want to send a same email to multiple users. multiple emails will be sent one-by-one.

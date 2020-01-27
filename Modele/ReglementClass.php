@@ -477,37 +477,7 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
     }
 
     public function getReglementByClient($ct_num,$ca_no,$type,$treglement,$datedeb,$datefin,$caissier,$collab,$typeSelectRegl=0) {
-        $query= "    SELECT PROT_User,
-                            CASE WHEN ABS(DATEDIFF(d,GETDATE(),C.RG_Date))>= (select PR_DelaiPreAlert
-                from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,C.JO_Num,C.CO_NoCaissier,C.CT_NumPayeur,C.CG_Num,RG_Piece,ISNULL(RC_Montant,0) AS RC_Montant,C.RG_No,CAST(RG_Date as date) RG_Date,RG_Libelle,ABS(RG_Montant)RG_Montant,C.CA_No,C.CO_NoCaissier,ISNULL(CO_Nom,'')CO_Nom,ISNULL(CA_Intitule,'')CA_Intitule,RG_Impute,RG_TypeReg,N_Reglement
-                    FROM F_CREGLEMENT C
-                    LEFT JOIN F_CAISSE CA ON CA.CA_No=C.CA_No 
-                      LEFT JOIN F_PROTECTIONCIAL Pr ON CAST(Pr.PROT_No AS VARCHAR(5)) = C.cbCreateur
-                    LEFT JOIN F_COLLABORATEUR CO ON C.CO_NoCaissier = CO.CO_No
-                    LEFT JOIN (	SELECT A.RG_No,SUM(RC_Montant) AS RC_Montant
-                                FROM(	SELECT RG_No,sum(RC_Montant) AS RC_Montant 
-                                        FROM F_REGLECH
-                                        GROUP BY RG_No
-								UNION
-								SELECT A.RG_No,SUM(ISNULL(ABS(C.RG_Montant),0)) 
-                                FROM F_CREGLEMENT A
-                                INNER JOIN Z_RGLT_BONDECAISSE B ON A.RG_No = B.RG_No_RGLT
-                                INNER JOIN F_CREGLEMENT C ON B.RG_No = C.RG_No
-								GROUP BY A.RG_No
-								UNION
-								SELECT A.RG_No,SUM(ISNULL(ABS(RG_Montant),0)) 
-								FROM F_CREGLEMENT A
-                                INNER JOIN Z_RGLT_BONDECAISSE B ON A.RG_No = B.RG_No
-								GROUP BY A.RG_No) A 
-								GROUP BY RG_No) R ON R.RG_No=c.RG_No
-			        WHERE 
-			        $typeSelectRegl = RG_Type AND RG_Date BETWEEN '$datedeb' AND '$datefin' AND (-1=$type OR RG_Impute=$type)
-                    AND ((''='$ct_num' AND ct_numpayeur IS NOT NULL) OR ct_numpayeur = '$ct_num' OR ('1'=$collab AND C.CO_NoCaissier='$ct_num'))
-                    AND (((0=$treglement OR N_Reglement=$treglement) AND (($collab = 1 AND RG_Banque=3) OR ($collab = 0))
-                    AND ('0'=$ca_no OR CA.CA_No=$ca_no)) OR ('0'<>$caissier AND C.CO_NoCaissier=$caissier AND N_Reglement='05') )
-                    ORDER BY C.RG_No";
-        $result = $this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getReglementByClient&dateDeb={$datedeb}&dateFin={$datefin}&rgImpute={$type}&ctNum={$ct_num}&collab={$collab}&nReglement={$treglement}&caNo={$ca_no}&coNoCaissier={$caissier}&rgType={$typeSelectRegl}");
     }
 
     public function addCReglementFacture($cbMarqEntete, $montant,$rg_type,$mode_reglement,$caisse,$date_reglt,$lib_reglt,$date_ech,$protNo) {

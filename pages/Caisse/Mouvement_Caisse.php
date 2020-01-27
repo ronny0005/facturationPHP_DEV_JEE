@@ -1,7 +1,6 @@
 <script src="js/scriptCombobox.js?d=<?php echo time(); ?>"></script>
 <script src="js/script_caisse.js?d=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="js/jquery.js?d=<?php echo time(); ?>"></script>
-
 <section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
     <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">Mouvement de caisse</h3>
 </section>
@@ -10,7 +9,7 @@
     <input type="hidden" class="form-control" id="flagCtrlTtCaisse" value="<?= $flagCtrlTtCaisse/*$flagModifSupprComptoir;*/ ?>" />
         <fieldset class="entete">
             <legend class="entete">Entete</legend>
-            <form class="form-horizontal" action="indexMVC.php?module=6&action=1" method="POST">
+            <form class="form-horizontal" action="mvtCaisse" method="POST">
                 <div class="row">
                         <div class="col-6 col-sm-6 col-md-6 col-lg-4">
                             <label>Caisse</label>
@@ -97,7 +96,7 @@
             <?php
             if(1==1){
             ?>
-            <form class="form-horizontal" action="indexMVC.php?module=6&action=1" method="POST" name="form_ligne" id="form_ligne">
+            <form class="form-horizontal" action="mvtCaisse" method="POST" name="form_ligne" id="form_ligne">
                 <div class="row">
                         <input type="hidden" id="action" name="action" value="1"/>
                         <input type="hidden" id="module" name="module" value="6"/>
@@ -114,10 +113,15 @@
                         <input type="hidden" id="cg_num_ligne" name="cg_num" value=""/>
                         <?php //if($flagDateMvtCaisse!=2){ ?>
                         <div class="col-6 col-sm-6 col-md-6 col-lg-2">
+                            <label>Date saisie</label>
+                            <div class="input-group">
                             <input type="text"  class="form-control" id="dateReglement" name="date" placeholder="Date" <?php if($flagDateMvtCaisse==2) echo "readonly"; ?>/>
+                            <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+                            </div>
                         </div>
                         <?php //} ?>
                         <div class="col-6 col-sm-6 col-md-6 col-lg-2">
+                            <label>Caisse</label>
                             <select class="form-control" name="CA_No" id="caisseLigne" placeholder="caisse">
                                 <?php
 
@@ -160,14 +164,17 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-lg-8">
-                            <input type="text" maxlength="27" class="form-control" id="libelleRec" name="libelle" placeholder="Libelle" />
+                            <label>Libellé</label>
+                            <input type="text" maxlength="27" class="form-control" id="libelleRec" name="libelle" placeholder="Libellé" />
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-2">
+                            <label>Compte générale.</label>
                             <input type="hidden" class="form-control" name="CG_NumBanque" id="CG_NumBanque" value=""/>
                             <input type="hidden" class="form-control" name="CG_Analytique" id="CG_Analytique" value="0"/>
                             <input type="text" class="form-control" name="banque" id="banque" value="" placeholder="Compte générale"/>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+                            <label>Mouvement</label>
                             <select class="form-control" name="rg_typereg" id="type_mvt_lig">
                                 <?php
                                 if(1==1){
@@ -182,6 +189,7 @@
                             </select>
                         </div>
                         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+                            <label>Montant</label>
                             <input type="text" class="form-control" id="montantRec" name="montant" placeholder="Montant" />
                         </div>
 
@@ -237,7 +245,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-2  mt-3">
                             <button type="button" class="btn btn-primary bgcolorApplication" id = "validerRec" name= "validerRec">Valider</button>
                         </div>
                 </div>
