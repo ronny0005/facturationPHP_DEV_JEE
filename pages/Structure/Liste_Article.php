@@ -42,7 +42,7 @@ $depot=$_SESSION["DE_No"];
 <div class="form-group">
 <form action="indexMVC.php?module=2&action=2" method="GET">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 col-lg-2">
             <label>Sommeil</label>
             <select id="sommeil" style="" class="form-control">
                 <option value="-1" <?php if($sommeil==-1) echo " selected "; ?> >Tout</option>

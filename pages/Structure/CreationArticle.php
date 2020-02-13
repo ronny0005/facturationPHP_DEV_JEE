@@ -6,13 +6,13 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link" id="home-tab" data-toggle="tab" href="#FichePrincipale" role="tab" aria-controls="FichePrincipale" aria-selected="true">Fiche principale</a>
+                <a class="nav-link fontApplication" id="home-tab" data-toggle="tab" href="#FichePrincipale" role="tab" aria-controls="FichePrincipale" aria-selected="true">Fiche principale</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Complement" role="tab" aria-controls="Complement" aria-selected="false">Complément</a>
+                <a class="nav-link fontApplication" id="profile-tab" data-toggle="tab" href="#Complement" role="tab" aria-controls="Complement" aria-selected="false">Complément</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#Descriptif" role="tab" aria-controls="Descriptif" aria-selected="false">Descriptif</a>
+                <a class="nav-link fontApplication" id="contact-tab" data-toggle="tab" href="#Descriptif" role="tab" aria-controls="Descriptif" aria-selected="false">Descriptif</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -87,13 +87,13 @@
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding-top: 20px">
                     <li class="nav-item">
-                        <a class="nav-link" id="depotT-tab" data-toggle="tab" href="#depotT" role="tab" aria-controls="depotT" aria-selected="true">Depot</a>
+                        <a class="nav-link fontApplication" id="depotT-tab" data-toggle="tab" href="#depotT" role="tab" aria-controls="depotT" aria-selected="true">Depot</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Catégories tarifaires</a>
+                        <a class="nav-link fontApplication" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Catégories tarifaires</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Fournisseurs</a>
+                        <a class="nav-link fontApplication" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Fournisseurs</a>
                     </li>
                 </ul>
                 <div style="padding-bottom: 50px" class="tab-content" id="myTabContent">
@@ -324,42 +324,43 @@
                     </div>
             </div>
             <div class="tab-pane fade" id="Descriptif" role="tabpanel" style="padding-top: 20px" aria-labelledby="contact-tab">
-                <fieldset style="margin-left: 30px" class="entete form-group col-lg-3">
+                <fieldset style="margin-left: 30px" class="entete">
                     <legend class="entete">Catalogue</legend>
-                    <div class="form-group col-lg-16">
-                        <label>Niveau 1 : </label>
-                        <select id="catalniv1" name="catalniv1" class="form-control">
-                            <option value="0"></option>
-                            <?php
-                            $fcatalogue = new F_CatalogueClass($cl_no1);
-                            echo "<option value='{$fcatalogue->CL_No}'";
-                            if($fcatalogue->CL_No==$cl_no1) echo " selected";
-                            echo">{$fcatalogue->CL_Intitule}</option>";
-                            ?>
-                        </select>
-                    </div><div style="clear:both"></div>
-                    <div class="form-group col-lg-16">
-                        <label>Niveau 2 : </label>
-                        <select id="catalniv2" name="catalniv2" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
-                            <option value="0"></option>
-                            <?php
-                            $rows = $fcatalogue->getCatalogueChildren(1,$cl_no1);
-                            if($rows==null){
-                            }else{
-                                if($cl_no2==0) echo '<option value="0"></option>';
-                                foreach ($rows as $row){
-                                    if($cl_no2==0){
-                                        echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
-                                    }else{
-                                        if($row->CL_No==$cl_no2)
+                    <div class="row mb-3">
+                        <div class="col-6 col-lg-3">
+                            <label>Niveau 1 : </label>
+                            <select id="catalniv1" name="catalniv1" class="form-control">
+                                <option value="0"></option>
+                                <?php
+                                $fcatalogue = new F_CatalogueClass($cl_no1);
+                                echo "<option value='{$fcatalogue->CL_No}'";
+                                if($fcatalogue->CL_No==$cl_no1) echo " selected";
+                                echo">{$fcatalogue->CL_Intitule}</option>";
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <label>Niveau 2 : </label>
+                            <select id="catalniv2" name="catalniv2" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
+                                <option value="0"></option>
+                                <?php
+                                $rows = $fcatalogue->getCatalogueChildren(1,$cl_no1);
+                                if($rows==null){
+                                }else{
+                                    if($cl_no2==0) echo '<option value="0"></option>';
+                                    foreach ($rows as $row){
+                                        if($cl_no2==0){
                                             echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
+                                        }else{
+                                            if($row->CL_No==$cl_no2)
+                                                echo "<option value='{$row->CL_No}'>{$row->CL_Intitule}</option>";
+                                        }
                                     }
                                 }
-                            }
-                            ?>
-                        </select>
-                    </div><div style="clear:both"></div>
-                    <div class="form-group col-lg-16">
+                                ?>
+                            </select>
+                        </div>
+                    <div class="col-6 col-lg-3">
                         <label>Niveau 3 : </label>
                         <select id="catalniv3" name="catalniv3" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                             <option value="0"></option>
@@ -379,8 +380,8 @@
                             }
                             ?>
                         </select>
-                    </div><div style="clear:both"></div>
-                    <div class="form-group col-lg-16">
+                    </div>
+                    <div class="col-6 col-lg-3">
                         <label>Niveau 4 : </label>
                         <select id="catalniv4" name="catalniv4" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                             <option value="0"></option>
@@ -401,17 +402,18 @@
                             ?>
                         </select>
                     </div>
+                    </div>
                 </fieldset>
                 <div id="panel_cond">
                     <div style="" class="form-group">
                         <div class="row">
                             <div class="col-lg-4">
-                            <label style="float: left;margin-top: 7px;margin-right: 10px">Prix vente/Prix max : </label>
-                            <select id="COND_PrixTTC" name="COND_PrixTTC" class="form-control" style="float:left;width:90px;font-size: 10px">
+                            <label style="">Prix vente/Prix max : </label>
+                            <select id="COND_PrixTTC" name="COND_PrixTTC" class="form-control" style="">
                                 <option value="0" <?php if($CT_PrixTTC==0) echo "selected"; ?> >PV HT</option>
                                 <option value="1" <?php if($CT_PrixTTC==1) echo "selected"; ?> >PV TTC</option>
                             </select>
-                            <input type="text" value="" style="width:150px" name="pxCond" class="form-control" id="pxCond" />
+                            <input type="text" value="" style="" name="pxCond" class="form-control" id="pxCond" />
                             </div>
                             <div class="col-lg-4">
                                 <label>Coef/Prix Min</label>
@@ -557,7 +559,7 @@
 </form>
 </div>
 
-            <input style="float: left;clear: both;<?php if(isset($ficheArticle)) echo "display:none"; ?>" type="button" id="ajouter" name="<?php if(isset($_GET["AR_Ref"])) echo "modifier"; else echo "ajouter"; ?>" class="btn btn-primary" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+            <input style="float: left;clear: both;<?php if(isset($ficheArticle)) echo "display:none"; ?>" type="button" id="ajouter" name="<?php if(isset($_GET["AR_Ref"])) echo "modifier"; else echo "ajouter"; ?>" class="bgcolorApplication btn btn-primary" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </form>
 
 

@@ -287,6 +287,10 @@ class ComptetClass Extends Objet{
             return null;
     }
 
+    public function getTiersByNumIntituleSearch($intitule,$type,$ctSommeil=-1){
+        return $this->getApiJson("/getTiersByNumIntituleSearch&intitule=$intitule&type=$type&ctSommeil=$ctSommeil");
+    }
+
     public function optionTiers($type,$value)
     {
         $liste = [];

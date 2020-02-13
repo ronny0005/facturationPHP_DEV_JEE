@@ -9,6 +9,7 @@ jQuery(function($){
 
     var isModif = $("#isModif").val()
     var isVisu = $("#isVisu").val()
+    var typeFac = $("#typeFacture").val()
 
     function $_GET(param) {
         var vars = {};
@@ -54,7 +55,7 @@ jQuery(function($){
 
     function setArticle() {
         $("#reference").autocomplete({
-            source: "indexServeur.php?page=getArticleByRefDesignation&type=" + $_GET("type") + "&DE_No=" + $("#DE_No").val(),
+            source: "indexServeur.php?page=getArticleByRefDesignation&type=" + typeFac + "&DE_No=" + $("#DE_No").val(),
             autoFocus: true,
             select: function (event, ui) {
                 event.preventDefault();
@@ -75,9 +76,9 @@ jQuery(function($){
 
         function ajout_ligne(e) {
             if (e.keyCode == 13) {
-                if (($_GET("type") == "Transfert_detail" && verifLigne()) || $_GET("type") != "Transfert_detail") {
+                if ((typeFac == "Transfert_detail" && verifLigne()) || typeFac != "Transfert_detail") {
                     var compl_dest = "";
-                    if ($_GET("type") == "Transfert_detail") {
+                    if (typeFac == "Transfert_detail") {
                         var complref = "";
                         if (!modification)
                             complref = "&designation_dest=" + $("#reference_dest").val();
@@ -86,13 +87,13 @@ jQuery(function($){
                         compl_dest = "&quantite_dest=" + $("#quantite_dest").val() + "&prix_dest=" + $("#prix_dest").val() + complref;
                     }
                     var ajoutParam = "";
-                    if ($("#quantite").val().replace(/ /g, "") > 0 && ($_GET("type") == "Entree" || (Math.round(Math.round($("#quantite_stock").val().replace(/ /g, "")) + Math.round($("#ADL_Qte").val())) >= Math.round($("#quantite").val().replace(/ /g, ""))))) {
+                    if ($("#quantite").val().replace(/ /g, "") > 0 && (typeFac == "Entree" || (Math.round(Math.round($("#quantite_stock").val().replace(/ /g, "")) + Math.round($("#ADL_Qte").val())) >= Math.round($("#quantite").val().replace(/ /g, ""))))) {
                         var acte = "ajout_ligne";
                         if (modification) {
                             modification = false;
                             acte = "modif";
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?type_fac=" + $_GET("type") + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cb_Marq").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?type_fac=" + typeFac + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cb_Marq").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',
@@ -104,7 +105,7 @@ jQuery(function($){
                                     $('#reference_dest').prop('disabled', false);
                                     $('#reference').val("");
                                     $('#designation').val("");
-                                    if ($_GET("type") == "Transfert_detail") {
+                                    if (typeFac == "Transfert_detail") {
                                         $("#article_" + $("#cb_Marq").val()).find("#DL_Qte_dest").html((Math.round(data[0].DL_Qte_Dest * 100) / 100));
                                         $("#article_" + $("#cb_Marq").val()).find("#DL_MontantHT_dest").html(Math.round(data[0].DL_MontantHT_Dest));
                                     }
@@ -118,7 +119,7 @@ jQuery(function($){
                         } else {
                             var cbmarq = "";
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + $_GET("type") + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#reference").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarq").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#reference").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarq").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',
@@ -152,7 +153,7 @@ jQuery(function($){
                 method: 'GET',
                 dataType: 'html',
                 async: false,
-                data: "PROT_No="+$("#PROT_No").val()+"&cbMarqEntete=" + $("#cbMarqEntete").val() + "&typeFac=" + $_GET("type") + "&flagPxRevient=" + $("#flagPxRevient").val(),
+                data: "PROT_No="+$("#PROT_No").val()+"&cbMarqEntete=" + $("#cbMarqEntete").val() + "&typeFac=" + typeFac + "&flagPxRevient=" + $("#flagPxRevient").val(),
                 success: function (data) {
                     $("#tableLigne > tbody").html(data);
                 },
@@ -173,7 +174,7 @@ jQuery(function($){
                         class: 'btn btn-primary',
                         text: 'Oui',
                         click: function () {
-                            if ($_GET("type") == "Transfert" || $_GET("type") == "Transfert_confirmation" || $_GET("type") == "Entree") {
+                            if (typeFac == "Transfert" || typeFac == "Transfert_confirmation" || typeFac == "Entree") {
                                 var de_no = $("#DE_No").val();
                                 var texte = $("#depot").text();
                                 verifSupprAjout(cbMarq, id_sec, AR_Ref, DL_Qte, DL_CMUP, de_no, texte);
@@ -215,7 +216,7 @@ jQuery(function($){
                 });
             });
 
-            if ($_GET("type") != "Transfert" && $_GET("type") != "Transfert_confirmation") {
+            if (typeFac != "Transfert" && typeFac != "Transfert_confirmation") {
                 $("tr[id^='article']").dblclick(function () {
                     $(this).unbind();
                     var cbMarq = $(this).find("#cbMarq").html();
@@ -241,7 +242,7 @@ jQuery(function($){
                     $('#idSec').val(id_sec);
 
                     $('#reference').prop('disabled', true);
-                    if ($_GET("type") == "Transfert_detail") {
+                    if (typeFac == "Transfert_detail") {
                         $('#reference_dest').prop('disabled', true);
                         $('#ADL_Qte_dest').val($(this).find("#DL_Qte_dest").html());
                         $('#APrix_dest').val(Math.round(($(this).find("#DL_MontantHT_dest").html() / $(this).find("#DL_Qte_dest").html()) * 100) / 100);
@@ -279,7 +280,7 @@ jQuery(function($){
                     $('#cb_Marq').val(cbMarq);
                     $('#idSec').val(id_sec);
 
-                    if ($_GET("type") == "Transfert_detail") {
+                    if (typeFac == "Transfert_detail") {
                         $('.comboreferenceDest').prop('disabled', true);
                         $('#ADL_Qte_dest').val($(this).find("#DL_Qte_dest").html());
                         $('#APrix_dest').val(Math.round(($(this).find("#DL_MontantHT_dest").html() / $(this).find("#DL_Qte_dest").html()) * 100) / 100);
@@ -319,7 +320,7 @@ jQuery(function($){
                 $('#cb_Marq').val(cbMarq);
                 $('#idSec').val(id_sec);
 
-                if ($_GET("type") == "Transfert_detail") {
+                if (typeFac == "Transfert_detail") {
                     $('.comboreferenceDest').prop('disabled', true);
                     $('#ADL_Qte_dest').val($(this).parent('tr').find("#DL_Qte_dest").html());
                     $('#APrix_dest').val(Math.round(($(this).parent('tr').find("#DL_MontantHT_dest").html() / $(this).parent('tr').find("#DL_Qte_dest").html()) * 100) / 100);
@@ -422,7 +423,7 @@ jQuery(function($){
                     method: 'GET',
                     dataType: 'json',
                     async: false,
-                    data: '&do_souche=0&type_fac=' + $_GET("type"),
+                    data: '&do_souche=0&type_fac=' + typeFac,
                     success: function (data) {
                         $("#n_doc").val(data.DC_Piece);
                     }
@@ -438,7 +439,7 @@ jQuery(function($){
             var totalqteDest = 0;
             var i = 0;
             $.ajax({
-                url: "traitement/Facturation.php?acte=liste_article&cbMarq=" + $("#cbMarqEntete").val() + "&type_fac=" + $_GET("type"),
+                url: "traitement/Facturation.php?acte=liste_article&cbMarq=" + $("#cbMarqEntete").val() + "&type_fac=" +typeFac,
                 method: 'GET',
                 dataType: 'html',
                 success: function (data) {
@@ -447,7 +448,7 @@ jQuery(function($){
                     totalqte = 0;
                     montanthtDest = 0;
                     totalqteDest = 0;
-                    if ($_GET("type") == "Transfert" || $_GET("type") == "Transfert_confirmation") {
+                    if (typeFac == "Transfert" || typeFac == "Transfert_confirmation") {
                         montantht = (montantht / 2);
                         totalqte = (totalqte / 2);
                     }
@@ -537,7 +538,7 @@ jQuery(function($){
         });
     }
     $('#valider').click(function(){
-        if($_GET("type")=="Transfert_valid_confirmation"){
+        if(typeFac == "Transfert_valid_confirmation"){
             $.ajax({
                 url: 'traitement/facturation.php?page=confirmation_document&acte=confirmation_document&cbMarq=' + $("#cbMarqEntete").val(),
                 method: 'GET',
@@ -555,10 +556,10 @@ jQuery(function($){
             $("#add_err").css('display', 'none', 'important');
             $("#add_err").css('display', 'inline', 'important');
             var typMvt = "";
-            if ($_GET("type") == "Sortie") typMvt = " de sortie ";
-            if ($_GET("type") == "Entree") typMvt = " d'entrée ";
-            if ($_GET("type") == "Transfert") typMvt = " de transfert ";
-            if ($_GET("type") == "Transfert_detail") typMvt = " de transfert ";
+            if (typeFac == "Sortie") typMvt = " de sortie ";
+            if (typeFac == "Entree") typMvt = " d'entrée ";
+            if (typeFac == "Transfert") typMvt = " de transfert ";
+            if (typeFac == "Transfert_detail") typMvt = " de transfert ";
             alert('Mouvement ' + typMvt + ' enregistré!');
             $("#add_err").html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong></strong>Mouvement ' + typMvt + ' enregistré!</div>');
         }
@@ -601,7 +602,7 @@ jQuery(function($){
                 dataType: 'json',
                 success: function (data) {
                     $(data).each(function () {
-                        if ($_GET("type") != "Entree")
+                        if (typeFac != "Entree")
                             if (!modification)
                                 if (this.AS_QteSto > 0)
                                     $("#prix").val(Math.round((this.AS_MontSto / this.AS_QteSto) * 100) / 100);
@@ -620,7 +621,7 @@ jQuery(function($){
         }
 
         function fichierTraitement() {
-            var fich = $_GET("type");
+            var fich = typeFac;
             if (fich == "Transfert" || fich == "Transfert_confirmation" || fich == "Transfert_valid_confirmation" ) {
                 listeMouvement = "indexMVC.php?module=4&action=1&type=" + fich;
                 if ($_GET("cbMarq") != null)
@@ -682,7 +683,7 @@ jQuery(function($){
 
         function setDepot(exclude) {
             var principal = -1;
-//            if($_GET("type")=="Transfert" || $_GET("type")=="Transfert_confirmation")
+//            if(typeFac=="Transfert" || typeFac=="Transfert_confirmation")
                 principal = 1;
             //$("#depot").unbind();
             $("#depot").autocomplete({
@@ -767,7 +768,7 @@ jQuery(function($){
                 method: 'GET',
                 dataType: 'json',
                 async: false,
-                data: "type=" + $_GET("type") + "&prot_no=" + $("#PROT_No").val() + "&ca_no=" + caisse + "&DE_No=" + depot + "&souche=" + souche + "&CA_Num=" + affaire,
+                data: "type=" + typeFac + "&prot_no=" + $("#PROT_No").val() + "&ca_no=" + caisse + "&DE_No=" + depot + "&souche=" + souche + "&CA_Num=" + affaire,
                 success: function (data) {
                     $(data).each(function () {
                         if (this.DE_No != null) {
@@ -787,7 +788,7 @@ jQuery(function($){
                             $("#cat_tarif").val(this.CA_CatTarif);
                         if($("#cat_tarif").val()==null)
                             $("#cat_tarif").val($("#cat_tarif option:first").val());
-                        if(($_GET("type")=="Vente" || $_GET("type")=="VenteT" || $_GET("type")=="VenteC") && $("#modifClient").val()!=0){
+                        if((typeFac=="Vente" || typeFac=="VenteT" || typeFac=="VenteC") && $("#modifClient").val()!=0){
                             if($_GET("cbMarq")==undefined)
                                 clientCaisse();
                             $(".comboclient :input").attr("readonly",true);
@@ -820,12 +821,12 @@ jQuery(function($){
     function valideEntete(){
         var affaire = "";
         if($("#cbMarqEntete").val()=="" || $("#cbMarqEntete").val()=="0")
-        if(($_GET("type")!="Transfert" && $_GET("type")!="Transfert_confirmation" && $("#DE_No").val()!="") ||
-                (($_GET("type")=="Transfert" || $_GET("type")=="Transfert_confirmation") && $("#DE_No").val()!="" && $("#CO_No").val()!="" && $("#DE_No").val()!=$("#CO_No").val())){
+        if((typeFac!="Transfert" && typeFac!="Transfert_confirmation" && $("#DE_No").val()!="") ||
+                ((typeFac=="Transfert" || typeFac=="Transfert_confirmation") && $("#DE_No").val()!="" && $("#CO_No").val()!="" && $("#DE_No").val()!=$("#CO_No").val())){
             if($("#affaire").val()!="null")
                 affaire = $("#affaire").val();
             $.ajax({
-                url: "traitement/"+fichierTraitement()+"?type_fac="+$_GET("type")+"&do_piece="+$("#n_doc").val()+"&acte=ajout_entete&date="+returnDate($("#dateentete").val())+"&collaborateur="+$("#CO_No").val()+"&depot="+$("#DE_No").val()+ "&reference="+$("#ref").val()+ "&affaire="+affaire+"&userName="+$("#userName").html()+"&machineName="+$("#machineName").html(),
+                url: "traitement/"+fichierTraitement()+"?type_fac="+typeFac+"&do_piece="+$("#n_doc").val()+"&acte=ajout_entete&date="+returnDate($("#dateentete").val())+"&collaborateur="+$("#CO_No").val()+"&depot="+$("#DE_No").val()+ "&reference="+$("#ref").val()+ "&affaire="+affaire+"&userName="+$("#userName").html()+"&machineName="+$("#machineName").html(),
                 method: 'GET',
                 async : false,
                 dataType: 'json',
@@ -842,7 +843,7 @@ jQuery(function($){
                     $("#reference").prop('disabled', false);
                     $("#dateentete").prop('disabled', true);
                     $("#referenceDest").prop('disabled', false);
-                    if($_GET("type")!="Sortie")
+                    if(typeFac!="Sortie")
                         $("#prix").prop('disabled', false);
                     $("#remise").prop('disabled', false);
                     $("#quantite").prop('disabled', false);

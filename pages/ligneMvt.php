@@ -12,25 +12,25 @@ $do_type = $docEntete->DO_Type;
     <input type="hidden" value="<?php echo $do_imprim; ?>" name="do_imprim" id="do_imprim"/>
 <div class="row">
     <input class="form-control" id="entete" name="entete" name="entete" type="hidden" value="<?php echo $entete; ?>"/>
-     <div class="col-sm-2">
+     <div class="col-12 col-sm-4 col-md-3 col-lg-2">
          <input type="hidden" class="form-control" id="AR_Ref" name="AR_Ref" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
          <input type="text" class="form-control" id="reference" name="reference" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
 
     </div>
-    <div class="col-md-3">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
         <input class="form-control" id="designation" name="designation" placeholder="Désignation" disabled/>
      </div>
 
-    <div class="col-md-2">
+    <div class="col-6 col-sm-4 col-sm-4 col-md-3 col-lg-2">
         <input type="text" class="form-control" name="quantite" id="quantite"  value="" placeholder="Qté" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
     </div>
-    <div class="col-md-2" style="<?php if($flagPxRevient!=0) echo "display:none" ?>">
+    <div class="col-6 col-sm-4 col-md-8 col-lg-2" style="<?php if($flagPxRevient!=0) echo "display:none" ?>">
         <input type="text" class="form-control" id="prix"  value="" name="prix" placeholder="P.U" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
     </div>
-    <div class="col-md-2">
+    <div class="col-12 col-sm-4 col-md-4 col-lg-2">
         <input type="text" class="form-control" id="quantite_stock"  value="" placeholder="Quantité en stock" disabled />
     </div>
-	 <div class="col-md-1">
+	 <div class="">
             <input type="hidden" name="ADL_Qte" id="ADL_Qte" value="0"/>
             <input type="hidden" name="APrix" id="APrix" value="0"/>
             <input type="hidden" name="cb_Marq" id="cb_Marq" value="0"/>
@@ -64,7 +64,6 @@ echo "<th></th>";
     </thead>
     <tbody id="article_body">
       <?php
-
       if($type=="Transfert")
           $rows=$docEntete->getLigneTransfert();
       else if($type=="Transfert_confirmation")

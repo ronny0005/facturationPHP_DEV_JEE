@@ -24,18 +24,17 @@ class ReglementClass Extends Objet{
     public $table = 'F_CREGLEMENT';
     public $lien ="fcreglement";
 
-    function __construct($id,$db=null)
+    function __construct($id)
     {
         $this->data = $this->getApiJson("/rgNo=$id");
         if($id!=0)
-            $this->data = $this->getApiString("/rgNo=$id");
-        if (sizeof($this->data) > 0) {
+            if (sizeof($this->data) > 0) {
             $this->RG_No = $this->data[0]->RG_No;
             $this->CT_NumPayeur = $this->data[0]->CT_NumPayeur;
-            $this->RG_Date = $this->formatDate($this->data[0]->RG_Date);
+            $this->RG_Date = substr($this->data[0]->RG_Date,0,10);
             $this->RG_Reference = $this->data[0]->RG_Reference;
             $this->RG_Libelle = $this->data[0]->RG_Libelle;
-            $this->RG_DateSage = $this->formatDateSage($this->data[0]->RG_Date);
+            $this->RG_DateSage = $this->formatDateSage(substr($this->data[0]->RG_Date,0,10));
             $this->RG_Montant = $this->data[0]->RG_Montant;
             $this->RG_MontantDev = $this->data[0]->RG_MontantDev;
             $this->N_Reglement = $this->data[0]->N_Reglement;
@@ -81,10 +80,13 @@ class ReglementClass Extends Objet{
     }
 
     public function formatDateSage($val){
-        $date = DateTime::createFromFormat('Y-m-d H:i:s', $val);
+        $date = DateTime::createFromFormat('Y-m-d', $val);
         return $date->format('dmy');
     }
 
+    public function updateImpute(){
+        $this->getApiExecute("/updateImpute&rgNo={$this->RG_No}");
+    }
 
     public function getMajAnalytique($dateDeb,$dateFin,$statut,$caNum=''){		
 		return $this->getApiJson("/getMajAnalytique&dateDeb=$dateDeb&dateFin=$dateFin&caNum=$caNum&statut=$statut");
@@ -92,6 +94,14 @@ class ReglementClass Extends Objet{
 
     public function setMajAnalytique($datedeb,$datefin,$caNum){
 		return $this->getApiJson("/setMajAnalytique&dateDeb=$datedeb&dateFin=$datefin&caNum=$caNum&cbCreateur={$this->userName}");
+    }
+
+    public function majReglement($protNo,$bonCaisse,$rgNo,$rgLibelle,$montant,$rgDate,$joNum,$ctNum,$coNo){
+        $this->getApiExecute("/modifReglementTiers&protNo=$protNo&coNo=$coNo&bonCaisse=$bonCaisse&rgNo=$rgNo&rgLibelle=".urlencode($rgLibelle)."&montant=$montant&rgDate=$rgDate&joNum=".urlencode($joNum)."&ctNum=".urlencode($ctNum));
+    }
+
+    public function addEcheance($protNo,$rgNo,$typeRegl,$cbMarqEntete,$montant){
+        $this->getApiExecute("/addEcheance&protNo=$protNo&rgNo=$rgNo&typeRegl=$typeRegl&cbMarqEntete=$cbMarqEntete&montant=$montant");
     }
 
     public function  insertF_Reglement(){
@@ -392,6 +402,10 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
 		$this->getApiJson("/supprReglement&rgNo={$this->RG_No}");
     }
 
+    public function supprReglementTiers($mvtCaisse,$rgNo,$protNo){
+        $this->getApiJson("/supprReglementTiers&mvtCaisse=$mvtCaisse&rgNo=$rgNo&protNo=$protNo");
+    }
+
     public function remboursementRglt($date,$montant,$mobile){
 		
 		$this->getApiJson("/remboursementRglt&rgNo={$this->RG_No}&rgDate=$date&montant=$montant&mobile=$mobile");
@@ -563,187 +577,33 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
     }
 
 
-    public function addReglement($mobile/*$_GET["mobile"]*/,$jo_num/*$_GET["JO_Num"]*/,$rg_no_lier/*$_GET["RG_NoLier"]*/,$ct_num /*$_GET['CT_Num']*/
+    public function addReglement($protNo/*$_GET["mobile"]*/,$jo_num/*$_GET["JO_Num"]*/,$rg_no_lier/*$_GET["RG_NoLier"]*/,$ct_num /*$_GET['CT_Num']*/
                                 ,$ca_no/*$_GET["CA_No"]*/,$boncaisse /*$_GET["boncaisse"]*/,$libelle /*$_GET['libelle']*/,$caissier /*$_GET['caissier']*/
                                 ,$date/*$_GET['date']*/,$modeReglementRec /*$_GET["mode_reglementRec"]*/
                                 ,$montant /*$_GET['montant']*/,$impute/*$_GET['impute']*/,$RG_Type /*$_GET['RG_Type']*/,$afficheData=true,$typeRegl=""){
         $admin = 0;
         $limitmoinsDate = "";
         $limitplusDate = "";
-        if($mobile!="")
-            if(!isset($_SESSION))
-                session_start();
-        if(isset($_SESSION)){
-            $protectionClass = new ProtectionClass($_SESSION["login"],$_SESSION["mdp"]);
-            if($protectionClass->PROT_Right!=1) {
-                $limitmoinsDate = date('d/m/Y', strtotime(date('Y-m-d'). " - ".$protectionClass->getDelai()." day"));
-                $limitplusDate = date('d/m/Y', strtotime(date('Y-m-d'). " + ".$protectionClass->getDelai()." day"));
-                $str = strtotime(date("M d Y ")) - (strtotime($date));
-                $nbDay = abs(floor($str/3600/24));
-                if($nbDay>$protectionClass->getDelai())
-                    $admin =1;
-            }
+        $protectionClass = new ProtectionClass("","");
+        $protectionClass->connexionProctectionByProtNo($protNo);
+        if($protectionClass->PROT_Right!=1) {
+            $limitmoinsDate = date('d/m/Y', strtotime(date('Y-m-d'). " - ".$protectionClass->getDelai()." day"));
+            $limitplusDate = date('d/m/Y', strtotime(date('Y-m-d'). " + ".$protectionClass->getDelai()." day"));
+            $str = strtotime(date("M d Y ")) - (strtotime($date));
+            $nbDay = abs(floor($str/3600/24));
+            if($nbDay>$protectionClass->getDelai())
+                $admin =1;
         }
 
         if($admin==0) {
-            $cg_num = "";
-            $ct_intitule = "";
-            $boncaisse=0;
-            $banque = 0;
-            $co_no=0;
-            if($boncaisse==1) {
-                $co_no = $ct_num;
-                $ct_num="";
-                $banque = 3;
-            }
-
-            if($typeRegl=="Collaborateur"){
-                $caissier = $ct_num;
-                $ct_num="";
-                $banque=3;
-                $rg_typeN=1;
-            }else{
-                $result=$this->db->requete($this->objetCollection->getClientByCTNum($ct_num));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if(sizeof($rows)>0){
-                    $cg_num = $rows[0]->CG_NumPrinc;
-                    $ct_intitule = $rows[0]->CT_Intitule;
-                    $rg_typeN = $rows[0]->CT_Type;
-                }else{
-                    $banque = 3;
-                    $rg_typeN=2;
-
-                }
-            }
-            $email="";
-            $telephone="";
-            $collab_intitule="";
-            $caissier_intitule="";
-            if($boncaisse==1)
-                $caissier = $co_no;
-            $rg_typereg=0;
-            if($modeReglementRec=="05"){
-                $banque = 2;
-                $libelle = "Verst distant".$libelle;
-            }
-
-            if($modeReglementRec=="10"){
-                $rg_typereg = 5;
-            }
-
-            $result=$this->db->requete($this->objetCollection->getCaisseByCA_No($ca_no));
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-            if($rows==null){
-            }
-            else{
-                $ca_intitule = $rows[0]->CA_Intitule;
-            }
-
-            $result=$this->db->requete($this->objetCollection->getCollaborateurByCOno($caissier));
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-            if($rows==null){
-
-            }
-            else{
-                $collaborateur_caissier = $rows[0]->CO_Nom;
-                $email=$rows[0]->CO_EMail;
-                $collab_intitule = $rows[0]->CO_Nom;
-                $telephone=$rows[0]->CO_Telephone;
-            }
-
-            if($rg_no_lier==0) {
-                $message = 'VERSEMENT DISTANT D\' UN MONTANT DE ' . $montant . ' AFFECTE AU COLLABORATEUR ' . $collaborateur_caissier . ' POUR LE CLIENT ' . $ct_intitule . ' A DATE DU ' . $date;
-                if (($email != "" || $email != null) && $modeReglementRec == "05") {
-                    $this->objetCollection->envoiMail($message, "Versement distant", $email);
-                }
-            }
-
-            $creglement = new ReglementClass(0);
-            $creglement->initVariables();
-            $creglement->RG_Date = $date;
-            $creglement->RG_DateEchCont = $date;
-            $creglement->JO_Num = $jo_num;
-            $creglement->CG_Num = $cg_num;
-            $creglement->CA_No = $ca_no;
-            $creglement->CO_NoCaissier = $caissier;
-            $creglement->RG_Libelle = substr($libelle,0,34);
-            $creglement->RG_Montant = $montant;
-            $creglement->RG_Impute = $impute;
-            $creglement->RG_Type = $rg_typeN;//$RG_Type;
-            $creglement->N_Reglement = $modeReglementRec;
-            $creglement->RG_TypeReg=$rg_typereg;
-            $creglement->RG_Ticket=0;
-            $creglement->RG_Banque=$banque;
-            $creglement->CT_NumPayeur = $ct_num;
-            $creglement->setuserName("",$mobile);
-            $RG_NoInsert = $creglement->insertF_Reglement();
-
-
-            //  $result=$objet->db->requete($objet->addCReglement($ct_num, $_GET['date'], $_GET['montant'], $jo_num, $cg_num, $ca_no, $caissier, $_GET['date'], $libelle, $_GET['impute'],$_GET['RG_Type'],$_GET['mode_reglementRec'],$rg_typereg,0,$banque,$login));
-
-            if(($telephone!="" || $telephone!=null) && $modeReglementRec=="05"){
-                $contactD = new ContatDClass(1);
-                $contactD->sendSms($telephone,$message);
-            }
-
-            if($rg_no_lier==0) {
-                $message = 'VERSEMENT DISTANT D\' UN MONTANT DE ' . $montant . ' AFFECTE AU COLLABORATEUR ' . $collaborateur_caissier . ' POUR LE CLIENT ' . $ct_intitule . ' A DATE DU ' . date("d/m/Y", strtotime($date));
-                $result = $this->db->requete($this->objetCollection->getCollaborateurEnvoiMail("Versement distant"));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if ($rows != null) {
-                    foreach ($rows as $row) {
-                        $email = $row->CO_EMail;
-                        if (($email != "" || $email != null) && $modeReglementRec == "05") {
-                            $this->objetCollection->envoiMail($message, "Versement distant", $email);
-                        }
-                    }
-                }
-
-                $result = $this->db->requete($this->objetCollection->getCollaborateurEnvoiSMS("Versement distant"));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if ($rows != null) {
-                    foreach ($rows as $row) {
-                        //$collab_intitule = $row->CO_Nom;
-                        $telephone = $row->CO_Telephone;
-                        if (($telephone != "" || $telephone != null) && $modeReglementRec == "05") {
-                            $contactD = new ContatDClass(1);
-                            $contactD->sendSms($telephone,$message);
-                        }
-                    }
-                }
-            }
-
-            if($rg_no_lier!=0) {
-                $RG_No = 0;
-                $result = $this->db->requete($this->objetCollection->lastLigneCReglement());
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if ($rows != null) {
-                    $RG_No = $rows[0]->RG_No;
-                }
-
-                $this->db->requete($this->objetCollection->insertZ_RGLT_BONDECAISSE($RG_No, $rg_no_lier));
-
-                $CA_No = 0;
-                $CO_NoCaissier = 0;
-
-                $result = $this->db->requete($this->objetCollection->getReglementByRG_No ($rg_no_lier));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if ($rows != null) {
-                    $CA_No = $rows[0]->CA_No;
-                    $CO_NoCaissier = $rows[0]->CO_NoCaissier;
-                    $this->db->requete($this->objetCollection->getMajCaisseRGNo($CA_No,$CO_NoCaissier,$RG_No));
-                }
-                $this->db->requete($this->objetCollection->updateImpute($rg_no_lier));
-            }
-            $this->objetCollection->incrementeCOLREGLEMENT();
-            $result=$this->db->requete($this->objetCollection->lastLigneCReglement());
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
+            $url = "/addReglement&protNo=$protNo&joNum=$jo_num&rgNoLier=$rg_no_lier&ctNum=$ct_num&caNo=$ca_no&bonCaisse=$boncaisse&libelle=$libelle&caissier=$caissier&date=$date&modeReglementRec=$modeReglementRec&montant=$montant&impute=$impute&rgType=$RG_Type&afficheData=$afficheData&typeRegl=$typeRegl";
+            $info = $this->getApiString($url);
             if($afficheData)
-            echo json_encode($rows);
+                echo json_encode($info);
         }
         else {
             if($afficheData)
-            echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
+                echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
         }
     }
 

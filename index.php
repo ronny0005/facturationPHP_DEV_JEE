@@ -41,30 +41,16 @@ session_destroy();
             $("#jour").val(dateJour.getDay());
             $("#heure").val(("00"+dateJour.getHours()).substr(-2)+":"+("00"+dateJour.getMinutes()).substr(-2));
 
-            function $_GET(param) {
-                var vars = {};
-                window.location.href.replace( location.hash, '' ).replace( 
-                        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-                        function( m, key, value ) { // callback
-                                vars[key] = value !== undefined ? value : '';
-                        }
-                );
-
-                if ( param ) {
-                        return vars[param] ? vars[param] : null;	
-                }
-                return vars;
-            }
             var textfield = $("input[name=user]");
-            if($_GET("code")==1){
+            if($("#code").val()==1){
                 $("#output").removeClass(' alert alert-success');
                 $("#output").addClass("alert alert-danger animated fadeInUp").html("Login ou mot de passe incorrect");
             }
-            if($_GET("code")==2){
+            if($("#code").val()==2){
                 $("#output").removeClass(' alert alert-success');
                 $("#output").addClass("alert alert-danger animated fadeInUp").html("Horaire de connexion non autorisé");
             }
-});
+        });
         </script>
  <title>Connexion</title>
     </head>
@@ -72,7 +58,9 @@ session_destroy();
     <div class="login-dark" style="background-image: url(&quot;assets/img/service-fiscalite.jpg&quot;);activité commerciale de son entreprise-cover.jpg&quot;);activité commerciale de son entreprise-cover.jpg&quot;);background-color: rgb(83,89,91);">
         <form method="post" style="background-color: rgb(255,255,255);" action="module/connexion.php">
             <h2 class="sr-only">Login Form</h2>
+            <div id="output"></div>
             <div class="illustration"><img src="assets/img/it_solution.png"></div>
+            <div class="form-group"><input class="form-control" type="hidden" name="code" id="code" value="<?= $_GET["code"] ?>"></div>
             <div class="form-group"><input class="form-control" type="text" name="user" placeholder="Login" required="" style="color:black"></div>
             <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Mot de passe" style="color:black"></div>
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color: rgb(19,72,34);">Valider</button></div>

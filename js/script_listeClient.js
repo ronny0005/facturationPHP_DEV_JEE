@@ -58,7 +58,11 @@ jQuery(function($){
 
     $('#users').DataTable({
             "columns": donnee,
-            "processing": true,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            },
+
+        "processing": true,
             "serverSide": true,
             "ajax": {
                 url: 'traitement/Creation.php?acte=listeClient&CT_Type='+typeTiers+'&CT_Sommeil='+sommeil,

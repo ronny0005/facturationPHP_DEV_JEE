@@ -31,14 +31,13 @@
 <?php
 include("module/Menu/BarreMenu.php");
 ?>
-<div id="milieu">    
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
+
+<section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
         Liste client
-    </h4>
-</div>
+    </h3>
+</section>
+
 
 <div class="corps">        
         <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
@@ -72,7 +71,7 @@ if($type=="salarie")
                     <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
                 </select>
             </td>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="<?php if($type=="fournisseur") echo "indexMVC.php?module=3&action=9"; if($type=="client") echo "FicheClient"; if($type=="salarie") echo "indexMVC.php?module=3&action=17"; ?>"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
+        <?php if($flagNouveau){ ?><td style="float:right"><a href="<?php if($type=="fournisseur") echo "indexMVC.php?module=3&action=9"; if($type=="client") echo "FicheClient"; if($type=="salarie") echo "indexMVC.php?module=3&action=17"; ?>"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>

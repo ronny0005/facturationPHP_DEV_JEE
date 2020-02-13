@@ -5,6 +5,7 @@ RewriteEngine on
 
 RewriteRule ^accueil$  indexMVC_New.php?module=1&action=1 [L]
 RewriteRule ^connexion$  index.php [L]
+RewriteRule ^connexion-([0-9]+)$  index.php?code=$1 [L]
 
 RewriteRule ^listeFacture-([A-z]+)$  indexMVC_New.php?module=2&action=1&type=$1 [L]
 
@@ -12,12 +13,16 @@ RewriteRule ^Document-Facture([A-z]+)$  indexMVC_New.php?module=2&action=3&type=
 RewriteRule ^Document-Mvt([A-z]+)$  indexMVC_New.php?module=4&action=7&type=$1 [L]
 
 RewriteRule ^Document-Facture([A-z]+)-([0-9]+)$  indexMVC_New.php?module=2&action=3&type=$1&cbMarq=$2 [L]
-RewriteRule ^Document-Mvt([A-z]+)-([0-9]+)$  indexMVC_New.php?module=2&action=3&type=$1&cbMarq=$2 [L]
+RewriteRule ^Document-Mvt([A-z]+)-([0-9]+)$  indexMVC_New.php?module=4&action=7&type=$1&cbMarq=$2 [L]
 
 
 RewriteRule ^listeArticle$  indexMVC_New.php?module=3&action=3 [L]
 RewriteRule ^listeArticle-([A-z]+)-([A-z]+)  indexMVC_New.php?module=3&action=3&acte=$1&AR_Ref=$2 [L]
 RewriteRule ^listeArticle-(-?[0-9]+)-(-?[0-9]+)-(-?[0-9]+)  indexMVC_New.php?module=3&action=3&sommeil=$1&stockFlag=$2&prixFlag=$3 [L]
+
+RewriteRule ^listeFamille$  indexMVC_New.php?module=3&action=6 [L]
+RewriteRule ^ficheFamille indexMVC_New.php?module=3&action=7 [L]
+RewriteRule ^ficheFamille-([A-z]+) indexMVC_New.php?module=3&action=7&FA_CodeFamille=$1 [L]
 
 RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1 [L]
 RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]

@@ -20,6 +20,7 @@ include("Modele/ContatDClass.php");
 require 'Send/class.phpmailer.php';
 include("Modele/ArticleClass.php");
 include("Modele/EtatClass.php");
+include("Modele/JournalClass.php");
 include("Modele/LogFile.php");
 
 $objet = new ObjetCollector();
@@ -122,6 +123,19 @@ switch ($val) {
         echo json_encode($client->getTiersByNumIntitule($_GET["term"],$_GET["TypeFac"]));
         break;
 
+
+    case "getTiersByNumIntituleSearch":
+        $client = new ComptetClass(0);
+        $searchTerm = "";
+        if(isset($_GET['term']))
+            $searchTerm = $_GET['term'];
+        $type = 0;
+        if(isset($_GET['type']))
+            $type = $_GET['type'];
+
+        echo json_encode($client->getTiersByNumIntituleSearch($_GET["term"],$_GET["type"],$_GET["ctSommeil"]));
+        break;
+
     case "getDepotByIntitule":
         $depot = new DepotClass(0);
         $exclude = (isset($_GET["DE_NoSource"])) ? $_GET["DE_NoSource"] : -1;
@@ -175,7 +189,8 @@ switch ($val) {
 
     case "connexionProctection":
         session_start();
-        envoiRequete($objet->connexionProctection($_SESSION["login"], $_SESSION["mdp"]),$objet);
+        $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+        echo json_encode($protection);
         break;
     case "getCaisseDepotSouche":
         envoiRequete($objet->getCaisseDepotSouche($_GET["CA_No"], $_GET["DE_No"], $_GET["CA_Souche"]),$objet);
@@ -250,7 +265,8 @@ switch ($val) {
         envoiRequete($objet->getJournauxByJONum($_GET["JO_Num"]),$objet);
         break;
     case "getJournaux":
-        envoiRequete($objet->getJournaux($_GET["JO_Sommeil"]),$objet);
+        $journal = new JournalClass(0);
+        echo json_encode($journal->getJournaux($_GET["JO_Sommeil"]));
         break;
     case "getJournauxCount":
         envoiRequete($objet->getJournauxCount($_GET["JO_Sommeil"]),$objet);
@@ -505,37 +521,11 @@ switch ($val) {
         envoiRequete($objet->supprDepotClient($_GET['DE_No']),$objet);
         break;
     case "supprReglement":
-        $mobile ="";
-        $typemvt = "Suppression règlement";
+        $creglement = new ReglementClass(0);
+        $mvtCaisse="false";
         if(isset($_GET["MvtCaisse"]))
-            $typemvt ="Suppression mouvement de caisse";
-        if(isset($_GET["mobile"]))
-            $mobile = $_GET["mobile"];
-        $reglement = new ReglementClass($_GET["RG_No"]);
-        $reglement->setuserName("",$mobile);
-        $collaborateur = new CollaborateurClass($reglement->userName);
-        $objet = new ObjetCollector();
-        $reglement->supprReglement();
-        $result = $objet->db->requete($objet->getCollaborateurEnvoiMail($typemvt));
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        if ($rows != null) {
-            foreach ($rows as $row) {
-                $email = $row->CO_EMail;
-                $nom= $row->CO_Prenom." ".$row->CO_Nom;
-                $tiers = new ComptetClass($reglement->CT_NumPayeur);
-                $corpsMail="
-                Le règlement ".$reglement->RG_Piece." a été supprimé par ".$_SESSION["login"]."<br/>
-                    Le règlement concerne le client ".$tiers->CT_Intitule."<br/> 
-                    Libellé :".$reglement->RG_Libelle."<br/> 
-                    Montant du règlement : ".$objet->formatChiffre(ROUND($reglement->RG_Montant,2))."<br/> 
-                    Date du règlement : ".$objet->getDateDDMMYYYY($reglement->RG_Date)."<br/><br/>
-                Cordialement.<br/><br/>
-                
-                ";
-                if (preg_match('#^[\w.-]+@[\w.-]+\.[a-z]{2,6}$#i', $email))
-                    $objet->envoiMail($corpsMail ,"Suppression du règlement ".$reglement->RG_Piece,$email);
-            }
-        }
+            $mvtCaisse="true";
+        $creglement->supprReglementTiers($mvtCaisse,$_GET["RG_No"],$_GET["protNo"]);
         break;
     //test sms
     case "envoiSMSTest":
@@ -951,7 +941,8 @@ switch ($val) {
         echo json_encode($famille->getNextArticleByFam());
         break;
     case "getCaisseByCA_No":
-        envoiRequete($objet->getCaisseByCA_No($_GET['CA_No']),$objet);
+        $caisse = new CaisseClass($_GET["CA_No"]);
+        echo json_encode($caisse);
         break;
 
     case "getArticleByRef":
@@ -1021,7 +1012,8 @@ switch ($val) {
         $collab=0;
         if(isset($_GET["collab"]))
             $collab = $_GET["collab"];
-        envoiRequete($objet->getFactureCORecouvrement($_GET['CO_No'], $_GET['CT_Num'],$_GET["souche"],$collab),$objet);
+        $docEntete = new DocEnteteClass(0);
+        echo json_encode($docEntete->getFactureCORecouvrement($collab,$_GET['CT_Num']));
         break;
     case "getFactureRGNo":
         $reglement = new ReglementClass(0);
@@ -1049,24 +1041,22 @@ switch ($val) {
         }
         break;
     case "updateImpute":
-        $result=$objet->db->requete($objet->isRegleFull($_GET['RG_No']));
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        if ($rows!=null) {
-            if($rows[0]->VAL==1)
-                $result=$objet->db->requete($objet->updateImpute($_GET['RG_No']));
-        }
+        $reglement = new ReglementClass($_GET['RG_No']);
+        $reglement->updateImpute();
         break;
     case "getReglementByClient":
         $typeSelectRegl = 0;
         if(isset($_GET["typeSelectRegl"]))
             $typeSelectRegl = $_GET["typeSelectRegl"];
-        envoiRequete($objet->getReglementByClient($_GET['CT_Num'],$_GET['CA_No'],$_GET['type'],$_GET['treglement'],$_GET['datedeb'],$_GET['datefin'],$_GET['caissier'],$_GET['collaborateur'],$typeSelectRegl),$objet);
+        $reglement = new ReglementClass(0);
+        echo json_encode($reglement->getReglementByClient($_GET['CT_Num'],$_GET['CA_No'],$_GET['type'],$_GET['treglement'],$_GET['datedeb'],$_GET['datefin'],$_GET['caissier'],$_GET['collaborateur'],$typeSelectRegl));
         break;
     case "listeTypeReglement":
         envoiRequete($objet->listeTypeReglement(),$objet);
         break;
     case "getJournauxTreso":
-        envoiRequete($objet->getJournauxTreso(),$objet);
+        $journaux = new JournalClass(0);
+        echo json_encode($journaux->getJournauxType(2));
         break;
 
     case "listeTypeReglementCount":
@@ -1091,7 +1081,8 @@ switch ($val) {
         envoiRequete($objet->getCatComptaByCodeFamille($_GET['FA_CodeFamille'],$_GET['ACP_Champ'],$_GET['ACP_Type']),$objet);
         break;
     case "getCaissierByCaisse" :
-        envoiRequete($objet->getCaissierByCaisse($_GET['CA_No']),$objet);
+        $collab = new CollaborateurClass(0);
+        echo json_encode($collab->getCaissierByCaisse($_GET['CA_No']));
         break;
     case "getReglementByClientFacture":
         envoiRequete($objet->getReglementByClientFacture($_GET['CT_Num'],$_GET['DO_Piece']),$objet);
@@ -1132,30 +1123,16 @@ switch ($val) {
         envoiRequete($objet->createClientMin($_GET["CT_Num"],$_GET["CT_Intitule"],$_GET["CG_Num"],$_GET["adresse"],$_GET["cp"],$_GET["ville"],$_GET["coderegion"],$_GET["siret"],$_GET["ape"],$_GET["numpayeur"],$_GET["co_no"],$_GET["cattarif"],$_GET["catcompta"],$_GET["de_no"],$_GET["tel"],$_GET["anal"]).";".$objet->getLastClient(),$objet);
         break;
     case "modifReglement":
-        $co_no=$_GET["CO_No"];
+        $fcreglement = new ReglementClass(0);
+        $boncaisse = 0;
         if(isset($_GET["boncaisse"]) && $_GET["boncaisse"]==1) {
-            $boncaisse = $_GET["boncaisse"];
-            $co_no = $_GET["CT_Num"];
+            $boncaisse = 1;
         }
-        $creglement = new ReglementClass($_GET["rg_no"]);
-        $creglement->RG_Libelle =$_GET["rg_libelle"];
-        $creglement->RG_Montant =$_GET["rg_montant"];
-        $creglement->RG_Date =$_GET["rg_date"];
-        $creglement->CO_NoCaissier =$co_no;
-        $creglement->JO_Num =$_GET["JO_Num"];
-        $creglement->setuserName("","");
-        $creglement->maj_reglement();
+        $fcreglement->majReglement($_GET["protNo"],$boncaisse,$_GET["rg_no"],$_GET["rg_libelle"],$_GET["rg_montant"],$_GET["rg_date"],$_GET["JO_Num"],$_GET["CT_Num"],$_GET["CO_No"]);
         break;
     case "removeFacRglt":
-        $docEntete = new DocEnteteClass($_GET["cbMarqEntete"]);
-        $reglement = new ReglementClass($_GET["RG_No"]);
-        if($docEntete->DO_Domaine != null) {
-            execRequete($objet->insertFactReglSuppr($docEntete->DO_Domaine, $docEntete->DO_Type, $docEntete->DO_Piece, $docEntete->cbMarq, $reglement->RG_No, $reglement->cbMarq), $objet);
-            execRequete($objet->removeFacRglt($docEntete->DO_Piece, $docEntete->DO_Type, $docEntete->DO_Domaine, $_GET["RG_No"]), $objet);
-        }
-        if($reglement->RG_No!=null){
-            $reglement->supprRgltAssocie();
-        }
+        $docEntete = new DocEnteteClass(0);
+        $docEntete->removeFacRglt($_GET["cbMarqEntete"],$_GET["RG_No"]);
         break;
     case "supprRglt":
         execRequete($objet->supprRglt($_GET["RG_No"]),$objet);
@@ -1475,36 +1452,10 @@ switch ($val) {
         break;
     case "addEcheance":
         $type_regl = "";
-        $rg_no = $_GET["cr_no"];
         if(isset($_GET['type_regl']))
             $type_regl = $_GET['type_regl'];
-        if($type_regl=="Collaborateur") {
-            $result = $objet->db->requete($objet->getDoPiece($_GET['do_piece'], $_GET['DO_Domaine'], $_GET['DO_Type']));
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-            print_r($rows);
-            if($rows==null){
-                $reglement = new ReglementClass($rg_no);
-                $this->objetCollection = new ObjetCollector();
-                $result = $this->db->requete($this->objetCollection->addDocRegl($_GET['DO_Domaine'], $_GET['DO_Type'], $_GET['do_piece'], 0, $reglement->N_Reglement,$reglement->RG_Date));
-                $result = $this->db->requete($this->objetCollection->getDocReglByDO_Piece($_GET['do_piece'],$_GET['DO_Domaine'],$_GET['DO_Type']));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-            }
-            $record = $rows;
-            $tiers = $rows[0]->DO_Tiers;
-            $result = $objet->db->requete($objet->updateTiersReglt($rg_no,$tiers));
-        }
-        $result=$objet->db->requete($objet->getDocReglByDO_Piece($_GET['do_piece'],$_GET['DO_Domaine'],$_GET['DO_Type']) );
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $record = $rows;
-        if($rows==null){
-            $reglement = new ReglementClass($rg_no);
-            $result = $objet->db->requete($objet->addDocRegl($_GET['DO_Domaine'], $_GET['DO_Type'], $_GET['do_piece'], 0, $reglement->N_Reglement,$reglement->RG_Date));
-            $result = $objet->db->requete($objet->getDocReglByDO_Piece($_GET['do_piece'],$_GET['DO_Domaine'],$_GET['DO_Type']));
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        }
-        $dr_no = $rows[0]->DR_No;
-        $result=$objet->db->requete($objet->addReglEch($rg_no, $dr_no, $_GET['DO_Domaine'], $_GET['DO_Type'], $_GET['do_piece'], round($_GET["montant"])) );
-        echo json_encode($record);
+        $fcreglement = new ReglementClass(0);
+        $fcreglement->addEcheance($_GET["protNo"],$_GET["cr_no"],$type_regl,$_GET["cbMarqEntete"],round($_GET["montant"]));
         break;
     case "getLigneFacture":
         envoiRequete($objet->getLigneFacture($_GET['DO_Piece'],$_GET['DO_Domaine'],$_GET['DO_Type']),$objet);

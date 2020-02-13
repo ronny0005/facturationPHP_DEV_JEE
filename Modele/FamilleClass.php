@@ -196,6 +196,10 @@ class FamilleClass Extends Objet{
         return $this->getApiJson("/getNextArticleByFam&faCodeFamille={$this->FA_CodeFamille}");
     }
 
+    public function getCatComptaByCodeFamille($CodeFamille,$ACP_Champ,$ACP_Type){
+        return $this->getApiJson("/getCatComptaByCodeFamille&faCodeFamille=$CodeFamille&fcpType=$ACP_Champ&fcpChamp=$ACP_Type");
+    }
+
     public function getFamilleCount()
     {
         $query ="    SELECT  count(*) Nb

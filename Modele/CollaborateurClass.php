@@ -98,6 +98,11 @@ class CollaborateurClass Extends Objet{
     }
 
 
+    public function getCaissierByCaisse($ca_no)
+    {
+        return $this->getApiJson("/getCaissierByCaisse&caNo=$ca_no");
+    }
+
     public function modifCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $co_no,$cbCreateur)
     {
 		$this->getApiJson("/modifCollaborateur&coNom=$nom&coPrenom=$prenom&coFonction=$fonction&coAdresse=$adresse&coComplement=$complement&coVille=$ville&coCodeRegion=$region&coPays=$pays&coService=$service&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail=$email&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur&coNo=$coNo");

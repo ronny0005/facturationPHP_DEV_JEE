@@ -223,25 +223,7 @@ jQuery(function($) {
                                 class: 'btn btn-primary',
                                 text: 'Oui',
                                 click: function () {
-                                    /*$(this).dialog("close");
-                                    $("#referenceAjout").val(refsaisie.replace(/[^a-z0-9\s]/gi, '').replace(/\s+/g, '').toUpperCase());
-                                    $("#designationAjout").val(refsaisie);
-                                    $("#formArticleFacture").dialog({
-                                        resizable: false,
-                                        height: "auto",
-                                        width: 1000,
-                                        modal: true,
-                                        title: "Création article",
-                                        buttons: {
-                                            "Valider": function () {
-                                                if ($("#referenceAjout").val() != "" && $("#designationAjout").val() != "" && $("#pxAchat").val() != "" && $("#pxHT").val() != "") {
-                                                    ajouterArticle($(this));
-                                                } else {
-                                                    alert("Les champs reférence, désignation, prix d'achat et prix de vente doivent être renseigné");
-                                                }
-                                            }
-                                        }
-                                    });*/
+
                                 }
                             },
                             "Non": {
@@ -472,16 +454,28 @@ jQuery(function($) {
                                 })
                             },
                             error : function(resultat, statut, erreur){
-                                alert(resultat.responseText);
+                                $("#alertEntete").show("slow", function() {
+                                    $("#alertEntete").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+resultat.responseText);
+                                    $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                    })
+                                })
                             }
                         });
                     } else
-                        alert("Saisissez une date !");
+                        $("#alertDate").show("slow", function() {
+                            $(this).fadeTo(2000, 500).slideUp(500, function(){
+                            })
+                        })
                 } else
-                    alert("Saisissez un tiers !");
-
+                    $("#alertTiers").show("slow", function() {
+                        $(this).fadeTo(2000, 500).slideUp(500, function(){
+                        })
+                    })
             }else {
-                alert("Choississez un statut valide !");
+                $("#alertStatut").show("slow", function() {
+                    $(this).fadeTo(2000, 500).slideUp(500, function(){
+                    })
+                })
             }
     }
 
@@ -664,13 +658,13 @@ jQuery(function($) {
         $(".valideReglement").dialog({
             resizable: false,
             height: "auto",
-            width: 400,
+            width: 300,
             modal: true,
             async: false,
             title : "Mode de règlement",
             buttons: {
                 "Valider": {
-                    class: 'btn btn-primary',
+                    class: 'bgColorApplication btn btn-primary',
                     text: 'Valider',
                     click: function () {
                         if ($("#date_rglt").val() != "" && $("#date_ech").val() != "") {
@@ -701,22 +695,37 @@ jQuery(function($) {
                                                         else
                                                             $("#redirectFacture").submit();
                                                     }else{
-                                                        alert(dataVal);
+                                                        $("#alertValideReglement").show("slow", function() {
+                                                            $("#alertValideReglement").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+dataVal);
+                                                            $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                                            })
+                                                        })
                                                     }
                                                 }
                                             })
                                         } else {
-                                            alert("L'avance ne doit pas dépassé " + parseFloat(totalttc).toLocaleString());
+                                            $("#alertValideReglement").show("slow", function() {
+                                                $("#alertValideReglement").html("L'avance ne doit pas dépassé " + parseFloat(totalttc).toLocaleString());
+                                                $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                                    $("#alertValideReglement").html("")
+                                                })
+                                            })
                                         }
                                 }
                             });
                         }else {
-                            alert("Veuillez saisir une date d'échéance et une date de règlement");
+
+                            $("#alertValideReglement").show("slow", function() {
+                                $("#alertValideReglement").html("Veuillez saisir une date d'échéance et une date de règlement");
+                                $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                    $("#alertValideReglement").html("")
+                                })
+                            })
                         }
                     }
                 },
                 "Annuler": {
-                    class: 'btn btn-primary',
+                    class: 'bgColorApplication btn btn-primary',
                     text: 'Annuler',
                     click: function () {
                         $(this).dialog("close");
@@ -930,7 +939,11 @@ jQuery(function($) {
                             }
                             if (data.message != null) {
                                 modification = true;
-                                alert(data.message);
+                                $("#alertLigne").show("slow", function() {
+                                    $("#alertLigne").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+data.message);
+                                    $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                    })
+                                })
                             } else {
                                 alimLigne();
                                 $('#reference').prop('disabled', false);
@@ -950,7 +963,11 @@ jQuery(function($) {
                         },
                         error: function (resultat, statut, erreur) {
                             modification = true;
-                            alert(resultat.responseText);
+                            $("#alertLigne").show("slow", function() {
+                                $("#alertLigne").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+resultat.responseText);
+                                $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                })
+                            })
                         }
                     });
                 } else {
@@ -981,7 +998,11 @@ jQuery(function($) {
                             }
 
                             if (data.message != null) {
-                                alert(data.message);
+                               $("#alertLigne").show("slow", function() {
+                                    $("#alertLigne").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+data.message);
+                                    $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                    })
+                                })
                             } else {
                                 alimLigne();
                                 calculTotal();
@@ -992,7 +1013,12 @@ jQuery(function($) {
                             }
                         },
                         error: function (resultat, statut, erreur) {
-                            alert(resultat.responseText);
+
+                            $("#alertLigne").show("slow", function() {
+                                $("#alertLigne").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+resultat.responseText);
+                                $(this).fadeTo(12000, 500).slideUp(500, function(){
+                                })
+                            })
                             alimLigne();
                             calculTotal();
                             getSaisieComtpable(0);
@@ -1003,7 +1029,13 @@ jQuery(function($) {
                     });
                     $("#reference").focus()
                 }
-            }else alert("la quantité doit être différent de 0 !");
+            }else
+                $("#alertLigne").show("slow", function() {
+                    $("#alertLigne").html("la quantité doit être différent de 0 !");
+                    $(this).fadeTo(12000, 500).slideUp(500, function(){
+                        $("#alertLigne").html("")
+                    })
+                })
             reste_a_payer()
         }
     }
@@ -1208,7 +1240,6 @@ jQuery(function($) {
                                         valECNo = data.EC_No;
                                 },
                                 error: function(){
-                                    //alert("ndem total");
                                 }
                             });
                         }
@@ -1340,7 +1371,11 @@ jQuery(function($) {
             dataType: 'json',
             success: function (data) {
                 if(data[0].stockMinDepasse==1)
-                    alert("le stock minimum de l'article "+ar_ref+ " est dépassé ! (stock min : "+data[0].AS_QteMini+" stock : "+data[0].AS_QteSto+")");
+                    $("#alertLigneMessage").show("slow", function() {
+                        $("#alertLigneMessage").html("le stock minimum de l'article "+ar_ref+ " est dépassé ! (stock min : "+data[0].AS_QteMini+" stock : "+data[0].AS_QteSto);
+                        $(this).fadeTo(5000, 500).slideUp(500, function(){
+                        })
+                    })
             }
         });
     }
@@ -1369,10 +1404,21 @@ jQuery(function($) {
                 var stock = Math.round(data[0].AS_QteSto);
                 if(stock>=DL_Qte)
                     supprime_ligne(cbMarq);
-                else alert("la quantité du depot "+de_intitule+" est inssufisante ! (Qte : "+stock+")");
+                else
+                    $("#alertLigneMessage").show("slow", function() {
+                    $("#alertLigneMessage").html("la quantité du depot "+de_intitule+" est inssufisante ! (Qte : "+stock+")");
+                    $(this).fadeTo(5000, 500).slideUp(500, function(){
+                        $("#alertLigneMessage").html("")
+                    })
+                })
             },
             error : function (data){
-                alert("la quantité du depot "+de_intitule+" est inssufisante ! (Qte : 0)");
+                $("#alertLigneMessage").show("slow", function() {
+                    $("#alertLigneMessage").html("la quantité du depot "+de_intitule+" est inssufisante ! (Qte : 0)");
+                    $(this).fadeTo(5000, 500).slideUp(500, function(){
+                        $("#alertLigneMessage").html("")
+                    })
+                })
             }
         });
     }

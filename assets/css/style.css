@@ -6,6 +6,17 @@ body{
     font-size: 14px;
 }
 
+.fontApplication{
+    color : #024e05;
+}
+
+.fontApplication:hover{
+    color : #024e05;
+}
+
+.bgApplication{
+    background-color : #024e05;
+}
 .bgcolorApplication{
     background-color : #024e05;
 }

@@ -1046,15 +1046,6 @@ SELECT DISTINCT 0 DL_NoIn,0 cbMarq,fArt.AR_Ref,fArt.AR_Design DL_Design,0 AG_No1
                 WHERE CO_Caissier=1";
     }
 
-    public function getCaissierByCaisse($ca_no)
-    {
-        return "SELECT CO.CO_No,CO_Nom
-                FROM " . $this->db->baseCompta . ".dbo.F_COLLABORATEUR CO
-                LEFT JOIN F_CAISSECAISSIER CA ON CO.CO_No = CA.CO_No
-                WHERE CO_Caissier=1 AND (0 = $ca_no OR CA_No = $ca_no)
-                GROUP BY CO.CO_No,CO_Nom";
-    }
-
     public function updateEnteteTable($domaine, $souche, $type, $do_piece)
     {
         return "UPDATE F_DOCCURRENTPIECE SET DC_Piece='$do_piece',cbModification=GETDATE() WHERE DC_Domaine=$domaine AND DC_Souche=$souche AND DC_IdCol=$type";
@@ -2824,7 +2815,7 @@ ORDER BY  DE_Intitule,
                 WHERE DO_Piece='$entete_facture'";
     }
     public function updateDrRegleByDOPiece($do_piece) {
-        return "UPDATE F_DOCREGL SET Dr_Regle = 1,cbModification=GETDATE() WHERE DO_Piece = '" . $do_piece . "'";
+        return "UPDATE F_DOCREGL SET Dr_Regle = 1,cbModification=GETDATE() WHERE DO_Piece = '{$do_piece}'";
     }
 
     public function updateReglementCaisse($libelle,$montant,$rg_no) {
@@ -3231,23 +3222,51 @@ ORDER BY  DE_Intitule,
     }
 
     public function getFactureCORecouvrement($co_no, $ct_num,$souche,$collab) {
-        $requete = "SELECT *
-                    FROM(SELECT DO_Provenance,E.cbModification,DE_Intitule,E.DO_Piece,E.DO_Type,E.DO_Domaine,E.DO_Ref,CAST(CAST(E.DO_Date AS DATE) AS VARCHAR(10)) AS DO_Date,ISNULL(MAX(CASE WHEN E.N_CatCompta=0 THEN (C.N_CatCompta) ELSE (E.N_CatCompta) END),'0') N_CatCompta,E.DO_Tiers as CT_Num,CT_Intitule, ROUND(SUM(L.DL_MontantTTC),0) AS ttc, 
-                 ISNULL(MAX(latitude),0) as latitude,ISNULL(MAX(longitude),0) as longitude,ISNULL(sum(avance),0) AS avance  
-                 FROM  F_DOCENTETE E 
-                 LEFT JOIN (SELECT DO_Piece,DO_Type,DO_Domaine,DO_Ref,DO_Date,CT_Num,SUM(DL_MontantTTC) DL_MontantTTC FROM F_DOCLIGNE L GROUP BY DO_Piece,DO_Type,DO_Domaine,DO_Ref,DO_Date,CT_Num) L on E.DO_Piece=L.DO_Piece  AND E.DO_Domaine= L.DO_Domaine AND E.DO_Type=L.DO_Type
-                 LEFT JOIN F_DOCREGL R on R.DO_Piece=E.DO_Piece AND R.DO_Type=E.DO_Type AND R.DO_Domaine=E.DO_Domaine
-                 INNER JOIN F_DEPOT D on D.DE_No=E.DE_No 
-                 INNER JOIN F_COMPTET C on C.CT_Num=E.DO_Tiers
-                 LEFT JOIN (SELECT DR_No, SUM(RC_MONTANT) avance FROM F_REGLECH R INNER JOIN F_Creglement Re on Re.RG_No=R.RG_No GROUP BY DR_No) A ON A.DR_No=R.DR_No  
-                 WHERE ($collab = 0 AND (E.DO_Domaine=0 
-                    AND (E.DO_Type=6 OR E.DO_Type=7) 
-                    AND DO_Provenance IN(0,1)) OR (E.DO_Domaine=1
-                    AND (E.DO_Type=16 OR E.DO_Type=17 OR E.DO_Type=12)) OR ($collab = 1 AND E.DO_Domaine=1 ) )  
-                    AND ISNULL(r.dr_regle,0)=0 AND ($collab = 1 OR ($collab = 0 AND C.CT_Num = '$ct_num'))
-                    AND (0 = '$collab' OR ($collab=1 AND E.CO_No = '$ct_num'))
-                    GROUP BY DO_Provenance,E.cbModification,DE_Intitule,E.DO_Piece,E.DO_Type,E.DO_Domaine,E.DO_Ref,E.DO_Date,E.DO_Tiers,CT_Intitule)A
-                    WHERE ((DO_Provenance =0 AND ttc>0) OR DO_Provenance=1) AND NOT (TTC=AVANCE) 
+        $requete = "DECLARE @collab AS INT
+                DECLARE @ctNum AS NVARCHAR(150) 
+                SET @collab = $collab;
+                SET @ctNum = '$ct_num';
+                WITH _ReglEch_ AS (
+                    SELECT DR_No, SUM(RC_MONTANT) avance 
+                    FROM F_REGLECH R 
+                    INNER JOIN F_Creglement Re 
+                        ON Re.RG_No=R.RG_No 
+                    GROUP BY DR_No
+                )
+                ,_DocLigne_ AS (
+                    SELECT DO_Piece,DO_Type,DO_Domaine,SUM(DL_MontantTTC) DL_MontantTTC 
+                    FROM F_DOCLIGNE L 
+                    GROUP BY DO_Piece,DO_Type,DO_Domaine,DO_Date
+                )
+                SELECT *
+                    FROM(
+                         SELECT E.cbMarq,DO_Provenance,E.cbModification,DE_Intitule,E.DO_Piece,E.DO_Type,E.DO_Domaine,E.DO_Ref,CAST(CAST(E.DO_Date AS DATE) AS VARCHAR(10)) AS DO_Date,ISNULL(MAX(CASE WHEN E.N_CatCompta=0 THEN (C.N_CatCompta) ELSE (E.N_CatCompta) END),'0') N_CatCompta,E.DO_Tiers as CT_Num,CT_Intitule, ROUND(SUM(L.DL_MontantTTC),0) AS ttc, 
+                                ISNULL(MAX(latitude),0) as latitude,ISNULL(MAX(longitude),0) as longitude,ISNULL(sum(avance),0) AS avance  
+                         FROM  F_DOCENTETE E 
+                         LEFT JOIN _DocLigne_ L 
+                            ON  E.DO_Piece=L.DO_Piece  
+                            AND E.DO_Domaine= L.DO_Domaine 
+                            AND E.DO_Type=L.DO_Type
+                         LEFT JOIN F_DOCREGL R 
+                            ON  R.DO_Piece=E.DO_Piece 
+                            AND R.DO_Type=E.DO_Type 
+                            AND R.DO_Domaine=E.DO_Domaine
+                         INNER JOIN F_DEPOT D 
+                            ON D.DE_No=E.DE_No 
+                         INNER JOIN F_COMPTET C 
+                            ON C.CT_Num=E.DO_Tiers
+                         LEFT JOIN _ReglEch_ A 
+                            ON A.DR_No=R.DR_No  
+                         WHERE (@collab = 0 AND (E.DO_Domaine=0 
+                            AND (E.DO_Type=6 OR E.DO_Type=7) 
+                            AND DO_Provenance IN(0,1)) OR (E.DO_Domaine=1
+                            AND (E.DO_Type=16 OR E.DO_Type=17 OR E.DO_Type=12)) OR (@collab = 1 AND E.DO_Domaine=1 ) )  
+                            AND ISNULL(r.dr_regle,0)=0 AND (@collab = 1 OR (@collab = 0 AND C.CT_Num = @ctNum))
+                            AND (0 = @collab OR (@collab=1 AND CAST(E.CO_No AS NVARCHAR(50)) = @ctNum))
+                            GROUP BY E.cbMarq,DO_Provenance,E.cbModification,DE_Intitule,E.DO_Piece,E.DO_Type,E.DO_Domaine,E.DO_Ref,E.DO_Date,E.DO_Tiers,CT_Intitule
+                    )A
+                    WHERE ((DO_Provenance =0 AND ttc>0) OR DO_Provenance=1) 
+                    AND     NOT (TTC=AVANCE) 
                     ORDER BY DO_Date DESC";
         return $requete;
     }
@@ -4131,19 +4150,29 @@ SELECT	P.cbMarq
     }
 
     public function getCollaborateurEnvoiMail($intitule){
-        return "SELECT CO_No,CO_Nom,CO_Prenom,CO_EMail,CO_Telephone,PROT_User
-                FROM [Z_LiaisonEnvoiMailUser] A
-                INNER JOIN F_PROTECTIONCIAL B ON A.PROT_No=B.PROT_No
-                INNER JOIN F_COLLABORATEUR C ON C.CO_Nom=B.PROT_User
-                INNER JOIN [dbo].[Z_TypeEnvoiMail] D ON D.TE_No=A.TE_No
-                WHERE TE_Intitule='$intitule'";
+        return "SELECT  CO_No,CO_Nom
+                        ,CO_Prenom,CO_EMail
+                        ,CO_Telephone,PROT_User
+                FROM    [Z_LiaisonEnvoiMailUser] A
+                INNER JOIN F_PROTECTIONCIAL B 
+                    ON  A.PROT_No=B.PROT_No
+                INNER JOIN F_COLLABORATEUR C 
+                    ON  C.CO_Nom=B.PROT_User
+                INNER JOIN [dbo].[Z_TypeEnvoiMail] D 
+                    ON  D.TE_No=A.TE_No
+                WHERE   TE_Intitule='$intitule'";
     }
     public function getCollaborateurEnvoiSMS($intitule){
-        return "SELECT CO_No,CO_Nom,CO_Prenom,CO_EMail,CO_Telephone,PROT_User
-                FROM [Z_LiaisonEnvoiSMSUser] A
-                INNER JOIN F_PROTECTIONCIAL B ON A.PROT_No=B.PROT_No
-                INNER JOIN F_COLLABORATEUR C ON C.CO_Nom=B.PROT_User
-                INNER JOIN [dbo].[Z_TypeEnvoiMail] D ON D.TE_No=A.TE_No
+        return "SELECT  CO_No,CO_Nom,CO_Prenom
+                        ,CO_EMail,CO_Telephone
+                        ,PROT_User
+                FROM    [Z_LiaisonEnvoiSMSUser] A
+                INNER JOIN F_PROTECTIONCIAL B 
+                    ON  A.PROT_No=B.PROT_No
+                INNER JOIN F_COLLABORATEUR C 
+                    ON  C.CO_Nom=B.PROT_User
+                INNER JOIN [dbo].[Z_TypeEnvoiMail] D 
+                    ON D.TE_No=A.TE_No
                 WHERE TE_Intitule='$intitule'";
     }
 
@@ -4395,16 +4424,30 @@ LEFT JOIN (SELECT cbMarq,DO_Piece AS DO_Piece_Dest,DL_PrixUnitaire AS DL_PrixUni
     }
 
     public function isRegleFullDOPiece($do_piece){
-        return"   SELECT CASE WHEN RC_Montant >= DL_MontantTTC THEN 1 ELSE 0 END AS VAL
-                FROM(
-                SELECT A.*,ISNULL(RC_Montant,0) RC_Montant 
-                FROM(SELECT DO_Type,DO_Domaine,DO_Piece,SUM(DL_MontantTTC) DL_MontantTTC
+        return" WITH _Ligne_ AS (
+                    SELECT DO_Type,DO_Domaine,cbDO_Piece,SUM(DL_MontantTTC) DL_MontantTTC
                         FROM F_DOCLIGNE C 
-                        WHERE DO_Piece='$do_piece'
-                        GROUP BY DO_Type,DO_Domaine,DO_Piece)A
-                LEFT JOIN (SELECT DO_Type,DO_Domaine,DO_Piece, SUM(RC_Montant)RC_Montant
-                                        FROM F_REGLECH 
-                                        GROUP BY DO_Type,DO_Domaine,DO_Piece) D ON D.DO_Piece=A.DO_Piece AND D.DO_Domaine = A.DO_Domaine AND A.DO_Type = D.DO_Type
+                        INNER JOIN F_DOCENTETE FD 
+                            ON FD.cbDO_Piece = C.cbDO_Piece
+                            AND FD.DO_Domaine = C.DO_Domaine
+                            AND FD.DO_Type = C.DO_Type
+                        WHERE FD.cbMarq ='$cbMarq'
+                        GROUP BY DO_Type,DO_Domaine,cbDO_Piece
+                )       
+                ,_ReglEch_ AS (
+                    SELECT DO_Type,DO_Domaine,cbDO_Piece, SUM(RC_Montant)RC_Montant
+                    FROM F_REGLECH 
+                    GROUP BY DO_Type,DO_Domaine,cbDO_Piece
+                )
+
+                SELECT CASE WHEN RC_Montant >= DL_MontantTTC THEN 1 ELSE 0 END AS VAL
+                FROM(SELECT  A.DL_MontantTTC
+                            ,RC_Montant = ISNULL(RC_Montant,0)  
+                     FROM    _Ligne_ A
+                     LEFT JOIN _ReglEch_ D 
+                        ON  D.cbDO_Piece=A.cbDO_Piece 
+                        AND D.DO_Domaine = A.DO_Domaine 
+                        AND A.DO_Type = D.DO_Type
                 ) A";
     }
 
@@ -4544,24 +4587,6 @@ LEFT JOIN (SELECT cbMarq,DO_Piece AS DO_Piece_Dest,DL_PrixUnitaire AS DL_PrixUni
                 WHERE marks<>'')A";
     }
 
-    public function getCatComptaByCodeFamille($CodeFamille,$ACP_Champ,$ACP_Type){
-        return "SELECT A.FA_CodeFamille,FCP_Type ACP_Type,FCP_Champ ACP_Champ,ISNULL(FCP_ComptaCPT_CompteG,'') CG_Num,ISNULL(CG.CG_Intitule,'') CG_Intitule,
-                ISNULL(FCP_ComptaCPT_CompteA,'') CG_NumA,ISNULL(CA.CG_Intitule,'') CG_IntituleA,
-                ISNULL(FCP_ComptaCPT_CompteA,'')CG_NumA,ISNULL(FCP_ComptaCPT_Taxe1,'') Taxe1,
-                ISNULL(TU.TA_Intitule,'') TA_Intitule1,ISNULL(TU.TA_Taux,0) TA_Taux1
-                ,ISNULL(FCP_ComptaCPT_Taxe2,'') Taxe2,ISNULL(TD.TA_Intitule,'') TA_Intitule2,ISNULL(TD.TA_Taux,0) TA_Taux2,
-                ISNULL(FCP_ComptaCPT_Taxe3,'') Taxe3,ISNULL(TT.TA_Intitule,'') TA_Intitule3,ISNULL(TT.TA_Taux,0) TA_Taux3
-                FROM F_FAMCOMPTA A 
-                LEFT JOIN F_TAXE TU ON A.FCP_ComptaCPT_Taxe1 = TU.TA_Code
-                LEFT JOIN F_TAXE TD ON A.FCP_ComptaCPT_Taxe2 = TD.TA_Code
-                LEFT JOIN F_TAXE TT ON A.FCP_ComptaCPT_Taxe3 = TT.TA_Code
-                LEFT JOIN F_COMPTEG CG ON A.FCP_ComptaCPT_CompteG = CG.CG_Num
-                LEFT JOIN F_COMPTEG CA ON A.FCP_ComptaCPT_CompteA = CA.CG_Num
-                WHERE A.FA_CodeFamille='$CodeFamille'
-                AND A.FCP_Type=$ACP_Type
-                AND A.FCP_Champ=$ACP_Champ";
-    }
-
     public function getCatComptaCount() {
         return "
 select count(*) Nb
@@ -4662,13 +4687,23 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
     public function removeFacRglt($do_piece,$do_type,$do_domaine,$rg_no){
         $requete="  UPDATE F_DOCREGL SET DR_Regle = 
                      (SELECT CASE WHEN DR_Regle= 1 THEN 0 ELSE DR_Regle END
-                    FROM F_DOCREGL A
-					INNER JOIN F_REGLECH B ON A.DR_No=B.DR_No
-                    WHERE RG_No=$rg_no AND A.DO_Piece='$do_piece' AND A.DO_Domaine='$do_domaine' AND A.DO_Type='$do_type')
+                        FROM F_DOCREGL A
+                        INNER JOIN F_REGLECH B ON A.DR_No=B.DR_No
+                        WHERE RG_No=$rg_no 
+                        AND A.DO_Piece='$do_piece' 
+                        AND A.DO_Domaine='$do_domaine' 
+                          AND A.DO_Type='$do_type')
                     FROM F_REGLECH 
-                    WHERE F_DOCREGL.DR_No=F_REGLECH.DR_No AND RG_No=$rg_no AND F_DOCREGL.DO_Piece='$do_piece' AND F_DOCREGL.DO_Domaine='$do_domaine' AND F_DOCREGL.DO_Type='$do_type';
+                    WHERE F_DOCREGL.DR_No=F_REGLECH.DR_No 
+                    AND RG_No=$rg_no 
+                    AND F_DOCREGL.DO_Piece='$do_piece' 
+                    AND F_DOCREGL.DO_Domaine='$do_domaine' 
+                    AND F_DOCREGL.DO_Type='$do_type';
                     DELETE FROM F_REGLECH
-                    WHERE RG_No=$rg_no AND DO_Piece='$do_piece' AND DO_Domaine='$do_domaine' AND DO_Type='$do_type';
+                    WHERE   RG_No=$rg_no 
+                    AND     DO_Piece='$do_piece' 
+                    AND     DO_Domaine='$do_domaine' 
+                    AND     DO_Type='$do_type';
                     UPDATE F_CREGLEMENT SET RG_Impute = 
                      (SELECT CASE WHEN RG_Impute = 1 THEN 0 ELSE RG_Impute END
                     FROM F_CREGLEMENT

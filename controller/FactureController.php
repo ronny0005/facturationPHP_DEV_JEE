@@ -108,7 +108,7 @@ if($type!="Achat" && $type!="AchatC" && $type!="AchatRetour" && $type!="AchatRet
 //cat tarif
 $accesCatTarif = "";
 $listeCatTarif = "";
-if($protection->PROT_TARIFICATION_CLIENT!=0 || $isVisu) $accesCatTarif = "readonly";
+if($protection->PROT_TARIFICATION_CLIENT!=0 || $isVisu) $accesCatTarif = "disabled";
 $cattarif = new CatTarifClass(0);
 foreach($cattarif->allCatTarif() as $row){
     $listeCatTarif = $listeCatTarif."<option value='{$row->cbIndice}'";
@@ -120,7 +120,7 @@ foreach($cattarif->allCatTarif() as $row){
 //Cat compta
 $accessCatCompta = "";
 if ((isset($_GET["cbMarq"]) && $isLigne == 1) || $isVisu)
-    $accessCatCompta = "readonly";
+    $accessCatCompta = "disabled";
 
 $listeCatCompta = "";
 $catComptaClass = new CatComptaClass(0);
@@ -140,7 +140,7 @@ if($rows==null){
 //Souche
 $accessSouche = "";
 $listeSouche="";
-if(isset($_GET["cbMarq"]) || $isVisu) $accessSouche = "readonly";
+if(isset($_GET["cbMarq"]) || $isVisu) $accessSouche = "disabled";
 if($admin==1 && $type!="Retour" && $type!="BonLivraison"&& $type!="Devis")
     $listeSouche= $listeSouche."<option value=''></option>";
 $isPrincipal = 0;
@@ -175,7 +175,7 @@ if($rows==null){
 $accessAffaire = "";
 $listeAffaire = "";
 if($isVisu || $readonly || (isset($_GET["cbMarq"])))
-    $accessAffaire = "readonly";
+    $accessAffaire = "disabled";
 
 if($admin!=0){
     $listeAffaire = $listeAffaire."<option value=''></option>";
@@ -212,12 +212,12 @@ if($docEntete->DO_Date!="")
 if(isset($_GET["cbMarq"]) || (!isset($_GET["cbMarq"]) && $protectDate!=0))
     $accesDate = "disabled";
 else if($readonly)
-    $accesDate = "readonly";
+    $accesDate = "disabled";
 
 //Depot
 $accesDepot = "";
 if($isVisu || $readonly || (isset($_GET["cbMarq"])))
-    $accesDepot ="readonly";
+    $accesDepot ="disabled";
 
 $isPrincipal = 0;
 if($admin==0){
@@ -254,7 +254,7 @@ if($rows==null){
 $accesCollaborateur = "";
 $listeCollaborateur ="";
 if ($readonly || $isVisu)
-    $accesCollaborateur = "readonly";
+    $accesCollaborateur = "disabled";
 
 $collaborateur = new CollaborateurClass(0);
 if($_GET["type"]=="Achat" || $type=="AchatC" || $_GET["type"]=="AchatRetour" || $type=="AchatRetourC" || $_GET["type"]=="PreparationCommande" || $type=="AchatPreparationCommande" ){
@@ -272,7 +272,7 @@ foreach($rows as $row){
 $accesCaisse = "";
 $listeCaisse= "";
 if ($readonly || isset($_GET["cbMarq"]) || $isVisu)
-    $accesCaisse = "readonly";
+    $accesCaisse = "disabled";
 
 $isPrincipal = 0;
 $caisseClass = new CaisseClass(0);
@@ -321,7 +321,7 @@ if($isVisu) $accessReference ="readonly";
 $accessStatut = "";
 $listeStatut ="";
 if ($readonly || $isVisu)
-    $accessStatut = "readonly";
+    $accessStatut = "disabled";
 
 if( $type!="AchatRetour" && $type!="AchatRetourC" && $type!="Achat" && $type!="AchatC" && $type!="PreparationCommande" && $type!="AchatPreparationCommande" ) {
     $typeparam = $type;

@@ -1,9 +1,6 @@
-<script src="js/scriptCombobox.js?d=<?php echo time(); ?>"></script>
 <script src="js/script_Mouvement.js?d=<?php echo time(); ?>"></script>
-</head>
-<body>
 <?php
-include("module/Menu/BarreMenu.php");
+$protection = new ProtectionClass($_SESSION["login"],$_SESSION["mdp"]);
 $objet = new ObjetCollector();
 $cat_tarif=0;
 $cat_compta=0;
@@ -60,15 +57,13 @@ $isModif = $docEntete->isModif($_SESSION["id"],$type);
 $isVisu = $docEntete->isVisu($_SESSION["id"],$type);
 
 ?>
-<div id="milieu">    
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
-<div class="col-md-12">
+
+<section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
+        <?= $protection->listeFactureNom($type) ?>
+    </h3>
+</section>
+
 <?php
 include("pages/enteteMvt.php");
 include("pages/ligneMvt.php");

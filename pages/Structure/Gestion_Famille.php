@@ -7,38 +7,22 @@
     $flagNouveau = $protection->NouveauType("famille");
 
 ?>
-<script src="js/jquery.dynatable.js?d=<?php echo time(); ?>" type="text/javascript"></script>
 <script src="js/script_listeFamille.js?d=<?php echo time(); ?>"></script>
-</head>
 
-<body>    
-<?php
-include("module/Menu/BarreMenu.php");
-?>
-<div id="milieu">    
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
-<div class="corps">        
+
+<section class="bgcolorApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">Liste Famille</h3>
+</section>
+
         <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
         <input type="hidden" id="login" value="<?php echo $_SESSION["login"]; ?>"/>
-   
-     <div class="col-md-12">
 
-<fieldset class="entete">
-<legend class="entete">Liste famille</legend>
-
-<div class="form-group">
 <form action="indexMVC.php?module=2&action=2" method="GET">
     <table style="margin-bottom: 20px;width:100%">
     <thead>
         <tr>
             <?php if($flagNouveau){ ?>
-                <td style="float:right"><a href="indexMVC.php?module=3&action=7"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td><?php } ?>
+                <td style="float:right"><a href="ficheFamille"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td><?php } ?>
         </tr>
         </form>
 </table>
@@ -64,7 +48,7 @@ include("module/Menu/BarreMenu.php");
             if($i%2==0) $classe = "info";
                     else $classe="";
             echo "<tr class='article $classe' id='article_{$row->FA_CodeFamille}'>
-                    <td><a href='indexMVC.php?module=3&action=7&FA_CodeFamille={$row->FA_CodeFamille}'>{$row->FA_CodeFamille}</a></td>
+                    <td><a href='FicheFamille-{$row->FA_CodeFamille}'>{$row->FA_CodeFamille}</a></td>
                     <td>{$row->FA_Intitule}</td>";
                     if($flagSuppr) echo "<td><a href='Traitement\Creation.php?acte=suppr_famille&FA_CodeFamille={$row->FA_CodeFamille}' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer {$row->FA_CodeFamille} ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
                     echo "</tr>";
@@ -73,9 +57,3 @@ include("module/Menu/BarreMenu.php");
       ?>
 </tbody>
 </table>
- </div>
-
-   
-</div>
- 
-</div>

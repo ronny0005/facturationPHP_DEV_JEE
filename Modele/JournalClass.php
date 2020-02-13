@@ -16,7 +16,9 @@ class JournalClass Extends Objet{
     public $lien = "fjournaux";
 
     function __construct($id,$db=null) {
-        parent::__construct($this->table, $id,'JO_Num',$db);
+
+        $this->class="fjournaux";
+        $this->data = $this->getApiJson("/$id");
         if(sizeof($this->data)>0) {
             $this->JO_Num = $this->data[0]->JO_Num;
             $this->JO_Intitule = stripslashes($this->data[0]->JO_Intitule);
@@ -62,7 +64,8 @@ class JournalClass Extends Objet{
     }
 
     public function getJournauxType($type,$sommeil=-1){
-        return $this->getApiJson("/getJournauxType&joType=$type&joSommeil=$sommeil");
+        //&joSommeil=$sommeil
+        return $this->getApiJson("/getJournauxType&joType=$type");
     }
 
     public function __toString() {

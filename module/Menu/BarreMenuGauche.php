@@ -6,7 +6,9 @@
         </a>
         <hr class="sidebar-divider my-0">
         <ul class="nav navbar-nav text-light" id="accordionSidebar">
-            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(2,78,5);font-weight: bold;">Bienvenue <?= $_SESSION["login"] ?> !</a>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(2,78,5);font-weight: bold;">Bienvenue <?= $_SESSION["login"] ?> !</a>
+                <input type="hidden" value="<?= $_SESSION["id"] ?>" name="PROT_No" id="PROT_No" />
                 <div class="dropdown-menu" role="menu" style="border: none;"><a class="dropdown-item customDropdown-item" role="presentation" href="#">Utilisateur</a><a class="dropdown-item customDropdown-item" role="presentation" href="#">Profil</a><a class="dropdown-item customDropdown-item" role="presentation"
                                                                                                                                                                                                                                                              href="#">Droits</a><a class="dropdown-item customDropdown-item" role="presentation" href="#">Envoi mail</a><a class="dropdown-item customDropdown-item" role="presentation" href="#">Envoi SMS</a><a class="dropdown-item customDropdown-item"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                   role="presentation" href="#">Compte SMS</a><a class="dropdown-item customDropdown-item" role="presentation" href="#">Config. accès</a><a class="dropdown-item customDropdown-item" role="presentation" href="#">Config. profil&nbsp;</a>

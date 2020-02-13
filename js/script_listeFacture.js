@@ -26,7 +26,6 @@ $("#menu_transform").hide();
     }
 
     function referencement(){
-        alert($("#tableListeFacture_filter").find(":input").html())
     }
 
 $("table.table > tbody > tr #transform").on('click', function() {
@@ -123,9 +122,15 @@ $("table.table > tbody > tr #transform").on('click', function() {
             fixedHeader: {
                 header: true,
                 footer: true
+            },
+            "initComplete": function(settings, json) {
+                $("#users_filter").find(":input").addClass("form-control");
+                $("#users_length").find(":input").addClass("form-control");
             }
+
         }
     );
+
 
     $("#tableListeFacture_filter").find(":input").addClass("form-control")
     if($("#date_transform").val()=="")

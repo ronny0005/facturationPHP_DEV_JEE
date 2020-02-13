@@ -1,5 +1,4 @@
 jQuery(function ($) {
-    var lien="../../ServeurFacturationPHP/index.php?";
     $("#dateReglementEntete_deb").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
     $("#dateReglementEntete_fin").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
 
@@ -13,16 +12,17 @@ jQuery(function ($) {
             $("#dateRec").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"});
 
 
+
     $("#dateRemiseBon").datepicker({dateFormat: "yy-mm-dd", altFormat: "yy-mm-dd"});
     $("#dateRemiseBon").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
     if($("#dateRec").is('[readonly]')==false)
         $("#dateRec").datepicker({dateFormat:"ddmmy"}).datepicker("setDate",new Date());
     else
         $("#dateRec").val($.datepicker.formatDate('ddmmy',new Date()));
-    if($_GET("dateReglementEntete_deb")==null)
+    if($("#post").val()==0)
         $("#dateReglementEntete_deb").datepicker({dateFormat:"ddmmy"}).datepicker("setDate",new Date());
 
-    if($_GET("dateReglementEntete_fin")==null)
+    if($("#post").val()==0)
         $("#dateReglementEntete_fin").datepicker({dateFormat:"ddmmy"}).datepicker("setDate",new Date());
 
     var cat_tarif = 0;
@@ -58,12 +58,24 @@ jQuery(function ($) {
     var profilCaisse=0;
     var profilDaf=0;
 
-    $( "#client" ).combobox();
     var cmp = 0;
-    $(".custom-combobox").each(function(){
-        if(cmp==0) $(this).attr("class", "comboclient");
-        cmp=cmp+1;
-    });
+
+    $("#client").autocomplete({
+        source: "indexServeur.php?page=getTiersByNumIntituleSearch&intitule="+$("#client").val()+"&type="+$("#typeDocument").val()+"&ctSommeil=0",
+        autoFocus: true,
+        select: function(event, ui) {
+            event.preventDefault()
+            $("#client").val(ui.item.label)
+            $("#CT_Num").val(ui.item.value)
+        },
+        focus: function(event, ui) {
+        }
+    }).keypress(function (e, data, ui) {
+        if (e.which == 13) {
+
+        }
+    })
+
     function verifEntete() {
         if ($("#client option:selected").val() != "" && $("#depot").val() != "") {
             return true;
@@ -72,8 +84,8 @@ jQuery(function ($) {
     }
 
     $('.message a').click(function () {
-        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-    });
+        $('form').animate({height: "toggle", opacity: "toggle"}, "slow")
+    })
 
 
     function protection(){
@@ -83,50 +95,34 @@ jQuery(function ($) {
             dataType: 'json',
             success: function(data) {
                 $(data).each(function() {
-                    var fich = $_GET("type");
                     admin = this.PROT_Right;
-                    //if(this.ProfilName=="VENDEUR")
                     protect=1;
-                    /*if(admin==1)
-                        protect=0;
-                    if(this.PROT_Administrator==1 || this.PROT_Right==1)
-                        protect=1;*/
-//                    if(this.PROT_DOCUMENT_REGLEMENT==1)
-                    //                       $("#form-valider :input").prop("disabled", true);
-
                 });
             }
         });
     }
     protection();
 
-
-    //$("#confirm_change").hide();
-    if($_GET("client")==null){
-        $(".comboclient :input").val("");
-    }
-
-    // $("#choose_caissier").hide();
     $("#caisse").change(function(){
         infoCaisse();
-        //if($_GET("typeRegl")!="Collaborateur")
+        //if($("#typeRegl").val()!="Collaborateur")
         rafraichir_liste_collab();
     });
     rafraichir_liste_collab();
 
     $('#imprimer').click(function(){
-        var impression="export/exportReglementZumi.php?CT_Num="+$("#client").val()+"&datedeb="+returnDate($("#dateReglementEntete_deb").val())+"&datefin="+returnDate($("#dateReglementEntete_fin").val())+"&type="+$("#type").val()+"&mode_reglement="+$("#mode_reglement").val()+"&caisse="+$("#caisse").val()+"&typeRegl="+$_GET("typeRegl");
+        var impression="export/exportReglementZumi.php?CT_Num="+$("#CT_Num").val()+"&datedeb="+returnDate($("#dateReglementEntete_deb").val())+"&datefin="+returnDate($("#dateReglementEntete_fin").val())+"&type="+$("#type").val()+"&mode_reglement="+$("#mode_reglement").val()+"&caisse="+$("#caisse").val()+"&typeRegl="+$("#typeRegl").val();
         window.open(impression);
     });
 
     function afficheReglement(date,montant,libelle,rg_no){
         var typeregl=0;
-        if($_GET("typeRegl")!=undefined){
+        if($("#typeRegl").val()!=undefined){
             typeregl=1;
         }
         if($("#filtre_lieu").val()==1){
             var rgType = 0;
-            if($_GET("typeRegl")!="Client") rgType = 1;
+            if($("#typeRegl").val()!="Client") rgType = 1;
             $("#confirm_change").dialog({
                 resizable: false,
                 height: "auto",
@@ -138,12 +134,12 @@ jQuery(function ($) {
                         text: 'Oui',
                         click: function () {
                             $.ajax({
-                                url: "indexServeur.php?page=addReglement&bonCaisse="+typeregl+"&RG_No="+rg_no+"&CT_Num=" + $("#client").val() + "&CA_No=" + $("#caisse").val()+ "&date=" + date+ "&montant=" + montant+ "&libelle=" + libelle+"&impute=0&RG_Type="+rgType,
+                                url: "indexServeur.php?page=addReglement&bonCaisse="+typeregl+"&RG_No="+rg_no+"&CT_Num=" + $("#CT_Num").val() + "&CA_No=" + $("#caisse").val()+ "&date=" + date+ "&montant=" + montant+ "&libelle=" + libelle+"&impute=0&RG_Type="+rgType,
                                 method: 'GET',
                                 dataType: 'json',
                                 async : false,
                                 success: function(data) {
-                                    window.location.replace("indexMVC.php?module=1&action=4&co_no="+$("#co_no").val()+"&client="+$("#client").val()+"&caisse="+$("#caisse").val()+"&type="+$("#type").val()+"&filtre_lieu="+$("#filtre_lieu").val()+"&rechercher=Rechercher&acte=ajoutOK");
+                                    window.location.replace("indexMVC.php?module=1&action=4&co_no="+$("#co_no").val()+"&client="+$("#CT_Num").val()+"&caisse="+$("#caisse").val()+"&type="+$("#type").val()+"&filtre_lieu="+$("#filtre_lieu").val()+"&rechercher=Rechercher&acte=ajoutOK");
                                 },
                                 error: function (resultat, statut, erreur) {
                                     alert(resultat.responseText);
@@ -161,12 +157,6 @@ jQuery(function ($) {
                 }
             });
         }
-    }
-
-
-    if($_GET("acte")=="ajoutOK"){
-        $("#add_err").css('display', 'inline', 'important');
-        $("#add_err").html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong></strong>Le règlement a bien été transféré !</div>');
     }
 
     // $("#tableFacture").hide();
@@ -300,13 +290,13 @@ jQuery(function ($) {
                         });
                     }else {
                         var typeregl = 0;
-                        if ($_GET("typeRegl") == "Collaborateur") {
+                        if ($("#typeRegl").val() == "Collaborateur") {
                             typeregl = 1;
                         }
                         var caisse = $("#caisse").val();
                         var rg_no = ligneReglement.find("#RG_No").html();
                         var rgType = 0;
-                        if($_GET("typeRegl")!="Client") rgType = 1;
+                        if($("#typeRegl").val()!="Client") rgType = 1;
                         $("#journal_choix").val(ligneReglement.find("#JO_Num").html());
                         $("#caissier_choix").val(ligneReglement.find("#CO_NoCaissier").html());
                         $("#choose_caissier").dialog({
@@ -319,78 +309,60 @@ jQuery(function ($) {
                                     class: 'btn btn-primary',
                                     text: 'Valider',
                                     click: function () {
-                                            $.ajax({
-                                                url: 'indexServeur.php?page=modifReglement&rg_no=' + rg_no + '&boncaisse=' + typeregl + '&RG_Type=' + rgType + '&CT_Num=' + $("#client").val() + "&rg_montant=" + $("#montantRec").val().replace(/ /g, "") + "&rg_libelle=" + $("#libelleRec").val() + "&CO_No=" + $("#co_no").val() + "&CA_No=" + caisse + "&rg_date=" + returnDate($("#dateRec").val()) + "&impute=0" + "&mode_reglementRec=" + $("#mode_reglementRec").val() + "&caissier=" + caissier,
-                                                method: 'GET',
-                                                dataType: 'html',
-                                                async: false,
-                                                data: "JO_Num=" + $("#journal_choix").val() + "&CO_No=" + $("#caissier_choix").val(),
-                                                success: function (data) {
-                                                    if (data == "") {
-                                                        ligneReglement.find("#RG_Date").html(returnDate($("#dateRec").val()));
-                                                        ligneReglement.find("#RG_Libelle").html($("#libelleRec").val());
-                                                        ligneReglement.find("#RG_Montant").html($("#montantRec").val());
-                                                        ligneReglement.find("#RA_Montant").html($("#montantRec").val());
-                                                        ligneReglement.find("#N_Reglement").html(Math.round($("#mode_reglementRec").val()));
-                                                        $("#dateRec").datepicker({dateFormat: "ddmmy"}).datepicker("setDate", new Date());
-                                                        $("#libelleRec").val("");
-                                                        $("#montantRec").val("");
-                                                        $("#mode_reglementRec").val("01");
-                                                        modificationReglt = false;
-                                                        $("#mode_reglementRec").prop('disabled', false);
-                                                    } else {
-                                                        alert(data);
-                                                    }
+                                        $.ajax({
+                                            url: 'indexServeur.php?page=modifReglement&rg_no=' + rg_no + '&boncaisse=' + typeregl + '&RG_Type=' + rgType + '&CT_Num=' + $("#CT_Num").val() + "&rg_montant=" + $("#montantRec").val().replace(/ /g, "") + "&rg_libelle=" + $("#libelleRec").val() + "&CO_No=" + $("#co_no").val() + "&CA_No=" + caisse + "&rg_date=" + returnDate($("#dateRec").val()) + "&impute=0" + "&mode_reglementRec=" + $("#mode_reglementRec").val() + "&caissier=" + caissier,
+                                            method: 'GET',
+                                            dataType: 'html',
+                                            async: false,
+                                            data: "JO_Num=" + $("#journal_choix").val() + "&CO_No=" + $("#caissier_choix").val()+"&protNo="+$("#PROT_No").val(),
+                                            success: function (data) {
+                                                if (data == "") {
+                                                    ligneReglement.find("#RG_Date").html(returnDate($("#dateRec").val()));
+                                                    ligneReglement.find("#RG_Libelle").html($("#libelleRec").val());
+                                                    ligneReglement.find("#RG_Montant").html($("#montantRec").val());
+                                                    ligneReglement.find("#RA_Montant").html($("#montantRec").val());
+                                                    ligneReglement.find("#N_Reglement").html(Math.round($("#mode_reglementRec").val()));
+                                                    $("#dateRec").datepicker({dateFormat: "ddmmy"}).datepicker("setDate", new Date());
+                                                    $("#libelleRec").val("");
+                                                    $("#montantRec").val("");
+                                                    $("#mode_reglementRec").val("01");
+                                                    modificationReglt = false;
+                                                    $("#mode_reglementRec").prop('disabled', false);
+                                                } else {
+                                                    alert(data);
                                                 }
-                                            });
-                                            $(this).dialog("close");
-                                        }
+                                            }
+                                        });
+                                        $(this).dialog("close");
+                                    }
                                 }
                             }
                         });
 
                     }
-                    $("#client_valide").val($("#client").val());
-                } else alert("Veuillez choissir un client !");
-            } else alert("Veuillez saisir une date et un montant");
-        } else alert("Veuillez choisir une caisse !");
-    }
-
-    function $_GET(param) {
-        var vars = {};
-        window.location.href.replace( location.hash, '' ).replace(
-            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-            function( m, key, value ) { // callback
-                vars[key] = value !== undefined ? value : '';
-            }
-        );
-
-        if ( param ) {
-            return vars[param] ? vars[param] : null;
-        }
-        return vars;
+                    $("#client_valide").val($("#client").val())
+                } else
+                    alert("Veuillez choissir un client !")
+            } else
+                alert("Veuillez saisir une date et un montant")
+        } else
+            alert("Veuillez choisir une caisse !")
     }
 
     function rechercherFacture(bloque) {
-        if($_GET("client")!=null){
-            $("#tableFacture").unbind();
-            $("#tableFacture_dialog").unbind();
-            $("tr[id^='facture']").each(function(){ $(this).remove(); });
-            $("tr[id^='facture_dialog']").each(function(){ $(this).remove(); });
-
-            /*if($("#mode_reglementRec").val()=="05"){
-                $("#blocFacture_dialog").hide();
-            }else{
-                $("#blocFacture_dialog").show();
-            }*/
+        if($("#CT_Num").val()!=null){
+            $("#tableFacture").unbind()
+            $("#tableFacture_dialog").unbind()
+            $("tr[id^='facture']").each(function(){ $(this).remove() })
+            $("tr[id^='facture_dialog']").each(function(){ $(this).remove() })
 
             $("#tableFacture").show();
             infoCaisse();
             var collab = 0;
-            if($_GET("typeRegl")=="Collaborateur")
+            if($("#typeRegl").val()=="Collaborateur")
                 collab = 1;
             $.ajax({
-                url: "indexServeur.php?page=getFactureCORecouvrement&CO_No=" + $("#co_no").val() + "&CT_Num=" + $("#client").val()+"&souche="+ca_souche+"&collab="+collab,
+                url: "indexServeur.php?page=getFactureCORecouvrement&CO_No=" + $("#co_no").val() + "&CT_Num=" + $("#CT_Num").val()+"&souche="+ca_souche+"&collab="+collab,
                 method: 'GET',
                 dataType: 'json',
                 async : false,
@@ -403,7 +375,7 @@ jQuery(function ($) {
                     $("#tableFacture >tbody").html("");
                     $("#tableFacture").unbind();
                     for(i=0;i<data.length;i++){
-                        tableaufacture(i,data[i].DO_Date,data[i].DO_Piece,data[i].DO_Ref,Math.round(data[i].avance),Math.round(data[i].ttc)/*,data[i].CA_No,data[i].CO_NoCaissier*/,data[i].DO_Type,data[i].DO_Domaine);
+                        tableaufacture(i,data[i].cbMarq,data[i].DO_Date,data[i].DO_Piece,data[i].DO_Ref,Math.round(data[i].avance),Math.round(data[i].ttc)/*,data[i].CA_No,data[i].CO_NoCaissier*/,data[i].DO_Type,data[i].DO_Domaine);
                     }
 
                     $("input[id^='check_facture']").each(function(){
@@ -467,7 +439,7 @@ jQuery(function ($) {
         $("#form_facture :input").prop("disabled", true);
     }
 
-    function tableaufacture(cmp,DO_Date,DO_Piece,DO_Ref,avance,ttc,do_type,do_domaine){
+    function tableaufacture(cmp,cbMarq,DO_Date,DO_Piece,DO_Ref,avance,ttc,do_type,do_domaine){
         var classe = "";
         total_reste_a_payer = total_reste_a_payer + (ttc-avance);
         somAvance= somAvance+ avance;
@@ -477,7 +449,7 @@ jQuery(function ($) {
             classe = "info";
         else classe = "";
         $("#tableFacture_dialog > tbody").append("<tr id='facture' class= 'facture " + classe + "'><td><input type='checkbox' id='check_facture' value='0'/></td><td>"+$.datepicker.formatDate('dd-mm-yy', new Date(DO_Date))+"</td><td id='libelle'>" + DO_Piece + "</td>\n\
-            <td>" + DO_Ref + "</td><td id='avance'>" + (avance)+ "</td><td id='ttc'>" + (ttc) + "</td><td><input type='text' id='montant_regle' disabled/><span style='visibility:hidden;width:10px' id='avanceInit'>" + (avance)+ "</span></td><td><span style='visibility:hidden;width:10px' id='DoType'>" + do_type + "</span></td><td><span style='visibility:hidden;width:10px' id='DoDomaine'>" + do_domaine + "</span></td></tr>").on('click', '#facture', function () {
+            <td>" + DO_Ref + "</td><td id='avance'>" + (avance)+ "</td><td id='ttc'>" + (ttc) + "</td><td><input class='form-control' style='width:100px' type='text' id='montant_regle' disabled/><span style='visibility:hidden;width:10px' id='avanceInit'>" + (avance)+ "</span></td><td><span style='visibility:hidden;width:10px' id='DoType'>" + do_type + "</span><span style='visibility:hidden;width:10px' id='cbMarqEntete'>" + cbMarq + "</span></td><td><span style='visibility:hidden;width:10px' id='DoDomaine'>" + do_domaine + "</span></td></tr>").on('click', '#facture', function () {
 
         });
         $("#tableFacture > tbody").append("<tr id='facture_dialog' class= 'facture " + classe + "'><td>"+$.datepicker.formatDate('dd-mm-yy', new Date(DO_Date))+"</td><td id='libelleS'>" + DO_Piece + "</td>\n\
@@ -512,9 +484,9 @@ jQuery(function ($) {
             async : false,
             success: function (data) {
                 if($("#caisse").val()!=0) {
-                    if (data[0].CA_Souche != 0)
-                        ca_souche = data[0].CA_Souche;
-                    $("#journal").val(data[0].JO_Num);
+                    if (data.CA_Souche != 0)
+                        ca_souche = data.CA_Souche;
+                    $("#journal").val(data.JO_Num);
                 }
                 else
                     ca_souche = -1;
@@ -569,36 +541,18 @@ jQuery(function ($) {
 
     });
 
-    function regle_facture(Val_RG_Piece,ttc,avance,DO_Piece,mtt_regle,DO_Type,DO_Domaine){
+    function regle_facture(Val_RG_Piece,cbMarqEntete,mtt_regle){
         var mtt_regl = mtt_regle;
-        var total = (ttc- avance) - mtt_regl;
-        var dr="0";
-        var type_regl = $_GET("typeRegl");
+        var type_regl = $("#typeRegl").val();
 
         $.ajax({
-            url: "indexServeur.php?page=addEcheance&type_regl="+type_regl+"&cr_no="+Val_RG_Piece+"&montant="+mtt_regl+"&do_piece="+DO_Piece+"&DO_Type="+DO_Type+"&DO_Domaine="+DO_Domaine,
+            url: "indexServeur.php?page=addEcheance&protNo="+$("#PROT_No").val()+"&type_regl="+type_regl+"&cr_no="+Val_RG_Piece+"&montant="+mtt_regl+"&cbMarqEntete="+cbMarqEntete,
             method: 'GET',
             dataType: 'html',
             async : false,
             success: function (data) {
-                $.ajax({
-                    url: "indexServeur.php?page=updateImpute&RG_No="+Val_RG_Piece,
-                    method: 'GET',
-                    dataType: 'html',
-                    async : false,
-                    success: function (data) {
-                        $.ajax({
-                            url: "indexServeur.php?page=updateDrRegleByDOPiece&DO_Piece="+DO_Piece,
-                            method: 'GET',
-                            dataType: 'html',
-                            async : false,
-                            success: function (data) {
-                                rechercher();
-                                rechercherFacture(true);
-                            }
-                        });
-                    }
-                });
+                rechercher();
+                rechercherFacture(true)
             }
         });
 
@@ -608,10 +562,10 @@ jQuery(function ($) {
         $("#tableRecouvrement").unbind("click");
         var collab = 0;
         var typeSelectType = 0;
-        if($_GET("typeRegl")=="Collaborateur") collab = 1;
-        if($_GET("typeRegl")!="Client") typeSelectType = 1;
+        if($("#typeRegl").val()=="collaborateur") collab = 1;
+        if($("#typeRegl").val()!="client") typeSelectType = 1;
         $.ajax({
-            url: 'indexServeur.php?page=getReglementByClient&collaborateur='+collab+'&caissier='+$("#caissier").val()+'&CT_Num=' + $("#client").val()+'&datedeb=' + returnDate($("#dateReglementEntete_deb").val())+'&datefin=' + returnDate($("#dateReglementEntete_fin").val())+'&CA_No=' + $("#caisse").val()+'&type='+$("#type").val()+'&treglement='+$("#mode_reglement").val(),
+            url: 'indexServeur.php?page=getReglementByClient&collaborateur='+collab+'&caissier='+$("#caissier").val()+'&CT_Num=' + $("#CT_Num").val()+'&datedeb=' + returnDate($("#dateReglementEntete_deb").val())+'&datefin=' + returnDate($("#dateReglementEntete_fin").val())+'&CA_No=' + $("#caisse").val()+'&type='+$("#type").val()+'&treglement='+$("#mode_reglement").val(),
             method: 'GET',
             dataType: 'json',
             data : "typeSelectRegl="+typeSelectType,
@@ -667,7 +621,7 @@ jQuery(function ($) {
                 $("<div></div>").dialog({
                     resizable: false,
                     height: "auto",
-                    width: 500,
+                    width: 600,
                     modal: true,
                     buttons: {
                         "Remboursement règlement": function () {
@@ -723,10 +677,11 @@ jQuery(function ($) {
                         },
                         "Régler facture": function () {
                             if ($("#protectionPage").html() == true) {
-                                $(this).dialog("close");
+                                $(this).dialog("close")
                                 if (RA_Montant > 0)
                                     if (protect == 1 && (N_Reglement != 10 || ((N_Reglement != "5" && N_Reglement != "10") && RG_Impute == "0") || (N_Reglement == "5" && CA_NoTable != ""))) {
-                                        if ($_GET("typeRegl") == "Collaborateur" && Mtt_RG_Piece != 0) {
+                                        if ($("#typeRegl").val() == "Collaborateur" && Mtt_RG_Piece != 0) {
+
                                             $("<div></div>").dialog({
                                                 resizable: false,
                                                 height: "auto",
@@ -737,8 +692,9 @@ jQuery(function ($) {
                                                         class: 'btn btn-primary',
                                                         text: 'Régler une facture',
                                                         click: function () {
-                                                            afficheDialogue();
-                                                            $(this).dialog("close");
+                                                            afficheDialogue()
+
+                                                            $(this).dialog("close")
                                                         }
                                                     },
                                                     "Générer un bon de caisse": {
@@ -752,7 +708,7 @@ jQuery(function ($) {
                                                             });
                                                             $("#dateRemiseBon").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
                                                             var rgType = 0;
-                                                            if ($_GET("typeRegl") != "Client") rgType = 1;
+                                                            if ($("#typeRegl").val() != "Client") rgType = 1;
 
                                                             $("#blocDateRemiseBon").dialog({
                                                                 resizable: false,
@@ -766,7 +722,7 @@ jQuery(function ($) {
                                                                         text: 'Valider',
                                                                         click: function () {
                                                                             $.ajax({
-                                                                                url: 'indexServeur.php?page=addReglement&boncaisse=' + 1 + '&RG_Type=' + rgType + '&CT_Num=' + $("#client").val() + "&montant=" + Mtt_RG_Piece + "&libelle=Remise_bon_de_caisse_" + RG_No + "_" + $(".comboclient").val() + "&CO_No=" + $("#co_no").val() + "&CA_No=0&date=" + $("#dateRemiseBon").val() + "&impute=0&mode_reglementRec=10&caissier=0&RG_NoLier=" + RG_No,
+                                                                                url: 'indexServeur.php?page=addReglement&boncaisse=' + 1 + '&RG_Type=' + rgType + '&CT_Num=' + $("#CT_Num").val() + "&montant=" + Mtt_RG_Piece + "&libelle=Remise_bon_de_caisse_" + RG_No + "_" + $(".comboclient").val() + "&CO_No=" + $("#co_no").val() + "&CA_No=0&date=" + $("#dateRemiseBon").val() + "&impute=0&mode_reglementRec=10&caissier=0&RG_NoLier=" + RG_No,
                                                                                 method: 'GET',
                                                                                 dataType: 'json',
                                                                                 async: false,
@@ -894,7 +850,11 @@ jQuery(function ($) {
                         }else{
                             alert("La date de modification du document est dépassé ! Veuillez contacter un administrateur.");
                         }
-                    }else alert("Désolé ce règlement est lettré !");
+                    }else
+                        $("#reglementLettre").show("slow", function() {
+                            $(this).fadeTo(2000, 500).slideUp(500, function(){
+                            });
+                        })
                 });
 
             if($("#protectionPage").html()==true)
@@ -915,7 +875,7 @@ jQuery(function ($) {
                                     text: 'Oui',
                                     click: function () {
                                         $.ajax({
-                                            url: "indexServeur.php?page=supprReglement&RG_No=" + rgNo,
+                                            url: "indexServeur.php?page=supprReglement&RG_No=" + rgNo+"&protNo="+$("#PROT_No").val(),
                                             method: 'GET',
                                             async: false,
                                             dataType: 'html',
@@ -941,7 +901,10 @@ jQuery(function ($) {
                             }
                         });
                     } else {
-                        alert("Ce reglement est lettré, la suppression n'est pas disponible !");
+                        $("#reglementLettre").show("slow", function() {
+                            $(this).fadeTo(2000, 500).slideUp(500, function(){
+                            });
+                        })
                     }
                 });
         });
@@ -1031,18 +994,15 @@ jQuery(function ($) {
                     click: function () {
                         $("#tableFacture_dialog").each(function () {
                             $(this).find("tr[id='facture']").each(function () {
-                                var ttc = $(this).find("[id^='ttc']").html().replace(/ /g, "").replace(/&nbsp;/g, "");
-                                var DO_Type = $(this).find("[id^='DoType']").html();
-                                var DO_Piece = $(this).find("[id^='libelle']").html();
-                                var DO_Domaine = $(this).find("[id^='DoDomaine']").html();
-                                var avance = Math.round($(this).find("[id^='avance']").html().replace(/ /g, "").replace(/&nbsp;/g, ""));
+                                var cbMarqEntete = $(this).find("[id^='cbMarqEntete']").html();
                                 var mtt_regle = $(this).find("[id^='montant_regle']").val().replace(/ /g, "").replace(/&nbsp;/g, "");
                                 if (mtt_regle != "" && $(this).find("[id^='check_facture']").is(':checked')) {
-                                    regle_facture(provRG, ttc, avance, DO_Piece, mtt_regle, DO_Type, DO_Domaine);
+                                    regle_facture(provRG, cbMarqEntete, mtt_regle);
                                 }
                             });
                         });
-                        rechercherFacture(true);
+                        rechercherFacture(true)
+                        rechercher()
                         $(this).dialog("close");
                     }
                 }
@@ -1053,21 +1013,21 @@ jQuery(function ($) {
     function vide() {
         $(".article").remove();
         $("#date").val('');
-        $("#client").val('');
+        $("#CT_Num").val('');
         $("#designation").val('');
         $("#qte").val('');
     }
     function validerRec(caissier) {
         var typeregl=0;
-        if($_GET("typeRegl")=="Collaborateur"){
+        if($("#typeRegl").val()=="Collaborateur"){
             typeregl=1;
-            //caissier = $("#client").val();
+            //caissier = $("#CT_Num").val();
         }
         var caisse = $("#caisse").val();
         var rgType = 0;
-        if($_GET("typeRegl")!="Client") rgType = 1;
+        if($("#typeRegl").val()!="Client") rgType = 1;
 
-        $("#client_ligne").val($("#client").val());
+        $("#client_ligne").val($("#CT_Num").val());
         $("#dateReglementEntete_deb_ligne").val($("#dateReglementEntete_deb").val());
         $("#dateReglementEntete_fin_ligne").val($("#dateReglementEntete_fin").val());
         $("#mode_reglement_ligne").val($("#mode_reglement").val());
@@ -1078,11 +1038,11 @@ jQuery(function ($) {
         $("#journal_ligne").val($("#journal_choix").val());
         $("#boncaisse_ligne").val(typeregl);
         $("#rgnolier_ligne").val(0);
-        $("#typeRegl_ligne").val($_GET("typeRegl"));
+        $("#typeRegl_ligne").val($("#typeRegl").val());
         $("#formValider").submit();
         /*
         $.ajax({
-            url: 'indexServeur.php?page=addReglement&boncaisse='+typeregl+'&RG_Type='+rgType+'&JO_Num='+$("#journal_choix").val()+'&CT_Num=' + $("#client").val()+"&montant="+ $("#montantRec").val().replace(/ /g,"")+"&libelle="+$("#libelleRec").val()+"&CO_No="+$("#co_no").val()+"&CA_No="+caisse+"&date="+returnDate($("#dateRec").val())+"&impute=0"+"&mode_reglementRec="+$("#mode_reglementRec").val()+"&caissier="+caissier,
+            url: 'indexServeur.php?page=addReglement&boncaisse='+typeregl+'&RG_Type='+rgType+'&JO_Num='+$("#journal_choix").val()+'&CT_Num=' + $("#CT_Num").val()+"&montant="+ $("#montantRec").val().replace(/ /g,"")+"&libelle="+$("#libelleRec").val()+"&CO_No="+$("#co_no").val()+"&CA_No="+caisse+"&date="+returnDate($("#dateRec").val())+"&impute=0"+"&mode_reglementRec="+$("#mode_reglementRec").val()+"&caissier="+caissier,
             method: 'GET',
             dataType: 'json',
             async : false,
@@ -1102,7 +1062,5 @@ jQuery(function ($) {
         });
         */
     }
-    $("#collaborateur").combobox();
-
 
 });

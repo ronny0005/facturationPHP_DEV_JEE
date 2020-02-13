@@ -224,6 +224,11 @@ class DocEnteteClass Extends Objet{
             return $this->getListeFacture($depot,0,$datedeb ,$datefin,$client,1,12);
     }
 
+    public function removeFacRglt($cbMarqEntete,$rgNo)
+    {
+        $this->getApiExecute("/removeFacRglt&cbMarqEntete=$cbMarqEntete&rgNo=$rgNo");
+    }
+
     public function maj_docEntete(){
         parent::maj("DO_Domaine" ,$this->DO_Domaine);
         parent::maj("DO_Type" ,$this->DO_Type);
@@ -1300,21 +1305,7 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
     }
 
     public function getLigneTransfert(){
-        $query= "SELECT ISNULL(idSec,0)idSec,A.*
-                FROM (	SELECT	DL_Ligne AS Ligne , M.cbMarq,E.DO_Piece,AR_Ref,DL_Design
-                                ,DL_Qte,DL_PrixUnitaire,DL_CMUP ,DL_Taxe1,DL_Taxe2,DL_Taxe3,DL_MontantTTC,DL_MontantHT,DL_Ligne 
-                                ,CASE WHEN DL_Remise01REM_Type=0 THEN '' WHEN DL_Remise01REM_Type=1 THEN cast(cast(DL_Remise01REM_Valeur as numeric(9,2)) as varchar(10))+'%' ELSE cast(cast(DL_Remise01REM_Valeur as numeric(9,2)) as varchar(10))+'U' END DL_Remise 
-                        FROM	F_DOCENTETE E 
-                        INNER JOIN F_DOCLIGNE M ON E.DO_Domaine = M.DO_Domaine AND E.DO_Type = M.DO_Type AND E.DO_Piece = M.DO_Piece 
-                        WHERE	M.DL_MvtStock=3 AND E.cbMarq='{$this->cbMarq}') AS A 
-                LEFT JOIN (SELECT	DL_Ligne Ligne,cbMarq as idSec,AR_Ref
-                            FROM	(	SELECT DL_Ligne,M.cbMarq,M.AR_Ref
-                                        FROM	F_DOCENTETE E 
-                                        INNER JOIN F_DOCLIGNE M ON E.DO_Domaine = M.DO_Domaine AND E.DO_Type = M.DO_Type AND E.DO_Piece = M.DO_Piece 
-                                        WHERE	M.DL_MvtStock=1 AND E.cbMarq='{$this->cbMarq}')B 
-                            ) B ON (B.Ligne-A.Ligne )=10000 AND A.AR_Ref = B.AR_Ref";
-        $result = $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getLigneTransfert&cbMarq={$this->cbMarq}");
     }
 
     public function getLigneFactureTransfert() {
@@ -1453,6 +1444,10 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
 
     public function isModif($protNo,$typeFacture){
         return $this->getApiJson("/isModif&cbMarq={$this->cbMarq}&protNo={$protNo}&typeFacture={$typeFacture}");
+    }
+
+    public function getFactureCORecouvrement($collab,$ctNum){
+        return $this->getApiJson("/getFactureCORecouvrement&collab={$collab}&ctNum={$ctNum}");
     }
 
     public function getEnteteDispo(){

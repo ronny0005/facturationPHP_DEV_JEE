@@ -1,5 +1,4 @@
 <script src="js/scriptRecouvrement.js?d=<?php echo time(); ?>"></script>
-<script src="js/scriptCombobox.js?d=<?php echo time(); ?>" type="text/javascript"></script>
 <?php
 include("module/Menu/BarreMenu.php");
 $objet = new ObjetCollector();
@@ -16,18 +15,38 @@ $caissier = 0;
 $datedeb="";
 $datesaisie="";
 $datefin="";
+$post = 0;
+
+if(isset($_POST["typeRegl"]))
+    $post=1;
+if(isset($_GET["typeRegl"]))
+    $post=1;
 $typeRegl = "Client";
+if(isset($_POST["typeRegl"]))
+    $typeRegl = $_POST["typeRegl"];
 if(isset($_GET["typeRegl"]))
     $typeRegl = $_GET["typeRegl"];
+
+if(isset($_POST["client"])) $client=$_POST["CT_Num"];
+if(isset($_POST["type"])) $type=$_POST["type"];
+if(isset($_POST["caisse"])) $caisse=$_POST["caisse"];
 
 if(isset($_GET["client"])) $client=$_GET["client"];
 if(isset($_GET["type"])) $type=$_GET["type"];
 if(isset($_GET["caisse"])) $caisse=$_GET["caisse"];
+
+if(isset($_POST["mode_reglement"])) $treglement=$_POST["mode_reglement"];
 if(isset($_GET["mode_reglement"])) $treglement=$_GET["mode_reglement"];
+
+if(isset($_POST["dateReglementEntete_deb"])) $datedeb=$_POST["dateReglementEntete_deb"];
 if(isset($_GET["dateReglementEntete_deb"])) $datedeb=$_GET["dateReglementEntete_deb"];
+
+if(isset($_POST["dateReglementEntete_fin"])) $datefin=$_POST["dateReglementEntete_fin"];
 if(isset($_GET["dateReglementEntete_fin"])) $datefin=$_GET["dateReglementEntete_fin"];
+
 $objet = new ObjetCollector();
 $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+$comptet = new ComptetClass($client);
 if ($typeRegl == "Client") {
     $flagProtected = $protection->protectedType("ReglementClient");
     $flagSuppr = $protection->SupprType("ReglementClient");
@@ -38,6 +57,10 @@ else {
     $flagSuppr = $protection->SupprType("ReglementFournisseur");
     $flagNouveau = $protection->NouveauType("ReglementFournisseur");
 }
+$typeDocument = 0;
+if($typeRegl=="Fournisseur") $typeDocument = 1;
+if($typeRegl=="Collaborateur") $typeDocument = 2;
+
 ?>
 
 <div id="protectionPage" style="visibility: hidden;"><?php echo $flagProtected;?></div>
@@ -62,45 +85,23 @@ else {
         <input type="hidden" value="" name="ValRGPiece" id="Val_RG_Piece" />
         <input type="hidden" value="<?php echo $_SESSION["CO_No"]; ?>" name="CO_NoSession" id="CO_NoSession" />
 
-        <form action="<?php echo $lienForm; ?>" method="GET">
+        <form action="<?php echo $lienForm; ?>" method="POST">
             <legend>Entête</legend>
             <input type="hidden" value="1" name="module"/>
-            <input type="hidden" value="<?php echo $actionForm; ?>" name="action"/>
-            <input type="hidden" value="<?php echo $caissier; ?>" name="caissier" id="caissier" />
-            <input type="hidden" value="<?php echo $typeRegl; ?>" name="typeRegl" id="typeRegl" />
+            <input type="hidden" value="<?= $actionForm; ?>" name="action"/>
+            <input type="hidden" value="<?= $caissier; ?>" name="caissier" id="caissier" />
+            <input type="hidden" value="<?= $typeRegl; ?>" name="typeRegl" id="typeRegl" />
+            <input type="hidden" value="<?= $typeDocument; ?>" name="typeDocument" id="typeDocument" />
+            <input type="hidden" value="<?= $post; ?>" name="post" id="post" />
 <div class="row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-3" >
                 <label><?php echo $typeRegl; ?></label>
-                <select class="form-control" name="client" id="client">
-                    <option value=""></option>
-                    <?php
-                    $clientClass = new ComptetClass(0);
-                    if($typeRegl=="Client")
-                        $rows=$clientClass->allClients();
-                    if($typeRegl=="Fournisseur")
-                        $rows=$clientClass->allFournisseur();
-                    if($typeRegl=="Collaborateur")
-                    $result=$objet->db->requete($objet->getAllCollaborateursVendeur());
-                    if($rows==null){
-                    }else{
-                        foreach($rows as $row){
-                            $ct_num = "";
-                            if($typeRegl=="Collaborateur")
-                                $ct_num = $row->CO_No;
-                            else
-                                $ct_num = $row->CT_Num;
-                            if($typeRegl=="Collaborateur")
-                                $ct_intitule = $row->CO_Nom;
-                            else
-                                $ct_intitule = $row->CT_Intitule;
-
-                            echo "<option value='{$ct_num}'";
-                            if($ct_num==$client) echo " selected";
-                            echo ">{$ct_intitule}</option>";
-                        }
-                    }
-                    ?>
-                </select>
+                <input type="hidden" class="form-control" name="CT_Num" id="CT_Num" value="<?=$client ?>"/>
+                <input class="form-control" type="text" id="client" name="client" value="<?= $comptet->CT_Intitule ?>">
+                <?php
+                //if($typeRegl=="Collaborateur")
+                //$result=$objet->db->requete($objet->getAllCollaborateursVendeur());
+                ?>
             </div>
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Début</label>
@@ -200,7 +201,7 @@ else {
             <div class="mt-2 col-6 col-sm-8 col-md-10 col-lg-10" >
                 <input type="button" id="imprimer" class="btn btn-primary bgcolorApplication" value="Imprimer"/>
             </div>
-            <div class="mt-2 col-6 col-sm-4 col-md-2 col-lg-2" >
+            <div class="mt-2 col-6 col-sm-4 col-md-2 col-lg-2 text-right" >
                 <input type="submit" class="btn btn-primary bgcolorApplication" value="Rechercher"/>
             </div>
 </div>
@@ -208,7 +209,7 @@ else {
         <div style="clear: both">
         </div>
         <fieldset class="entete">
-            <form id="formValider" action="Traitement/Recouvrement.php" method="GET" class="form-horizontal">
+            <form id="formValider" action="Traitement/Recouvrement.php" method="POST" class="form-horizontal">
                 <input type="hidden" value="1" name="module"/>
                 <input type="hidden" value="2" name="action"/>
                 <input type="hidden" value="addReglement" name="acte"/>
@@ -270,9 +271,14 @@ else {
                     </div>
                 <?php } ?>
             </form>
-            <div class="form-group">
-                <div id="blocListeReglement" style="float:left;width:540px;clear: both;height: 300px;overflow: scroll;">
-                    <table class="table" id="tableRecouvrement" style="width:500px">
+            <div class="row">
+                <div class="col-lg-6" id="blocListeReglement" style="float:left;clear: both;height: 300px;overflow: scroll;">
+                    <!-- Alert -->
+                    <div id="reglementLettre" class="alert alert-danger" style="display:none " role="alert">
+                        Ce reglement est lettré, cette action n'est pas possible !
+                    </div>
+                    <!-- Alert -->
+                    <table class="table" id="tableRecouvrement">
                         <thead>
                         <tr>
                             <?php if($flagProtected) echo "<th></th>" ?>
@@ -297,7 +303,7 @@ else {
                         $datefinval = "";
                         if($datefin!="") $datefinval = $objet->getDate($datefin);
                         $typeSelectRegl = 0;
-                        if($typeRegl!="Client") $typeSelectRegl = 1;
+                        if($typeRegl!="client") $typeSelectRegl = 1;
                         $reglementClass = new ReglementClass(0);
                         if($profil_daf==1){
                             $rows = $reglementClass->getReglementByClient($client,0,$type,$treglement,$datedebval,$datefinval,$caissier,$collab,$typeSelectRegl);
@@ -318,7 +324,7 @@ else {
                                 $i++;
                                 if($i%2==0) $classe = "info";
                                 else $classe="";
-                                echo "<tr class='reglement $classe' id='reglement_".$row->RG_No."'>";
+                                echo "<tr class='reglement $classe' id='reglement_{$row->RG_No}'>";
                                 if($flagProtected)  echo "<td id='modifRG_Piece'><i class='fa fa-pencil fa-fw'></i></td>";
                                 if($flagSuppr)  echo "<td id='supprRG_Piece'><i class='fa fa-trash-o'></i></td>";
                                 echo "<td id='RG_Piece' style='color:blue;text-decoration: underline;'>{$row->RG_Piece}</td>
@@ -354,27 +360,27 @@ else {
                         </tbody>
                     </table>
                 </div>
-                <form style="float:left;width:500px" id="form_facture" name="form_facture" >
-                    <div  id="blocFacture">
-                        <div style="clear: both;height: 300px;overflow: scroll;">
-                            <table class="table" id="tableFacture">
-                                <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Libelle</th>
-                                    <th>Référence</th>
-                                    <th>Avance</th>
-                                    <th>TTC</th>
-                                    <th>Reste à payer</th>
-                                </tr>
-                                </thead>
-                                <tbody id="Listefacture">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style="float :right" id="total_reste">Total reste à payer : <b>0</b></div>
+                <div  class="col-lg-6" id="blocFacture">
+                    <div style="clear: both;height: 300px;overflow: scroll;">
+                        <table class="table" id="tableFacture">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Libelle</th>
+                                <th>Référence</th>
+                                <th>Avance</th>
+                                <th>TTC</th>
+                                <th>Reste à payer</th>
+                            </tr>
+                            </thead>
+                            <tbody id="Listefacture">
+                            </tbody>
+                        </table>
                     </div>
+                    <div style="float :right" id="total_reste">Total reste à payer : <b>0</b></div>
+                </div>
 
+                <form id="form_facture" name="form_facture" >
                     <div  id="blocFactureRGNO" style="display: none;">
                         <div style="clear: both;height: 300px;overflow: scroll;">
                             <table class="table" id="tableFactureRGNO">
@@ -395,8 +401,8 @@ else {
                     </div>
 
                     <div id="blocFacture_dialog" style="display: none;">
-                        <div style="float:right;clear: both;font-size: 13px;font-weight: bold" id="montant_reglement"></div>
-                        <div style="clear: both;height: 300px;overflow: scroll;">
+                        <div style="font-size: 13px;font-weight: bold" id="montant_reglement"></div>
+                        <div style="overflow: scroll;">
                             <table class="table"  id="tableFacture_dialog">
                                 <thead>
                                 <tr>
@@ -428,7 +434,7 @@ else {
                         $rows = $journalClass->getJournaux(1);
                         if($rows!=null){
                             foreach($rows as $row)
-                                echo "<option value='" . $row->JO_Num . "'>" . $row->JO_Intitule . "</option>";
+                                echo "<option value='{$row->JO_Num}'>{$row->JO_Intitule}</option>";
                         }
                         ?>
                     </select>
@@ -442,8 +448,7 @@ else {
                         $depot="";
                         if($rows!=null){
                             foreach($rows as $row){
-                                echo "<option value=".$row->CO_No."";
-                                echo ">".$row->CO_Nom."</option>";
+                                echo "<option value='{$row->CO_No}'>{$row->CO_Nom}</option>";
                             }
                         }
                         ?>
@@ -459,9 +464,9 @@ else {
                         $rows = $caisseClass->listeCaisseShort();
                         if($rows!=null){
                             foreach($rows as $row){
-                                echo "<option value=".$row->CA_No."";
+                                echo "<option value='{$row->CA_No}'";
                                 if($row->CA_No==$caisse) echo " selected";
-                                echo ">".$row->CA_Intitule."</option>";
+                                echo ">{$row->CA_Intitule}</option>";
                             }
                         }
                         ?>
@@ -483,3 +488,5 @@ else {
         <input  type='text'  class='form-control only_float' id='mttRemboursement' name='mttRemboursement' placeholder='Montant' />
     </div>
 </div>
+
+

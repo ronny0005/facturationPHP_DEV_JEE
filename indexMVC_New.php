@@ -14,9 +14,9 @@ if(!isset($_SESSION))
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="assets/css/-Login-form-Page-BS4-.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/dataTables.jqueryui.min.css">
+    <link rel="stylesheet" href="assets/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui.css">
     <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/styles.css">
@@ -24,14 +24,15 @@ if(!isset($_SESSION))
 </head>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/Bootstrap-DateTime-Picker-2.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+<script src="assets/js/dataTables.jqueryui.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.easing.js"></script>
+<script src="assets/js/jquery-ui.js"></script>
+<script src="assets/js/jquery.inputmask.bundle.js"></script>
 <script src="assets/js/menu.js"></script>
 <script src="js/jquery.fileupload.js"></script>
+<script src="assets/js/Bootstrap-DateTime-Picker-2.js"></script>
+<script src="assets/js/theme.js"></script>
 <?php
     include("module/includeHeader.php");
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);

@@ -77,7 +77,11 @@ function lien ($entete,$type,$cbMarq){
     $lienfinal="";
     if($entete!="")
         $lienentete="-$cbMarq";
-    $lienfinal = "Document-Facture$type{$lienentete}";
+    if($type !="Entree" && $type !="Sortie" && $type !="Transfert" && $type !="TrsftDetail" && $type !="Emission" && $type !="Confirmation")
+        $lienfinal = "Document-Facture$type{$lienentete}";
+    else
+        $lienfinal = "Document-Mvt$type{$lienentete}";
+
     return $lienfinal;
 }
 
@@ -111,6 +115,12 @@ $libTiers = "Client";
 $libToutTiers = "TOUS LES CLIENTS";
 
 $libClient="";
+$libClient="TOUT LES CLIENTS";
+if($type=="Achat"||$type=="AchatT"||$type=="AchatC"
+    || $type=="AchatRetour"||$type=="AchatRetourT"||$type=="AchatRetourC"
+    || $type=="AchatPreparationCommande"||$type=="PreparationCommande")
+    $libClient="TOUT LES FOURNISSEURS";
+
 if(isset($_POST["client"]))
     $client = $_POST["client"];
 if(isset($_POST["libClient"]))
@@ -166,6 +176,7 @@ if($type=="Vente" || $type=="VenteC" || $type=="VenteT" || $type=="RetourT" || $
         $selected=" selected ";
     $listeTypeFacture=$listeTypeFacture."<option value='$value' $selected>Facture comptabilisée</option>";
 }
+
 
 if($type=="Achat" || $type=="AchatC"|| $type=="AchatT"
     || $type=="AchatRetour" || $type=="AchatRetourC"|| $type=="AchatRetourT" ){

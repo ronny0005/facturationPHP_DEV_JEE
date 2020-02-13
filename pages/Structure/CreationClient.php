@@ -5,9 +5,10 @@ include("controller/structure/TiersController.php");
 
 
     <form id="form-creationClient" action="FicheClient" method="GET">
-        <section style="background-color: rgb(19,72,34);margin: 0px;padding: 5px;">
-            <h1 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php if($type=="client") echo "Fiche client"; if($type=="fournisseur") echo "Fiche fournisseur"; if($type=="salarie") echo "Fiche salarié"; ?></h1>
+        <section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+            <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php if($type=="client") echo "Fiche client"; if($type=="fournisseur") echo "Fiche fournisseur"; if($type=="salarie") echo "Fiche salarié"; ?></h3>
         </section>
+
         <div class="row mt-3" >
             <div class="col" >
                     <input type="hidden" id="type" name="type" type="hidden" value="<?php if($type=="fournisseur") echo "1"; if($type=="client") echo "0";if($type=="salarie") echo "2"; ?>"/>
@@ -145,13 +146,13 @@ include("controller/structure/TiersController.php");
                     <option value="0" <?php if($co_no==0) echo " selected"; ?>></option>
                     <?php
                     $collab = new CollaborateurClass(0);
-                    $rows = $collab->all();
+                    $rows = $collab->allVendeur();
                     if(sizeof($rows)==0){
                     }else{
                         foreach($rows as $row){
-                            echo "<option value=".$row->CO_No."";
+                            echo "<option value='{$row->CO_No}'";
                             if($row->CO_No==$co_no) echo " selected";
-                            echo ">".$row->CO_Nom."</option>";
+                            echo ">{$row->CO_Nom}</option>";
                         }
                     }
                     ?>
@@ -175,5 +176,5 @@ include("controller/structure/TiersController.php");
             </div>
         </div>
 
-        <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
+        <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right bgcolorApplication mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
     </form>

@@ -6,6 +6,7 @@ include("../Modele/ProtectionClass.php");
 $nom=$_POST["user"];
 $mdp=$_POST["password"];
 $protection = new ProtectionClass($nom, $mdp);
+
 if($protection->cbMarq!=null) {
     $isCalendar = $protection->isCalendarUser($protection->Prot_No);
     if($isCalendar ==1)
@@ -14,9 +15,9 @@ if($protection->cbMarq!=null) {
         $isconnect=1;
     if($protection->cbMarq==null || $isconnect==0){
         if(isset($isCalendar))
-            header('Location: ../index.php?code=2');
+            header('Location: ../connexion-2');
         else
-            header('Location: ../index.php?code=1');
+            header('Location: ../connexion-1');
     }else{
         session_start();
         $_SESSION["DE_No"] =  0;//$protection->DE_No;
@@ -31,6 +32,6 @@ if($protection->cbMarq!=null) {
     }
 }
 else
-    header('Location: ../index.php?code=1');
+    header('Location: ../connexion-1');
 ?>
 

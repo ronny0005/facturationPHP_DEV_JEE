@@ -29,18 +29,6 @@ class Facturation {
                         else
                             header('Location: indexMVC_.Newphp?accueil'); //rechercher un étudiant par domaine d'activité
                         break;
-/*                case 13 :
-                    if($protection->PROT_Right==1 || ($protection->PROT_DOCUMENT_VENTE_FACTURE!=2))
-                        $this->Facturation_Ticket();
-                    else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
-                    break;
-                case 14 :
-                    if($protection->PROT_Right==1 || ($protection->PROT_VENTE_COMPTOIR!=2))
-                        $this->Ticket();
-                    else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
-                    break;*/
                     default : 
                             $this->Facture_Vente(); // On décide ce que l'on veut faire		
             }
@@ -59,12 +47,5 @@ class Facturation {
         include("controller/FactureController.php");
         include("pages/Vente/FactureVente.php");
     }
-/*    public function Ticket() {
-        include("pages/Vente/FactureVente.php");
-    }
-    public function Facturation_Ticket() {
-        include("module/Menu/BarreMenu.php");
-        include("pages/ListeFacture_old.php");
-    }*/
 }
 ?>

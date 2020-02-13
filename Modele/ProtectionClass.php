@@ -440,6 +440,21 @@ class ProtectionClass extends Objet{
     public function getSoucheDepotGrpSouche($prot_no,$type){
         return $this->getApiJson("/getSoucheDepotGrpSouche&protNo=$prot_no&type=$type");
     }
+
+
+    public function alerteDocumentCatComptaTaxe(){
+        $rows = $this->getApiJson("/alerteDocumentCatComptaTaxe");
+        if($rows!=null) {
+            $html = "<h1>Liste des documents Cat Compta HT avec taxe {$this->db->db}</h1><br/><br/>";
+            $html = $html."<tr><th>Do Domaine</th><th>Do Type</th><th>DO Piece</th><th>cbMarq</th>";
+            foreach($rows as $row){
+                $html = $html."<tr><td>{$row->DO_Domaine}</td><td>{$row->DO_Type}</td><td>{$row->DO_Piece}</td><td>{$row->cbMarq}</td>";
+            }
+        }
+        return $html;
+    }
+
+
     public function getSoucheDepotCaisse($prot_no,$type,$souche,$ca_no,$depot,$ca_num){
         return $this->getApiJson("/getSoucheDepotCaisse&protNo=$prot_no&type=$type&doSouche=$souche&caNo=$ca_no&deNo=$depot&caNum={$this->formatString($ca_num)}");
     }
@@ -700,6 +715,7 @@ class ProtectionClass extends Objet{
         $result= $this->db->query($query);
         return $result->fetchAll(PDO::FETCH_OBJ);
     }
+
 
     public function updateEProtection($prot_no,$eprot_cmd,$prot_right){
         $query = "IF $prot_right=-1 

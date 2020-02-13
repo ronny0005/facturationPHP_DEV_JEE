@@ -36,11 +36,21 @@ if($_GET("acte")=="supprKO"){
     $("#add_err").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong></strong>La suppression de la famille '+$_GET("codeFAM")+' a échoué !</div>');
 }
 
-$('#table').dynatable({
-    inputs: {
-        queryEvent: 'keyup'
+$('#table').DataTable({
+    "language": {
+        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+    },
+
+    fixedHeader: {
+        header: true,
+        footer: true
+    },
+    "initComplete": function(settings, json) {
+        $("#users_filter").find(":input").addClass("form-control");
+        $("#users_length").find(":input").addClass("form-control");
     }
-}).bind('dynatable:afterProcess', referencement());
+});
+
 
 
     var protect = 0;

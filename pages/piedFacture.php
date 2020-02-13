@@ -142,84 +142,82 @@ if($type=="Vente" && $protection->PROT_GEN_ECART_REGLEMENT!=0) {
 <div class="valideReglement"  style="display:none">
      <form action="Traitement/Facturation.php" method="GET" id="valideRegltForm">
          <input type="hidden" value="0" id="DO_Imprim" name="DO_Imprim" />
-     <div style=" text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="form-group col-lg-4" >
-           <label>Comptant</label>
-               <input type="checkbox" id="comptant" name="comptant"/>
-        </div>
-        <div style="text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="form-group col-lg-4" >
-            <label>Crédit</label>
-                <input type="checkbox" id="credit" name="credit"/>
-        </div>
-     
-     <div style="clear:both"></div>
-        <div style="text-align: center" class="form-group col-lg-5" >
-            <label>Date reglement</label>
-            <input type="text" id="date_rglt" name="date_rglt" class="form-control only_integer" <?php if($flagDateRglt!=0) echo"readonly"; ?>/>
-        </div>
-        <div style="text-align: center" class="form-group col-lg-5" >
-            <label>Date échéance</label>
-            <input type="text" id="date_ech" name="date_ech" class="form-control only_integer" <?php if($bloqueReglement) echo"readonly"; ?>/>
-        </div>
-        <div style="text-align: center" class="form-group col-lg-10" >
-            <label>Libellé règlt</label>
-            <input type="text" id="libelle_rglt" maxlength="35" name="libelle_rglt" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>/>
-        </div>
-     <div style="clear:both"></div>
-        <div style="text-align: center" class="form-group col-lg-5" >
-            <label>Mode de rglt</label>
-            <select id="mode_reglement_val" name="mode_reglement_val" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>>
-                <?php
+         <div class="row">
+             <div style=" text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="col-lg-4" >
+                 <label>Comptant</label>
+                 <input type="checkbox" id="comptant" name="comptant"/>
+             </div>
+             <div style="text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class=" col-lg-6" >
+                 <label>Crédit</label>
+                 <input type="checkbox" id="credit" name="credit"/>
+             </div>
+             <div style="text-align: center" class="col-lg-6" >
+                 <label>Date reglement</label>
+                 <input type="text" id="date_rglt" name="date_rglt" class="form-control only_integer" <?php if($flagDateRglt!=0) echo"readonly"; ?>/>
+             </div>
+             <div style="text-align: center" class="form-group col-lg-5" >
+                 <label>Date échéance</label>
+                 <input type="text" id="date_ech" name="date_ech" class="form-control only_integer" <?php if($bloqueReglement) echo"readonly"; ?>/>
+             </div>
+             <div style="text-align: center" class="form-group col-lg-10" >
+                 <label>Libellé règlt</label>
+                 <input type="text" id="libelle_rglt" maxlength="35" name="libelle_rglt" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>/>
+             </div>
+             <div style="text-align: center" class="form-group col-lg-5" >
+                 <label>Mode de rglt</label>
+                 <select id="mode_reglement_val" name="mode_reglement_val" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>>
+                     <?php
 
-                $rows = $creglement->listeTypeReglement();
-                if($rows !=null) {
-                    foreach ($rows as $row) {
+                     $rows = $creglement->listeTypeReglement();
+                     if($rows !=null) {
+                         foreach ($rows as $row) {
 
-                        if ($row->R_Code == "01") {
-                            echo "<option value='" . $row->R_Code . "'>" . $row->R_Intitule . "</option>";
-                        } else {
-                            if ($flagRisqueClient == 0) {
-                                echo "<option value='" . $row->R_Code . "'>" . $row->R_Intitule . "</option>";
-                            }
-                        }
-                    }
-                }
-                  
-                ?>
-            </select> 
-        </div>
-         <div style="text-align: center" class="form-group col-lg-5" >
-             <label>Modele rglt</label>
-             <select id="modele_reglement_val" name="modele_reglement_val" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>>
-             <option value=""></option>
-                 <?php
-                 $rows = $creglement->getModeleReglement();
-                 if($rows !=null) {
-                     foreach($rows as $row){
-                         ?>
-                        <option value="<?= $row->MR_No; ?>"><?= $row->MR_Intitule ?></option>
-                        <?php
+                             if ($row->R_Code == "01") {
+                                 echo "<option value='" . $row->R_Code . "'>" . $row->R_Intitule . "</option>";
+                             } else {
+                                 if ($flagRisqueClient == 0) {
+                                     echo "<option value='" . $row->R_Code . "'>" . $row->R_Intitule . "</option>";
+                                 }
+                             }
+                         }
                      }
-                 }
-             ?>
-             </select>
+
+                     ?>
+                 </select>
+             </div>
+             <div style="text-align: center" class="form-group col-lg-5" >
+                 <label>Modele rglt</label>
+                 <select id="modele_reglement_val" name="modele_reglement_val" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>>
+                     <option value=""></option>
+                     <?php
+                     $rows = $creglement->getModeleReglement();
+                     if($rows !=null) {
+                         foreach($rows as $row){
+                             ?>
+                             <option value="<?= $row->MR_No; ?>"><?= $row->MR_Intitule ?></option>
+                             <?php
+                         }
+                     }
+                     ?>
+                 </select>
+             </div>
+             <div style="text-align: center" class="form-group col-lg-5" >
+                 <label>Montant avance</label>
+                 <input type="hidden" id="valideRegltImprime" name="valideRegltImprime" />
+                 <input type="hidden" id="cbMarqEntete" name="cbMarqEntete" value="<?= ($docEntete->cbMarq!="") ? $docEntete->cbMarq : 0 ?> "/>
+                 <input type="hidden" id="valideRegle" name="valideRegle" value="0"/>
+                 <input type="hidden" id="typeFacture" name="typeFacture" value="<?= $_GET["type"]; ?>"/>
+                 <input type="hidden" id="PROT_No" name="PROT_No" value="<?= $_SESSION["id"]; ?>"/>
+                 <input type="hidden" id="acte" name="acte" value="regle"/>
+                 <input type="input" id="mtt_avance" name="mtt_avance" class="form-control" READONLY/>
+             </div>
+             <?php if(isset($_GET["entete"])){
+                 ?>
+                 <div id="reste_a_payer_text" style="margin-top:20px;float:right">
+                     Le reste à payer est de <b><?php echo $reste_a_payer; ?></b>
+                 </div>
+             <?php } ?>
          </div>
-                 <div style="text-align: center" class="form-group col-lg-5" >
-            <label>Montant avance</label>
-            <input type="hidden" id="valideRegltImprime" name="valideRegltImprime" />
-            <input type="hidden" id="cbMarqEntete" name="cbMarqEntete" value="<?= ($docEntete->cbMarq!="") ? $docEntete->cbMarq : 0 ?> "/>
-            <input type="hidden" id="valideRegle" name="valideRegle" value="0"/>
-             <input type="hidden" id="typeFacture" name="typeFacture" value="<?= $_GET["type"]; ?>"/>
-             <input type="hidden" id="PROT_No" name="PROT_No" value="<?= $_SESSION["id"]; ?>"/>
-            <input type="hidden" id="acte" name="acte" value="regle"/>
-            <input type="input" id="mtt_avance" name="mtt_avance" class="form-control" READONLY/>
-        </div>
-     <div style="clear:both"></div>
-    <?php if(isset($_GET["entete"])){
-        ?>
-     <div id="reste_a_payer_text" style="margin-top:20px;float:right"> 
-         Le reste à payer est de <b><?php echo $reste_a_payer; ?></b>
-     </div>
-     <?php } ?>
      </form>
      </div>
 

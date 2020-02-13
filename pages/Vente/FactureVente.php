@@ -3,6 +3,12 @@
     <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
         <h3 class="text-center text-uppercase bgcolorApplication"><?= $protection->listeFactureNom($type) ?></h3>
     </section>
+    <!-- List alert -->
+        <div id="alertDate" class="alert alert-danger" style="display:none " role="alert">Saisissez une date !</div>
+        <div id="alertTiers" class="alert alert-danger" style="display:none " role="alert">Saisissez un tiers !</div>
+        <div id="alertStatut" class="alert alert-danger" style="display:none " role="alert">Choississez un statut valide !</div>
+        <div id="alertEntete" class="alert alert-danger" style="display:none " role="alert"></div>
+    <!-- List alert -->
     <fieldset class="border rounded">
         <legend>Entête</legend>
         <form id="form-entete" action="Document-Facture<?=$type ?>" method="get">
@@ -133,6 +139,10 @@
             </div>
         </form>
     </fieldset>
+    <!-- List alert -->
+        <div id="alertLigneMessage" class="alert alert-danger" style="display:none " role="alert"></div>
+        <div id="alertLigne" class="alert alert-danger" style="display:none " role="alert"></div>
+    <!-- List alert -->
     <fieldset class="border rounded">
         <legend>Ligne</legend>
         <form>
@@ -389,30 +399,37 @@ if (!$isVisu)
 <div class="valideReglement"  style="display:none">
     <form action="Traitement/Facturation.php" method="GET" id="valideRegltForm">
         <input type="hidden" value="0" id="DO_Imprim" name="DO_Imprim" />
-        <div style=" text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="form-group col-lg-4" >
+        <!-- Lists alert -->
+        <div id="alertValideReglement" class="alert alert-danger" style="display:none " role="alert"></div>
+        <!-- Lists alert -->
+        <div class="row">
+        <div style=" text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="col-lg-6" >
             <label>Comptant</label>
             <input type="checkbox" id="comptant" name="comptant"/>
         </div>
-        <div style="text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="form-group col-lg-4" >
+        <div style="text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="col-lg-6" >
             <label>Crédit</label>
             <input type="checkbox" id="credit" name="credit"/>
         </div>
-
-        <div style="clear:both"></div>
-        <div style="text-align: center" class="form-group col-lg-5" >
+        <div style="text-align: center" class="col-lg-6" >
             <label>Date reglement</label>
-            <input type="text" id="date_rglt" name="date_rglt" class="form-control only_integer" <?php if($flagDateRglt!=0) echo"readonly"; ?>/>
+            <div class="input-group">
+                <input type="text" id="date_rglt" name="date_rglt" class="form-control only_integer" <?php if($flagDateRglt!=0) echo"readonly"; ?>/>
+                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+            </div>
         </div>
-        <div style="text-align: center" class="form-group col-lg-5" >
+        <div style="text-align: center" class="col-lg-6" >
             <label>Date échéance</label>
-            <input type="text" id="date_ech" name="date_ech" class="form-control only_integer" <?php if($bloqueReglement) echo"readonly"; ?>/>
+            <div class="input-group">
+                <input type="text" id="date_ech" name="date_ech" class="form-control only_integer" <?php if($bloqueReglement) echo"readonly"; ?>/>
+                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
+            </div>
         </div>
-        <div style="text-align: center" class="form-group col-lg-10" >
+        <div style="text-align: center" class="col-lg-12" >
             <label>Libellé règlt</label>
             <input type="text" id="libelle_rglt" maxlength="35" name="libelle_rglt" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>/>
         </div>
-        <div style="clear:both"></div>
-        <div style="text-align: center" class="form-group col-lg-5" >
+        <div style="text-align: center" class="col-lg-6" >
             <label>Mode de rglt</label>
             <select id="mode_reglement_val" name="mode_reglement_val" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>>
                 <?php
@@ -432,7 +449,7 @@ if (!$isVisu)
                 ?>
             </select>
         </div>
-        <div style="text-align: center" class="form-group col-lg-5" >
+        <div style="text-align: center" class="col-lg-6" >
             <label>Modele rglt</label>
             <select id="modele_reglement_val" name="modele_reglement_val" class="form-control" <?php if($bloqueReglement) echo"readonly"; ?>>
                 <option value=""></option>
@@ -448,7 +465,7 @@ if (!$isVisu)
                 ?>
             </select>
         </div>
-        <div style="text-align: center" class="form-group col-lg-5" >
+        <div style="text-align: center" class="col-lg-6" >
             <label>Montant avance</label>
             <input type="hidden" id="valideRegltImprime" name="valideRegltImprime" />
             <input type="hidden" id="cbMarqEntete" name="cbMarqEntete" value="<?= ($docEntete->cbMarq!="") ? $docEntete->cbMarq : 0 ?>"/>
@@ -458,13 +475,13 @@ if (!$isVisu)
             <input type="hidden" id="acte" name="acte" value="regle"/>
             <input type="input" id="mtt_avance" name="mtt_avance" class="form-control" READONLY/>
         </div>
-        <div style="clear:both"></div>
         <?php if(isset($_GET["entete"])){
             ?>
-            <div id="reste_a_payer_text" style="margin-top:20px;float:right">
+            <div id="reste_a_payer_text" style="margin-top:20px;float:right" class="col-lg-12">
                 Le reste à payer est de <b><?php echo $reste_a_payer; ?></b>
             </div>
         <?php } ?>
+        </div>
     </form>
 </div>
 

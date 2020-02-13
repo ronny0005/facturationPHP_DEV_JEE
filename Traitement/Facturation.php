@@ -44,6 +44,7 @@ $precompte=0;
 $marge=0;
 $totalttc=0;
 $reference="";
+
 function dateDiff($date1, $date2){
     $diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
     $retour = array();
@@ -183,6 +184,7 @@ if( $_GET["acte"] == "liste_article"){
     $cattarif = (isset($_GET["cattarif"])) ? $_GET["cattarif"] : 0;
     echo $docEntete->getApiString("/getPiedPage&cbMarq=$cbMarq&typeFacture=$typefac&catCompta=$catcompta&catTarif=$cattarif");
 }
+
 // mise à jour de la référence
 if( $_GET["acte"] =="calcul_pied"){
     $docEntete = new DocEnteteClass($_GET["cbMarq"]);

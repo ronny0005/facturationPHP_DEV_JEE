@@ -63,8 +63,6 @@ $flagNouveau = $protection->NouveauType("article");
 $flagInfoLibreArticle = $protection->NouveauType("infoLibreArticle");
 
 ?>
-        <div class="container clearfix">
-            <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-                FICHE ARTICLE
-            </h4>
-        </div>
+<section class="bgcolorApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">FICHE ARTICLE</h3>
+</section>
