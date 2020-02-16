@@ -194,11 +194,12 @@
                         </div>
 
                         <div class="col-6 col-sm-6 col-md-6 col-lg-2" id="divCA_Num" style="display:none">
-
+                            <label>Compte analytique</label>
                             <input type="hidden" class="form-control" name="CA_Num" id="CA_Num" value=""/>
                             <input type="text" class="form-control" name="CA_Intitule" id="CA_Intitule" value="" placeholder="Compte analytique"/>
                         </div>
                         <div class="col-6 col-sm-6 col-md-6 col-lg-2" id="divJournalDest">
+                            <label>Journal</label>
                             <select class="form-control" id="journalRec" name="journalRec">
                                 <option value=""></option>
                                 <?php
@@ -206,7 +207,7 @@
                                 $rows = $journalRec->getJournauxType(2,0);
                                 foreach ($rows as $row){
                                     ?>
-                                    <option value="<?= $row->JO_Num ?>"><?= $row->JO_Num." - ".$row->JO_Intitule ?></option>
+                                    <option value="<?= $row->JO_Num ?>"><?= "{$row->JO_Num} - {$row->JO_Intitule}" ?></option>
                                     <?php
                                 }
                                 ?>
@@ -245,7 +246,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2  mt-3">
+                        <div class="col-md-2  mt-4">
                             <button type="button" class="btn btn-primary bgcolorApplication" id = "validerRec" name= "validerRec">Valider</button>
                         </div>
                 </div>
@@ -253,7 +254,7 @@
                 echo "</form>";
                 }
                 ?>
-                <table class="table" id="tableRecouvrement">
+                <table class="table mt-3" id="tableRecouvrement">
                     <thead>
                     <tr>
                         <th>Numéro</th>

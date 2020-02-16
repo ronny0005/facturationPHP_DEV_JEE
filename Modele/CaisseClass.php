@@ -29,6 +29,10 @@ class CaisseClass Extends Objet{
         }
     }
 
+    public function getCaNum(){
+        return $this->getApiJson("/getCaNum&caNo={$this->CA_No}");
+    }
+
     public function insertDepotCaisse($DE_No){
 		$this->getApiJson("/insertDepotCaisse&caNo={$this->CA_No}&deNo={$DE_No}");
     }

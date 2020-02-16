@@ -362,9 +362,9 @@ jQuery(function ($) {
             if($("#typeRegl").val()=="Collaborateur")
                 collab = 1;
             $.ajax({
-                url: "indexServeur.php?page=getFactureCORecouvrement&CO_No=" + $("#co_no").val() + "&CT_Num=" + $("#CT_Num").val()+"&souche="+ca_souche+"&collab="+collab,
+                url: "indexServeur.php?page=getFactureCORecouvrementHtmlFactureDialog&CO_No=" + $("#co_no").val() + "&CT_Num=" + $("#CT_Num").val()+"&souche="+ca_souche+"&collab="+collab,
                 method: 'GET',
-                dataType: 'json',
+                dataType: 'html',
                 async : false,
                 success: function (data) {
                     total_reste_a_payer=0;
@@ -374,56 +374,62 @@ jQuery(function ($) {
                     $("#tableFacture_dialog >tbody").html("");
                     $("#tableFacture >tbody").html("");
                     $("#tableFacture").unbind();
-                    for(i=0;i<data.length;i++){
-                        tableaufacture(i,data[i].cbMarq,data[i].DO_Date,data[i].DO_Piece,data[i].DO_Ref,Math.round(data[i].avance),Math.round(data[i].ttc)/*,data[i].CA_No,data[i].CO_NoCaissier*/,data[i].DO_Type,data[i].DO_Domaine);
-                    }
+                    $("#tableFacture > tbody").append(data)
+                    $.ajax({
+                        url: "indexServeur.php?page=getFactureCORecouvrementHtmlFacture&CO_No=" + $("#co_no").val() + "&CT_Num=" + $("#CT_Num").val() + "&souche=" + ca_souche + "&collab=" + collab,
+                        method: 'GET',
+                        dataType: 'html',
+                        async: false,
+                        success: function (data) {
 
-                    $("input[id^='check_facture']").each(function(){
-                        $(this).click(function() {
-                            var emodeler = $(this).parent().parent();
-                            var check=0;
-                            if($(this).is(':checked'))
-                                check = 1;
-                            var ttc = parseFloat(emodeler.find("#ttc").html().replace(/ /g,"").replace(/&nbsp;/g,""));
-                            var avanceReglt = parseFloat(emodeler.find("#avance").html().replace(/ /g,"").replace(/&nbsp;/g,""));
-                            var libelle = emodeler.find("#libelle").html();
-                            var avanceInitRglt = parseFloat(Math.round(emodeler.find("#avanceInit").html().replace(/ /g,"")));
-                            calcul_montantRegle(emodeler,check,avanceReglt,ttc,avanceInitRglt);
-                        });
-                    });
+                            $("#tableFacture_dialog > tbody").append(data)
+                            $("input[id^='check_facture']").each(function(){
+                                $(this).click(function() {
+                                    var emodeler = $(this).parent().parent();
+                                    var check=0;
+                                    if($(this).is(':checked'))
+                                        check = 1;
+                                    var ttc = parseFloat(emodeler.find("#ttc").html().replace(/ /g,"").replace(/&nbsp;/g,""));
+                                    var avanceReglt = parseFloat(emodeler.find("#avance").html().replace(/ /g,"").replace(/&nbsp;/g,""));
+                                    var libelle = emodeler.find("#libelle").html();
+                                    var avanceInitRglt = parseFloat(Math.round(emodeler.find("#avanceInit").html().replace(/ /g,"")));
+                                    calcul_montantRegle(emodeler,check,avanceReglt,ttc,avanceInitRglt);
+                                });
+                            });
 
-                    $("input[id^='montant_regle']").each(function(){
-                        $(this).keyup(function() {
-                            var emodeler = $(this).parent().parent();
-                            var avanceInit = Math.round(emodeler.find("#avanceInit").html().replace(/ /g,"").replace(/&nbsp;/g,""));
-                            var n_mtt_reglement = Mtt_RG_Piece;
-                            var mtt_ttc =Math.round(emodeler.find("[id^='ttc']").html().replace(/ /g,"").replace(/&nbsp;/g,""));
-                            var mtt_regle = emodeler.find("[id^='montant_regle']").val().replace(/ /g,"").replace(/&nbsp;/g,"");
-                            var libelle = emodeler.find("[id^='libelle']").html();
-                            if(mtt_regle!=""){
-                                if(mtt_regle<=mtt_ttc){
-                                    n_mtt_reglement=n_mtt_reglement-mtt_regle;
-                                    $('#montant_reglement').html(n_mtt_reglement);
-                                    var new_val = 0;
-                                    if(emodeler.find("#montant_regle").val().replace(/ /g,"").replace(/&nbsp;/g,"")!="")
-                                        new_val= Math.round(emodeler.find("#montant_regle").val().replace(/ /g,"").replace(/&nbsp;/g,""));
-                                    //                            var mtt_reglement = Math.round($('#montant_reglement').html());
-                                    var n_avance = avanceInit + new_val;
-                                    emodeler.find("#avance").html(n_avance);
-                                }else {
-                                    alert("Le montant de la facutre "+libelle+" doit être inférieure à "+ mtt_ttc+" !");
-                                    $(this).find("[id^='montant_regle']").val(mtt_ttc);
-                                }
-                            }
-                            //calculMttRegleRestant();
+                            $("input[id^='montant_regle']").each(function(){
+                                $(this).keyup(function() {
+                                    var emodeler = $(this).parent().parent();
+                                    var avanceInit = Math.round(emodeler.find("#avanceInit").html().replace(/ /g,"").replace(/&nbsp;/g,""));
+                                    var n_mtt_reglement = Mtt_RG_Piece;
+                                    var mtt_ttc =Math.round(emodeler.find("[id^='ttc']").html().replace(/ /g,"").replace(/&nbsp;/g,""));
+                                    var mtt_regle = emodeler.find("[id^='montant_regle']").val().replace(/ /g,"").replace(/&nbsp;/g,"");
+                                    var libelle = emodeler.find("[id^='libelle']").html();
+                                    if(mtt_regle!=""){
+                                        if(mtt_regle<=mtt_ttc){
+                                            n_mtt_reglement=n_mtt_reglement-mtt_regle;
+                                            $('#montant_reglement').html(n_mtt_reglement);
+                                            var new_val = 0;
+                                            if(emodeler.find("#montant_regle").val().replace(/ /g,"").replace(/&nbsp;/g,"")!="")
+                                                new_val= Math.round(emodeler.find("#montant_regle").val().replace(/ /g,"").replace(/&nbsp;/g,""));
+                                            //                            var mtt_reglement = Math.round($('#montant_reglement').html());
+                                            var n_avance = avanceInit + new_val;
+                                            emodeler.find("#avance").html(n_avance);
+                                        }else {
+                                            alert("Le montant de la facutre "+libelle+" doit être inférieure à "+ mtt_ttc+" !");
+                                            $(this).find("[id^='montant_regle']").val(mtt_ttc);
+                                        }
+                                    }
+                                    //calculMttRegleRestant();
 
-                        });
-                    });
-                    $("#tableFacture > tbody").append("<tr id='facture_dialog_Total' style='background-color:grey;color:white;font-weight:bold'><td>Total</td><td></td><td></td><td>"+(somAvance)+"</td><td>"+(somTtc)+"</td><td>"+(somResteAPayer)+"</td></tr>");
-                    $("#tableFacture_dialog > tbody").append("<tr id='facture_Total' style='background-color:grey;color:white;font-weight:bold'><td>Total</td><td></td><td></td><td></td><td>"+(somAvance)+"</td><td>"+(somTtc)+"</td><td></td></tr>");
-                    if(bloque)
-                        bloqueFacture();
-                    $("#total_reste").html("Total rete à payer : <b>"+(total_reste_a_payer)+"</b>");
+                                });
+                            });
+                            if(bloque)
+                                bloqueFacture();
+                            $("#total_reste").html("Total rete à payer : <b>"+(total_reste_a_payer)+"</b>");
+
+                        }
+                    })
                 }
             });
 //            $("#tableFacture_dialog").append("</table>");
@@ -439,24 +445,6 @@ jQuery(function ($) {
         $("#form_facture :input").prop("disabled", true);
     }
 
-    function tableaufacture(cmp,cbMarq,DO_Date,DO_Piece,DO_Ref,avance,ttc,do_type,do_domaine){
-        var classe = "";
-        total_reste_a_payer = total_reste_a_payer + (ttc-avance);
-        somAvance= somAvance+ avance;
-        somTtc= somTtc +ttc;
-        somResteAPayer= somResteAPayer + (ttc-avance);
-        if (cmp % 2 == 0)
-            classe = "info";
-        else classe = "";
-        $("#tableFacture_dialog > tbody").append("<tr id='facture' class= 'facture " + classe + "'><td><input type='checkbox' id='check_facture' value='0'/></td><td>"+$.datepicker.formatDate('dd-mm-yy', new Date(DO_Date))+"</td><td id='libelle'>" + DO_Piece + "</td>\n\
-            <td>" + DO_Ref + "</td><td id='avance'>" + (avance)+ "</td><td id='ttc'>" + (ttc) + "</td><td><input class='form-control' style='width:100px' type='text' id='montant_regle' disabled/><span style='visibility:hidden;width:10px' id='avanceInit'>" + (avance)+ "</span></td><td><span style='visibility:hidden;width:10px' id='DoType'>" + do_type + "</span><span style='visibility:hidden;width:10px' id='cbMarqEntete'>" + cbMarq + "</span></td><td><span style='visibility:hidden;width:10px' id='DoDomaine'>" + do_domaine + "</span></td></tr>").on('click', '#facture', function () {
-
-        });
-        $("#tableFacture > tbody").append("<tr id='facture_dialog' class= 'facture " + classe + "'><td>"+$.datepicker.formatDate('dd-mm-yy', new Date(DO_Date))+"</td><td id='libelleS'>" + DO_Piece + "</td>\n\
-            <td>" + DO_Ref + "</td><td id='avanceS'>" + (avance)+ "</td><td id='ttcS'>" + (ttc)+ "</td><td>"+((ttc-avance))+"</td></tr>").on('click', '#facture_', function () {
-        });
-
-    }
 
     function calculMttRegleRestant(){
         var n_mtt_reglement = Mtt_RG_Piece;

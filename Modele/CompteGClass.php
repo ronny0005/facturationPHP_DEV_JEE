@@ -57,6 +57,12 @@ class CompteGClass Extends Objet{
         return $this->getApiJson("/getComptegByType&cgType=$type");
     }
 
+
+
+    public function allSearch($intitule="",$top=0){
+        return $this->getApiJson("/allSearch&intitule=".urlencode($intitule)."&top=$top");
+    }
+
     public function __toString() {
         return "";
     }

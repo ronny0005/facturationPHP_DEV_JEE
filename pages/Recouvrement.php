@@ -17,9 +17,9 @@ $datesaisie="";
 $datefin="";
 $post = 0;
 
-if(isset($_POST["typeRegl"]))
+if(isset($_POST["client"]))
     $post=1;
-if(isset($_GET["typeRegl"]))
+if(isset($_GET["client"]))
     $post=1;
 $typeRegl = "Client";
 if(isset($_POST["typeRegl"]))
@@ -106,14 +106,14 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Début</label>
                 <div class="input-group">
-                    <input  type="text"  class="form-control" id="dateReglementEntete_deb" name="dateReglementEntete_deb" placeholder="Date" value="<?php echo $datedeb; ?>"/>
+                    <input  type="text"  class="form-control" id="dateReglementEntete_deb" name="dateReglementEntete_deb" placeholder="Date" value="<?= $datedeb; ?>"/>
                     <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
                 </div>
             </div>
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Fin</label>
                 <div class="input-group">
-                    <input  type="text" class="form-control" id="dateReglementEntete_fin" name="dateReglementEntete_fin" placeholder="Date" value="<?php echo $datefin; ?>"/>
+                    <input  type="text" class="form-control" id="dateReglementEntete_fin" name="dateReglementEntete_fin" placeholder="Date" value="<?= $datefin; ?>"/>
                     <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
                 </div>
             </div>
@@ -264,7 +264,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-1 col-lg-1 mt-2">
+                        <div class="col-md-1 col-lg-1 mb-2">
                             <input name="client" id="client_valide" type="hidden" value="2" name="action"/>
                             <input type="button" class="btn btn-primary bgcolorApplication" name="acte" id = "validerRec" value="Valider"/>
                         </div>

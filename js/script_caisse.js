@@ -80,20 +80,47 @@ jQuery(function ($) {
     }
     protection();
 
-    $.ajax({
-        url: 'indexServeur.php?page=banque',
-        method: 'GET',
-        dataType: 'json',
-        async : false,
-        success: function (data) {
-            for (i = 0; i < data.length; i++) {
-                var option = $('<option />');
-//                if (i == 0)option.attr('selected', 'selected');
-                option.attr('value', data[i].CG_Num).text(data[i].CG_Intitule);
-                $('#banque').append(option);
+
+
+    $("#banque").autocomplete({
+        source: "indexServeur.php?page=getComptegByCGNum",
+        autoFocus: true,
+        select: function(event, ui) {
+            event.preventDefault();
+            $("#banque").val(ui.item.value)
+            $("#CG_NumBanque").val(ui.item.CG_Num)
+            if(ui.item.CG_Analytique==1) {
+                $("#divCA_Num").show()
+                $("#CG_Analytique").val(1)
+                setCA_Num($("#caisseLigne").val())
             }
+            else {
+                $("#divCA_Num").hide()
+                $("#CA_Intitule").val("")
+                $("#CA_Num").val("")
+                $("#CG_Analytique").val(0)
+            }
+        },
+        focus: function(event, ui) {
         }
-    });
+    })
+
+    function setCA_Num(val){
+        if($("#divCA_Num").is(":visible"))
+            $.ajax({
+                url: 'indexServeur.php?page=getCANumByCaisse&CA_No='+val,
+                method: 'GET',
+                async:false,
+                dataType: 'json',
+                async : false,
+                success: function (data) {
+                    $("#CA_Num").val(data[0].CA_Num)
+                    $("#CA_Intitule").val(data[0].intitule)
+                },
+                error: function(data) {
+                }
+            })
+    }
 
     $('.combocaisse').focusout(function () {
         $.ajax({
@@ -116,10 +143,10 @@ jQuery(function ($) {
             $.ajax({
                 url: 'indexServeur.php?page=getCompteEntree',
                 method: 'GET',
-                dataType: 'json',
+                dataType: 'html',
                 async : false,
                 success: function (data) {
-                    $("#banque").val(data[0].P_CreditCaisse);
+                    $("#banque").val(data);
 
                 }
             });
@@ -139,10 +166,10 @@ jQuery(function ($) {
             $.ajax({
                 url: 'indexServeur.php?page=getCompteSortie',
                 method: 'GET',
-                dataType: 'json',
+                dataType: 'html',
                 async : false,
                 success: function (data) {
-                    $("#banque").val(data[0].P_DebitCaisse);
+                    $("#banque").val(data);
                 }
             });
             $("#libelleRec").attr("readonly", false);
@@ -163,10 +190,10 @@ jQuery(function ($) {
             $.ajax({
                 url: 'indexServeur.php?page=getCompteSortie',
                 method: 'GET',
-                dataType: 'json',
+                dataType: 'html',
                 async : false,
                 success: function (data) {
-                    $("#banque").val(data[0].P_DebitCaisse);
+                    $("#banque").val(data);
                 }
             });
             $("#libelleRec").attr("readonly", false);
@@ -212,30 +239,6 @@ jQuery(function ($) {
         }else{
             alert("Veuillez choisir le code journal !");
         }
-    }
-
-
-    function ajoutReglementCaisseSubmit(){
-        if($("#caisseLigne").val()!=-1 && $("#montantRec").val().replace(/ /g,"")!=""&& $("#dateReglement").val()!=""){
-            var paramOr = "";
-            if($("#affaire").val()!=undefined) paramOr = "&CA_Num="+$("#affaire").val();
-            $.ajax({
-                    url: 'indexServeur.php?page=getCaisseMvtEntree&rg_typereg='+$("#type_mvt_lig").val()+'&CA_No=' + $('#caisseLigne').val()+'&date=' + $('#dateReglement').val()+'&montant=' + $('#montantRec').val().replace(/ /g,"")+'&libelle=' + $('#libelleRec').val()+'&cg_num=' + $('#banque').val()+'&user='+$("#userName").html(),
-                method: 'GET',
-                async:false,
-                dataType: 'html',
-                async : false,
-                data : "CA_No_Dest="+$("#CA_No_Dest").val()+paramOr,
-                success: function (data) {
-                    listeReglementCaisse();
-                },
-                error: function(data) {
-                }
-            });
-            $("#dateReglement").val(new Date().toISOString().slice(0, 10));
-            if($("#type_mvt_lig").val()!=2) $("#libelleRec").val("");
-            $("#montantRec").val("");
-        } else alert("Saississer un montant et choississez une caisse !");
     }
 
     function listeReglementCaisse(){
