@@ -41,7 +41,7 @@ if(!isset($_SESSION))
     <div id="wrapper">
         <?php include ("module/Menu/barreMenuGauche.php"); ?>
 
-        <div class="d-flex flex-column" id="content-wrapper">
+        <div class="d-flex flex-column" id="content-wrapper" style="background-color : white">
             <div id="content">
                 <?php include ("module/Menu/barreMenuHaut.php"); ?>
                 <div class="container-fluid">

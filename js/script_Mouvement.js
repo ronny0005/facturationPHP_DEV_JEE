@@ -771,28 +771,8 @@ jQuery(function($){
                 data: "type=" + typeFac + "&prot_no=" + $("#PROT_No").val() + "&ca_no=" + caisse + "&DE_No=" + depot + "&souche=" + souche + "&CA_Num=" + affaire,
                 success: function (data) {
                     $(data).each(function () {
-                        if (this.DE_No != null) {
-                            $("#depot").val(this.DE_No);
-                            $("#reference").html("");
-                            $("#designation").html("");
-                        }
-                        if (this.CA_No != null)
-                            $("#caisse").val(this.CA_No);
-                        if(this.CA_No==0)
-                            $("#caisse").val("")
-                        if (this.CA_Souche != null)
-                            $("#souche").val(this.CA_Souche);
                         if (this.CA_Num != null)
                             $("#affaire").val(this.CA_Num);
-                        if (this.CA_CatTarif != null && this.CA_CatTarif != 1)
-                            $("#cat_tarif").val(this.CA_CatTarif);
-                        if($("#cat_tarif").val()==null)
-                            $("#cat_tarif").val($("#cat_tarif option:first").val());
-                        if((typeFac=="Vente" || typeFac=="VenteT" || typeFac=="VenteC") && $("#modifClient").val()!=0){
-                            if($_GET("cbMarq")==undefined)
-                                clientCaisse();
-                            $(".comboclient :input").attr("readonly",true);
-                        }
                     });
                     entete_document();
                 },

@@ -104,6 +104,10 @@ class ReglementClass Extends Objet{
         $this->getApiExecute("/addEcheance&protNo=$protNo&rgNo=$rgNo&typeRegl=$typeRegl&cbMarqEntete=$cbMarqEntete&montant=$montant");
     }
 
+    public function insertMvtCaisse($rgMontant,$protNo,$caNum,$libelle,$rgTypeReg,$caNo,$cgNumBanque,$isModif,$rgDate,$joNum,$caNoDest,$cgAnalytique,$rgTyperegModif,$journalRec,$rgNoDest){
+        $this->getApiExecute("/insertMvtCaisse&rgMontant=$rgMontant&protNo=$protNo&caNum=$caNum&libelle=".urlencode($libelle)."&rgTypeReg=$rgTypeReg&caNo=$caNo&cgNumBanque=$cgNumBanque&isModif=$isModif&rgDate=$rgDate&joNum=$joNum&caNoDest=$caNoDest&cgAnalytique=$cgAnalytique&rgTyperegModif=$rgTyperegModif&journalRec=$journalRec&rgNoDest=$rgNoDest");
+    }
+
     public function  insertF_Reglement(){
         $requete = "BEGIN 
                 SET NOCOUNT ON;

@@ -1042,68 +1042,8 @@ class DocEnteteClass Extends Objet{
         return $this->getApiJson( "/getListeFacture&doProvenance=$do_provenance&doType=$do_type&doDomaine=$do_domaine&deNo=$de_no&dateDeb=$datedeb&dateFin=$datefin&client=$client");
     }
 
-public function setValueMvt(){
-    $this->DO_Period=0;
-    $this->DO_Expedit=0;
-    $this->DO_NbFacture=0;
-}
 
-public function defaultValue(){
-    $this->DO_Period=1;
-    $this->DO_Devise=0;
-    $this->DO_Cours=0;
-    $this->DO_Expedit=1;
-    $this->DO_NbFacture=1;
-    $this->DO_BLFact=0;
-    $this->DO_TxEscompte=0;
-    $this->DO_Reliquat=0;
-    $this->DO_Imprim=0;
-    $this->DO_Coord01='';
-    $this->DO_Coord04='';
-    $this->DO_Colisage=1;
-    $this->DO_TypeColis=1;
-    $this->DO_Langue=0;
-    $this->DO_Ecart=0;
-    $this->DO_Ventile=0;
-    $this->AB_No=0;
-    $this->DO_DebutAbo='1900-01-01';
-    $this->DO_FinAbo='1900-01-01';
-    $this->DO_DebutPeriod='1900-01-01';
-    $this->DO_FinPeriod='1900-01-01';
-    $this->DO_Transfere=0;
-    $this->DO_Cloture=0;
-    $this->DO_NoWeb='';
-    $this->DO_Attente=0;
-    $this->CA_NumIFRS='';
-    $this->MR_No=0;
-    $this->DO_TypeFrais=0;
-    $this->DO_ValFrais=0;
-    $this->DO_TypeLigneFrais=0;
-    $this->DO_TypeFranco=0;
-    $this->DO_ValFranco=0;
-    $this->DO_TypeLigneFranco=0
-    ;$this->DO_Taxe1=0;
-    $this->DO_TypeTaux1=0;
-    $this->DO_TypeTaxe1=0;
-    $this->DO_Taxe2=0
-    ;$this->DO_TypeTaux2=0;
-    $this->DO_TypeTaxe2=0;
-    $this->DO_Taxe3=0;
-    $this->DO_TypeTaux3=0;
-    $this->DO_TypeTaxe3=0;
-    $this->DO_MajCpta=0;
-    $this->DO_Motif='';
-    $this->CT_NumCentrale=NULL;
-    $this->DO_Contact='';
-    $this->DO_FactureElec=0;
-    $this->DO_TypeTransac=0;
-    $this->cbProt=0;
-    $this->cbReplication=0;
-    $this->cbFlag=0;
-    $this->VEHICULE='';
-    $this->CHAUFFEUR='';
-    $this->DO_Provenance=0;
-}
+
 
 public function setValueMvtEntree (){
     $this->CO_No=0;$this->cbCO_No=NULL;$this->DO_Period=0;$this->DO_Devise=0
@@ -1153,32 +1093,12 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/getlisteEntree&client={$this->formatString($do_tiers)}&dateDeb=$datedeb&dateFin=$datefin");
     }
 
-    public function addDocenteteTransfertProcess($do_date, $do_ref, $do_tiers, $ca_num,$depot, $longitude, $latitude,$typefac="Transfert"){
-            $this->setTypeFac($typefac);
-            $do_piece=$this->getEnteteDocument(0);
-            $docEntete = new DocEnteteClass(0,$this->db);
-            if($do_piece!="") {
-                $docEntete->defaultValue();
-                $docEntete->setValueMvtEntree();
-                $docEntete->DO_Domaine = $this->DO_Domaine;
-                $docEntete->DO_Type = $this->DO_Type;
-                $docEntete->DO_Piece = $do_piece;
-                $docEntete->latitude = $latitude;
-                $docEntete->longitude = $longitude;
-                $docEntete->DO_Ref = $do_ref;
-                $docEntete->DO_Tiers = $do_tiers;
-                $docEntete->CA_Num = $ca_num;
-                $docEntete->DO_Date = $do_date;
-                $docEntete->DO_DateLivr = '1900-01-01';
-                $docEntete->DE_No = $depot;
-                $docEntete->type_fac = $typefac;
-                $docEntete->setValueMvt();
-                $docEntete->setuserName("","");
-                $docEntete = new DocEnteteClass($docEntete->insert_docEntete(),$this->db);
-                $nextDO_Piece = $this->getEnteteDispo();
-                $this->updateEnteteTable($nextDO_Piece);
-            }
-            return $docEntete;
+    public function addDocenteteTransfertProcess($do_date, $do_ref, $do_tiers, $ca_num,$depot, $longitude, $latitude,$typefac="Transfert",$protNo){
+        return $this->getApiJson("/AjoutMvtStock&typeFacture=$typefac&latitude=$latitude&longitude=$longitude&doRef=$do_ref&caNum=$ca_num&doTiers=$do_tiers&doDate=$do_date&deNo=$depot&protNo=$protNo");
+    }
+
+    public function addDocenteteMouvement($do_date, $do_ref, $do_tiers, $ca_num,$depot, $longitude, $latitude,$typefac,$protNo){
+        return $this->getApiJson("/AjoutMvtStock&typeFacture=$typefac&latitude=$latitude&longitude=$longitude&doRef=$do_ref&caNum=$ca_num&doTiers=$do_tiers&doDate=$do_date&deNo=$depot&protNo=$protNo");
     }
 
     public function getFactureByPieceTypeFac(){

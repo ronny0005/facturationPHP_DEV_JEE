@@ -3,15 +3,15 @@ $do_domaine = $docEntete->DO_Domaine;
 $do_type = $docEntete->DO_Type;
 ?>
 
-<fieldset class="entete">
+<fieldset class="entete mt-3">
 <legend class="entete">Ligne</legend>
 <div class="err" id="add_err"></div>
 <form action="indexMVC.php?action=5&module=4" method="GET" name="form-ligne" id="form-ligne">
     <input type="hidden" value="4" name="module"/>
     <input type="hidden" value="5" name="action"/>
-    <input type="hidden" value="<?php echo $do_imprim; ?>" name="do_imprim" id="do_imprim"/>
+    <input type="hidden" value="<?= $do_imprim; ?>" name="do_imprim" id="do_imprim"/>
 <div class="row">
-    <input class="form-control" id="entete" name="entete" name="entete" type="hidden" value="<?php echo $entete; ?>"/>
+    <input class="form-control" id="entete" name="entete" name="entete" type="hidden" value="<?= $entete; ?>"/>
      <div class="col-12 col-sm-4 col-md-3 col-lg-2">
          <input type="hidden" class="form-control" id="AR_Ref" name="AR_Ref" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
          <input type="text" class="form-control" id="reference" name="reference" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
@@ -41,7 +41,7 @@ $do_type = $docEntete->DO_Type;
 </div>
  </form>
 <div class="form-group">
- <table id="tableLigne" class="table">
+ <table id="tableLigne" class="table mt-3">
     <thead>
       <tr>
         <th>Référence</th>
@@ -109,9 +109,9 @@ echo "<th></th>";
                 $marge=$marge+$d;
                 $totalttc=$totalttc+round(($a+$b+$c)+$d,0);
 
-                echo "<tr class='facture $classe' id='article_".$row->cbMarq."'";
-                    echo "><td id='AR_Ref' style='color:blue;text-decoration: underline'>".$row->AR_Ref."</td>"
-                    . "<td id='DL_Design' style='align:left'>".$row->DL_Design."</td>";
+                echo "<tr class='facture $classe' id='article_{$row->cbMarq}'";
+                    echo "><td id='AR_Ref' style='color:blue;text-decoration: underline'>{$row->AR_Ref}</td>"
+                    . "<td id='DL_Design' style='align:left'>{$row->DL_Design}</td>";
                     ?>
                 <td id='DL_PrixUnitaire'
                     style="<?php
@@ -120,14 +120,14 @@ echo "<th></th>";
                     <?= $objet->formatChiffre(round($row->DL_PrixUnitaire, 2)); ?></td>
 
                 <?php
-                    echo "<td id='DL_Qte'>".$objet->formatChiffre(round($row->DL_Qte*100)/100)."</td>";
-                if($flagPxRevient==0) echo    "<td id='DL_MontantHT'>".$objet->formatChiffre($row->DL_MontantHT)."</td>";
-                    echo "<td style='display:none' id='cbMarq'>".$row->cbMarq."</td>"
-                    . "<td style='display:none' id='id_sec'>".$row->idSec."</td>";
+                    echo "<td id='DL_Qte'>{$objet->formatChiffre(round($row->DL_Qte*100)/100)}</td>";
+                if($flagPxRevient==0) echo    "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
+                    echo "<td style='display:none' id='cbMarq'>{$row->cbMarq}</td>
+                            <td style='display:none' id='id_sec'>{$row->idSec}</td>";
                 if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation")
-                        echo "<td id='modif_".$row->cbMarq."'><i class='fa fa-pencil fa-fw'></i></td>";
+                        echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
                 if(!$isVisu && $type!="Transfert_valid_confirmation")
-                    echo "<td id='suppr_".$row->cbMarq."'><i class='fa fa-trash-o'></i></td>";
+                    echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";
                 if($protection->PROT_CBCREATEUR!=2)
                     echo "<td>{$docligne->getcbCreateurName()}</td>";
                 echo"</tr>";

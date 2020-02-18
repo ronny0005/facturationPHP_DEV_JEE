@@ -60,9 +60,9 @@ if($_GET["acte"] =="ajout_entete"){
     }
 
     if($admin==0) {
-        $docEntete = new DocEnteteClass(0,$objet->db);
-        $entete=$docEntete->addDocenteteTransfertProcess($_GET["date"], $_GET["reference"], $_GET["collaborateur"], $_GET["affaire"],$_GET["depot"], 0, 0,$_GET["type_fac"]);
-        $data = array('entete' => $entete->DO_Piece,'cbMarq' => $entete->cbMarq);
+        $docEntete = new DocEnteteClass(0);
+        $entete=$docEntete->addDocenteteMouvement($_GET["date"], urlencode($_GET["reference"]), $_GET["collaborateur"], $_GET["affaire"],$_GET["depot"], 0, 0,$_GET["type_fac"],$_SESSION["id"]);
+        $data = array('entete' => $entete[0]->DO_Piece,'cbMarq' => $entete[0]->cbMarq);
         echo json_encode($data);
     }
     else

@@ -241,6 +241,7 @@ SET NOCOUNT ON;
 
     public function getDepotByIntitule($intitule,$depotExclude=-1){
         $value = $this->getApiJson("/getDepotByIntitule&deNo=$depotExclude&intitule={$this->formatString($intitule)}");
+        $rows=array();
         foreach ($value as $val){
             $rows[] = array("id" => $val->DE_No , "text" => $val->DE_Intitule,"DE_Intitule" => $val->DE_Intitule,"DE_No" => $val->DE_No , "value" => $val->DE_Intitule );
         }
