@@ -96,21 +96,25 @@ jQuery(function($){
                                 url: "traitement/" + fichierTraitement() + "?type_fac=" + typeFac + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cb_Marq").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
-                                dataType: 'json',
-                                data: "cbMarqEntete=" + $("#cbMarqEntete").val() + ajoutParam+"&PROT_No="+$("#PROT_No").val(),
+                                dataType: 'html',
+                                data: "cbMarqEntete=" + $("#cbMarqEntete").val() + ajoutParam+"&PROT_No="+$("#PROT_No").val()+"&typeFacture="+$("#typeFacture").val(),
                                 success: function (data) {
-                                    alimLigne();
-                                    tr_clickArticle();
-                                    $('#reference').prop('disabled', false);
-                                    $('#reference_dest').prop('disabled', false);
-                                    $('#reference').val("");
-                                    $('#designation').val("");
-                                    if (typeFac == "Transfert_detail") {
-                                        $("#article_" + $("#cb_Marq").val()).find("#DL_Qte_dest").html((Math.round(data[0].DL_Qte_Dest * 100) / 100));
-                                        $("#article_" + $("#cb_Marq").val()).find("#DL_MontantHT_dest").html(Math.round(data[0].DL_MontantHT_Dest));
+                                    if(data!="")
+                                        alert(data)
+                                    else {
+                                        alimLigne();
+                                        tr_clickArticle();
+                                        $('#reference').prop('disabled', false);
+                                        $('#reference_dest').prop('disabled', false);
+                                        $('#reference').val("");
+                                        $('#designation').val("");
+                                        if (typeFac == "Transfert_detail") {
+                                            $("#article_" + $("#cb_Marq").val()).find("#DL_Qte_dest").html((Math.round(data[0].DL_Qte_Dest * 100) / 100));
+                                            $("#article_" + $("#cb_Marq").val()).find("#DL_MontantHT_dest").html(Math.round(data[0].DL_MontantHT_Dest));
+                                        }
+                                        $('#reference').focus();
+                                        $("#ADL_Qte").val(0);
                                     }
-                                    $('#reference').focus();
-                                    $("#ADL_Qte").val(0);
                                 },
                                 error: function (resultat, statut, erreur) {
                                     alert(resultat.responseText);
@@ -806,7 +810,7 @@ jQuery(function($){
             if($("#affaire").val()!="null")
                 affaire = $("#affaire").val();
             $.ajax({
-                url: "traitement/"+fichierTraitement()+"?type_fac="+typeFac+"&do_piece="+$("#n_doc").val()+"&acte=ajout_entete&date="+returnDate($("#dateentete").val())+"&collaborateur="+$("#CO_No").val()+"&depot="+$("#DE_No").val()+ "&reference="+$("#ref").val()+ "&affaire="+affaire+"&userName="+$("#userName").html()+"&machineName="+$("#machineName").html(),
+                url: "traitement/Facturation.php?type_fac="+typeFac+"&do_piece="+$("#n_doc").val()+"&acte=ajout_entete&date="+returnDate($("#dateentete").val())+"&client="+$("#CO_No").val()+"&de_no="+$("#DE_No").val()+ "&reference="+$("#ref").val()+ "&affaire="+affaire+"&userName="+$("#userName").html()+"&machineName="+$("#machineName").html(),
                 method: 'GET',
                 async : false,
                 dataType: 'json',

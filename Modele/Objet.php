@@ -99,7 +99,7 @@ class Objet {
 
 
     public function maj($name,$value){
-        $this->getApiJson("/maj&name=$name&value=".htmlspecialchars_decode($value)."&cbMarq={$this->cbMarq}&cbCreateur={$this->userName}");
+        $this->getApiExecute("/maj&nom=$name&valeur=".htmlspecialchars_decode($value)."&cbMarq={$this->cbMarq}&cbCreateur=".$_SESSION["id"]);
     }
 
     public function majCbMarq($name,$value,$cbMarq){

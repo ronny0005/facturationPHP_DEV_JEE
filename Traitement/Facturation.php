@@ -88,8 +88,9 @@ if($_GET["acte"] =="ajout_entete"){
             $_GET["type_fac"], $_GET["date"], $_GET["date"], $_GET["affaire"], $_GET["client"], isset($_GET["protNo"]) ? $_GET["protNo"] : "",
             $mobile, isset($_GET["machineName"]) ? $_GET["machineName"] : "%20",
             isset($_GET["doCood2"]) ? $_GET["doCood2"] : "%20", isset($_GET["doCood3"]) ? $_GET["doCood3"] : "%20",isset($_GET["DO_Coord04"]) ? $_GET["DO_Coord04"] : "%20",
-            $_GET["do_statut"], $latitude, $longitude, $_GET["de_no"], $_GET["cat_tarif"], $_GET["cat_compta"], $_GET["souche"], $_GET["ca_no"],
-            $_GET["co_no"], str_replace("'","''",$_GET["reference"])));
+            isset($_GET["do_statut"])? $_GET["do_statut"] : "0", $latitude, $longitude, $_GET["de_no"], isset($_GET["cat_tarif"]) ? $_GET["cat_tarif"] : "0"
+            , isset($_GET["cat_compta"]) ? $_GET["cat_compta"] : "0", isset($_GET["souche"]) ? $_GET["souche"] : "0"
+            , isset($_GET["ca_no"]) ? $_GET["ca_no"] : "0", isset($_GET["co_no"]) ? $_GET["co_no"] : "0", str_replace("'","''",$_GET["reference"])));
     }
     else
         echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
@@ -98,7 +99,7 @@ if($_GET["acte"] =="ajout_entete"){
 // mise à jour de la référence
 if( $_GET["acte"] =="ajout_reference"){
     $docEntete = new DocEnteteClass($_GET["cbMarq"],$objet->db);
-	$docEntete->maj("DO_Ref",str_replace("'","''",$_GET["reference"]),$docEntete->cbMarq,$_SESSION["id"]);
+	$docEntete->maj("DO_Ref",urlencode($_GET["reference"]),$docEntete->cbMarq,$_SESSION["id"]);
 }
 
 if( $_GET["acte"] =="modif_nomClient"){
