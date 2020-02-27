@@ -139,25 +139,6 @@ class DocLigneClass Extends Objet
         $this->MT_Taxe3 = $rows[0]->MT_Taxe3;
     }
 
-    public function updateCarat($cbMarq)
-    {
-        $query = "UPDATE F_DOCLIGNE SET cag=" . $this->cag . ",mag=" . $this->mag . " ,carat=" . $this->carat . " ,
-                                        eau=" . $this->eau . " ,divise=" . $this->divise . " WHERE cbMarq = $cbMarq";
-        $this->db->query($query);
-    }
-
-    public function updateCaratTrsft($cbMarq)
-    {
-        $query = "UPDATE F_DOCLIGNE SET carat=" . $this->carat . " WHERE cbMarq = $cbMarq";
-        $this->db->query($query);
-    }
-
-    public function updateCaratVente($cbMarq)
-    {
-        $query = "UPDATE F_DOCLIGNE SET purity=" . $this->purity . ",pureway=" . $this->pureway . " ,carat=" . $this->carat . " ,cioj=" . $this->cioj . " ,oz=" . $this->oz . " WHERE cbMarq = $cbMarq";
-        $this->db->query($query);
-    }
-
     public function getLigneFacture($cbMarq)
     {
         return $this->getApiJson("/getLigneFacture&cbMarq=$cbMarq");
@@ -327,13 +308,6 @@ class DocLigneClass Extends Objet
 
         $result = $this->db->query($requete);
         return $result->fetchAll(PDO::FETCH_OBJ)[0]->cbMarq;
-    }
-
-
-    public function deleteConfirmation()
-    {
-        $query = "DELETE FROM Z_LIGNE_CONFIRMATION WHERE cbMarqLigne='" . $this->id . "'";
-        $this->db->query($query);
     }
 
     public function deleteConfirmationbyCbmarq($cbMarq)
@@ -547,59 +521,6 @@ class DocLigneClass Extends Objet
     {
         return "SELECT *,$cbMarq  AS cbMarq_prem ,CASE WHEN DL_Remise01REM_Type=0 THEN ''  ELSE CASE WHEN DL_Remise01REM_Type=1 THEN cast(cast(DL_Remise01REM_Valeur as numeric(9,2)) as varchar(10))+'%' ELSE cast(cast(DL_Remise01REM_Valeur as numeric(9,2)) as varchar(10))+'U' END END DL_Remise FROM F_DOCLIGNE WHERE cbMarq=(SELECT Max(cbmarq) FROM F_DOCLIGNE WHERE  DO_Piece='" . $do_piece . "')";
     }
-
-    public function insertDocligneMagasin()
-    {
-//        $article = new ArticleClass($this->AR_Ref);
-        //$queryStock = $article->updateArtStockQuery($this->DE_No,-$this->DL_Qte,-(ROUND($this->DL_PrixRU, 2) * $this->DL_Qte));
-
-        $requete = "
-              BEGIN
-              SET NOCOUNT ON;
-              INSERT INTO [dbo].[F_DOCLIGNE]
-                ([DO_Domaine], [DO_Type], [CT_Num], [DO_Piece], [DL_PieceBC], [DL_PieceBL], [DO_Date], [DL_DateBC]
-                , [DL_DateBL], [DL_Ligne], [DO_Ref], [DL_TNomencl], [DL_TRemPied], [DL_TRemExep], [AR_Ref], [DL_Design]
-                , [DL_Qte], [DL_QteBC], [DL_QteBL], [DL_PoidsNet], [DL_PoidsBrut], [DL_Remise01REM_Valeur], [DL_Remise01REM_Type], [DL_Remise02REM_Valeur]
-                , [DL_Remise02REM_Type], [DL_Remise03REM_Valeur], [DL_Remise03REM_Type], [DL_PrixUnitaire]
-                , [DL_PUBC], [DL_Taxe1], [DL_TypeTaux1], [DL_TypeTaxe1], [DL_Taxe2], [DL_TypeTaux2], [DL_TypeTaxe2], [CO_No]
-                , [cbCO_No], [AG_No1], [AG_No2], [DL_PrixRU], [DL_CMUP], [DL_MvtStock], [DT_No], [cbDT_No]
-                , [AF_RefFourniss], [EU_Enumere], [EU_Qte], [DL_TTC], [DE_No], [cbDE_No], [DL_NoRef], [DL_TypePL]
-                , [DL_PUDevise], [DL_PUTTC], [DL_No], [DO_DateLivr], [CA_Num], [DL_Taxe3], [DL_TypeTaux3], [DL_TypeTaxe3]
-                , [DL_Frais], [DL_Valorise], [AR_RefCompose], [DL_NonLivre], [AC_RefClient], [DL_MontantHT], [DL_MontantTTC], [DL_FactPoids]
-                , [DL_Escompte], [DL_PiecePL], [DL_DatePL], [DL_QtePL], [DL_NoColis], [DL_NoLink], [cbDL_NoLink], [RP_Code]
-                , [DL_QteRessource], [DL_DateAvancement], [cbProt], [cbCreateur], [cbModification], [cbReplication], [cbFlag],[USERGESCOM],[DATEMODIF],[MACHINEPC])
-            VALUES
-                (/*DO_Domaine*/" . $this->DO_Domaine . ",/*DO_Type*/" . $this->DO_Type . ",/*CT_Num*/'" . $this->CT_Num . "',/*DO_Piece*/'" . $this->DO_Piece . "'
-                ,/*DL_PieceBC*/'" . $this->DL_PieceBC . "',/*DL_PieceBL*/'" . $this->DL_PieceBL . "',/*DO_Date*/'" . $this->DO_Date . "',/*DL_DateBC*/'" . $this->DL_DateBC . "'
-                ,/*DL_DateBL*/'" . $this->DL_DateBL . "',/*DL_Ligne*/ (SELECT (1+COUNT(*))*10000 FROM F_DOCLIGNE WHERE DO_PIECE='" . $this->DO_Piece . "'),/*DO_Ref*/'" . $this->DO_Ref . "',/*DL_TNomencl*/" . $this->DL_TNomencl . "
-                ,/*DL_TRemPied*/" . $this->DL_TRemPied . ",/*DL_TRemExep*/" . $this->DL_TRemExep . ",/*AR_Ref*/'" . $this->AR_Ref . "',/*DL_Design*/'" . $this->DL_Design . "'
-               ,/*DL_Qte*/" . $this->DL_Qte . ",/*DL_QteBC*/" . $this->DL_QteBC . ",/*DL_QteBL*/" . $this->DL_QteBL . ",/*DL_PoidsNet*/" . $this->DL_PoidsNet . "
-                ,/*DL_PoidsBrut*/" . $this->DL_PoidsBrut . ",/*DL_Remise01REM_Valeur*/" . $this->DL_Remise01REM_Valeur . "
-               ,/*DL_Remise01REM_Type*/" . $this->DL_Remise01REM_Type . ",/*DL_Remise02REM_Valeur*/" . $this->DL_Remise02REM_Valeur . "
-                ,/*DL_Remise02REM_Type*/" . $this->DL_Remise02REM_Type . ",/*DL_Remise03REM_Valeur*/" . $this->DL_Remise03REM_Valeur . "
-               ,/*DL_Remise03REM_Type*/" . $this->DL_Remise03REM_Type . ",/*DL_PrixUnitaire*/" . $this->DL_PrixUnitaire . "
-                ,/*DL_PUBC*/" . $this->DL_PUBC . ",/*DL_Taxe1*/" . $this->DL_Taxe1 . ",/*DL_TypeTaux1*/" . $this->DL_TypeTaux1 . ",/*DL_TypeTaxe1*/" . $this->DL_TypeTaxe1 . ",/*DL_NoRefDL_Taxe2*/" . $this->DL_Taxe2 . ",/*DL_TypeTaux2*/" . $this->DL_TypeTaux2 . "
-                ,/*DL_TypeTaxe2*/" . $this->DL_TypeTaxe2 . ",/*CO_No*/" . $this->CO_No . ",/*cbCO_No*/(CASE WHEN " . $this->CO_No . "='0' OR " . $this->CO_No . "='' THEN NULL ELSE " . $this->CO_No . " END),/*AG_No1*/" . $this->AG_No1 . "
-               ,/*AG_No2*/" . $this->AG_No2 . ",/*DL_PrixRU*/" . $this->DL_PrixRU . ",/*DL_CMUP*/" . $this->DL_CMUP . ",/*DL_MvtStock*/" . $this->DL_MvtStock . "
-                ,/*DT_No*/" . $this->DT_No . ",/*cbDT_No*/(CASE WHEN " . $this->DT_No . "='0' OR " . $this->DT_No . "='' THEN NULL ELSE " . $this->DT_No . " END),/*AF_RefFourniss*/'" . $this->AF_RefFourniss . "'
-                ,/*EU_Enumere*/'" . $this->EU_Enumere . "',/*EU_Qte*/" . $this->EU_Qte . ",/*DL_TTC*/" . $this->DL_TTC . ",/*DE_No*/" . $this->DE_No . ",/*cbDE_No*/(CASE WHEN " . $this->DE_No . "='0' OR " . $this->DE_No . "='' THEN NULL ELSE " . $this->DE_No . " END),/*DL_NoRef*/" . $this->DL_NoRef . "
-                ,/*DL_TypePL*/" . $this->DL_TypePL . ",/*DL_PUDevise*/" . $this->DL_PUDevise . "
-               ,/*DL_PUTTC*/" . $this->DL_PUTTC . ",/*DL_No*/ISNULL((SELECT MAX(DL_No)+1 FROM F_DOCLIGNE),0),/*DO_DateLivr*/'" . $this->DO_DateLivr . "',/*CA_Num*/'" . $this->CA_Num . "'
-                ,/*DL_Taxe3*/" . $this->DL_Taxe3 . ",/*DL_TypeTaux3*/" . $this->DL_TypeTaux3 . ",/*DL_TypeTaxe3*/" . $this->DL_TypeTaxe3 . ",
-               /*DL_Frais*/" . $this->DL_Frais . ",/*DL_Valorise*/" . $this->DL_Valorise . ",/*AR_RefCompose*/NULL
-                ,/*DL_NonLivre*/" . $this->DL_NonLivre . ",/*AC_RefClient*/'" . $this->AC_RefClient . "',/*DL_MontantHT*/" . $this->DL_MontantHT . ",/*DL_MontantTTC*/" . $this->DL_MontantTTC . "
-                ,/*DL_FactPoids*/" . $this->DL_FactPoids . ",/*DL_Escompte*/" . $this->DL_Escompte . ",/*DL_PiecePL*/'" . $this->DL_PiecePL . "',/*DL_DatePL*/'" . $this->DL_DatePL . "'
-                ,/*DL_QtePL*/" . $this->DL_QtePL . ",/*DL_NoColis*/'" . $this->DL_NoColis . "',/*DL_NoLink*/" . $this->DL_NoLink . ",/*cbDL_NoLink*/NULL
-                ,/*RP_Code*/NULL,/*DL_QteRessource*/" . $this->DL_QteRessource . ",/*DL_DateAvancement*/'" . $this->DL_DateAvancement . "',/*cbProt*/0
-               ,/*cbCreateur*/'" . $this->userName . "',/*cbModification*/GETDATE()
-                ,/*cbReplication*/0,/*cbFlag*/0,/*USERGESCOM*/(SELECT PROT_User FROM F_PROTECTIONCIAL WHERE PROT_No=" . $this->userName . "),/*DATEMODIF*/GETDATE(),/*MACHINEPC*/'" . $this->MACHINEPC . "');
-                select @@IDENTITY as cbMarq;
-                END;";
-        $result = $this->db->query($requete);
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        return $rows[0]->cbMarq;
-    }
-
 
     public function getcbMarqEntete()
     {

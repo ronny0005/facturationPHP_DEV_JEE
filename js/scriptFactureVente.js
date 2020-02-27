@@ -264,7 +264,7 @@ jQuery(function($) {
 
     $( "#ref" ).focusout(function() {
         $.ajax({
-            url: "traitement/Facturation.php?acte=ajout_reference&reference="+$("#ref").val()+"&cbMarq="+$("#EntetecbMarq").val(),
+            url: "traitement/Facturation.php?acte=ajout_reference&reference="+$("#ref").val()+"&cbMarq="+$("#cbMarqEntete").val(),
             method: 'GET',
             dataType: 'json',
             success: function(data) {

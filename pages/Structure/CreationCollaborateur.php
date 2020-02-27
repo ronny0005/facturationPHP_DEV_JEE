@@ -29,34 +29,26 @@
     $flagNouveau = $protection->NouveauType("collaborateur");
 
     if(isset($_GET["CO_No"])){
-        $objet = new ObjetCollector();   
-        $result=$objet->db->requete($objet->getCollaborateurByCOno($_GET["CO_No"]));     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $i=0;
-        $classe="";
-        if($rows==null){
-        }else{
-            $co_no = $rows[0]->CO_No;
-            $nom = $rows[0]->CO_Nom;
-            $prenom = $rows[0]->CO_Prenom;
-            $fonction = $rows[0]->CO_Fonction;
-            $service = $rows[0]->CO_Service;
-            $adresse = $rows[0]->CO_Adresse;
-            $complement = $rows[0]->CO_Complement;
-            $codePostal = $rows[0]->CO_CodePostal;
-            $ville= $rows[0]->CO_Ville;
-            $region= $rows[0]->CO_CodeRegion;
-            $pays= $rows[0]->CO_Pays;
-            $email= $rows[0]->CO_EMail;
-            $tel= $rows[0]->CO_Telephone;
-            $telecopie= $rows[0]->CO_Telecopie;
-            $btnVendeur= $rows[0]->CO_Vendeur;
-            $btnCaissier= $rows[0]->CO_Caissier;
-            $btnAcheteur = $rows[0]->CO_Acheteur;
-            $btnControleur = $rows[0]->CO_Receptionnaire;
-            $btnRecouv = $rows[0]->CO_ChargeRecouvr;
-        }
-       
+        $collaborateurClass = new CollaborateurClass($_GET["CO_No"]);
+            $co_no = $collaborateurClass->CO_No;
+            $nom = $collaborateurClass->CO_Nom;
+            $prenom = $collaborateurClass->CO_Prenom;
+            $fonction = $collaborateurClass->CO_Fonction;
+            $service = $collaborateurClass->CO_Service;
+            $adresse = $collaborateurClass->CO_Adresse;
+            $complement = $collaborateurClass->CO_Complement;
+            $codePostal = $collaborateurClass->CO_CodePostal;
+            $ville= $collaborateurClass->CO_Ville;
+            $region= $collaborateurClass->CO_CodeRegion;
+            $pays= $collaborateurClass->CO_Pays;
+            $email= $collaborateurClass->CO_EMail;
+            $tel= $collaborateurClass->CO_Telephone;
+            $telecopie= $collaborateurClass->CO_Telecopie;
+            $btnVendeur= $collaborateurClass->CO_Vendeur;
+            $btnCaissier= $collaborateurClass->CO_Caissier;
+            $btnAcheteur = $collaborateurClass->CO_Acheteur;
+            $btnControleur = $collaborateurClass->CO_Receptionnaire;
+            $btnRecouv = $collaborateurClass->CO_ChargeRecouvr;
     }
 ?>
 <script src="js/script_creationCollaborateur.js"></script>
@@ -65,96 +57,92 @@
 <?php
 include("module/Menu/BarreMenu.php");
 ?>
-<div id="milieu">    
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
-    </head>  
-        <form action="indexMVC.php?module=3&action=13" method="GET" name="formCollab" id="formCollab">
-        <div class="form-group col-lg-6" >
+
+<section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
+        Fiche collaborateur
+    </h3>
+</section>
+        <form action="ficheCollaborateur" method="GET" name="formCollab" id="formCollab">
+            <div class="row">
+        <div class="col-lg-3" >
             <label>Nom</label>
             <input type="hidden" name="CO_No" id="CO_No" value="<?php echo $co_no; ?>" />
                 <input type="text" class="form-control" value="<?php echo $nom; ?>" name="nom" id="nom" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-6">
+        <div class="col-lg-3">
             <label>Prénom</label>
                 <input type="text" class="form-control" value="<?php echo $prenom; ?>" name="prenom" id="prenom" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-6">
+        <div class="col-lg-6">
             <label>Fonction</label>
             <input type="text"  class="form-control" value="<?php echo $fonction; ?>" name="fonction" id="fonction" <?php if(!$flagProtected) echo "disabled"; ?>/>
             
         </div>
-        <div class="form-group col-lg-6">
+        <div class="col-lg-4">
             <label>Service</label>
                 <input type="text" class="form-control" value="<?php echo $service; ?>" name="service" id="service" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         
-        <div class="form-group col-lg-6">
+        <div class="col-lg-4">
             <label>Adresse</label>
             <input type="text"  class="form-control" value="<?php echo $adresse; ?>" name="adresse" id="adresse" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-6">    <label>Compl.</label>
+        <div class="col-lg-4">    <label>Compl.</label>
             <input type="text" class="form-control" value="<?php echo $complement; ?>" name="complement" id="complement" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-3"> 
+        <div class="col-lg-2">
             <label>C.P.</label>
                 <input type="text"  class="form-control" value="<?php echo $codePostal; ?>" name="codePostal" id="codePostal" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-3"> 
+        <div class="col-lg-2">
             <label>Ville</label>
             <input type="text" class="form-control" value="<?php echo $ville; ?>" name="ville" id="ville" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
             
-        <div class="form-group col-lg-3"> 
+        <div class="col-lg-2">
             <label>Région</label>
             <input type="text"  class="form-control" value="<?php echo $region; ?>" name="region" id="region" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
             
-        <div class="form-group col-lg-3"> 
+        <div class="col-lg-2">
             <label>Pays</label>
             <input type="text" class="form-control" value="<?php echo $pays; ?>" name="pays" id="pays" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-3">
+        <div class="col-lg-4">
             <label>Email</label>
             <input type="text"  class="form-control" value="<?php echo $email; ?>" name="email" id="email" <?php if(!$flagProtected) echo "disabled"; ?>/>
             
         </div>
-        <div class="form-group col-lg-3">
+        <div class="col-lg-3">
             <label>Teléphone</label>
             <input type="text" class="form-control" value="<?php echo $tel; ?>" name="telephone" id="telephone" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-3">
+        <div class="col-lg-2">
             <label>Télécopie</label>
             <input type="text"  class="form-control" value="<?php echo $telecopie; ?>" name="telecopie" id="telecopie" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="form-group col-lg-3">
-            <div class="col-sm-4">
-                Vendeur
-                <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnVendeur==1) echo " checked "; ?> name="vendeur" id="vendeur" <?php if(!$flagProtected) echo "disabled"; ?>/>
-            </div>
-            <div class="col-sm-4">
-                Caissier
-                <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnCaissier==1) echo " checked "; ?> name="caissier" id="caissier" <?php if(!$flagProtected) echo "disabled"; ?>/>
-            </div>
-            <div class="col-sm-4">
-                Acheteur
-                <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnAcheteur==1) echo " checked "; ?> name="acheteur" id="acheteur" <?php if(!$flagProtected) echo "disabled"; ?>/>
-            </div>
-            <div class="col-sm-4">
-                Controleur
-                <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnControleur==1) echo " checked "; ?> name="controleur" id="controleur" <?php if(!$flagProtected) echo "disabled"; ?>/>
-            </div>
-            <div class="col-sm-6">
-                Chrg. Recouvr.
-                <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnRecouv==1) echo " checked "; ?> name="recouvrement" id="recouvrement" <?php if(!$flagProtected) echo "disabled"; ?>/>
-            </div>
+        <div class="col-6 col-lg-1 mt-4">
+            <label>Vendeur</label>
+            <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnVendeur==1) echo " checked "; ?> name="vendeur" id="vendeur" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-            <div class="col-sm-6">
-                <input type="button"  class="btn btn-primary" value="Valider" name="valider" id="valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
-            </div>
+        <div class="col-6 col-lg-1 mt-4">
+            <label>Caissier</label>
+            <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnCaissier==1) echo " checked "; ?> name="caissier" id="caissier" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        </div>
+        <div class="col-6 col-lg-1 mt-4">
+            <label>Acheteur</label>
+            <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnAcheteur==1) echo " checked "; ?> name="acheteur" id="acheteur" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        </div>
+        <div class="col-6 col-lg-2  mt-4">
+            <label>Controleur</label>
+            <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnControleur==1) echo " checked "; ?> name="controleur" id="controleur" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        </div>
+        <div class="col-6 col-lg-2 mt-4">
+            <label>Chrg. Recouvr.</label>
+            <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnRecouv==1) echo " checked "; ?> name="recouvrement" id="recouvrement" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        </div>
+        <div class="col-12">
+            <input type="button"  class="btn btn-primary bgcolorApplication" value="Valider" name="valider" id="valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        </div>
         </form>

@@ -124,8 +124,8 @@ $("table.table > tbody > tr #transform").on('click', function() {
                 footer: true
             },
             "initComplete": function(settings, json) {
-                $("#users_filter").find(":input").addClass("form-control");
-                $("#users_length").find(":input").addClass("form-control");
+                $("#tableListeFacture_filter").find(":input").addClass("form-control");
+                $("#tableListeFacture_length").find(":input").addClass("form-control");
             }
 
         }

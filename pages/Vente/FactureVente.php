@@ -24,16 +24,14 @@
             <?php
             if($_GET["type"]=="PreparationCommande" || $_GET["type"]=="AchatPreparationCommande"){
                 ?>
-                <div class="form-group">
-                    <div class="form-group col-lg-3">
-                        <label></label>
-                        <input class="btn btn-primary" type="button" name="majCompta" id="majCompta" value="Mise à jour comptable <?php if($docEntete->DO_Coord03==1) echo "(effectué)"; ?>" <?php if($docEntete->DO_Coord03==1) echo "disabled"; ?>/>
+                <div class="row">
+                    <div class="col-6 col-lg-2">
+                        <input class="btn btn-primary bgcolorApplication" type="button" name="majCompta" id="majCompta" value="Mise à jour comptable <?php if($docEntete->DO_Coord03==1) echo "(effectué)"; ?>" <?php if($docEntete->DO_Coord03==1) echo "disabled"; ?>/>
                     </div>
-                    <div class="form-group col-lg-3">
-                        <label></label>
-                        <input class="btn btn-primary" type="button" name="rattacher" id="rattacher" value="Rattacher" />
+                    <div class="col-6 col-lg-2">
+                        <input class="btn btn-primary bgcolorApplication" type="button" name="rattacher" id="rattacher" value="Rattacher" />
                     </div>
-                    <div class="form-group col-lg-3">
+                    <div class="col-12 col-lg-3 text-center">
                         <label>Transfert des documents de caisse</label>
                         <input class="form-control" type="checkbox" name="transDoc" id="transDoc" value="" <?php if($docEntete->DO_Coord03==1 || $entete=="") echo "checked"; ?>/>
                     </div>

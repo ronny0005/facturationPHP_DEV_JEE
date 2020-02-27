@@ -197,7 +197,7 @@ if($_GET["acte"] =="saisie_comptable") {
     $trans = 0;
     if(isset($_GET["TransDoc"]))
         $trans = $_GET["TransDoc"];
-    echo json_encode(saisie_comptable($docEntete->DO_Piece,$docEntete->DO_Domaine,$docEntete->DO_Type,$trans));
+    echo json_encode(saisie_comptable($_GET["cbMarq"],$trans));
 }
 
 if($_GET["acte"] =="majComptaFonction") {
@@ -369,204 +369,9 @@ function ajoutEcritureC($JO_Num,$JM_Date,$EC_Jour,$EC_Date,$EC_Piece,$EC_RefPiec
     }
 }
 
-function saisie_comptable ($do_piece,$do_domaine,$do_type,$trans){
-    $objet =  new ObjetCollector();
-    $jo_num="";
-    $cg_num="";
-    $souche="";
-    $total_regle= 0;
-    $dateEntete = "";
-    $reference="";
-    $date_ech="";
-    $alldata=null;
-    $cg_numContrepartie="";
-    $cmpcol=0;
-    $cbMarq = 0;
-    $cat_compta = 0;
-    $client="";
-    $result=$objet->db->requete($objet->getDoPiece($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        $reference=$rows[0]->DO_Ref;
-        $dateEntete=$rows[0]->DO_Date;
-        $cat_compta = $rows[0]->N_CatCompta;
-        $client=$rows[0]->DO_Tiers;
-        $souche = $rows[0]->DO_Souche;
-        $affaire=$rows[0]->CA_Num;
-    }
-    $result=$objet->db->requete($objet->montantRegle($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        $total_regle=$rows[0]->montantRegle;
-    }
-    $resteAregle = 0;
-    $ec_statut = 0;
-    $ec_lettrage="";
-    $result=$objet->db->requete($objet->AvanceDoPiece($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        if($rows[0]->avance_regle!="") {
-            $resteAregle = $rows[0]->avance_regle;
-            if(abs($total_regle - $resteAregle)<5) {
-                $ec_statut = 2;
-                $ec_lettrage = "d";
-            }
-        }else
-            $resteAregle = $total_regle;
-    }
-    if($do_domaine==0)
-        $result=$objet->db->requete($objet->getSoucheVente());
-    else
-        $result=$objet->db->requete($objet->getSoucheAchat());
-
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        if($row->cbIndice==$souche)
-            $jo_num=$row->JO_Num;
-    }
-    $result=$objet->db->requete($objet->getClientByCTNum($client));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        $cg_num=$row->CG_NumPrinc;
-    }
-    $result=$objet->db->requete($objet->getReglementByClientFacture($client,$do_piece,$do_type,$do_domaine));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows!=null){
-        foreach ($rows as $row) {
-            $date_ech=$row->DR_Date;
-        }
-    }
-    $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
-        "EC_Jour" => substr($dateEntete,8,2),"EC_RefPiece" =>$do_piece, "EC_Reference" =>$reference,"CG_Num"=> $cg_num,"EC_Sens" => 0,
-        "EC_Lettrage" => $ec_lettrage, "EC_StatusRegle" => $ec_statut, "EC_MontantRegle" => $resteAregle, "TA_Provenance" => 0, "CG_NumCont" => $cg_num,"CT_Num" =>$client,"CT_NumCont" =>""
-        ,"EC_Intitule"=>$do_piece."_".$reference,"N_Reglement"=>1,"EC_Echeance"=>$date_ech,"EC_MontantCredit"=>$total_regle,
-        "EC_MontantDebit"=>"","TA_Code"=>"","CbMarq" =>$cbMarq);
-    if($trans==0){
-        $alldata[$cmpcol] = $data;
-        $cmpcol++;
-    }
-    $result = $objet->db->requete($objet->getJournauxByJONum($jo_num));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows!=null){
-        foreach($rows as $row){
-            if($row->JO_Contrepartie==1)
-                $cg_numContrepartie =$row->CG_Num;
-        }
-    }
-    $result=$objet->db->requete($objet->getLigneFacture($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        $MT_Taxe1 = $row->MT_Taxe1;
-        $MT_Taxe2 = $row->MT_Taxe2;
-        $MT_Taxe3 = $row->MT_Taxe3;
-        $cbMarq=$row->cbMarq;
-        if($row->DL_NoColis!="")
-            $cat_compta =$row->DL_NoColis;
-        $result = $objet->db->requete($objet->getTaxeArticle($row->AR_Ref, $cat_compta , 1));
-        $rowsa = $result->fetchAll(PDO::FETCH_OBJ);
-        $pos =-1;
-        if(isset($rowsa[0]->COMPTEG_ARTICLE))
-            $pos = getItemCompta($alldata,$rowsa[0]->COMPTEG_ARTICLE);
-        $montantDeb = $row->DL_MontantHT;
-        if($trans==1)
-            $montantDeb = $row->DL_MontantTTC;
-        else
-            $date_ech = "";
-        if($pos==-1){
-            $client_art="";
-            if(isset($rowsa[0]->CG_TiersArticle)){
-                if($rowsa[0]->CG_TiersArticle==1)
-                    $client_art = $client;
-                $data= array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
-                    "EC_Jour" => substr($dateEntete,8,2),"EC_RefPiece" =>$do_piece, "EC_Reference" =>$reference,"CG_Num"=> $rowsa[0]->COMPTEG_ARTICLE,"EC_Sens" => 1,
-                    "EC_Lettrage" => "", "EC_StatusRegle" => 0, "EC_MontantRegle" => 0, "TA_Provenance" => 1, "CG_NumCont" => $cg_num,"CT_Num" =>"","CT_NumCont" =>$client,"EC_Intitule"=>$do_piece."_".$reference,"N_Reglement"=>0,"EC_Echeance"=>$date_ech,"EC_MontantCredit"=>"",
-                    "EC_MontantDebit"=>$montantDeb,"TA_Code"=>$rowsa[0]->CodeTaxe1,"CbMarq" =>$cbMarq);
-                $alldata[$cmpcol] = $data;
-                $cmpcol++;
-            }
-            $alldata[0]["CG_NumCont"]=$rowsa[0]->COMPTEG_ARTICLE;
-        }
-        else{
-            $alldataPos = 0;
-            if($alldata[$pos]["EC_MontantDebit"]!="")
-                $alldataPos = $alldata[$pos]["EC_MontantDebit"];
-            $alldata[$pos]["EC_MontantDebit"]=$alldataPos +$montantDeb;
-            $alldata[$pos]["CbMarq"]=$alldata[$pos]["CbMarq"].",".$cbMarq;
-        }
-        foreach ($rowsa as $rowa) {
-            if($rowa->CodeTaxe1!=""){
-                $pos = getItemCompta($alldata,$rowa->CG_NumTaxe1);
-                if($pos==-1) {
-                    if($trans==0){
-                        $client_taxe="";
-                        if($rowsa[0]->CG_Tiers1==1)
-                            $client_taxe = $client;
-                        $data = array("nomFichier" => "", "JO_Num" => $jo_num, "Annee_Exercice" => substr($dateEntete, 0, 4) . substr($dateEntete, 5, 2),
-                            "EC_Jour" => substr($dateEntete, 8, 2), "EC_RefPiece" => $do_piece, "EC_Reference" => $reference, "CG_Num" => $rowa->CG_NumTaxe1,"EC_Sens" => 1,
-                            "EC_Lettrage" => "", "EC_StatusRegle" => 0, "EC_MontantRegle" => 0, "TA_Provenance" => 1,"CG_NumCont" => $cg_num, "CT_Num" => "", "CT_NumCont" => $client, "EC_Intitule" => $do_piece."_".$reference, "N_Reglement" => 0, "EC_Echeance" => "", "EC_MontantCredit" => "",
-                            "EC_MontantDebit" => ROUND($MT_Taxe1,2), "TA_Code" => $rowa->CodeTaxe1,"CbMarq" =>"");
-                        $alldata[$cmpcol] = $data;
-                        $cmpcol++;
-                    }
-                }else{
-                    $alldata[$pos]["EC_MontantDebit"]=$alldata[$pos]["EC_MontantDebit"]+ROUND($MT_Taxe1,0);
-                }
-            }
-            if($rowa->CodeTaxe2!=""){
-                $pos = getItemCompta($alldata,$rowa->CG_NumTaxe1);
-                if($pos==-1) {
-                    if($trans==0){
-                        $client_taxe="";
-                        if($rowsa[0]->CG_Tiers2==1)
-                            $client_taxe = $client;
-                        $data = array("nomFichier" => "", "JO_Num" => $jo_num, "Annee_Exercice" => substr($dateEntete, 0, 4) . substr($dateEntete, 5, 2),
-                            "EC_Jour" => substr($dateEntete, 8, 2), "EC_RefPiece" => $do_piece, "EC_Reference" => $reference, "CG_Num" => $rowa->CG_NumTaxe2,"EC_Sens" => 1,
-                            "EC_Lettrage" => "", "EC_StatusRegle" => 0, "EC_MontantRegle" => 0, "TA_Provenance" => 1, "CG_NumCont" => $cg_num, "CT_Num" => "", "CT_NumCont" => $client, "EC_Intitule" => $do_piece."_".$reference, "N_Reglement" => 0, "EC_Echeance" => "", "EC_MontantCredit" => "",
-                            "EC_MontantDebit" => ROUND($MT_Taxe2,2), "TA_Code" => $rowa->CodeTaxe2,"CbMarq" =>"");
-                        $alldata[$cmpcol] = $data;
-                        $cmpcol++;
-                    }
-                }else{
-                    $alldata[$pos]["EC_MontantDebit"]=$alldata[$pos]["EC_MontantDebit"]+ROUND($MT_Taxe2,0);
-                }
-            }
-            if($rowa->CodeTaxe3!=""){
-                $pos = getItemCompta($alldata,$rowa->CG_NumTaxe1);
-                if($pos==-1) {
-                    if($trans==0){
-                        $client_taxe="";
-                        if($rowsa[0]->CG_Tiers3==1)
-                            $client_taxe = $client;
-
-                        $data = array("nomFichier" => "", "JO_Num" => $jo_num, "Annee_Exercice" => substr($dateEntete, 0, 4) . substr($dateEntete, 5, 2),
-                            "EC_Jour" => substr($dateEntete, 8, 2), "EC_RefPiece" => $do_piece, "EC_Reference" => $reference, "CG_Num" => $rowa->CG_NumTaxe3, "EC_Sens" => 1,
-                            "EC_Lettrage" => "", "EC_StatusRegle" => 0, "EC_MontantRegle" => 0, "TA_Provenance" => 1, "CG_NumCont" => $cg_num, "CT_Num" => "", "CT_NumCont" => $client, "EC_Intitule" => $do_piece."_".$reference, "N_Reglement" => 0, "EC_Echeance" => "", "EC_MontantCredit" => "",
-                            "EC_MontantDebit" => ROUND($MT_Taxe3, 2),"TA_Code" => $rowa->CodeTaxe3,"CbMarq" =>"");
-                        $alldata[$cmpcol] = $data;
-                        $cmpcol++;
-                    }
-                }else{
-                    $alldata[$pos]["EC_MontantDebit"]=$alldata[$pos]["EC_MontantDebit"]+ROUND($MT_Taxe3,0);
-                }
-            }
-
-        }
-    }
-    return $alldata;
-}
-
-function getItemCompta($table,$val){
-    $pos=-1;
-    if($table!=null)
-    for($i=0;$i<sizeof($table);$i++){
-        if(strcmp($table[$i]["CG_NumCont"],$val)==0){
-            $pos = $i;
-        }
-    }
-    return $pos;
+function saisie_comptable ($cbMarq,$trans){
+    $docEntete = new DocEnteteClass(0);
+    return $docEntete->saisieComptable($cbMarq,$trans);
 }
 
 if($_GET["acte"] =="saisie_comptableAnal") {
@@ -1135,9 +940,8 @@ if($_GET["acte"]=="ligneFactureStock"){
 if($_GET["acte"] =="suppr"){
     $type_fac=$_GET["type_fac"];
     $docligne = new DocLigneClass(0);
-    $docligne->getApiExecute("/supprLigneFacture&cbMarq=".$_GET["id"]."&typeFacture=$type_fac&protNo=".$_SESSION["id"]);
+    $docligne->getApiExecute("/supprLigneFacture&cbMarq={$_GET["id"]}&typeFacture=$type_fac&protNo={$_SESSION["id"]}");
 }
-
 
 // mise à jour de la référence
 if( $_GET["acte"] =="suppr_facture"){

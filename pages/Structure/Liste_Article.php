@@ -40,9 +40,9 @@ $depot=$_SESSION["DE_No"];
 <fieldset class="entete">
 
 <div class="form-group">
-<form action="indexMVC.php?module=2&action=2" method="GET">
+<form action="listeArticle" method="GET">
     <div class="row">
-        <div class="col-md-2 col-lg-2">
+        <div class="col-4 col-sm-4 col-md-4 col-lg-2">
             <label>Sommeil</label>
             <select id="sommeil" style="" class="form-control">
                 <option value="-1" <?php if($sommeil==-1) echo " selected "; ?> >Tout</option>
@@ -50,7 +50,7 @@ $depot=$_SESSION["DE_No"];
                 <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-4 col-sm-4 col-md-4 col-lg-2">
             <label>Stock</label>
             <select id="stockFlag" name="stockFlag" class="form-control">
                 <option value="-1" <?php if($stockFlag==-1) echo " selected "; ?> >Tout</option>
@@ -58,19 +58,19 @@ $depot=$_SESSION["DE_No"];
                 <option value="0" <?php if($stockFlag==-0) echo " selected "; ?> >Non</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <label>Prix min/max</label>
+        <div class="col-4 col-sm-4 col-md-4 col-lg-2">
+            <label>Px min/max</label>
             <select id="prixFlag" name="prixFlag" class="form-control">
                 <option value="-1" <?php if($prixFlag==-1) echo " selected "; ?> >Tout</option>
                 <option value="1" <?php if($prixFlag==1) echo " selected "; ?> >Oui</option>
                 <option value="0" <?php if($prixFlag==-0) echo " selected "; ?> >Non</option>
             </select>
         </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-primary" id="imprimer">Exporter excel</button>
+        <div class="col-6 col-sm-6 col-md-6 col-lg-4 mt-4">
+            <button type="button" class="btn btn-primary bgcolorApplication" id="imprimer">Export excel</button>
         </div>
-        <div style="float:right">
-            <a href="ficheArticle"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a>
+        <div class="col-6 col-sm-6 col-md-6 col-lg-2 text-right mt-4" style="float:right">
+            <a href="ficheArticle"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a>
         </div>
 
     </div>
@@ -79,19 +79,22 @@ $depot=$_SESSION["DE_No"];
     <?php } ?>
         </form>
 <div class="err" id="add_err"></div>
-<table cellpadding="1" cellspacing="1" id="users" class="display" width="100%">
-    <thead style="background-color: #dbdbed;color:black">
-            <th>Référence</th>
-            <th>Désignation</th>
-            <th>Quantité en stock (cumul)</th>
-            <?php if($flagPxAchat==0) echo"<th>Prix d'achat</th>"; ?>
-            <?php if($flagInfoLibreArticle!=2) echo"<th>Prix de vente</th>"; ?>
-            <?php  if($flagPxRevient==0) echo "<th>Montant</th>"; ?>
-            <?php if($flagSuppr) echo "<th></th>"; ?>
-            <?php if($protection->PROT_Right==1) echo "<th>Créateur</th>"; ?>
-    </thead>
-</table>
+
+<div class="table-responsive" style="margin-top: 30px;clear:both">
+    <table id="users" class="table table-striped">
+        <thead style="background-color: #dbdbed;color:black">
+                <th>Référence</th>
+                <th>Désignation</th>
+                <th>Quantité en stock (cumul)</th>
+                <?php if($flagPxAchat==0) echo"<th>Prix d'achat</th>"; ?>
+                <?php if($flagInfoLibreArticle!=2) echo"<th>Prix de vente</th>"; ?>
+                <?php  if($flagPxRevient==0) echo "<th>Montant</th>"; ?>
+                <?php if($flagSuppr) echo "<th></th>"; ?>
+                <?php if($protection->PROT_Right==1) echo "<th>Créateur</th>"; ?>
+        </thead>
+    </table>
  </div>
+</div>
 
    
 </div>

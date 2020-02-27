@@ -30,6 +30,12 @@ RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4 [L]
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4&CT_Num=$1 [L]
 
+RewriteRule ^listeFournisseur$  indexMVC_New.php?module=3&action=8 [L]
+RewriteRule ^listeFournisseur$  indexMVC_New.php?module=3&action=8&CT_Num=$1 [L]
+
+RewriteRule ^FicheFournisseur$  indexMVC_New.php?module=3&action=9 [L]
+RewriteRule ^FicheFournisseur-([0-z]+)$  indexMVC_New.php?module=3&action=9&CT_Num=$1 [L]
+
 RewriteRule ^FicheClient$  indexMVC_New.php?module=3&action=2 [L]
 RewriteRule ^FicheClient-([0-z]+)$  indexMVC_New.php?module=3&action=2&CT_Num=$1 [L]
 
@@ -37,3 +43,14 @@ RewriteRule ^mvtCaisse$  indexMVC_New.php?module=6&action=1 [L]
 
 RewriteRule ^Reglement-([0-z]+)$  indexMVC_New.php?module=1&action=2&typeRegl=$1 [L]
 
+RewriteRule ^listeDepot$  indexMVC_New.php?module=3&action=10 [L]
+RewriteRule ^listeDepot$  indexMVC_New.php?module=3&action=10&DE_No=$1 [L]
+
+RewriteRule ^ficheDepot$  indexMVC_New.php?module=3&action=11 [L]
+RewriteRule ^ficheDepot-([0-z]+)$  indexMVC_New.php?module=3&action=11&DE_No=$1 [L]
+
+RewriteRule ^listeCollaborateur$  indexMVC_New.php?module=3&action=12 [L]
+RewriteRule ^listeCollaborateur$  indexMVC_New.php?module=3&action=12&DE_No=$1 [L]
+
+RewriteRule ^ficheCollaborateur$  indexMVC_New.php?module=3&action=13 [L]
+RewriteRule ^ficheCollaborateur-([0-z]+)$  indexMVC_New.php?module=3&action=13&CO_No=$1 [L]

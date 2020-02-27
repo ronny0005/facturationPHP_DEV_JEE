@@ -9,8 +9,15 @@
     if(isset($_GET["sommeil"]))
         $sommeil = $_GET["sommeil"];
     $type = "client";
-    if($_GET["action"]==8) $type="fournisseur";
-    if($_GET["action"]==16) $type="salarie";
+    $titre = "Liste client";
+    if($_GET["action"]==8) {
+        $type="fournisseur";
+        $titre = "Liste fournisseur";
+    }
+    if($_GET["action"]==16) {
+        $type="salarie";
+        $titre = "Liste salarié";
+    }
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
     if($type=="client"){
         $flagProtected = $protection->protectedType($type);
@@ -34,7 +41,7 @@ include("module/Menu/BarreMenu.php");
 
 <section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
     <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
-        Liste client
+        <?= $titre ?>
     </h3>
 </section>
 
@@ -71,7 +78,7 @@ if($type=="salarie")
                     <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
                 </select>
             </td>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="<?php if($type=="fournisseur") echo "indexMVC.php?module=3&action=9"; if($type=="client") echo "FicheClient"; if($type=="salarie") echo "indexMVC.php?module=3&action=17"; ?>"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td> <?php } ?>
+        <?php if($flagNouveau){ ?><td style="float:right"><a href="<?php if($type=="fournisseur") echo "FicheFournisseur"; if($type=="client") echo "FicheClient"; if($type=="salarie") echo "FicheSalarie"; ?>"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>

@@ -2768,16 +2768,6 @@ ORDER BY  DE_Intitule,
         return $rg_no;
     }
 
-    public function isStockDENo($de_no, $ar_ref,$dlQte) {
-        return "SELECT  ISNULL(AS_QteSto,0)AS_QteSto
-                        ,ISNULL(AS_MontSto,0)AS_MontSto
-                        ,ISNULL(AS_QteMini,0)AS_QteMini
-                        ,ISNULL(AS_QteMaxi,0)AS_QteMaxi
-                        ,CASE WHEN $dlQte > ISNULL(AS_QteSto,0) THEN 1 ELSE 0 END isSuppr 
-                FROM F_ARTSTOCK 
-                WHERE DE_No = $de_no 
-                AND   AR_Ref = '$ar_ref'";
-    }
     public function cumulStock() {
         return "SELECT SUM(ISNULL(AS_QteSto,0))-SUM(ISNULL(AS_QteMini,0)) Alerte
                 FROM F_ARTSTOCK
@@ -3019,25 +3009,44 @@ ORDER BY  DE_Intitule,
     }
 
     public function getTaxeArticle($AR_Ref,$CatCompta,$type)   {
-        return"SELECT ISNULL(ACP_ComptaCPT_CompteG,FCP_ComptaCPT_CompteG) COMPTEG_ARTICLE,Cg.CG_Tiers CG_TiersArticle,TU.TA_Code as CodeTaxe1,TU.CG_Num as CG_NumTaxe1,TU.CG_Tiers as CG_Tiers1,TD.TA_Code as CodeTaxe2,TD.CG_Num as CG_NumTaxe2,TD.CG_Tiers as CG_Tiers2,TT.TA_Code as CodeTaxe3,TT.CG_Num as CG_NumTaxe3,TT.CG_Tiers as CG_Tiers3
-                    FROM F_ARTICLE Art 
-                    LEFT JOIN F_FAMCOMPTA F ON Art.FA_CodeFamille = F.FA_CodeFamille  
-                    LEFT JOIN F_ARTCOMPTA A ON A.AR_Ref = Art.AR_Ref AND ISNULL(ACP_Champ,FCP_Champ) =FCP_Champ AND ISNULL(ACP_Type,FCP_Type)=FCP_Type 
-                    LEFT JOIN F_COMPTEG Cg ON Cg.CG_Num = ISNULL(ACP_ComptaCPT_CompteG,FCP_ComptaCPT_CompteG)
-                    LEFT JOIN (SELECT T.*,CG_Tiers
-                                FROM F_TAXE T
-                                LEFT JOIN F_COMPTEG C ON T.CG_Num = C.CG_Num
-                                ) TU ON TU.TA_Code = (CASE WHEN ISNULL(FCP_ComptaCPT_Taxe1,'')  <> ISNULL(ACP_ComptaCPT_Taxe1,'')  AND ACP_ComptaCPT_Taxe1 IS NOT NULL THEN ACP_ComptaCPT_Taxe1 ELSE FCP_ComptaCPT_Taxe1 END)
-                    LEFT JOIN (SELECT T.*,CG_Tiers
-                                FROM F_TAXE T
-                                LEFT JOIN F_COMPTEG C ON T.CG_Num = C.CG_Num
-                                ) TD ON TD.TA_Code = (CASE WHEN ISNULL(FCP_ComptaCPT_Taxe2,'')  <> ISNULL(ACP_ComptaCPT_Taxe2,'')  AND ACP_ComptaCPT_Taxe2 IS NOT NULL THEN ACP_ComptaCPT_Taxe2 ELSE FCP_ComptaCPT_Taxe2 END) 
-                    LEFT JOIN (SELECT T.*,CG_Tiers
-                                FROM F_TAXE T
-                                LEFT JOIN F_COMPTEG C ON T.CG_Num = C.CG_Num
-                                ) TT ON TT.TA_Code = (CASE WHEN ISNULL(FCP_ComptaCPT_Taxe3,'')  <> ISNULL(ACP_ComptaCPT_Taxe3,'')  AND ACP_ComptaCPT_Taxe3 IS NOT NULL THEN ACP_ComptaCPT_Taxe3 ELSE FCP_ComptaCPT_Taxe3 END) 
-                    WHERE FCP_Champ=$CatCompta AND FCP_Type=$type
-                    AND Art.AR_Ref='$AR_Ref'
+        return"WITH _Taxe_ AS (
+                    SELECT T.TA_Code,C.CG_Num,CG_Tiers
+                    FROM F_TAXE T
+                    LEFT JOIN F_COMPTEG C 
+                        ON T.cbCG_Num = C.cbCG_Num
+                )
+                SELECT   COMPTEG_ARTICLE = ISNULL(ACP_ComptaCPT_CompteG,FCP_ComptaCPT_CompteG) 
+                                        ,CG_TiersArticle = Cg.CG_Tiers
+                                        ,CodeTaxe1 = TU.TA_Code
+                                        ,CG_NumTaxe1 = TU.CG_Num 
+                                        ,CG_Tiers1 = TU.CG_Tiers 
+                                        ,CodeTaxe2 = TD.TA_Code
+                                        ,CG_NumTaxe2 = TD.CG_Num 
+                                        ,CG_Tiers2 = TD.CG_Tiers
+                                        ,CodeTaxe3 = TT.TA_Code 
+                                        ,CG_NumTaxe3 = TT.CG_Num
+                                        ,CG_Tiers3 = TT.CG_Tiers  
+                                    FROM F_ARTICLE Art 
+                                    LEFT JOIN F_FAMCOMPTA F 
+                                        ON Art.cbFA_CodeFamille = F.cbFA_CodeFamille  
+                                    LEFT JOIN F_ARTCOMPTA A 
+                                        ON  A.cbAR_Ref = Art.cbAR_Ref 
+                                        AND ISNULL(ACP_Champ,FCP_Champ) =FCP_Champ 
+                                        AND ISNULL(ACP_Type,FCP_Type)=FCP_Type 
+                                    LEFT JOIN F_COMPTEG Cg 
+                                        ON Cg.CG_Num = ISNULL(ACP_ComptaCPT_CompteG,FCP_ComptaCPT_CompteG)
+                                    LEFT JOIN _Taxe_ TU 
+                                        ON  TU.TA_Code = (CASE WHEN ISNULL(FCP_ComptaCPT_Taxe1,'')  <> ISNULL(ACP_ComptaCPT_Taxe1,'')  
+                                        AND ACP_ComptaCPT_Taxe1 IS NOT NULL THEN ACP_ComptaCPT_Taxe1 ELSE FCP_ComptaCPT_Taxe1 END)
+                                    LEFT JOIN _Taxe_ TD 
+                                        ON  TD.TA_Code = (CASE WHEN ISNULL(FCP_ComptaCPT_Taxe2,'')  <> ISNULL(ACP_ComptaCPT_Taxe2,'')  
+                                        AND ACP_ComptaCPT_Taxe2 IS NOT NULL THEN ACP_ComptaCPT_Taxe2 ELSE FCP_ComptaCPT_Taxe2 END) 
+                                    LEFT JOIN _Taxe_ TT 
+                                        ON  TT.TA_Code = (CASE WHEN ISNULL(FCP_ComptaCPT_Taxe3,'')  <> ISNULL(ACP_ComptaCPT_Taxe3,'')  
+                                        AND ACP_ComptaCPT_Taxe3 IS NOT NULL THEN ACP_ComptaCPT_Taxe3 ELSE FCP_ComptaCPT_Taxe3 END) 
+                                    WHERE   FCP_Champ=$CatCompta 
+                                    AND     FCP_Type=$type
+                                    AND     Art.AR_Ref='$AR_Ref'
 ";
     }
 

@@ -12,28 +12,23 @@
     <?php
 include("module/Menu/BarreMenu.php");
 ?>
-<div id="milieu">    
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
-<div class="corps">        
+<section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
+        Liste collaborateur
+    </h3>
+</section>
+
+<div class="corps">
         <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
         <input type="hidden" id="login" value="<?php echo $_SESSION["login"]; ?>"/>
-   
-     <div class="col-md-12">
 
 <fieldset class="entete">
-    <legend class="entete">Liste collaborateur</legend>
 <div class="form-group">
 <form action="indexMVC.php?module=2&action=2" method="GET">
     <table style="margin-bottom: 20px;width:100%">
     <thead>
         <tr>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="indexMVC.php?module=3&action=13"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
+        <?php if($flagNouveau){ ?><td style="float:right"><a href="ficheCollaborateur"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>
@@ -47,24 +42,24 @@ include("module/Menu/BarreMenu.php");
         </thead>
     <tbody id="liste_collaborateur" >
         <?php
-        
-        $objet = new ObjetCollector(); 
-        $result=$objet->db->requete($objet->getAllCollaborateurs());     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $i=0;
-        $classe="";
+        $collaborateurClass = new CollaborateurClass(0);
+        $rows = $collaborateurClass->all();
         if($rows==null){
             echo "<tr><td colspan='3'>Aucun élément trouvé ! </td></tr>";
         }else{
             foreach ($rows as $row){
-            $i++;
-            if($i%2==0) $classe = "info";
-                    else $classe="";
-            echo "<tr class='article $classe' id='article_".$row->CO_No."'>"
-                    . "<td><a href='indexMVC.php?module=3&action=13&CO_No=$row->CO_No'>".$row->CO_Nom."</a></td>"
-                    . "<td>".$row->CO_Prenom."</td>"
-                    . "<td>".$row->CO_Fonction."</td>";
-                    if($flagSuppr) echo "<td><a href='Traitement\Collaborateur.php?acte=suppr&CO_No=".$row->CO_No."' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer ".$row->CO_Nom." ".$row->CO_Prenom." ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
+            ?>
+            <tr class="article" id="article_<?= $row->CO_No ?>">
+                <td><a href="ficheCollaborateur-<?= $row->CO_No ?>"><?= $row->CO_Nom ?></a></td>
+                <td><?= $row->CO_Prenom ?></td>
+                <td><?= $row->CO_Fonction ?></td>
+            <?php
+            if($flagSuppr) {
+                ?>
+                <td>
+                    <a href="Traitement\Collaborateur.php?acte=suppr&CO_No=<?= $row->CO_No ?>" onclick="if(window.confirm('Voulez-vous vraiment supprimer <?= "{$row->CO_Nom} {$row->CO_Prenom}" ?> ?')){return true;}else{return false;}"><i class="fa fa-trash-o"></i></a></td>
+            <?php
+            }
                     echo "</tr>";
             }
         }
@@ -72,5 +67,4 @@ include("module/Menu/BarreMenu.php");
 </tbody>
 </table>
  </div>   
-</div>
 </div>

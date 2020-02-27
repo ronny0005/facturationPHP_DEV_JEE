@@ -521,9 +521,18 @@ class ArticleClass Extends Objet{
         return $this->getApiJson("/getArticleByIntitule&arIntitule=$intitule");
     }
 
+    public function getTaxeArticle($fcpChamp,$fcpType){
+        return $this->getApiJson("/getTaxeArticle&fcpChamp=$fcpChamp&fcpType=$fcpType&arRef={$this->AR_Ref}");
+    }
+
     public function isStock($de_no){
         $this->lien = "fartstock";
         return $this->getApiJson("/isStockJSON&arRef={$this->AR_Ref}&deNo=$de_no");
+    }
+
+    public function isStockDENo($de_no, $ar_ref,$dlQte) {
+        $this->lien = "fartstock";
+        return $this->getApiJson("/isStockDENo&dlQte=$dlQte&deNo=$de_no&arRef=$ar_ref");
     }
 
     public function insertF_ArtStock($de_no, $montStock, $qte)

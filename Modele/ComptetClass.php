@@ -256,6 +256,9 @@ class ComptetClass Extends Objet{
         return $this->getApiJson("/tiersByCTIntitule&ctIntitule=$intitule");
     }
 
+    public function getDepotClient($deNo,$ctType) {
+        return $this->getApiJson("/getDepotClient&deNo=$deNo&ctType=$ctType");
+    }
 
     public function createClientMin(){
 		

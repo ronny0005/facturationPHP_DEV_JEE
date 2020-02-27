@@ -12,13 +12,15 @@
                 <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
             </div>
         </div>
-        <div class="col-6 col-sm-6 col-md-6 col-lg-2"><label>Fin</label>
+        <div class="col-6 col-sm-6 col-md-6 col-lg-2">
+            <label>Fin</label>
             <div class="input-group">
                 <input class="form-control" type="text" id="datefin" name="datefin" inputmode="numeric" maxlength="6" value="<?= $datefin ?>">
                 <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3"><label>Dépot</label>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <label>Dépot</label>
             <div class="input-group">
                 <input type="hidden" value="<?= sizeof($_POST) ?>" name="post" id="post"/>
                 <input type="hidden" value="<?= $protection->lienMenuNouveau($type) ?>" name="lienMenuNouveau" id="lienMenuNouveau"/>
@@ -26,16 +28,20 @@
                 <select class="form-control" id="depot" name="depot">
                     <?= $listeDepot ?>
                 </select>
-                <span
-                        class="input-group-append"><span class="input-group-text bg-transparent"><i class="fas fa-industry"></i></span></span>
+                <span class="input-group-append">
+                    <span class="input-group-text bg-transparent"><i class="fas fa-industry"></i></span>
+                </span>
             </div>
         </div>
 
-        <div <?= $afficheListeTiers ?> class="col-12 col-sm-6 col-md-6 col-lg-3"><label><?= $libTiers ?></label>
+        <div <?= $afficheListeTiers ?> class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <label><?= $libTiers ?></label>
             <div class="input-group">
                 <input type="hidden" id="CT_Num" value ="<?= $client ?>" name="client">
                 <input type="text"  id="client" value ="<?= $libClient ?>" name="libClient" class="form-control">
-                <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="fas fa-users"></i></span></span>
+                <span class="input-group-append">
+                    <span class="input-group-text bg-transparent"><i class="fas fa-users"></i></span>
+                </span>
             </div>
         </div>
 
@@ -58,31 +64,26 @@
 
         <div class="table-responsive" style="margin-top: 30px;clear:both">
             <table id="tableListeFacture" class="table table-striped">
-
-            <!--<div style="clear:both" class="table-responsive">
-            <table id="table" class="table table-striped" cellspacing="0" width="100%"> -->
                 <thead class="">
-                <tr>
-                    <th>Numéro Pièce</th>
-                    <th>Reference</th>
-                    <th>Date</th>
-                    <th <?= ($protection->afficheClientListe($type)) ?>>Client</th>
-                    <th <?= ($protection->afficheDepotListe($type)) ?>>Dépot</th>
-                    <th <?= ($protection->afficheFournisseurListe($type)) ?>>Fournisseur</th>
-                    <th <?= ($protection->afficheFournisseurListe($type)) ?>>Dépot</th>
-                    <th <?= ($protection->afficheDepotDestListe($type)) ?>>Dépot source</th>
-                    <th <?= ($protection->afficheDepotDestListe($type))?>>Dépot dest.</th>
-                    <th>Total TTC</th>
-                    <th <?= ($protection->afficheStatutListe ($type)) ?>>Montant r&eacute;gl&eacute;</th>
-                    <th <?= ($protection->afficheStatutListe ($type)) ?>>Statut</th>
-                    <th <?= ($protectedSuppression) ? "" : "style='display:none'" ?> ></th>
-                    <th <?= ($protection->afficheTransformListe($type))  ?>></th>
-                    <th></th>
-                    <th <?= ($protection->PROT_CBCREATEUR!=2) ? "" : "style='display:none'" ?>>Créateur</th>
-                </tr>
+                    <tr>
+                        <th>Numéro Pièce</th>
+                        <th>Reference</th>
+                        <th>Date</th>
+                        <th <?= ($protection->afficheClientListe($type)) ?>>Client</th>
+                        <th <?= ($protection->afficheDepotListe($type)) ?>>Dépot</th>
+                        <th <?= ($protection->afficheFournisseurListe($type)) ?>>Fournisseur</th>
+                        <th <?= ($protection->afficheFournisseurListe($type)) ?>>Dépot</th>
+                        <th <?= ($protection->afficheDepotDestListe($type)) ?>>Dépot source</th>
+                        <th <?= ($protection->afficheDepotDestListe($type))?>>Dépot dest.</th>
+                        <th>Total TTC</th>
+                        <th <?= ($protection->afficheStatutListe ($type)) ?>>Montant r&eacute;gl&eacute;</th>
+                        <th <?= ($protection->afficheStatutListe ($type)) ?>>Statut</th>
+                        <th <?= ($protectedSuppression) ? "" : "style='display:none'" ?> ></th>
+                        <th <?= ($protection->afficheTransformListe($type))  ?>></th>
+                        <th></th>
+                        <th <?= ($protection->PROT_CBCREATEUR!=2) ? "" : "style='display:none'" ?>>Créateur</th>
+                    </tr>
                 </thead>
-
-
                 <tbody>
                 <?php
                 $docEntete = new DocEnteteClass(0);

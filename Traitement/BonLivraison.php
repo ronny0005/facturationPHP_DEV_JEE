@@ -1,5 +1,4 @@
 <?php
-if(!isset($mobile)){
     session_start();
     include("../Modele/DB.php");
     include("../Modele/Objet.php");
@@ -12,8 +11,6 @@ if(!isset($mobile)){
     include("../Modele/ArticleClass.php");
     include("../Modele/FamilleClass.php");
     include("../Modele/ContatDClass.php");
-    $objet = new ObjetCollector();
-}
 
 if($_GET["acte"] =="transBLFacture"){
     $cbMarqBL=$_GET["cbMarq"];

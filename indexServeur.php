@@ -580,7 +580,8 @@ switch ($val) {
         echo json_encode($article->isStock($_GET["DE_No"]));
         break;
     case "isStockDENo":
-        envoiRequete($objet->isStockDENo($_GET['DE_No'], $_GET['AR_Ref'], str_replace(' ', '', str_replace(',', '.', $_GET["DL_Qte"]))), $objet);
+        $article = new ArticleClass($_GET['AR_Ref']);
+        echo json_encode($article->isStockDENo($_GET['DE_No'], $_GET['AR_Ref'],str_replace(' ', '', str_replace(',', '.', $_GET["DL_Qte"]))));
         break;
     case "verifSupprAjout":
         $docligne = new DocLigneClass($_GET["cbMarq"], $objet->db);

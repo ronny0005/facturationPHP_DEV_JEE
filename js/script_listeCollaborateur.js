@@ -37,6 +37,16 @@ jQuery(function($){
         $("#add_err").html('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong></strong>La suppression de '+$_GET("CO_No")+' a échoué !</div>');
     }
 
+    $('#table').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        },
+        "initComplete": function(settings, json) {
+            $("#table_filter").find(":input").addClass("form-control");
+            $("#table_length").find(":input").addClass("form-control");
+        }
+    });
+
     function protection(){
         $.ajax({
            url: "indexServeur.php?page=connexionProctection",

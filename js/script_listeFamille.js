@@ -46,8 +46,8 @@ $('#table').DataTable({
         footer: true
     },
     "initComplete": function(settings, json) {
-        $("#users_filter").find(":input").addClass("form-control");
-        $("#users_length").find(":input").addClass("form-control");
+        $("#table_filter").find(":input").addClass("form-control");
+        $("#table_length").find(":input").addClass("form-control");
     }
 });
 

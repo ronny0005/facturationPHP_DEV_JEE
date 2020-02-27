@@ -14,34 +14,31 @@
     <?php
 include("module/Menu/BarreMenu.php");
 ?>
-<div id="milieu">    
-    <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
-<div class="corps">        
+
+<section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
+        Liste depot
+    </h3>
+</section>
+
+<div class="corps">
         <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
         <input type="hidden" id="login" value="<?php echo $_SESSION["login"]; ?>"/>
    
      <div class="col-md-12">
 
 <fieldset class="entete">
-    <legend class="entete">Liste dépôt</legend>
 <div class="form-group">
 <form action="indexMVC.php?module=2&action=2" method="GET">
-    <table style="margin-bottom: 20px;width:100%">
-    <thead>
-        <tr>
         <?php if($flagNouveau){ ?>
-            <td style="float:right"><a href=indexMVC.php?module=3&action=11"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
-        </tr>
-        </form>
-</table>
+            <div class="mb-3" style="float:right">
+                <a href="ficheDepot">
+                    <button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button>
+                </a>
+            </div> <?php } ?>
+</form>
 <div class="err" id="add_err"></div>
-<table id="table" class="table">
+<table id="table" class="table mt-3">
         <thead style="background-color: #dbdbed;">
             <th>Intitulé</th>
             <th>Code postal</th>
@@ -51,27 +48,29 @@ include("module/Menu/BarreMenu.php");
     <tbody id="liste_depot">
         <?php
         
-        $objet = new ObjetCollector(); 
-        $result=$objet->db->requete($objet->depot());     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $i=0;
-        $classe="";
+        $objet = new ObjetCollector();
+        $depot = new DepotClass(0);
+        $rows = $depot->all();
         if($rows==null){
-            echo "<tr><td>Aucun élément trouvé ! </td></tr>";
+            echo "<tr><td colspan='3'>Aucun élément trouvé ! </td></tr>";
         }else{
             foreach ($rows as $row){
-            $i++;
-            if($i%2==0) $classe = "info";
-                    else $classe="";
-            echo "<tr class='article $classe' id='article_".$row->DE_No."'>"
-                    . "<td><a href='indexMVC.php?module=3&action=11&DE_No=$row->DE_No'>".$row->DE_Intitule."</a></td>"
-                    . "<td>".$row->DE_CodePostal."</td>"
-                    . "<td>".$row->DE_Ville."</td>";
-                    if($flagSuppr) echo "<td><a href='Traitement\Depot.php?acte=suppr&DE_No=".$row->DE_No."' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer ".$row->DE_Intitule." ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
-                    echo "</tr>";
+            ?>
+                <tr class="article <?= $classe ?>" id="article_<?=$row->DE_No ?>">
+                    <td><a href="indexMVC.php?module=3&action=11&DE_No=<?= $row->DE_No ?>"><?= $row->DE_Intitule ?></a></td>
+                    <td><?= $row->DE_CodePostal ?></td>
+                    <td><?= $row->DE_Ville ?></td>
+                    <?php
+                        if($flagSuppr) {
+                            ?>
+                            <td><a href="Traitement\Depot.php?acte=suppr&DE_No=<?= $row->DE_No ?>" onclick="if(window.confirm("Voulez-vous vraiment supprimer <?=$row->DE_Intitule ?>")){return true;}else{return false;}"><i class='fa fa-trash-o'></i></a></td>
+                        <?php }
+                        ?>
+                    </tr>
+        <?php
             }
         }
-//      ?>
+      ?>
 </tbody>
 </table>
  </div>   

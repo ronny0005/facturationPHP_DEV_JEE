@@ -150,6 +150,9 @@ var stockFlag = $("#InputstockFlag").val();
     });
 
     $('#users').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        },
         "columns": info,
         "processing": true,
         "serverSide": true,
@@ -158,8 +161,8 @@ var stockFlag = $("#InputstockFlag").val();
             type: 'POST'
         },
         "initComplete": function(settings, json) {
-            $("#users_filter").find(":input").addClass("form-control");
-            $("#users_length").find(":input").addClass("form-control");
+            $("#users_filter").find(":input").addClass("form-control")
+            $("#users_length").find(":input").addClass("form-control")
         }
     });
 

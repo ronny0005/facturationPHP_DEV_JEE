@@ -342,7 +342,11 @@ class DocEnteteClass Extends Objet{
     public function maj_affaire($caNum){
         return $this->getApiJson("/majAffaire&caNum=$caNum&cbMarq={$this->cbMarq}");
     }
-	
+
+    public function saisieComptable($cbMarq,$trans){
+        return $this->getApiJson("/saisieComptable&cbMarq=$cbMarq&trans=$trans");
+    }
+
 
     public function getDocReglByDO_Piece() {
         $query = "SELECT  * 
@@ -400,15 +404,7 @@ class DocEnteteClass Extends Objet{
 
     public function testCorrectLigneA()
     {
-        $query = "SELECT CASE WHEN SUM(DL_MontantHT)=SUM(EA_Montant) AND SUM(EA_Quantite)=SUM(DL_Qte) THEN 1 ELSE 0 END AS VALID
-                FROM(
-                SELECT B.CbMarq_Ligne,N_Analytique,MAX(DL_MontantHT)DL_MontantHT,SUM(ISNULL(EA_Montant,0))EA_Montant,SUM(ISNULL(EA_Quantite,0))EA_Quantite,MAX(DL_Qte)DL_Qte
-                FROM F_DOCLIGNE A
-                LEFT JOIN Z_LIGNE_COMPTEA B ON A.cbMarq = B.CbMarq_Ligne
-                WHERE DO_Piece='{$this->DO_Piece}' AND DO_Type='{$this->DO_Type}' AND DO_Domaine='{$this->DO_Domaine}'
-                GROUP BY B.CbMarq_Ligne,N_Analytique)A";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/testCorrectLigneA&cbMarq={$this->cbMarq}");
     }
 
     public function GetMontantReglee(){
