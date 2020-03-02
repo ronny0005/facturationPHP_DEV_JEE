@@ -1,9 +1,4 @@
 <?php
-$login = "";
-$machine_pc = "";
-$latitude = 0;
-$longitude = 0;
-if(!isset($mobile)){
 session_start();
 include("../Modele/DB.php");
 include("../Modele/ObjetCollector.php");
@@ -17,33 +12,6 @@ include("../Modele/ReglementClass.php");
 include("../Modele/CaisseClass.php");
 include("../Modele/ArticleClass.php");
 include("../Modele/ProtectionClass.php");
-$objet = new ObjetCollector();
-$login = $_SESSION["login"];
-$machine_pc = "";
-$mobile="";
-}
-if(isset($_GET["Latitude"]))
-    $latitude = $_GET["Latitude"];
-if(isset($_GET["Longitude"]))
-    $longitude = $_GET["Longitude"];
-
-$cat_tarif=0;
-$cat_compta=0;
-$libcat_tarif="";
-$libcat_compta="";
-$entete="";
-$affaire="";
-$souche="";
-$co_no=0;
-$depot_no=0;
-$modif=0;
-$client = "";
-$totalht=0;
-$tva=0;
-$precompte=0;
-$marge=0;
-$totalttc=0;
-$reference="";
 
 function dateDiff($date1, $date2){
     $diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
@@ -469,14 +437,14 @@ if($_GET["acte"] =="saisie_comptableCaisse") {
     echo json_encode(saisieComptableCaisse($docEntete->DO_Piece,$docEntete->DO_Domaine,$docEntete ->DO_Type,$trans));
 }
 
-function saisieComptableCaisse($DO_Piece,$DO_Domaine,$DO_Type,$TransDoc){
-    $objet = new ObjetCollector();
+function saisieComptableCaisse($cbMarq,$TransDoc){
     $jo_num="";
     $cg_num="";
     $souche="";
-    $do_piece = $DO_Piece;
-    $do_domaine = $DO_Domaine;
-    $do_type = $DO_Type;
+    $docEntete = new DocEnteteClass($cbMarq);
+    $do_piece = $docEntete->DO_Piece;
+    $do_domaine = $docEntete->DO_Domaine;
+    $do_type = $docEntete->DO_Type;
     $trans = $TransDoc;
     $alldata=null;
     $total_regle= 0;
@@ -486,50 +454,28 @@ function saisieComptableCaisse($DO_Piece,$DO_Domaine,$DO_Type,$TransDoc){
     $cg_numContrepartie="";
     $cmpcol=0;
     $caisse="";
-    $result=$objet->db->requete($objet->getDoPiece($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        $reference=$rows[0]->DO_Ref;
-        $dateEntete=$rows[0]->DO_Date;
-        $client=$rows[0]->DO_Tiers;
-        $souche = $rows[0]->DO_Souche;
-        $affaire=$rows[0]->CA_Num;
-        $caisse = $rows[0]->CA_No;
+    $reference=$docEntete->DO_Ref;
+    $dateEntete=$docEntete->DO_Date;
+    $client=$docEntete->DO_Tiers;
+    $souche = $docEntete->DO_Souche;
+    $affaire=$docEntete->CA_Num;
+    $caisse = $docEntete->CA_No;
+
+    $total_regle=$docEntete->avance;
+    $caisseClass = new CaisseClass($caisse);
+    $jo_num = $caisseClass->JO_Num;
+
+    $comptetClass = new ComptetClass($client);
+    if($comptetClass->CG_NumPrinc!=""){
+        $cg_num=$comptetClass->CG_NumPrinc;
+        $comptegClass = new CompteGClass($cg_num);
+        if($comptegClass->CG_Tiers==0)
+            $client="";
     }
 
-    $result=$objet->db->requete($objet->AvanceDoPiece($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        $total_regle=$rows[0]->avance_regle;
-    }
-    $result=$objet->db->requete($objet->getCaisseByCA_No($caisse));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        $jo_num=$row->JO_Num;
-    }
-    $result=$objet->db->requete($objet->getClientByCTNum($client));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        if($row->CG_NumPrinc!=""){
-            $cg_num=$row->CG_NumPrinc;
-            $result=$objet->db->requete($objet->getPlanComptableByCGNum($row->CG_NumPrinc));
-            $rowsG = $result->fetchAll(PDO::FETCH_OBJ);
-            foreach ($rowsG as $rowG) {
-                if($rowG->CG_Tiers==0)
-                    $client="";
-            }
-        }
-    }
+    $docRegl = $docEntete->getDocReglByDO_Piece();
+    $date_ech=$docRegl->DR_Date;
 
-    $result=$objet->db->requete($objet->getReglementByClientFacture($client,$do_piece,$do_type,$do_domaine));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows!=null){
-        foreach ($rows as $row) {
-            $date_ech=$row->DR_Date;
-        }
-    }
     if($trans==0){
         $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
             "EC_Jour" => substr($dateEntete,8,2),"EC_RefPiece" =>$do_piece, "EC_Reference" =>$reference,"CG_Num"=> $cg_num,
@@ -540,18 +486,12 @@ function saisieComptableCaisse($DO_Piece,$DO_Domaine,$DO_Type,$TransDoc){
     }
     $cg_numold = $cg_num;
     $ct_numold = $client;
-    $result=$objet->db->requete($objet->getJournauxByJONum($jo_num));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        if($row->CG_Num!=""){
-            $cg_num=$row->CG_Num;
-            $result=$objet->db->requete($objet->getPlanComptableByCGNum($row->CG_Num));
-            $rowsG = $result->fetchAll(PDO::FETCH_OBJ);
-            foreach ($rowsG as $rowG) {
-                if($rowG->CG_Tiers==0)
-                    $client="";
-            }
-        }
+    $journalClass = new JournalClass($jo_num);
+    if($journalClass->CG_Num!=""){
+        $cg_num=$journalClass->CG_Num;
+        $comptegClass = new CompteGClass($cg_num);
+        if($comptegClass->CG_Tiers==0)
+            $client="";
     }
 
     $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
@@ -559,9 +499,8 @@ function saisieComptableCaisse($DO_Piece,$DO_Domaine,$DO_Type,$TransDoc){
         "TA_Provenance" => 0,"EC_StatusRegle" => 0,"EC_MontantRegle" => 0,"EC_Sens" => 0,"EC_Lettrage" => "","CG_NumCont" => $cg_numold,"CT_Num" =>$client,"CT_NumCont" =>$ct_numold,"EC_Intitule"=>"Rglt ".$do_piece."_".$reference,"N_Reglement"=>1,"EC_Echeance"=>$date_ech,"EC_MontantCredit"=>$total_regle,
         "EC_MontantDebit"=>"","TA_Code"=>"");
     $alldata[$cmpcol] = $data;
-    $cmpcol++;
+
     return $alldata;
-//    echo json_encode($alldata);
 }
 
 function saisieComptableCaisseReglement($RG_No){
@@ -589,19 +528,14 @@ function saisieComptableCaisseReglement($RG_No){
     foreach($listeDocEntete as $liste){
         $do_piece = $liste->DO_Piece;
     }
-    $result=$objet->db->requete($objet->getClientByCTNum($client));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        if($row->CG_NumPrinc!=""){
-            $cg_num=$row->CG_NumPrinc;
-            $result=$objet->db->requete($objet->getPlanComptableByCGNum($row->CG_NumPrinc));
-            $rowsG = $result->fetchAll(PDO::FETCH_OBJ);
-            foreach ($rowsG as $rowG) {
-                if($rowG->CG_Tiers==0)
-                    $client="";
-            }
-        }
+    $comptetClass = new ComptetClass($client);
+    if($comptetClass->CG_NumPrinc!=""){
+        $cg_num=$comptetClass->CG_NumPrinc;
+        $comptegClass = new CompteGClass($cg_num);
+        if($comptegClass->CG_Tiers==0)
+            $client="";
     }
+
     $date_ech="1900-01-01";
     $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
         "EC_Jour" => substr($dateEntete,8,2),"EC_RefPiece" =>$do_piece , "EC_Reference" =>"","CG_Num"=> $cg_num,
@@ -611,18 +545,12 @@ function saisieComptableCaisseReglement($RG_No){
     $cmpcol++;
     $cg_numold = $cg_num;
     $ct_numold = $client;
-    $result=$objet->db->requete($objet->getJournauxByJONum($jo_num));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        if($row->CG_Num!=""){
-            $cg_num=$row->CG_Num;
-            $result=$objet->db->requete($objet->getPlanComptableByCGNum($row->CG_Num));
-            $rowsG = $result->fetchAll(PDO::FETCH_OBJ);
-            foreach ($rowsG as $rowG) {
-                if($rowG->CG_Tiers==0)
-                    $client="";
-            }
-        }
+    $journalClass = new JournalClass($jo_num);
+    if($journalClass->CG_Num!=""){
+        $cg_num=$journalClass->CG_Num;
+        $comptegClass = new CompteGClass($cg_num);
+        if($comptegClass->CG_Tiers==0)
+            $client="";
     }
 
     $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
@@ -631,24 +559,6 @@ function saisieComptableCaisseReglement($RG_No){
         "EC_MontantDebit"=>"","TA_Code"=>"");
     $alldata[$cmpcol] = $data;
     return $alldata;
-}
-
-if($_GET["acte"] =="saisieDevise"){
-    $docEntete = new DocEnteteClass(0,$objet->db);
-    $dateDevise = $_GET["dateDevise"];
-    $clientSource = $_GET["clientSource"];
-    $depotSource = $_GET["depotSource"];
-    $articleSource = $_GET["articleSource"];
-    $prixVenteSource = $_GET["prixVenteSource"];
-    $qteSource = $_GET["qteSource"];
-    $qteSourceMax = $_GET["qteSourceMax"];
-    $devise = $_GET["devise"];
-    $prixVenteDest = 0;
-    if(isset($_GET["prixVenteDest"]))
-        $prixVenteDest = $_GET["prixVenteDest"];
-    $insert = $_GET["insert"];
-    $cbMarq = $_GET["cbMarq"];
-    $docEntete->venteDevise($dateDevise,$clientSource,$depotSource,$qteSource,$articleSource,$prixVenteSource,$prixVenteDest,$devise,$insert,$cbMarq);
 }
 
 if($_GET["acte"] =="verif_stock"){

@@ -4504,7 +4504,13 @@ LEFT JOIN (SELECT cbMarq,DO_Piece AS DO_Piece_Dest,DL_PrixUnitaire AS DL_PrixUni
     }
 
     public function updateDateTransformLigne($do_piece,$do_domaine,$do_type,$do_date){
-        return "UPDATE F_DOCLIGNE SET DL_DateBC='$do_date',cbModification=GETDATE(), DL_DateBL='$do_date' WHERE DO_Piece='$do_piece' AND DO_Domaine=$do_domaine AND DO_Type=$do_type;";
+        return "UPDATE F_DOCLIGNE 
+                    SET DL_DateBC='$do_date'
+                        ,cbModification=GETDATE()
+                        , DL_DateBL='$do_date' 
+                WHERE   DO_Piece='$do_piece' 
+                AND     DO_Domaine=$do_domaine 
+                AND     DO_Type=$do_type;";
     }
 
 

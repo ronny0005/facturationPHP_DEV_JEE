@@ -1228,6 +1228,10 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/getLigneFactureTransfert&cbMarq={$this->cbMarq}");
     }
 
+    public function transBLFacture($cbMarq,$conserv,$typeTrans,$reference,$date,$protNo){
+        return $this->getApiJson("/transBLFacture&cbMarq=$cbMarq&conserv=$conserv&typeTrans=$typeTrans&reference=$reference&date=$date&protNo=$protNo");
+    }
+
     public function deleteEntete(){
         $result = $this->db->requete( "
             DELETE FROM F_DOCREGL WHERE DO_Piece='".$this->DO_Piece."' AND DO_Domaine=".$this->DO_Domaine." 
@@ -1482,27 +1486,36 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbMarq,E.DO_Type,E.DO_Domaine,E
     }
 
     public function getListeFactureMajComptable($typeTransfert, $datedeb, $datefin,$doPiecedeb,$doPiecefin,$souche,$etatPiece,$catCompta,$caisse){
-        $do_domaine=0;
-        if($typeTransfert==2) $do_domaine=1;
-        $do_type =6;
-        if($typeTransfert==2) {
-            $do_type = 16;
-            if($etatPiece==1)
-                $do_type = 17;
-        }else
-            if($etatPiece==1)
-                $do_type = 7;
-
-        $query = "SELECT cbMarq,DO_Domaine,DO_Type,DO_Piece 
-                  FROM F_DOCENTETE
-                  WHERE DO_Domaine=$do_domaine AND DO_Type=$do_type
-                  AND ('$datedeb'='' OR DO_Date>='$datedeb')
-                  AND ('$datefin'='' OR DO_Date<='$datefin')
-                  AND ('$doPiecedeb'='' OR DO_Piece>='$doPiecedeb')
-                  AND ('$doPiecefin'='' OR DO_Piece<='$doPiecefin')
-                  AND ($souche='-1' OR DO_Souche='$souche')
-                  AND ($catCompta='0' OR N_CatCompta>='$catCompta')
-                  AND ($caisse='0' OR CA_No ='$caisse')";
+        $query = "
+                    DECLARE @doDomaine INT = 0
+                            ,@doType INT =  0
+                            ,@dateDeb VARCHAR(20) = '$datedeb'
+                            ,@dateFin VARCHAR(20) = '$datefin'
+                            ,@doPieceDeb VARCHAR(20) = '$doPiecedeb'
+                            ,@doPieceFin VARCHAR(20) = '$doPiecefin'
+                            ,@doSouche INT = '$souche'
+                            ,@catCompta INT = $catCompta
+                            ,@caisse INT = $caisse
+                            ,@typeTransfert INT = $typeTransfert
+                            ,@etatPiece INT = $etatPiece
+                            
+                    SELECT @doDomaine = CASE WHEN @typeTransfert = 2 THEN 1 ELSE 0 END
+                    SELECT @doType = CASE WHEN @typeTransfert = 2 THEN 
+                                        CASE WHEN @etatPiece = 1 THEN 17 ELSE 16 END 
+                                    ELSE 
+                                        CASE WHEN @etatPiece = 1 THEN 7 ELSE 6 END
+                    SELECT @doDomaine = CASE WHEN @typeTransfert = 2 THEN 1 ELSE 0 END
+                            
+                      SELECT cbMarq,DO_Domaine,DO_Type,DO_Piece 
+                      FROM F_DOCENTETE
+                      WHERE DO_Domaine=@doDomaine AND DO_Type=@doType
+                      AND (@dateDeb='' OR DO_Date>=@dateDeb)
+                      AND (@dateFin='' OR DO_Date<=@dateFin)
+                      AND (@doPieceDeb='' OR DO_Piece>=@doPieceDeb)
+                      AND (@doPieceFin='' OR DO_Piece<=@doPieceFin)
+                      AND (@doSouche='-1' OR DO_Souche=@doSouche)
+                      AND (@catCompta='0' OR N_CatCompta>=@catCompta)
+                      AND (@caisse='0' OR CA_No =@caisse)";
         $result= $this->db->query($query);
         $this->list = array();
         foreach ($result->fetchAll(PDO::FETCH_OBJ) as $resultat)

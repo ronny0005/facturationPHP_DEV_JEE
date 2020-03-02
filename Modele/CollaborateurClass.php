@@ -93,8 +93,7 @@ class CollaborateurClass Extends Objet{
 
     public function insertCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $cbCreateur)
     {
-	$this->getApiJson("/insertCollaborateur&coNom=$nom&coPrenom=$prenom&coFonction=$fonction&coAdresse=$adresse&coComplement=$complement&coVille=$ville&coCodeRegion=$region&coPays=$pays&coService=$service&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail=$email&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur");
-        
+	    $this->getApiJson("/insertCollaborateur&coNom=$nom&coPrenom=$prenom&coFonction=$fonction&coAdresse=$adresse&coComplement=$complement&coVille=$ville&coCodeRegion=$region&coPays=$pays&coService=$service&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail=$email&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur");
     }
 
 

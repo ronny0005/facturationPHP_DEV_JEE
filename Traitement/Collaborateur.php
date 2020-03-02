@@ -17,9 +17,6 @@ if($_GET["acte"] =="suppr"){
 if($_GET["acte"]=="ajout"){
     $nom = str_replace("'", "''", $_GET["nom"]);
     $prenom = str_replace("'", "''", $_GET["prenom"]);
-    $result=$objet->db->requete($objet->getCollaborateurByNom($nom));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
     $fonction = str_replace("'", "''", $_GET["fonction"]);
     $service = str_replace("'", "''", $_GET["service"]);
     $adresse = str_replace("'", "''", $_GET["adresse"]);
@@ -42,18 +39,11 @@ if($_GET["acte"]=="ajout"){
     if(isset($_GET["recouvrement"]))$btnRecouv=1;
     else $btnRecouv=0;
     $collaborateurClass = new CollaborateurClass(0,$objet->db);
-    $collaborateurClass->insertCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv);
-    $result=$objet->db->requete($objet->getCollaborateurLast());
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
+    $value = $collaborateurClass->insertCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv);
+    if($value->CO_No==0){
+        echo $value->Message;
     }else{
-        foreach($rows as $row){
-            $data = array('CO_No' => $row->CO_No);
-        }
-    }
-        echo json_encode($data);
-    }else {
-        echo $nom." existe déjà !";
+        echo json_encode($value);
     }
 }
 

@@ -612,11 +612,17 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
     }
 
 
-    public function getReglementByFacture($DO_Domaine,$DO_Type,$DO_Piece){
-        $query = "  SELECT A.RG_No
-                    FROM F_CREGLEMENT A
-                    INNER JOIN F_REGLECH B ON A.RG_No=B.RG_No
-                    WHERE DO_Domaine=$DO_Domaine AND DO_Type=$DO_Type AND DO_Piece = $DO_Piece AND EC_No = 0";
+    public function getReglementByFacture($cbMarq){
+        $query = "  SELECT creg.RG_No
+                    FROM F_DOCENTETE doc
+                    INNER JOIN F_REGLECH reg
+                        ON  doc.cbDO_Piece = reg.cbDO_Piece
+                        AND doc.DO_Domaine = reg.DO_Domaine
+                        AND doc.DO_Type = reg.DO_Type
+                    INNER F_CREGLEMENT creg
+                        ON  creg.RG_No = reg.RG_No
+                    WHERE   doc.cbMarq = $cbMarq 
+                    AND     EC_No = 0";
         $result= $this->db->query($query);
         $this->list = array();
         foreach ($result->fetchAll(PDO::FETCH_OBJ) as $resultat)
