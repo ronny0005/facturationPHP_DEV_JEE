@@ -1,10 +1,17 @@
 <?php
 $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 $objet = new ObjetCollector();
-$depot=$_SESSION["DE_No"];
+$depot=0;
 $datedeb=date("dmy");
 $datefin=date("dmy");
 $client='0';
+
+$depotUserClass = new DepotUserClass(0,$objet->db);
+$rows=$depotUserClass->getDepotUser($_SESSION["id"]);
+if(sizeof($rows)>1)
+    $depot = 0;
+if(sizeof($rows)==1)
+    $depot = $rows[0]->DE_No;
 if(isset($_POST["datedebut"]) && $_POST["datedebut"]!="")
     $datedeb=$_POST["datedebut"];
 if(isset($_POST["datefin"]) && $_POST["datefin"]!="")
@@ -18,7 +25,6 @@ if(isset($_POST["type"]))
 else
     $type=$_GET["type"];
 $admin=0;
-
 if($protection->PROT_Administrator==1 || $protection->PROT_Right==1)
     $admin=1;
 
@@ -94,12 +100,11 @@ if(sizeof($rows)>1){
     if('0'== $depot) $listeDepot = $listeDepot." selected ";
     $listeDepot = $listeDepot.">TOUT LES DEPOTS</option>";
 }
+
 if($rows==null){
 }else{
     $var = 0;
     foreach($rows as $row) {
-        if(!isset($_POST["depot"]) && $var==0)
-            $depot= $row->DE_No;
         $listeDepot = $listeDepot."<option value={$row->DE_No}";
         if ($row->DE_No == $depot)
             $listeDepot= $listeDepot." selected";

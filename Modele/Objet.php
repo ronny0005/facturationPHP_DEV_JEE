@@ -56,6 +56,7 @@ class Objet {
     public function getApiExecute($url){
         ini_set("allow_url_fopen", 1);
         $url = $this->racineApi.$this->lien.$url;
+        echo $url;
         file_get_contents($url);
     }
 
@@ -100,7 +101,7 @@ class Objet {
 
     public function maj($name,$value){
         $this->getApiExecute("/maj&nom=$name&valeur=".htmlspecialchars_decode($value)."&cbMarq={$this->cbMarq}&cbCreateur={$_SESSION["id"]}");
-n    }
+    }
 
     public function majCbMarq($name,$value,$cbMarq){
         $this->getApiExecute("/maj/$name/{$this->formatString($value)}/$cbMarq");

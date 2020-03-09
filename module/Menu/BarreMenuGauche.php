@@ -24,7 +24,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                role="presentation" href="listeFacture-VenteRetour">Retour</a><a class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-Ticket">Ticket</a></div>
             </li>
             <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(2,78,5);font-weight: bold;">Achat</a>
-                <div class="dropdown-menu" role="menu" style="border: none;"><a class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-achat">Facture</a><a class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-PreparationCommande">Prep. commande</a>
+                <div class="dropdown-menu" role="menu" style="border: none;"><a class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-Achat">Facture</a><a class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-PreparationCommande">Prep. commande</a>
                     <a
                             class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-AchatPreparationCommande">Achat + Prep Commande</a><a class="dropdown-item customDropdown-item" role="presentation" href="listeFacture-AchatRetour">Retour</a></div>
             </li>

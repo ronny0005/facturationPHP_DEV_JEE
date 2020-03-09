@@ -14,6 +14,12 @@ body{
     color : #024e05;
 }
 
+.ui-menu-item .ui-menu-item-wrapper:hover
+,.ui-menu-item-wrapper:focus,.ui-menu-item-wrapper::selection
+{
+    background-color: #024e05;
+}
+
 .bgApplication{
     background-color : #024e05;
 }
@@ -26,12 +32,33 @@ body{
     boder-color : #024e05;
 }
 
+.btn-primary{
+    color:#fff; !important;
+    background-color:#003302; !important;
+    border-color:#003302 !important;
+}
+.btn-primary:hover{
+    color:#fff; !important;
+    background-color:#003302; !important;
+    border-color:#003302 !important;
+}
+.btn-primary.focus,.btn-primary:focus{
+    background-color:#003302; !important;
+    border-color:#003302 !important;
+    box-shadow:0 0 0 .2rem #003302 !important;
+}
+.btn-primary.disabled,.btn-primary:disabled{
+    color:#fff; !important;
+    background-color: #024e05; !important;
+    border-color: #024e05 !important;
+}
+                                                                                                                                                                                                .btn-primary:not(:disabled):not(.disabled):active:focus,.show>.btn-primary.dropdown-toggle:focus{box-shadow:0 0 0 .2rem #003302}
 .bgcolorApplication:hover{
     background-color : #003302;
     boder-color : #003302;
 }
 
-.bgcolorApplication.clicked{
+.bgcolorApplication.focus{
     background-color : #003302;
     boder-color : #003302;
 }

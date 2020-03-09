@@ -569,8 +569,8 @@ jQuery(function($) {
         if (fich == "AchatPreparationCommande") {
             listeFacture = "indexMVC.php?module=7&action=5&type=" + fich;
         }
-        impressionFacture = racine + "entete=" + $("#n_doc").val() + "&CT_Num=" + $("#CT_Num").val() + "&type=" + fich;
-        impressionFactureTTC = racineTTC + "entete=" + $("#n_doc").val() + "&CT_Num=" + $("#CT_Num").val() + "&type=" + fich;
+        impressionFacture = racine + "cbMarq=" + $("#cbMarqEntete").val() + "&type=" + fich;
+        impressionFactureTTC = racineTTC + "cbMarq=" + $("#cbMarqEntete").val() + "&type=" + fich;
     }
     fichierTraitement()
 

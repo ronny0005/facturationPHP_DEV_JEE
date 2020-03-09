@@ -303,7 +303,7 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
     }
 
     function getModeleReglement() {
-        $this->lien ="FModeleR";
+        $this->lien ="fmodeler";
         return $this->getApiJson("/all");
     }
 

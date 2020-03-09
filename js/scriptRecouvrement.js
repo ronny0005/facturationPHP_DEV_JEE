@@ -612,137 +612,145 @@ jQuery(function ($) {
                     width: 600,
                     modal: true,
                     buttons: {
-                        "Remboursement règlement": function () {
-                            if ($("#protectionPage").html() == true) {
-                                $(this).dialog("close");
-                                $("#dateRemboursement").datepicker({
-                                    dateFormat: "yy-mm-dd",
-                                    altFormat: "yy-mm-dd"
-                                });
-                                $("#dateRemboursement").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
-                                $("#mttRemboursement").val(RA_Montant);
-                                $("#blocRemboursementRglt").dialog({
-                                    resizable: false,
-                                    height: "auto",
-                                    width: 300,
-                                    title: "Information remboursement",
-                                    modal: true,
-                                    buttons: {
-                                        "Valider": {
-                                            class: 'btn btn-primary',
-                                            text: 'Valider',
-                                            click: function () {
-                                                if (parseFloat($("#mttRemboursement").val().replace(/ /g, "").replace(/ /g, "&nbsp;")) <= parseFloat(RA_Montant)) {
-                                                    $.ajax({
-                                                        url: 'indexServeur.php?page=remboursementRglt',
-                                                        method: 'GET',
-                                                        dataType: '',
-                                                        async: false,
-                                                        data: "RG_No=" + RG_No + "&RG_Montant=" + $("#mttRemboursement").val().replace(/ /g, "") + "&RG_Date=" + $("#dateRemboursement").val(),
-                                                        success: function (data) {
-                                                            location.reload(true);
-                                                        },
-                                                        error: function (resultat, statut, erreur) {
-                                                            alert(resultat.responseText);
-                                                        }
-                                                    });
-                                                    $(this).dialog("close");
-                                                } else {
-                                                    alert("le montant du remboursement ne peut pas dépasser " + RA_Montant);
-                                                }
-                                            }
-                                        },
-                                        "Annuler": {
-                                            class: 'btn btn-primary',
-                                            text: 'Annuler',
-                                            click: function () {
-                                                $(this).dialog("close");
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        },
-                        "Régler facture": function () {
-                            if ($("#protectionPage").html() == true) {
-                                $(this).dialog("close")
-                                if (RA_Montant > 0)
-                                    if (protect == 1 && (N_Reglement != 10 || ((N_Reglement != "5" && N_Reglement != "10") && RG_Impute == "0") || (N_Reglement == "5" && CA_NoTable != ""))) {
-                                        if ($("#typeRegl").val() == "Collaborateur" && Mtt_RG_Piece != 0) {
-
-                                            $("<div></div>").dialog({
-                                                resizable: false,
-                                                height: "auto",
-                                                width: 500,
-                                                modal: true,
-                                                buttons: {
-                                                    "Régler une facture": {
-                                                        class: 'btn btn-primary',
-                                                        text: 'Régler une facture',
-                                                        click: function () {
-                                                            afficheDialogue()
-
-                                                            $(this).dialog("close")
-                                                        }
-                                                    },
-                                                    "Générer un bon de caisse": {
-                                                        class: 'btn btn-primary',
-                                                        text: 'Générer un bon de caisse',
-                                                        click: function () {
-                                                            $(this).dialog("close");
-                                                            $("#dateRemiseBon").datepicker({
-                                                                dateFormat: "yy-mm-dd",
-                                                                altFormat: "yy-mm-dd"
-                                                            });
-                                                            $("#dateRemiseBon").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
-                                                            var rgType = 0;
-                                                            if ($("#typeRegl").val() != "Client") rgType = 1;
-
-                                                            $("#blocDateRemiseBon").dialog({
-                                                                resizable: false,
-                                                                height: "auto",
-                                                                width: 300,
-                                                                title: "Date remise de bon de caisse",
-                                                                modal: true,
-                                                                buttons: {
-                                                                    "Valider": {
-                                                                        class: 'btn btn-primary',
-                                                                        text: 'Valider',
-                                                                        click: function () {
-                                                                            $.ajax({
-                                                                                url: 'indexServeur.php?page=addReglement&boncaisse=' + 1 + '&RG_Type=' + rgType + '&CT_Num=' + $("#CT_Num").val() + "&montant=" + Mtt_RG_Piece + "&libelle=Remise_bon_de_caisse_" + RG_No + "_" + $(".comboclient").val() + "&CO_No=" + $("#co_no").val() + "&CA_No=0&date=" + $("#dateRemiseBon").val() + "&impute=0&mode_reglementRec=10&caissier=0&RG_NoLier=" + RG_No,
-                                                                                method: 'GET',
-                                                                                dataType: 'json',
-                                                                                async: false,
-                                                                                success: function (data) {
-                                                                                    if ($("#mode_reglementRec").val() == "10") {
-
-                                                                                    }
-                                                                                    location.reload(true);
-                                                                                    rechercher();
-                                                                                    rechercherFacture(true);
-                                                                                    $("#dateRec").val("");
-                                                                                    $("#libelleRec").val("");
-                                                                                    $("#montantRec").val("");
-                                                                                },
-                                                                                error: function (resultat, statut, erreur) {
-                                                                                    alert(resultat.responseText);
-                                                                                }
-                                                                            });
-                                                                            $(this).dialog("close");
-                                                                        }
-                                                                    }
-                                                                }
-                                                            });
-                                                            $(this).dialog("close");
-                                                        }
+                        "Remboursement règlement": {
+                            class: 'btn btn-primary',
+                            text: 'Remboursement règlement',
+                            click: function () {
+                                if ($("#protectionPage").html() == true) {
+                                    $(this).dialog("close");
+                                    $("#dateRemboursement").datepicker({
+                                        dateFormat: "yy-mm-dd",
+                                        altFormat: "yy-mm-dd"
+                                    });
+                                    $("#dateRemboursement").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
+                                    $("#mttRemboursement").val(RA_Montant);
+                                    $("#blocRemboursementRglt").dialog({
+                                        resizable: false,
+                                        height: "auto",
+                                        width: 300,
+                                        title: "Information remboursement",
+                                        modal: true,
+                                        buttons: {
+                                            "Valider": {
+                                                class: 'btn btn-primary',
+                                                text: 'Valider',
+                                                click: function () {
+                                                    if (parseFloat($("#mttRemboursement").val().replace(/ /g, "").replace(/ /g, "&nbsp;")) <= parseFloat(RA_Montant)) {
+                                                        $.ajax({
+                                                            url: 'indexServeur.php?page=remboursementRglt',
+                                                            method: 'GET',
+                                                            dataType: '',
+                                                            async: false,
+                                                            data: "RG_No=" + RG_No + "&RG_Montant=" + $("#mttRemboursement").val().replace(/ /g, "") + "&RG_Date=" + $("#dateRemboursement").val(),
+                                                            success: function (data) {
+                                                                location.reload(true);
+                                                            },
+                                                            error: function (resultat, statut, erreur) {
+                                                                alert(resultat.responseText);
+                                                            }
+                                                        });
+                                                        $(this).dialog("close");
+                                                    } else {
+                                                        alert("le montant du remboursement ne peut pas dépasser " + RA_Montant);
                                                     }
                                                 }
-                                            });
-                                        } else {
-                                            afficheDialogue();
+                                            },
+                                            "Annuler": {
+                                                class: 'btn btn-primary',
+                                                text: 'Annuler',
+                                                click: function () {
+                                                    $(this).dialog("close");
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                                }
+                            }
+                        },
+                        "Régler facture": {
+                            class: 'btn btn-primary',
+                            text: 'Régler facture',
+                            click: function () {
+                                if ($("#protectionPage").html() == true) {
+                                    $(this).dialog("close")
+                                    if (RA_Montant > 0)
+                                        if (protect == 1 && (N_Reglement != 10 || ((N_Reglement != "5" && N_Reglement != "10") && RG_Impute == "0") || (N_Reglement == "5" && CA_NoTable != ""))) {
+                                            if ($("#typeRegl").val() == "Collaborateur" && Mtt_RG_Piece != 0) {
+
+                                                $("<div></div>").dialog({
+                                                    resizable: false,
+                                                    height: "auto",
+                                                    width: 500,
+                                                    modal: true,
+                                                    buttons: {
+                                                        "Régler une facture": {
+                                                            class: 'btn btn-primary',
+                                                            text: 'Régler une facture',
+                                                            click: function () {
+                                                                afficheDialogue()
+
+                                                                $(this).dialog("close")
+                                                            }
+                                                        },
+                                                        "Générer un bon de caisse": {
+                                                            class: 'btn btn-primary',
+                                                            text: 'Générer un bon de caisse',
+                                                            click: function () {
+                                                                $(this).dialog("close");
+                                                                $("#dateRemiseBon").datepicker({
+                                                                    dateFormat: "yy-mm-dd",
+                                                                    altFormat: "yy-mm-dd"
+                                                                });
+                                                                $("#dateRemiseBon").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
+                                                                var rgType = 0;
+                                                                if ($("#typeRegl").val() != "Client") rgType = 1;
+
+                                                                $("#blocDateRemiseBon").dialog({
+                                                                    resizable: false,
+                                                                    height: "auto",
+                                                                    width: 300,
+                                                                    title: "Date remise de bon de caisse",
+                                                                    modal: true,
+                                                                    buttons: {
+                                                                        "Valider": {
+                                                                            class: 'btn btn-primary',
+                                                                            text: 'Valider',
+                                                                            click: function () {
+                                                                                $.ajax({
+                                                                                    url: 'indexServeur.php?page=addReglement&boncaisse=' + 1 + '&RG_Type=' + rgType + '&CT_Num=' + $("#CT_Num").val() + "&montant=" + Mtt_RG_Piece + "&libelle=Remise_bon_de_caisse_" + RG_No + "_" + $(".comboclient").val() + "&CO_No=" + $("#co_no").val() + "&CA_No=0&date=" + $("#dateRemiseBon").val() + "&impute=0&mode_reglementRec=10&caissier=0&RG_NoLier=" + RG_No,
+                                                                                    method: 'GET',
+                                                                                    dataType: 'json',
+                                                                                    async: false,
+                                                                                    success: function (data) {
+                                                                                        if ($("#mode_reglementRec").val() == "10") {
+
+                                                                                        }
+                                                                                        location.reload(true);
+                                                                                        rechercher();
+                                                                                        rechercherFacture(true);
+                                                                                        $("#dateRec").val("");
+                                                                                        $("#libelleRec").val("");
+                                                                                        $("#montantRec").val("");
+                                                                                    },
+                                                                                    error: function (resultat, statut, erreur) {
+                                                                                        alert(resultat.responseText);
+                                                                                    }
+                                                                                });
+                                                                                $(this).dialog("close");
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+                                                                $(this).dialog("close");
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                afficheDialogue();
+                                            }
+                                        }
+                                }
                             }
                         },
                         "Voir facture réglée": {

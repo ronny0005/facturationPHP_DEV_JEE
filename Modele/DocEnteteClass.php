@@ -192,10 +192,9 @@ class DocEnteteClass Extends Objet{
         if($type=="Sortie")
             return $this->listeSortie($depot, $datedeb, $datefin);
 
-
-        if($type=="Achat")
-            return $this->getListeFacture($depot,0,$datedeb ,$datefin,$client,1,16);
-
+        if($type=="Achat") {
+            return $this->getListeFacture($depot, 0, $datedeb, $datefin, $client, 1, 16);
+        }
 
         if($type=="AchatC")
             return $this->getListeFacture($depot,0,$datedeb ,$datefin,$client,1,17);

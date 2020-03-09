@@ -53,14 +53,14 @@
         </div>
     </div>
         <div class="text-right">
-            <button class="btn btn-primary bgcolorApplication" id="valider" type="button">Valider</button>
+            <button class="btn btn-primary" id="valider" type="button">Valider</button>
         </div>
 </form>
 </section>
 
 
     <div>
-        <button <?= $afficheBoutonNouveau ?> class="btn btn-primary bgcolorApplication" id="nouveau" type="button">Nouveau</button>
+        <button <?= $afficheBoutonNouveau ?> class="btn btn-primary" id="nouveau" type="button">Nouveau</button>
 
         <div class="table-responsive" style="margin-top: 30px;clear:both">
             <table id="tableListeFacture" class="table table-striped">

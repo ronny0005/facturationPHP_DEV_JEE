@@ -1,6 +1,12 @@
 <?php
 include("../../Modele/DB.php");
 include("../../Modele/ObjetCollector.php");
+include("../../Modele/Objet.php");
+include("../../Modele/ComptetClass.php");
+include("../../Modele/DepotClass.php");
+include("../../Modele/ProtectionClass.php");
+include("../../Modele/DocEnteteClass.php");
+include("../../Modele/CollaborateurClass.php");
 session_start();
 $objet = new ObjetCollector();
 $cat_tarif=0;
@@ -33,7 +39,6 @@ $caisse = 0;
 $entete="";
 $nomEtat="";
 $type=$_GET["type"];
-$entete=$_GET["entete"];
 $typeFac=0;
 $titre_client="Nom du client : ";
 $profil_caisse=0;
@@ -103,72 +108,60 @@ $libelle2="";
 $libelle3="";
 $nomdepot="";
 $depot=0;
-$result=$objet->db->requete($objet->connexionProctection($_SESSION["login"], $_SESSION["mdp"]));
-$rows = $result->fetchAll(PDO::FETCH_OBJ);
-if($rows!=null){
-    $admin=$rows[0]->PROT_Right;
-    $vente=$rows[0]->PROT_DOCUMENT_VENTE;
-    $rglt=$rows[0]->PROT_DOCUMENT_REGLEMENT;
-    if($rows[0]->ProfilName=="VENDEUR")
-        $profil_caisse=1;
-    if($rows[0]->ProfilName=="COMMERCIAUX" || $rows[0]->ProfilName=="GESTIONNAIRE" || $rows[0]->ProfilName=="VENDEUR")
-        $profil_commercial=1;
-    if($rows[0]->ProfilName=="RAF" ||$rows[0]->ProfilName=="GESTIONNAIRE" ||$rows[0]->ProfilName=="SUPERVISEUR" )
-        $profil_special =1;
-    if($rows[0]->ProfilName=="RAF")
-        $profil_daf=1;
-    if($rows[0]->ProfilName=="SUPERVISEUR")
-        $profil_superviseur=1;
-    if($rows[0]->ProfilName=="GESTIONNAIRE")
-        $profil_gestionnaire=1;
-}
+
+$protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+$admin=$protection->PROT_Right;
+$vente=$protection->PROT_DOCUMENT_VENTE;
+$rglt=$protection->PROT_DOCUMENT_REGLEMENT;
+if($protection->ProfilName=="VENDEUR")
+    $profil_caisse=1;
+if($protection->ProfilName=="COMMERCIAUX" || $protection->ProfilName=="GESTIONNAIRE" || $protection->ProfilName=="VENDEUR")
+    $profil_commercial=1;
+if($protection->ProfilName=="RAF" ||$protection->ProfilName=="GESTIONNAIRE" ||$protection->ProfilName=="SUPERVISEUR" )
+    $profil_special =1;
+if($protection->ProfilName=="RAF")
+    $profil_daf=1;
+if($protection->ProfilName=="SUPERVISEUR")
+    $profil_superviseur=1;
+if($protection->ProfilName=="GESTIONNAIRE")
+    $profil_gestionnaire=1;
 
 $ct_ape="";
 $ct_identifiant="";
 $modeReglement ="";
-if(isset($_GET["entete"]) ){
-    $entete = $_GET["entete"];
-    $result=$objet->db->requete($objet->getDoPiece($entete,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }
-    else{
-        $reference=$rows[0]->DO_Ref;
-        $dateEntete=$rows[0]->DO_Date;
-        $dateEntete=$rows[0]->DO_Date;
-        $nomdepot=$rows[0]->DE_Intitule;
-        $depot=$rows[0]->DE_No;
-        $client=$rows[0]->DO_Tiers;
-        $souche = $rows[0]->DO_Souche;
-        $co_no = $rows[0]->CO_No;
-        $caisse = $rows[0]->CA_No;
-        $result=$objet->db->requete($objet->getLibTaxePied($typeFac,$rows[0]->N_CatCompta));
-        $rowsLibelle = $result->fetchAll(PDO::FETCH_OBJ);
-        if($rowsLibelle!=null){
-            $libelle1 = $rowsLibelle[0]->LIB1;
-            $libelle2 = $rowsLibelle[0]->LIB2;
-            $libelle3 = $rowsLibelle[0]->LIB3;
-        }
-        $result=$objet->db->requete($objet->getClientByCTNum($client));
-        $rowsClient = $result->fetchAll(PDO::FETCH_OBJ);
-        if($rowsClient!=null){
-            $nomclient=$rowsClient[0]->CT_Intitule;
-            $telclient=$rowsClient[0]->CT_Telephone;
-            $emailclient=$rowsClient[0]->CT_EMail;
-            $bpclient=$rowsClient[0]->CT_CodePostal;
-            $ct_ape=$rowsClient[0]->CT_Ape;
-            $ct_identifiant=$rowsClient[0]->CT_Identifiant;
-            $modeReglement = $rowsClient[0]->MR_No;
-        }
-    }
-}
+$docEntete = new DocEnteteClass($_GET["cbMarq"]);
+
+$entete = $docEntete->DO_Piece;
+$reference= $docEntete->DO_Ref;
+$dateEntete= $docEntete->DO_Date;
+$dateEntete= $docEntete->DO_Date;
+$nomdepot= $docEntete->DE_Intitule;
+$depot= $docEntete->DE_No;
+$client= $docEntete->DO_Tiers;
+$souche =  $docEntete->DO_Souche;
+$co_no =  $docEntete->CO_No;
+$caisse =  $docEntete->CA_No;
+
+$typefac = $docEntete->typeFacture;
+$cbMarq = $docEntete->cbMarq;
+$catcompta = $docEntete->N_CatCompta;
+$cattarif = 0;
+//$docEntete->getApiString("/getPiedPage&cbMarq=$cbMarq&typeFacture=$typefac&catCompta=$catcompta&catTarif=$cattarif");
+
+
+$comptet = new ComptetClass($docEntete->DO_Tiers);
+$nomclient=$comptet->CT_Intitule;
+$telclient=$comptet->CT_Telephone;
+$emailclient=$comptet->CT_EMail;
+$bpclient=$comptet->CT_CodePostal;
+$ct_ape=$comptet->CT_Ape;
+$ct_identifiant=$comptet->CT_Identifiant;
+$modeReglement = $comptet->MR_No;
 
 $collaborateur = "";
-$result=$objet->db->requete($objet->getCollaborateurByCOno($co_no));
-$rowsClient = $result->fetchAll(PDO::FETCH_OBJ);
-if($rowsClient!=null){
-    $collaborateur=$rowsClient[0]->CO_Nom;
-}
+$collaborateurClass = new CollaborateurClass($co_no);
+$collaborateur=$collaborateurClass->CO_Nom;
+
 $villeDepot="";
 $complementDepot="";
 $emailDepot = "";
@@ -176,18 +169,13 @@ $telDepot = "";
 $adresseDepot = "";
 $cpDepot = "";
 $villeDepot = "";
-$result=$objet->db->requete($objet->getDepotByDE_No($depot));
-$rows = $result->fetchAll(PDO::FETCH_OBJ);
-if($rows==null){
-}
-else{
-    $villeDepot=$rows[0]->DE_Ville;
-    $complementDepot=$rows[0]->DE_Complement;
-    $emailDepot = $rows[0]->DE_EMail;
-    $telDepot = $rows[0]->DE_Telephone;
-    $adresseDepot = $rows[0]->DE_Adresse;
-    $cpDepot = $rows[0]->DE_CodePostal;
-}
+$depotClass = new DepotClass($docEntete->DE_No);
+$villeDepot=$depotClass->DE_Ville;
+$complementDepot=$depotClass->DE_Complement;
+$emailDepot = $depotClass->DE_EMail;
+$telDepot = $depotClass->DE_Telephone;
+$adresseDepot = $depotClass->DE_Adresse;
+$cpDepot = $depotClass->DE_CodePostal;
 
 $nomSociete="";
 $bp="";
@@ -200,24 +188,18 @@ $tel = "";
 $email = "";
 $commentaire ="";
 $profession = "";
-$result=$objet->db->requete($objet->getNumContribuable());
-$rows = $result->fetchAll(PDO::FETCH_OBJ);
-if($rows==null){
-}
-else{
-
-    $commentaire =$rows[0]->D_Commentaire;
-    $profession = $rows[0]->D_Profession;
-    $nomSociete=$rows[0]->D_RaisonSoc;
-    $cp = $rows[0]->D_CodePostal;
-    $ville = $rows[0]->D_Ville;
-    $pays=$rows[0]->D_Pays;
-    $email = $rows[0]->D_EmailSoc;
-    $tel = $rows[0]->D_Telephone;
-    $bp=$rows[0]->D_CodePostal." ".$rows[0]->D_Ville." ".$rows[0]->D_Pays;
-    $rcn=$rows[0]->D_Identifiant;
-    $nc=$rows[0]->D_Siret;
-}
+$rowsContribuable = $protection->getNumContribuable();
+    $commentaire =$rowsContribuable->D_Commentaire;
+    $profession = $rowsContribuable->D_Profession;
+    $nomSociete=$rowsContribuable->D_RaisonSoc;
+    $cp = $rowsContribuable->D_CodePostal;
+    $ville = $rowsContribuable->D_Ville;
+    $pays=$rowsContribuable->D_Pays;
+    $email = $rowsContribuable->D_EmailSoc;
+    $tel = $rowsContribuable->D_Telephone;
+    $bp=$rowsContribuable->D_CodePostal." ".$rowsContribuable->D_Ville." ".$rowsContribuable->D_Pays;
+    $rcn=$rowsContribuable->D_Identifiant;
+    $nc=$rowsContribuable->D_Siret;
 ob_start();
 ?>
     <style>
@@ -268,7 +250,7 @@ ob_start();
                     <td style="font-size:15px;">
                         <?php echo "<b>".$titre_client."</b> ".$nomclient;
                         echo "<br/>BP :".$bpclient." <br/>Tel : ".$telclient."<br>Email : ".$emailclient."<br/>NC : ".
-$ct_identifiant."<br/>";
+                            $ct_identifiant."<br/>";
                         $date = new DateTime(); echo $villeDepot." le ".$date->format('d/m/y')."<br/><br/>".$complementDepot;
                         echo "<br/>Vendeur : ".$_SESSION["login"];
                         ?>
@@ -276,313 +258,300 @@ $ct_identifiant."<br/>";
                 </tr>
             </table>
         </page_header>
-            <?php if($format=="A4"){ ?>
-                <table>
-                    <tr>
-                        <td style="width:500px">
-                        </td>
-                        <td>
-                            <?php "<br/>RCN° : ".$rcn."<br/>NC : ".$nc;$date = new DateTime($dateEntete); //echo $villeDepot; ?>
-                        </td>
-                    <tr></tr>
-                    </tr>
-                </table>
-                <div style='font-size:12px;'><?php echo "<span style='text-decoration:underline'><b>Collaborateur :</b></span> $collaborateur"; ?></div>
-                <div style="text-align:center"><b><?php echo $nomEtat." du ".$date->format('d/m/y'); ?> </b></div>
-                <table id="table" class="facture" style="border:1px solid black;">
-                    <thead>
-                    <tr style="text-align:center">
-                        <th style="padding:6px;">Référence</th>
-                        <th style="padding:6px;width: 150px">Désignation</th>
-                        <th style="padding:6px;width: 25px">Qté</th>
-                        <th style="padding:6px;width: 30px">PuHT</th>
-                        <th style="padding:6px;width: 25px">Rse</th>
-                        <th style="padding:6px;width: 30px">PUttc</th>
-                        <th style="padding:6px;width: 30px">MtHT</th>
-                        <th style="padding:6px;width: 30px">TVA</th>
-                        <th style="padding:6px;width: 30px">MtTTC</th>
-                    </tr>
-                    </thead>
-                    <tbody id="article_body">
-                    <?php
-                    $totalMontantHT=0;
-                    $totalMontantTTC=0;
-                    $totalTaxe1=0;
-                    $totalTaxe2=0;
-                    $totalTaxe3=0;
-                    $totalremise=0;
-                    $result=$objet->db->requete($objet->getLigneFacture($entete,$do_domaine,$do_type));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows==null){
-                    }else{
-                        foreach ($rows as $row){
-                            $totalMontantTTC= $totalMontantTTC+ROUND($row->DL_MontantTTC,2);
-                            $totalMontantHT= $totalMontantHT+ROUND($row->DL_MontantHT,2);
-                            $totalTaxe1= $totalTaxe1+ROUND($row->MT_Taxe1,2);
-                            $totalTaxe2= $totalTaxe2+ROUND($row->MT_Taxe2,2);
-                            $totalTaxe3= $totalTaxe3+ROUND($row->MT_Taxe3,2);
-                            $totalremise= $totalremise+ROUND($row->DL_PUTTC_Rem,2);
-                            $bordure = "";
-                            if(end($rows)->cbMarq==$row->cbMarq)
-                                $bordure=";border-bottom:1 px black solid";
+        <?php if($format=="A4"){ ?>
+            <table>
+                <tr>
+                    <td style="width:500px">
+                    </td>
+                    <td>
+                        <?php "<br/>RCN° : ".$rcn."<br/>NC : ".$nc;$date = new DateTime($dateEntete); //echo $villeDepot; ?>
+                        <br/>
+                        <br/>
+                    </td>
+                <tr></tr>
+                </tr>
+            </table>
+            <div style='font-size:12px;'><?php echo "<span style='text-decoration:underline'><b>Collaborateur :</b></span> $collaborateur"; ?></div>
+            <div style="text-align:center"><b><?php echo $nomEtat." du ".$date->format('d/m/y'); ?> </b></div>
+            <table id="table" class="facture" style="border:1px solid black;">
+                <thead>
+                <tr style="text-align:center">
+                    <th style="padding:6px;">Référence</th>
+                    <th style="padding:6px;width: 150px">Désignation</th>
+                    <th style="padding:6px;width: 25px">Qté</th>
+                    <th style="padding:6px;width: 30px">PuHT</th>
+                    <th style="padding:6px;width: 25px">Rse</th>
+                    <th style="padding:6px;width: 30px">PUttc</th>
+                    <th style="padding:6px;width: 30px">MtHT</th>
+                    <th style="padding:6px;width: 30px">TVA</th>
+                    <th style="padding:6px;width: 30px">MtTTC</th>
+                </tr>
+                </thead>
+                <tbody id="article_body">
+                <?php
+                $totalMontantHT=0;
+                $totalMontantTTC=0;
+                $totalTaxe1=0;
+                $totalTaxe2=0;
+                $totalTaxe3=0;
+                $totalremise=0;
+                $rows = $docEntete->getLigneFacture();
+                foreach ($rows as $row){
+                    $totalMontantTTC= $totalMontantTTC+ROUND($row->DL_MontantTTC,2);
+                    $totalMontantHT= $totalMontantHT+ROUND($row->DL_MontantHT,2);
+                    $totalTaxe1= $totalTaxe1+ROUND($row->MT_Taxe1,2);
+                    $totalTaxe2= $totalTaxe2+ROUND($row->MT_Taxe2,2);
+                    $totalTaxe3= $totalTaxe3+ROUND($row->MT_Taxe3,2);
+                    $totalremise= $totalremise+ROUND($row->DL_PUTTC_Rem,2);
+                    $bordure = "";
+                    if(end($rows)->cbMarq==$row->cbMarq)
+                        $bordure=";border-bottom:1 px black solid";
 
-                            echo "<tr style='padding:10px$bordure'>"
-                                . "<td style='padding:2px;$bordure'>".substr($row->AR_Ref,0,7)."</td>"
-                                . "<td style='padding:2px;width: 250px;$bordure'>".$row->DL_Design."</td>"
-                                . "<td style='padding:2px;width: 25px;$bordure'>".$objet->formatChiffre($row->DL_Qte)."</td>"
-                                . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_PrixUnitaire)."</td>"
-                                . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_PUTTC_Rem)."</td>"
-                                . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_PUTTC)."</td>"
-                                . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_MontantHT)."</td>";
-
+                    echo "<tr style='padding:10px$bordure'>"
+                        . "<td style='padding:2px;$bordure'>".substr($row->AR_Ref,0,7)."</td>"
+                        . "<td style='padding:2px;width: 250px;$bordure'>".$row->DL_Design."</td>"
+                        . "<td style='padding:2px;width: 25px;$bordure'>".$objet->formatChiffre($row->DL_Qte)."</td>"
+                        . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_PrixUnitaire)."</td>"
+                        . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_PUTTC_Rem)."</td>"
+                        . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_PUTTC)."</td>"
+                        . "<td style='padding:2px;$bordure'>".$objet->formatChiffre($row->DL_MontantHT)."</td>";
 
 
-                            //if($profil_gestionnaire==0)
-                                echo "<td style='padding:2px;;text-align:right$bordure'>".$objet->formatChiffre(round($row->MT_Taxe1,2))."</td>"
-                                    . "<td style='padding:2px;;text-align:right$bordure'>".$objet->formatChiffre(ROUND($row->DL_MontantTTC,2))."</td>";
-                            echo "</tr>";
-                        }
-                    }
-                    ?>
-                    <tr><td colspan="5" style="border-top: 1px;border-left: 0px;border-right: 0px"></td><td colspan="1" style="border-left: 0px"><b>Total</b></td>
-                        <td style="border-left : 1px;border-bottom: 1px;text-align:left"><?php echo $objet->formatChiffre($totalMontantHT); ?></td>
-                        <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre($totalTaxe1); ?></td>
-                        <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td></tr>
-                    <tr><td colspan="5" style="border-top: 1px;border-left: 0px;border-right: 0px"></td><td colspan="1" ><b>REMISE</b></td>
-                        <td style=";text-align:right; border-left: 0px"><?php echo $objet->formatChiffre($totalremise); ?></td></tr>
-                    <?php
-                    if($_GET["type"]!="Devis"){
-                        ?>
-                        <tr><td colspan="5" style="border-left: 0px;border-right: 0px"></td><td colspan="1"><b>NET A PAYER</b></td>
-                            <td style="text-align:right;border-bottom: 1px;"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td></tr>
-                    <?php }
-                    ?>
-                    </tbody></table>
 
-            <?php }
-            ?>
-            <?php
-            if($format=="A5"){
+                    //if($profil_gestionnaire==0)
+                    echo "<td style='padding:2px;;text-align:right$bordure'>".$objet->formatChiffre(round($row->MT_Taxe1,2))."</td>"
+                        . "<td style='padding:2px;;text-align:right$bordure'>".$objet->formatChiffre(ROUND($row->DL_MontantTTC,2))."</td>";
+                    echo "</tr>";
+                }
                 ?>
-                <!--<div style="clear:both;text-align: center">
+                <tr><td colspan="5" style="border-top: 1px;border-left: 0px;border-right: 0px"></td><td colspan="1" style="border-left: 0px"><b>Total</b></td>
+                    <td style="border-left : 1px;border-bottom: 1px;text-align:left"><?php echo $objet->formatChiffre($totalMontantHT); ?></td>
+                    <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre($totalTaxe1); ?></td>
+                    <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td></tr>
+                <tr><td colspan="5" style="border-top: 1px;border-left: 0px;border-right: 0px"></td><td colspan="1" ><b>REMISE</b></td>
+                    <td style=";text-align:right; border-left: 0px"><?php echo $objet->formatChiffre($totalremise); ?></td></tr>
+                <?php
+                if($_GET["type"]!="Devis"){
+                    ?>
+                    <tr><td colspan="5" style="border-left: 0px;border-right: 0px"></td><td colspan="1"><b>NET A PAYER</b></td>
+                        <td style="text-align:right;border-bottom: 1px;"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td></tr>
+                <?php }
+                ?>
+                </tbody></table>
+
+        <?php }
+        ?>
+        <?php
+        if($format=="A5"){
+            ?>
+            <!--<div style="clear:both;text-align: center">
     <?php echo "<b>$nomdepot - $complementDepot</b>"; ?>
 </div>-->
-                <table>
-                    <tr>
-                        <td style="width:500px">
-                        </td>
-                        <td>
-                            <?php "<br/>RCN° : ".$rcn."<br/>NC : ".$nc;$date = new DateTime($dateEntete); //echo $villeDepot; ?>
-                        </td>
-                    <tr></tr>
-                    </tr>
-                </table>
-                <div style='<?php if($hideDivers==2) echo "text-align: right;margin-left: 50px;";?>'><?php echo "<span style='text-decoration:underline;font-size: 15px'><b>Collaborateur :</b></span> $collaborateur &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></div>
-                <div style="font-size:17px;<?php if($hideDivers==2) echo "text-align: left"; else echo "text-align:center";?>"><b><?php echo $nomEtat." du ".$date->format('d/m/y'); ?> </b></div>
-                <table id="table" class="facture" style="border:1px solid black;">
-                    <thead>
-                    <tr style="text-align:center">
-                        <th style="width:70px;padding:2px;"><?php if($hideDivers==2) echo "Code"; else echo "Référence"; ?></th>
-                        <th style="width:400px;padding:6px;">Désignation</th>
-                        <th style="padding:6px;width: 25px">Qté</th>
-                        <th style="padding:6px;"><?php if($hideDivers==2) echo "PU"; else echo "PuHT"; ?></th>
-                        <th style=" padding:3px;<?php if($hideDivers==2) echo "width: 25px"; else echo "width: 25px"; ?>">Rse</th>
-                        <?php if($hideDivers!=2){
-                    echo "<th style='padding:6px;width: 30px'>PUttc</th>
+            <table>
+                <tr>
+                    <td style="width:500px">
+                    </td>
+                    <td>
+                        <?php "<br/>RCN° : ".$rcn."<br/>NC : ".$nc;$date = new DateTime($dateEntete); //echo $villeDepot; ?>
+                        <br/>
+                        <br/>
+
+                    </td>
+                <tr></tr>
+                </tr>
+            </table>
+            <div style='<?php if($hideDivers==2) echo "text-align: right;margin-left: 50px;";?>'><?php echo "<span style='text-decoration:underline;font-size: 15px'><b>Collaborateur :</b></span> $collaborateur &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></div>
+            <div style="font-size:17px;<?php if($hideDivers==2) echo "text-align: left"; else echo "text-align:center";?>"><b><?php echo $nomEtat." du ".$date->format('d/m/y'); ?> </b></div>
+            <table id="table" class="facture" style="border:1px solid black;">
+                <thead>
+                <tr style="text-align:center">
+                    <th style="width:70px;padding:2px;"><?php if($hideDivers==2) echo "Code"; else echo "Référence"; ?></th>
+                    <th style="width:400px;padding:6px;">Désignation</th>
+                    <th style="padding:6px;width: 25px">Qté</th>
+                    <th style="padding:6px;"><?php if($hideDivers==2) echo "PU"; else echo "PuHT"; ?></th>
+                    <th style=" padding:3px;<?php if($hideDivers==2) echo "width: 25px"; else echo "width: 25px"; ?>">Rse</th>
+                    <?php if($hideDivers!=2){
+                        echo "<th style='padding:6px;width: 30px'>PUttc</th>
                             <th style='padding:6px;width: 30px'>MtHT</th>
                             <th style='padding:6px'>TVA</th>";
-                     } ?>
-                        <th style="padding:6px;<?php if($hideDivers==2) echo "width: 50px"; else echo "width: 30px"; ?>"><?php if($hideDivers==2) echo "MtHT"; else echo "MtTTC"; ?></th>
-                    </tr>
-                    </thead>
-                    <tbody id="article_body">
-                    <?php
-                    $totalMontantHT=0;
-                    $totalMontantTTC=0;
-                    $totalTaxe1=0;
-                    $totalTaxe2=0;
-                    $totalTaxe3=0;
-                    $totalremise=0;
-                    $result=$objet->db->requete($objet->getLigneFacture($entete,$do_domaine,$do_type));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows==null){
-                    }else{
-                        foreach ($rows as $row){
-                            $totalMontantTTC= $totalMontantTTC+ROUND($row->DL_MontantTTC,2);
-                            $totalMontantHT= $totalMontantHT+ROUND($row->DL_MontantHT,2);
-                            $totalTaxe1= $totalTaxe1+ROUND($row->MT_Taxe1,2);
-                            $totalTaxe2= $totalTaxe2+ROUND($row->MT_Taxe2,2);
-                            $totalTaxe3= $totalTaxe3+ROUND($row->MT_Taxe3,2);
-                            $totalremise= $totalremise+ROUND($row->DL_PUTTC_Rem,2);
-                            $bordure = "";
-                            if(end($rows)->cbMarq==$row->cbMarq)
-                                $bordure=";border-bottom:1 px black solid";
+                    } ?>
+                    <th style="padding:6px;<?php if($hideDivers==2) echo "width: 50px"; else echo "width: 30px"; ?>"><?php if($hideDivers==2) echo "MtHT"; else echo "MtTTC"; ?></th>
+                </tr>
+                </thead>
+                <tbody id="article_body">
+                <?php
+                $totalMontantHT=0;
+                $totalMontantTTC=0;
+                $totalTaxe1=0;
+                $totalTaxe2=0;
+                $totalTaxe3=0;
+                $totalremise=0;
+                $rows = $docEntete->getLigneFacture();
+                foreach ($rows as $row){
+                    $totalMontantTTC= $totalMontantTTC+ROUND($row->DL_MontantTTC,2);
+                    $totalMontantHT= $totalMontantHT+ROUND($row->DL_MontantHT,2);
+                    $totalTaxe1= $totalTaxe1+ROUND($row->MT_Taxe1,2);
+                    $totalTaxe2= $totalTaxe2+ROUND($row->MT_Taxe2,2);
+                    $totalTaxe3= $totalTaxe3+ROUND($row->MT_Taxe3,2);
+                    $totalremise= $totalremise+ROUND($row->DL_PUTTC_Rem,2);
+                    $bordure = "";
+                    if(end($rows)->cbMarq==$row->cbMarq)
+                        $bordure=";border-bottom:1 px black solid";
 
-                            echo "<tr style='padding:10px$bordure'>"
-                                . "<td style='padding:2px;$bordure'>".substr($row->AR_Ref,0,8)."</td>"
-                                . "<td style='padding:2px;$bordure'>".substr($row->DL_Design,0,40)."</td>"
-                                . "<td style='padding:2px;$bordure;text-align: center'>".$objet->formatChiffre($row->DL_Qte)."</td>"
-                                . "<td style='padding:2px;text-align:right;$bordure'>";
-                            if($hideDivers!=2)
-                                echo $objet->formatChiffre($row->DL_PrixUnitaire);
-                            else
-                                echo $objet->formatChiffre($row->DL_PUTTC);
-                                    echo"</td>"
-                                . "<td style='padding:2px;text-align:right;$bordure'>".$objet->formatChiffre($row->DL_PUTTC_Rem)."</td>";
-                                if($hideDivers!=2) echo "<td style='padding:2px;text-align:right;$bordure'>".$objet->formatChiffre($row->DL_PUTTC)."</td>";
-                                if($hideDivers!=2) echo "<td style='padding:2px;text-align:right;$bordure'>".$objet->formatChiffre($row->DL_MontantHT)."</td>"
-                                  ."<td style='padding:2px;text-align:right$bordure'>".$objet->formatChiffre(round($row->MT_Taxe1,2))."</td>";
-                                    echo "<td style='padding:2px;text-align:right$bordure'>".$objet->formatChiffre(ROUND($row->DL_MontantTTC,2))."</td></tr>";
+                    echo "<tr style='padding:10px$bordure'>"
+                        . "<td style='padding:2px;$bordure'>".substr($row->AR_Ref,0,8)."</td>"
+                        . "<td style='padding:2px;$bordure'>".substr($row->DL_Design,0,40)."</td>"
+                        . "<td style='padding:2px;$bordure;text-align: center'>".$objet->formatChiffre($row->DL_Qte)."</td>"
+                        . "<td style='padding:2px;text-align:right;$bordure'>";
+                    if($hideDivers!=2)
+                        echo $objet->formatChiffre($row->DL_PrixUnitaire);
+                    else
+                        echo $objet->formatChiffre($row->DL_PUTTC);
+                    echo"</td>"
+                        . "<td style='padding:2px;text-align:right;$bordure'>".$objet->formatChiffre($row->DL_PUTTC_Rem)."</td>";
+                    if($hideDivers!=2) echo "<td style='padding:2px;text-align:right;$bordure'>".$objet->formatChiffre($row->DL_PUTTC)."</td>";
+                    if($hideDivers!=2) echo "<td style='padding:2px;text-align:right;$bordure'>".$objet->formatChiffre($row->DL_MontantHT)."</td>"
+                        ."<td style='padding:2px;text-align:right$bordure'>".$objet->formatChiffre(round($row->MT_Taxe1,2))."</td>";
+                    echo "<td style='padding:2px;text-align:right$bordure'>".$objet->formatChiffre(ROUND($row->DL_MontantTTC,2))."</td></tr>";
 
-                        }
-                    }
-                    ?>
-                    <tr><td colspan="<?php if($hideDivers!=2) echo "5"; else echo"4"; ?>" style="border-top: 1px;border-left: 1px;border-right: 0px"></td>
-                        <td colspan="1" style="border-left: 0px;"><b>Total</b></td>
-                <?php if($hideDivers!=2){?> <td style="border-left : 1px;border-bottom: 1px;text-align:left"><?php echo $objet->formatChiffre($totalMontantHT); ?></td>
+                }
+                ?>
+                <tr><td colspan="<?php if($hideDivers!=2) echo "5"; else echo"4"; ?>" style="border-top: 1px;border-left: 1px;border-right: 0px"></td>
+                    <td colspan="1" style="border-left: 0px;"><b>Total</b></td>
+                    <?php if($hideDivers!=2){?> <td style="border-left : 1px;border-bottom: 1px;text-align:left"><?php echo $objet->formatChiffre($totalMontantHT); ?></td>
                         <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre($totalTaxe1); ?></td><?php } ?>
-                        <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td></tr>
-                    <tr>
-                        <td style="border-left:1px; border-right : 0px;"></td>
-                        <td style="border-right : 0px;border-left : 0px;"></td>
-                        <td style="border-right : 0px;"></td>
-                        <td style="border-right : 0px;"></td>
-                        <td style="border-right : 0px;"></td>
-                        <td style="border-right : 0px;"></td>
-                        <?php if($hideDivers!=2){?><td style="border-right : 0px;"></td>
+                    <td style="border-left : 1px;border-bottom: 1px;text-align:right"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td></tr>
+                <tr>
+                    <td style="border-left:1px; border-right : 0px;"></td>
+                    <td style="border-right : 0px;border-left : 0px;"></td>
+                    <td style="border-right : 0px;"></td>
+                    <td style="border-right : 0px;"></td>
+                    <td style="border-right : 0px;"></td>
+                    <td style="border-right : 0px;"></td>
+                    <?php if($hideDivers!=2){?><td style="border-right : 0px;"></td>
                         <td style="border-right : 0px;"></td><?php } ?>
-                        <td style="border-right : 1px;border-left : 1px;"></td>
-                    </tr>
+                    <td style="border-right : 1px;border-left : 1px;"></td>
+                </tr>
                 <?php if($hideDivers!=2){?><tr>
-                        <td style="border-right : 0px;"></td>
-                        <td style="border-right : 0px;"></td>
-                        <td style="border-right : 0px;" colspan="2"><b>Remise</b> : </td>
-                        <td style="border-right: 0px;" colspan="2"><?php echo $objet->formatChiffre($totalremise); ?></td>
-                <?php if($hideDivers!=2){?><td style="border-right : 0px;"></td>
+                    <td style="border-right : 0px;"></td>
+                    <td style="border-right : 0px;"></td>
+                    <td style="border-right : 0px;" colspan="2"><b>Remise</b> : </td>
+                    <td style="border-right: 0px;" colspan="2"><?php echo $objet->formatChiffre($totalremise); ?></td>
+                    <?php if($hideDivers!=2){?><td style="border-right : 0px;"></td>
                         <td style="border-right : 0px;"></td><?php } ?>
-                        <td style="border-right : 1px;border-left : 1px;"></td>
+                    <td style="border-right : 1px;border-left : 1px;"></td>
                     </tr><?php } ?>
-                    <tr>
-                        <td colspan="2" style="border-right : 0px;border-bottom: 1px;text-align: center;"><?php echo "<b>".$objet->asLetters(ROUND($totalMontantTTC,0))."</b> FCFA."; ?></td>
-                        <td colspan="2" style="border-left : 0px;border-right : 0px;border-bottom: 1px"><b>NET A PAYER</b> : </td>
-                        <td style=" <?php if($hideDivers==2) echo "border-right : 1px;border-left : 1px;border-bottom: 1px"; else "border-left : 0px;border-right : 0px;border-bottom: 1px"; ?>"
-                            colspan="2"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td>
+                <tr>
+                    <td colspan="2" style="border-right : 0px;border-bottom: 1px;text-align: center;"><?php echo "<b>".$objet->asLetters(ROUND($totalMontantTTC,0))."</b> FCFA."; ?></td>
+                    <td colspan="2" style="border-left : 0px;border-right : 0px;border-bottom: 1px"><b>NET A PAYER</b> : </td>
+                    <td style=" <?php if($hideDivers==2) echo "border-right : 1px;border-left : 1px;border-bottom: 1px"; else "border-left : 0px;border-right : 0px;border-bottom: 1px"; ?>"
+                        colspan="2"><?php echo $objet->formatChiffre(ROUND($totalMontantTTC,0)); ?></td>
                     <?php if($hideDivers!=2){?><td style="border-right : 0px;border-bottom: 1px"></td>
                         <td style="border-right : 0px;border-bottom: 1px"></td><td style="border-right : 1px;border-left : 1px;border-bottom: 1px"></td><?php } ?>
 
-                    </tr>
-                    </tbody>
-                </table>
-                <br/>
-                <?php
-            }
-            if($hideDivers!=2) {
-                ?>
-
-                <table>
-                    <tr>
-                        <td>Arrêter la présente facture à la somme de :
-                            <b><?php echo $objet->asLetters(ROUND($totalMontantTTC, 0)) . " Francs CFA."; ?></b></td>
-                    </tr>
-                    <tr>
-                        <td>Veuillez toujours vérifier la qualité et la quantité de vos marchandises avant de les
-                            emporter.
-                        </td>
-                        <td style=" width : 150px;text-align: right">La direction</td>
-                    </tr>
-                </table>
-
-                <?php
-            }
-            if($_GET["type"]!="Devis" && $_GET["type"]!="Achat") {
-
-                ?>
-                <table id="table" class="reglement" style="float:right;font-size: 12px">
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Libelle</th>
-                        <th>Montant</th>
-                        <th>Solde progressif</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    $result = $objet->db->requete($objet->getReglementByClientFacture($client, $entete,$do_type,$do_domaine));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    $i = 0;
-                    $classe = "";
-                    $resteapayer = 0;
-                    if ($rows == null) {
-                        echo "<tr><td></td><td>SOLDE INITIAL</td><td style='text-align:center'>0,00</td><td style='text-align:center'>" . $objet->formatChiffre($totalMontantTTC) . "</td></tr>";
-                    } else {
-                        foreach ($rows as $row) {
-                            $i++;
-                            if ($i % 2 == 0) $classe = "info";
-                            else $classe = "";
-                            $date = date("d-m-Y", strtotime($row->RG_Date));
-                            if ($date == "01-01-1970") $date = "";
-                            $bordure="";
-                            if(end($rows)->RG_No==$row->RG_No)
-                                $bordure=";border-bottom:1 px";
-                            echo "<tr class='$classe'>"
-                                . "<td style='$bordure'>" . $date . "</td>"
-                                . "<td style='$bordure'>" . $row->RG_Libelle . "</td>"
-                                . "<td style='text-align:center $bordure'>" . $objet->formatChiffre(round($row->RG_Montant)) . "</td>"
-                                . "<td style='text-align:center $bordure'>" . $objet->formatChiffre(round($row->CUMUL)) . "</td>"
-                                . "</tr>";
-                            $resteapayer = round($row->CUMUL);
-                        }
-                    }
-                    $result=$objet->db->requete($objet->montantRegle($entete,$do_domaine,$do_type));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows==null){
-                    }else{
-                        $total_regle=$rows[0]->montantRegle;
-                    }
-                    $result=$objet->db->requete($objet->AvanceDoPiece($entete,$do_domaine,$do_type));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows==null){
-                    }else{
-                        $avance=$rows[0]->avance_regle;
-                    }
-                    $resteapayer=$total_regle - $avance;
-                    if(abs($resteapayer)<0.9) $resteapayer = 0;
-                    ?>
-                    <tr> <td style="border-right : 0px;border-left : 0px;"><br/>Reste à payer :</td><td style="border-right : 0px;"><br/><b><?php echo $objet->formatChiffre($resteapayer); ?> </b></td></tr>
-                    </tbody>
-                </table>
-
-                <br/>
-                <?php
-            }
-            if($hideDivers!=2){
-                if($modeReglement !="") {
-                    $result = $objet->db->requete($objet->getModeleReglementByMRNo($modeReglement));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rows==null){
-                    }else {
-                        echo "Date limite : " . $rows[0]->MR_Intitule;
-                    }
-                }
-            }
+                </tr>
+                </tbody>
+            </table>
+            <br/>
+            <?php
+        }
+        if($hideDivers!=2) {
             ?>
-            <hr/>
-            <table>
-                <tr style="font-size: 15px">
-                    <td style="width:200px">
-                        <?php echo "BP : ".$cpDepot." ".$villeDepot; ?>
-                    </td>
-                    <td style="width:450px;text-align: center">
-                        <?php echo "Situé à ".$adresseDepot."<br/>";
-                        if(!$hideDivers) echo "N Contrib ".$nc." - RC : ".$rcn; ?>
 
+            <table>
+                <tr>
+                    <td>Arrêter la présente facture à la somme de :
+                        <b><?php echo $objet->asLetters(ROUND($totalMontantTTC, 0)) . " Francs CFA."; ?></b></td>
+                </tr>
+                <tr>
+                    <td>Veuillez toujours vérifier la qualité et la quantité de vos marchandises avant de les
+                        emporter.
                     </td>
-                    <td>
-                        <?php echo "Tel : ".$telDepot."<br/>Email : ".$emailDepot; ?>
-                    </td>
+                    <td style=" width : 150px;text-align: right">La direction</td>
                 </tr>
             </table>
+
+            <?php
+        }
+        if($_GET["type"]!="Devis" && $_GET["type"]!="Achat") {
+
+            ?>
+            <table id="table" class="reglement" style="float:right;font-size: 12px">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Libelle</th>
+                    <th>Montant</th>
+                    <th>Solde progressif</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $result = $objet->db->requete($objet->getReglementByClientFacture($client, $entete,$do_type,$do_domaine));
+                $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                $i = 0;
+                $classe = "";
+                $resteapayer = 0;
+                if ($rows == null) {
+                    echo "<tr><td></td><td>SOLDE INITIAL</td><td style='text-align:center'>0,00</td><td style='text-align:center'>" . $objet->formatChiffre($totalMontantTTC) . "</td></tr>";
+                } else {
+                    foreach ($rows as $row) {
+                        $i++;
+                        if ($i % 2 == 0) $classe = "info";
+                        else $classe = "";
+                        $date = date("d-m-Y", strtotime($row->RG_Date));
+                        if ($date == "01-01-1970") $date = "";
+                        $bordure="";
+                        if(end($rows)->RG_No==$row->RG_No)
+                            $bordure=";border-bottom:1 px";
+                        echo "<tr class='$classe'>"
+                            . "<td style='$bordure'>" . $date . "</td>"
+                            . "<td style='$bordure'>" . $row->RG_Libelle . "</td>"
+                            . "<td style='text-align:center $bordure'>" . $objet->formatChiffre(round($row->RG_Montant)) . "</td>"
+                            . "<td style='text-align:center $bordure'>" . $objet->formatChiffre(round($row->CUMUL)) . "</td>"
+                            . "</tr>";
+                        $resteapayer = round($row->CUMUL);
+                    }
+                }
+                $total_regle=$docEntete->montantRegle();
+                $avance=$docEntete->avance;
+                $resteapayer=$total_regle - $avance;
+                if(abs($resteapayer)<0.9) $resteapayer = 0;
+                ?>
+                <tr> <td style="border-right : 0px;border-left : 0px;"><br/>Reste à payer :</td><td style="border-right : 0px;"><br/><b><?php echo $objet->formatChiffre($resteapayer); ?> </b></td></tr>
+                </tbody>
+            </table>
+
+            <br/>
+            <?php
+        }
+        if($hideDivers!=2){
+            if($modeReglement !="") {
+                $result = $objet->db->requete($objet->getModeleReglementByMRNo($modeReglement));
+                $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                if($rows==null){
+                }else {
+                    echo "Date limite : " . $rows[0]->MR_Intitule;
+                }
+            }
+        }
+        ?>
+        <hr/>
+        <table>
+            <tr style="font-size: 15px">
+                <td style="width:200px">
+                    <?php echo "BP : ".$cpDepot." ".$villeDepot; ?>
+                </td>
+                <td style="width:450px;text-align: center">
+                    <?php echo "Situé à ".$adresseDepot."<br/>";
+                    if(!$hideDivers) echo "N Contrib ".$nc." - RC : ".$rcn; ?>
+
+                </td>
+                <td>
+                    <?php echo "Tel : ".$telDepot."<br/>Email : ".$emailDepot; ?>
+                </td>
+            </tr>
+        </table>
     </page>
 <?php
 $content = ob_get_clean();
