@@ -155,13 +155,13 @@ class DocEnteteClass Extends Objet{
         if($type=="VenteT")
             return $this->getListeFacture($depot,0,$datedeb ,$datefin,$client,0,67);
 
-        if($type=="Retour")
+        if($type=="VenteRetour")
             return $this->getListeFacture($depot,1,$datedeb ,$datefin,$client,0,6);
 
-        if($type=="RetourT")
+        if($type=="VenteRetourT")
             return $this->getListeFacture($depot,1,$datedeb ,$datefin,$client,0,67);
 
-        if($type=="RetourC")
+        if($type=="VenteRetourC")
             return $this->getListeFacture($depot,1,$datedeb ,$datefin,$client,0,7);
 
         if($type=="Avoir")
@@ -223,7 +223,14 @@ class DocEnteteClass Extends Objet{
             return $this->getListeFacture($depot,0,$datedeb ,$datefin,$client,1,12);
     }
 
-    public function removeFacRglt($cbMarqEntete,$rgNo)
+    public function journeeCloture($date,$caNo)
+    {
+        $valCaNo = 0;
+        if($caNo!="")
+            $valCaNo = $caNo;
+        return $this->getApiString("/journeeCloture&date=$date&caNo=$valCaNo");
+    }
+        public function removeFacRglt($cbMarqEntete,$rgNo)
     {
         $this->getApiExecute("/removeFacRglt&cbMarqEntete=$cbMarqEntete&rgNo=$rgNo");
     }
@@ -1369,6 +1376,30 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/getFactureCORecouvrement&collab={$collab}&ctNum={$ctNum}");
     }
 
+    public function activeMenu($module,$action,$typeMenu,$type){
+        if($type=="Vente" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+            return "active";
+        if($type=="Devis" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+            return "active";
+        if($type=="BonLivraison" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+            return "active";
+        if($type=="VenteAvoir" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+            return "active";
+        if($type=="VenteRetour" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+            return "active";
+        if($type=="Ticket" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+            return "active";
+
+        if($type=="Achat"  && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
+            return "active";
+        if($type=="PreparationCommande" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
+            return "active";
+        if($type=="AchatPreparationCommande" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
+            return "active";
+        if($type=="AchatRetour" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
+            return "active";
+        return "";
+    }
     public function getEnteteDispo(){
         $dopiece = $this->DO_Piece;
         $rowsTour = $this->getEnteteByDOPiece($dopiece);

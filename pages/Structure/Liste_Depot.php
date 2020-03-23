@@ -37,6 +37,17 @@ include("module/Menu/BarreMenu.php");
                 </a>
             </div> <?php } ?>
 </form>
+
+    <?php
+        if(isset($_GET["DE_No"])){
+            $deNo = $_GET["DE_No"];
+            if($deNo=="0")
+                echo "<div class='alert alert-success'>Le depot a bien été crée !</div>";
+            else
+                echo "<div class='alert alert-success'>Le depot $deNo a bien été modifié !</div>";
+
+        }
+    ?>
 <div class="err" id="add_err"></div>
 <table id="table" class="table mt-3">
         <thead style="background-color: #dbdbed;">
@@ -57,7 +68,7 @@ include("module/Menu/BarreMenu.php");
             foreach ($rows as $row){
             ?>
                 <tr class="article <?= $classe ?>" id="article_<?=$row->DE_No ?>">
-                    <td><a href="indexMVC.php?module=3&action=11&DE_No=<?= $row->DE_No ?>"><?= $row->DE_Intitule ?></a></td>
+                    <td><a href="ficheDepot-<?= $row->DE_No ?>"><?= $row->DE_Intitule ?></a></td>
                     <td><?= $row->DE_CodePostal ?></td>
                     <td><?= $row->DE_Ville ?></td>
                     <?php

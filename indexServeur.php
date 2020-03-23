@@ -972,7 +972,10 @@ switch ($val) {
         envoiRequete($objet->getConditionnementMax(), $objet);
         break;
 
-
+    case "menuCaParDepotXml" :
+        $etat = new EtatClass();
+        echo $etat->menuCaParDepotXml($_GET["protNo"]);
+        break;
     case "getFactureByDENo":
         $docEntete = new DocEnteteClass(0);
         $listFacture = $docEntete->getListeFacture($_GET['DE_No'], $_GET['provenance'], $objet->getDate($_GET['datedeb']), $objet->getDate($_GET['datefin']), $_GET['client'], 0, 6);

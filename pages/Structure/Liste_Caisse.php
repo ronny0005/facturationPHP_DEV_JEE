@@ -16,57 +16,45 @@ include("module/Menu/BarreMenu.php");
 ?>
 <div id="milieu">    
     <div class="container">
-    
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
-<div class="corps">        
-        <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
-        <input type="hidden" id="login" value="<?php echo $_SESSION["login"]; ?>"/>
+        <section style="background-color: rgb(19,72,34);margin: 0px;padding: 5px;">
+            <h1 class="text-center" style="color: rgb(255,255,255);">LISTE CAISSE</h1>
+        </section>
+
+        <div class="corps">
+        <input type="hidden" id="mdp" value="<?= $_SESSION["mdp"]; ?>"/>
+        <input type="hidden" id="login" value="<?= $_SESSION["login"]; ?>"/>
    
      <div class="col-md-12">
 
 <fieldset class="entete">
     <legend class="entete">Liste dépôt</legend>
 <div class="form-group">
-<form action="indexMVC.php?module=2&action=2" method="GET">
+<form action="listeCaisse" method="GET">
     <table style="margin-bottom: 20px;width:100%">
     <thead>
         <tr>
         <?php if($flagNouveau){ ?>
-            <td style="float:right"><a href=indexMVC.php?module=3&action=15"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
+            <td style="float:right"><a href=ficheCaisse"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>
 <div class="err" id="add_err"></div>
-<table id="table" class="table">
-        <thead style="background-color: #dbdbed;">
+<table id="table" class="table table-striped">
+        <thead>
             <th>Intitulé</th>
-            <?php if($flagSuppr) echo "<th></th>"; ?>
+            <?= ($flagSuppr) ? "<th></th>" : "" ?>
         </thead>
     <tbody id="liste_depot">
         <?php
         
-        $objet = new ObjetCollector(); 
-        $result=$objet->db->requete($objet->caisse());     
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $i=0;
-        $classe="";
-        if($rows==null){
-            echo "<tr><td>Aucun élément trouvé ! </td></tr>";
-        }else{
-            foreach ($rows as $row){
-            $i++;
-            if($i%2==0) $classe = "info";
-                    else $classe="";
-            echo "<tr class='article $classe' id='article_".$row->CA_No."'>"
-                    . "<td><a href='indexMVC.php?module=3&action=15&CA_No=$row->CA_No'>".$row->CA_Intitule."</a></td>";
-                    if($flagSuppr) echo "<td><a href='Traitement\Depot.php?acte=suppr&CA_No=".$row->CA_No."' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer ".$row->CA_Intitule." ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
-                    echo "</tr>";
+        $objet = new ObjetCollector();
+        $caisseClass = new CaisseClass(0);
+            foreach ($caisseClass->all() as $row){
+                echo "<tr class='article' id='article_{$row->CA_No}'>
+                        <td><a href='ficheCaisse-{$row->CA_No}'>{$row->CA_Intitule}</a></td>";
+                        if($flagSuppr) echo "<td><a href='Traitement\Depot.php?acte=suppr&CA_No={$row->CA_No}' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer ".$row->CA_Intitule." ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
+                        echo "</tr>";
             }
-        }
       ?>
 </tbody>
 </table>

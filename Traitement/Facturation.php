@@ -51,8 +51,10 @@ if($_GET["acte"] =="ajout_entete"){
         }
     }
 
-    if($admin==0) {
-        $docEntete = new DocEnteteClass(0);
+    $docEntete = new DocEnteteClass(0);
+    $cloture = $docEntete->journeeCloture($_GET["date"],$_GET["ca_no"]);
+
+    if($admin==0 && $cloture == 0) {
         echo json_encode($docEntete->ajoutEntete( isset($_GET["do_piece"]) ? $_GET["do_piece"] : "%20",
             $_GET["type_fac"], $_GET["date"], $_GET["date"], $_GET["affaire"], $_GET["client"], isset($_GET["protNo"]) ? $_GET["protNo"] : "",
             "", isset($_GET["machineName"]) ? $_GET["machineName"] : "%20",
@@ -62,7 +64,10 @@ if($_GET["acte"] =="ajout_entete"){
             , isset($_GET["ca_no"]) ? $_GET["ca_no"] : "0", isset($_GET["co_no"]) ? $_GET["co_no"] : "0", str_replace("'","''",$_GET["reference"])));
     }
     else
-        echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
+        if($cloture > 0)
+            echo "Cette journée est déjà cloturée !";
+        else
+            echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
 }
 
 // mise à jour de la référence
@@ -585,12 +590,16 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
     $isVisu = 1;
     $type=$_GET["type_fac"];
     $prot_no = 0;
+    $docEntete = new DocEnteteClass($_GET["cbMarqEntete"]);
+    $cloture = $docEntete->journeeCloture($docEntete->DO_Date,$docEntete->CA_No);
 
     $docligne = new DocLigneClass($cbMarq);
-    if(isset($_GET["PROT_No"])) {
+    if(isset($_GET["PROT_No"]) && $cloture==0) {
         echo $docligne->ajout_ligneFacturation($_GET["quantite"],isset($_GET["designation"])? $_GET["designation"]:""
             ,$_GET["cbMarqEntete"],$_GET["type_fac"],$_GET["cat_tarif"],$_GET["prix"],$_GET["remise"],
             $_GET["machineName"], $_GET["acte"],$_GET["PROT_No"]);
+    }else{
+        echo "Cette journée est déjà cloturée !";
     }
 }
 

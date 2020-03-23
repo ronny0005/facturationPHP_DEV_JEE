@@ -16,7 +16,7 @@ class Creation {
     public function doAction($action) {
         $objet = new ObjetCollector();
         $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
-        if($protection->Prot_No!=null){
+        if($protection->Prot_No!=null && isset($_SESSION)){
             switch($action) {
                 case 1 : 
                     if($protection->PROT_Right==1 || ($protection->PROT_ARTICLE!=2)) $this->Nouvel_Article();  else header('Location: accueil');//rechercher un étudiant par domaine d'activité
@@ -80,7 +80,7 @@ class Creation {
             }
 
         } else 
-            header('Location: index.php');
+            header('Location: accueil');
     }
 
     public function Nouvel_Article() {

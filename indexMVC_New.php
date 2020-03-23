@@ -33,6 +33,9 @@ if(!isset($_SESSION))
 <script src="js/jquery.fileupload.js"></script>
 <script src="assets/js/Bootstrap-DateTime-Picker-2.js"></script>
 <script src="assets/js/theme.js"></script>
+<script src="assets/js/chart.min.js"></script>
+<script src="assets/js/bs-charts.js"></script>
+
 <?php
     include("module/includeHeader.php");
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);

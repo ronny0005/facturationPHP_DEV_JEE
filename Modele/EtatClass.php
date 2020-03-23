@@ -6,16 +6,38 @@
  * Time: 23:58
  */
 
-class EtatClass {
+class EtatClass Extends Objet
+{
     //put your code here
     public $db;
+    public $lien = 'etat';
 
-    function __construct($db=null)
+    function __construct()
     {
-        if($db==null)
-        $this->db = new DB();
-        else
-            $this->db = $db;
+    }
+
+    public function menuCaParDepot($protNo){
+        return $this->getApiJson("/menuCaParDepot&protNo=$protNo");
+    }
+
+    public function menuCaParDepotXml($protNo){
+        $dataPoints = array();
+        $list =  $this->menuCaParDepot($protNo);
+        foreach($list as $elt)
+            array_push($dataPoints, array("label"=> $elt->DE_Intitule, "y"=> $elt->TotCATTCNet));
+        return $dataPoints;
+    }
+
+    public function menuLineCA($protNo){
+        return $this->getApiJson("/menuCaParDepot&protNo=$protNo");
+    }
+
+    public function menuLineCAXml($protNo){
+        $dataPoints = array();
+        $list =  $this->menuCaParDepot($protNo);
+        foreach($list as $elt)
+            array_push($dataPoints, array("label"=> $elt->DE_Intitule, "y"=> $elt->TotCATTCNet));
+        return $dataPoints;
     }
 
     public function ech_client($centre, $datedeb, $datefin,$clientdebut,$clientfin,$type_reg,$facCompta,$typeTiers)

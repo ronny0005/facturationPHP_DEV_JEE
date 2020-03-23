@@ -22,7 +22,7 @@ class Caisse {
                     default : 
                         $this->Mouvement_caisse(); // On décide ce que l'on veut faire		
             }
-        }else header('Location: index.php');
+        }else header('Location: accueil');
     }
 
     public function Mouvement_caisse() {

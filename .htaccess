@@ -43,14 +43,22 @@ RewriteRule ^mvtCaisse$  indexMVC_New.php?module=6&action=1 [L]
 
 RewriteRule ^Reglement-([0-z]+)$  indexMVC_New.php?module=1&action=2&typeRegl=$1 [L]
 
+RewriteRule ^Reglement-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=1&action=2&typeRegl=$1&caissier=$2&client=$3&dateReglementEntete_deb=$4&dateReglementEntete_fin=$5&mode_reglement=$6&journal=$7&caisse=$8&type=$9 [L]
+
 RewriteRule ^listeDepot$  indexMVC_New.php?module=3&action=10 [L]
-RewriteRule ^listeDepot$  indexMVC_New.php?module=3&action=10&DE_No=$1 [L]
+RewriteRule ^listeDepot-([0-z]+)$  indexMVC_New.php?module=3&action=10&DE_No=$1 [L]
 
 RewriteRule ^ficheDepot$  indexMVC_New.php?module=3&action=11 [L]
 RewriteRule ^ficheDepot-([0-z]+)$  indexMVC_New.php?module=3&action=11&DE_No=$1 [L]
 
 RewriteRule ^listeCollaborateur$  indexMVC_New.php?module=3&action=12 [L]
 RewriteRule ^listeCollaborateur$  indexMVC_New.php?module=3&action=12&DE_No=$1 [L]
+
+RewriteRule ^listeCaisse$  indexMVC_New.php?module=3&action=14 [L]
+RewriteRule ^listeCaisse-([0-z]+)$  indexMVC_New.php?module=3&action=14&CA_No=$1 [L]
+
+RewriteRule ^ficheCaisse$  indexMVC_New.php?module=3&action=15 [L]
+RewriteRule ^ficheCaisse-([0-z]+)$  indexMVC_New.php?module=3&action=15&CA_No=$1 [L]
 
 RewriteRule ^ficheCollaborateur$  indexMVC_New.php?module=3&action=13 [L]
 RewriteRule ^ficheCollaborateur-([0-z]+)$  indexMVC_New.php?module=3&action=13&CO_No=$1 [L]

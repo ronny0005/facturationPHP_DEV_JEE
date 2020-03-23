@@ -21,7 +21,7 @@ class Admin {
     }
 
     public function doAction($action) {
-        if($this->protection->Prot_No!=null){
+        if($this->protection->Prot_No!=null && isset($_SESSION)){
         
         switch($action) {
             case 1 : 
@@ -74,7 +74,7 @@ class Admin {
         }
 
         } else 
-            header('Location: indexMVC.php');
+            header('Location: accueil');
     }
 
     public function Nouvel_User() {

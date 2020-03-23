@@ -82,7 +82,7 @@ $depot=$_SESSION["DE_No"];
 
 <div class="table-responsive" style="margin-top: 30px;clear:both">
     <table id="users" class="table table-striped">
-        <thead style="background-color: #dbdbed;color:black">
+        <thead>
                 <th>Référence</th>
                 <th>Désignation</th>
                 <th>Quantité en stock (cumul)</th>

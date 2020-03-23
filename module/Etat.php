@@ -24,7 +24,7 @@ class Etat {
     public function doAction($action) {
         $objet = new ObjetCollector();
         $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
-        if($protection->Prot_No !=null){
+        if($protection->Prot_No !=null && isset($_SESSION)){
             switch($action) {
                 case 1 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_MVT_STOCK == 0))
@@ -198,7 +198,7 @@ class Etat {
                             $this->Mouvement_stk(); // On décide ce que l'on veut faire		
             }
         } else 
-            header('Location: index.php');
+            header('Location: accueil');
     }
 
     public function Mouvement_stk() {

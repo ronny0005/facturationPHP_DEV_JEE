@@ -56,7 +56,6 @@ class Objet {
     public function getApiExecute($url){
         ini_set("allow_url_fopen", 1);
         $url = $this->racineApi.$this->lien.$url;
-        echo $url;
         file_get_contents($url);
     }
 
@@ -80,7 +79,7 @@ class Objet {
     }
 
     function formatString($valeur){
-        return urlencode($valeur);
+        return urlencode(htmlentities(str_replace('/',',,,',$valeur)));
     }
 
     public function setuserName($login,$mobile){

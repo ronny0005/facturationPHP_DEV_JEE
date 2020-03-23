@@ -84,8 +84,8 @@ if($type=="salarie")
 </table>
 <div class="err" id="add_err"></div>
 
-<table cellpadding="1" cellspacing="1" id="users" class="display" width="100%">
-        <thead style="background-color: #dbdbed;">
+<table cellpadding="1" cellspacing="1" id="users" class="display table table-striped" width="100%">
+        <thead>
             <th>Num</th>
             <th>Intitulé</th>
             <th>CG Num</th>

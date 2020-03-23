@@ -15,7 +15,7 @@ class Mouvement {
 
     public function doAction($action) {
         $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
-        if($protection->Prot_No!=null){
+        if($protection->Prot_No!=null && isset($_SESSION)){
             switch($action) {
                 case 1 :
                     if($protection->PROT_Right==1 || ($protection->PROT_DOCUMENT_STOCK!=2)) $this->Liste_Mouvement();  else header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
@@ -57,7 +57,7 @@ class Mouvement {
                     $this->Mouvement_Transfert(); // On décide ce que l'on veut faire		
             }
         } else 
-            header('Location: index.php');
+            header('Location: accueil');
 
     }
 

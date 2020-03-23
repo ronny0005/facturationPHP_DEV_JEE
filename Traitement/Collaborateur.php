@@ -11,7 +11,7 @@ if($_GET["acte"] =="suppr"){
     $CO_No = $_GET["CO_No"];
     $collaborateurClass = new CollaborateurClass($CO_No,$objet->db);
     $collaborateurClass ->delete();
-    header('Location: ../indexMVC.php?module=3&action=12&acte=supprOK&CO_No='.$CO_No);
+    header('Location: ../listeCollaborateur-'.$CO_No);
 }
 
 if($_GET["acte"]=="ajout"){
@@ -39,7 +39,7 @@ if($_GET["acte"]=="ajout"){
     if(isset($_GET["recouvrement"]))$btnRecouv=1;
     else $btnRecouv=0;
     $collaborateurClass = new CollaborateurClass(0,$objet->db);
-    $value = $collaborateurClass->insertCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv);
+    $value = $collaborateurClass->insertCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv,$_SESSION["id"]);
     if($value->CO_No==0){
         echo $value->Message;
     }else{

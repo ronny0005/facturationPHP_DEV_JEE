@@ -25,6 +25,7 @@ $mobile="";
 
 if(strcmp($_POST["acte"],"addReglement") == 0){
     $reglement = new ReglementClass(0);
+
     $mobile=0;
     if(isset($_GET["mobile"]))
         $mobile=1;
@@ -52,7 +53,7 @@ if(strcmp($_POST["acte"],"addReglement") == 0){
         $valAction = 4;
     if($typeRegl=="Collaborateur")
         $valAction = 5;
-    header("Location: ../indexMVC_new.php?module=1&action=$valAction&typeRegl=$typeRegl&caissier=$caissier&client=$ct_num&dateReglementEntete_deb=$dateReglementEntete_deb&dateReglementEntete_fin=$dateReglementEntete_fin&mode_reglement=$modeReglementRec&journal=$jo_num&caisse=$ca_no&type=$type");
+    header("Location: ../Reglement-$typeRegl-$caissier-$ct_num-$dateReglementEntete_deb-$dateReglementEntete_fin-$modeReglementRec-$jo_num-$ca_no-$type");
 }
 
 

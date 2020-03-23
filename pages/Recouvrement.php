@@ -190,9 +190,9 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Type réglement</label>
                 <select class="form-control" name="type" id="type">
-                    <option value="-1" <?php if ($type==-1) echo "selected"; ?> >Tout les règlements</option>
-                    <option value="1"  <?php if ($type==1) echo "selected"; ?> >Règlements imputés</option>
-                    <option value="0"  <?php if ($type==0) echo "selected"; ?> >Règlements non imputés</option>
+                    <option value="-1" <?= ($type==-1) ? "selected" :""; ?> >Tout les règlements</option>
+                    <option value="1"  <?= ($type==1) ? "selected" :""; ?> >Règlements imputés</option>
+                    <option value="0"  <?= ($type==0) ? "selected" :""; ?> >Règlements non imputés</option>
                 </select>
             </div>
 
@@ -225,7 +225,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                 <input type="hidden" value="" name="RG_NoLier" id="rgnolier_ligne" />
                 <input type="hidden" value="" name="typeRegl" id="typeRegl_ligne" />
                 <input type="hidden" value="" name="type" id="type_ligne" />
-                <input type="hidden" id="flagDelai" value="<?php echo $protection->getDelai(); ?>"/>
+                <input type="hidden" id="flagDelai" value="<?= $protection->getDelai(); ?>"/>
                 <input type="hidden" value="0" name="RG_Type" id="RG_Type"/>
                 <input type="hidden" value="0" name="impute" id="impute"/>
                 <legend class="entete">Ligne</legend>
@@ -233,7 +233,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                     <div class="row">
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="dateRec" name="dateRec" value="<?php echo $datesaisie;?>"placeholder="Date" <?php if($flagDateRglt!=0) echo "readonly"; ?>/>
+                                <input type="text" class="form-control" id="dateRec" name="dateRec" value="<?= $datesaisie; ?>" placeholder="Date" <?= ($flagDateRglt!=0) ? "readonly" : ""; ?>/>
                                 <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
                             </div>
                         </div>

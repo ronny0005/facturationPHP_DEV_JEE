@@ -1,5 +1,4 @@
 <script src="js/script_listeFacture.js?d=<?php echo time(); ?>"></script>
-
 <section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
     <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?= $protection->listeFactureNom($type) ?></h3>
 </section>

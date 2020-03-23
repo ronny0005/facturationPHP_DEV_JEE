@@ -30,30 +30,27 @@
 
 if(isset($_GET["DE_No"])){
     $depotItem = new DepotClass($_GET["DE_No"]);
-        if($rows==null){
-        }else{
-            $depot = $depotItem->DE_No;
-            $intitule = $depotItem->DE_Intitule;
-            $adresse = $depotItem->DE_Adresse;
-            $complement = $depotItem->DE_Complement;
-            $codePostal = $depotItem->DE_CodePostal;
-            $ville= $depotItem->DE_Ville;
-            $contact= $depotItem->DE_Contact;
-            $principal= $depotItem->DE_Principal;
-            $caisse= $depotItem->CA_No;
-            $region= $depotItem->DE_Region;
-            $pays= $depotItem->DE_Pays;
-            $email= $depotItem->DE_EMail;
-            $tel= $depotItem->DE_Telephone;
-            $telecopie= $depotItem->DE_Telecopie;
-            $affaire= $depotItem->CA_Num;
-            $soucheachat= $depotItem->CA_SoucheAchat;
-            $souchevente= $depotItem->CA_SoucheVente;
-            $soucheinterne= $depotItem->CA_SoucheStock;
-            $codedepot = $depotItem->DE_Complement;
-            $affaire = $depotItem->CA_Num;
-        }
-    }
+    $depot = $depotItem->DE_No;
+    $intitule = $depotItem->DE_Intitule;
+    $adresse = $depotItem->DE_Adresse;
+    $complement = $depotItem->DE_Complement;
+    $codePostal = $depotItem->DE_CodePostal;
+    $ville= $depotItem->DE_Ville;
+    $contact= $depotItem->DE_Contact;
+    $principal= $depotItem->DE_Principal;
+    $caisse= $depotItem->CA_No;
+    $region= $depotItem->DE_Region;
+    $pays= $depotItem->DE_Pays;
+    $email= $depotItem->DE_EMail;
+    $tel= $depotItem->DE_Telephone;
+    $telecopie= $depotItem->DE_Telecopie;
+    $affaire= $depotItem->CA_Num;
+    $soucheachat= $depotItem->CA_SoucheAchat;
+    $souchevente= $depotItem->CA_SoucheVente;
+    $soucheinterne= $depotItem->CA_SoucheStock;
+    $codedepot = $depotItem->DE_Complement;
+    $affaire = $depotItem->CA_Num;
+}
 ?>
 <script src="js/script_creationDepot.js?d=<?php echo time(); ?>"></script>
 
@@ -67,28 +64,29 @@ include("module/Menu/BarreMenu.php");
 </section>
 
 <form id="formDepot" class="formDepot" action="ficheDepot" method="GET">
+    <input type="hidden" name="DE_No" id="DE_No" value="<?= (isset($_GET["DE_No"])) ? isset($_GET["DE_No"]) : "0" ?>" />
 <fieldset class="entete">
 <legend class="entete">Informations</legend>
     <div class="row">
         <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
             <label> Intitul&eacute; : </label>
-                <input maxlength="35" value="<?php echo $intitule; ?>" type="text" name="intitule" class="form-control" id="intitule" placeholder="Intitulé" <?php if(!$flagProtected) echo "disabled"; ?>/>
+                <input maxlength="35" value="<?= $intitule; ?>" type="text" name="intitule" class="form-control" id="intitule" placeholder="Intitulé" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
             <label> Adresse : </label>
-                <input maxlength="17" value="<?php echo $adresse; ?>" type="text" onkeyup="this.value=this.value.replace(' ','')" name="adresse" class="form-control" id="adresse" placeholder="Adresse" <?php if(!$flagProtected) echo "disabled"; ?> />
+                <input maxlength="17" value="<?= $adresse; ?>" type="text" onkeyup="this.value=this.value.replace(' ','')" name="adresse" class="form-control" id="adresse" placeholder="Adresse" <?php if(!$flagProtected) echo "disabled"; ?> />
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6" >
             <label> Complément : </label>
-            <input name="complement" type="text" class="form-control" id="complement" placeholder="Complément" value="<?php echo $complement; ?>" <?php if(!$flagProtected) echo "disabled"; ?>/>
+            <input name="complement" type="text" class="form-control" id="complement" placeholder="Complément" value="<?= $complement; ?>" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         <div class="col-6 col-sm-6 col-md-3 col-lg-2" >
             <label> C.P. : </label>
-            <input type="text" name="cp" class="form-control" name="cp" placeholder="C.P." id="cp" value="<?php echo $codePostal; ?>" <?php if(!$flagProtected) echo "disabled"; ?>/>
+            <input type="text" name="cp" class="form-control" name="cp" placeholder="C.P." id="cp" value="<?= $codePostal; ?>" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         <div class="col-6 col-sm-6 col-md-3 col-lg-2" >
             <label> Région : </label>
-            <input name="region"  type="text" class="form-control" id="region" placeholder="Région" value="<?php echo $region; ?>"  <?php if(!$flagProtected) echo "disabled"; ?> />
+            <input name="region"  type="text" class="form-control" id="region" placeholder="Région" value="<?= $region; ?>"  <?php if(!$flagProtected) echo "disabled"; ?> />
         </div>
         <div class="col-6 col-sm-6 col-md-6 col-lg-2" >
             <label> Pays : </label>

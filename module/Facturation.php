@@ -15,7 +15,7 @@ class Facturation {
 
     public function doAction($action) {
         $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
-        if($protection->Prot_No !=null){
+        if($protection->Prot_No !=null && isset($_SESSION)){
             switch($action) {
                     case 1 :
                         if($protection->protectionListeFacture($_GET["type"]))
@@ -33,7 +33,7 @@ class Facturation {
                             $this->Facture_Vente(); // On décide ce que l'on veut faire		
             }
         } else 
-            header('Location: index.php');
+            header('Location: accueil');
     }
 
 

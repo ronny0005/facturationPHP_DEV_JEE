@@ -897,7 +897,7 @@ if(strcmp($_GET["acte"],"modif_caisse") == 0){
   
 
 if(strcmp($_GET["acte"],"modif_depot") == 0){
-    $depot = new DepotClass($_GET["de_no"],$objet->db);
+    $depot = new DepotClass($_GET["DE_No"],$objet->db);
     $depot->DE_Intitule = str_replace("'","''", $_GET["intitule"]);
     $depot->DE_Adresse = str_replace("'","''", $_GET["adresse"]);
     $depot->DE_Complement = str_replace("'","''", $_GET["complement"]);
@@ -932,6 +932,7 @@ if(strcmp($_GET["acte"],"modif_depot") == 0){
     else 
         $codeClient="";
     $depot->CA_CatTarif=$_GET["CA_CatTarif"];
+    $depot->setuserName("","");
     $depot->maj_depot();
     $depot->supprDepotClient();
     if(isset($_GET["code_client"]))
@@ -939,16 +940,8 @@ if(strcmp($_GET["acte"],"modif_depot") == 0){
             $depot->insertDepotClient($code);
         }
 
-    $rows = $depot->getDepotSouche();
-    if(sizeof($rows)==0)
-        $depot->insertDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$affaire);
-    else
-        $depot->updateDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$affaire);
-    $rows = $depot->getDepotCaisse();
-    if(sizeof($rows)==0)
-        $depot->insertDepotCaisse($caisse);
-    else
-        $depot->modifDepotCaisse($caisse);
+    $depot->insertDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$affaire);
+    $depot->insertDepotCaisse($caisse);
     $data = array('DE_No' => $depot->DE_Intitule);
     echo json_encode($data);
 }   

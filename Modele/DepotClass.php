@@ -10,7 +10,7 @@ class DepotClass Extends Objet{
     //put your code here
     public $db,$DE_No,$DE_Intitule,$DE_Adresse,$DE_Complement,$DE_CodePostal,$DE_Ville,$DE_Contact,$DE_Principal
     ,$DE_CatCompta,$DE_Region,$DE_Pays,$DE_EMail,$DE_Code,$DE_Telephone,$DE_Telecopie,$DE_Replication
-    ,$DP_NoDefaut,$cbMarq,$cbModification,$CA_CatTarif;
+    ,$DP_NoDefaut,$cbMarq,$cbModification,$CA_CatTarif,$CA_No,$CA_Num,$CA_SoucheAchat,$CA_SoucheVente,$CA_SoucheStock;
     public $table = 'F_DEPOT';
     public $lien = "fdepot";
 
@@ -36,6 +36,11 @@ class DepotClass Extends Objet{
             $this->DP_NoDefaut = $this->data[0]->DP_NoDefaut;
             $this->cbMarq = $this->data[0]->cbMarq;
             $this->cbModification = $this->data[0]->cbModification;
+            $this->CA_No = $this->data[0]->CA_No;
+            $this->CA_Num = $this->data[0]->CA_Num;
+            $this->CA_SoucheAchat = $this->data[0]->CA_SoucheAchat;
+            $this->CA_SoucheVente = $this->data[0]->CA_SoucheVente;
+            $this->CA_SoucheStock = $this->data[0]->CA_SoucheStock;
             $this->setCatTarif();
         }
     }
@@ -46,23 +51,21 @@ class DepotClass Extends Objet{
     }
 
     public function maj_depot(){
-        parent::maj('DE_Intitule', $this->DE_Intitule);
         parent::maj('DE_Complement', $this->DE_Complement);
         parent::maj('DE_CodePostal', $this->DE_CodePostal);
-        parent::maj('DE_Ville', $this->DE_Ville);
-        parent::maj('DE_Contact', $this->DE_Contact);
+        parent::maj('DE_Ville', $this->formatString($this->DE_Ville));
+        parent::maj('DE_Contact', $this->formatString($this->DE_Contact));
         parent::maj('DE_Principal', $this->DE_Principal);
         parent::maj('DE_CatCompta', $this->DE_CatCompta);
-        parent::maj('DE_Region', $this->DE_Region);
-        parent::maj('DE_Pays', $this->DE_Pays);
-        parent::maj('DE_EMail', $this->DE_EMail);
+        parent::maj('DE_Region', $this->formatString($this->DE_Region));
+        parent::maj('DE_Pays', $this->formatString($this->DE_Pays));
+        parent::maj('DE_EMail', $this->formatString($this->DE_EMail));
         parent::maj('DE_Code', $this->DE_Code);
-        parent::maj('DE_Telephone', $this->DE_Telephone);
-        parent::maj('DE_Telecopie', $this->DE_Telecopie);
+        parent::maj('DE_Telephone', $this->formatString($this->DE_Telephone));
+        parent::maj('DE_Telecopie', $this->formatString($this->DE_Telecopie));
         parent::maj('DE_Replication', $this->DE_Replication);
         parent::maj('DP_NoDefaut', $this->DP_NoDefaut);
-        parent::maj('cbModification', $this->cbModification);
-        parent::maj('cbCreateur', $this->userName);
+        parent::maj('cbModification', $this->formatString(substr($this->cbModification,0,10)));
         $this->majCatTarif();
         $this->majcbModification();
     }
@@ -72,14 +75,7 @@ class DepotClass Extends Objet{
     }
 
     public function majCatTarif(){
-        $query = "BEGIN 
-                    SET NOCOUNT ON;
-                    IF NOT EXISTS(SELECT 1 FROM Z_DEPOT_DETAIL WHERE DE_No ={$this->DE_No}) 
-                        INSERT INTO Z_DEPOT_DETAIL VALUES({$this->DE_No},{$this->CA_CatTarif})
-                    ELSE 
-                        UPDATE Z_DEPOT_DETAIL SET CA_CatTarif = {$this->CA_CatTarif} WHERE DE_No={$this->DE_No}
-                  END";
-        $this->db->query($query);
+        $this->getApiExecute("/majCatTarif&deNo={$this->DE_No}&catTarif={$this->CA_CatTarif}");
     }
 
     public function insertFDepot()
@@ -139,48 +135,22 @@ SET NOCOUNT ON;
 
     public function insertDepotClient($codeClient)
     {
-        $query = "INSERT INTO Z_DEPOTCLIENT VALUES ({$this->DE_No},'$codeClient')";
-        $this->db->query($query);
+        $this->getApiExecute("/insertDepotClient&deNo={$this->DE_No}&value=$codeClient");
     }
 
 
     public function insertDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheStock,$CA_Num){
-        $query = "INSERT INTO Z_DEPOTSOUCHE VALUES ({$this->DE_No},$CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheStock,'$CA_Num')";
-        $this->db->query($query);
-    }
-
-    public function updateDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheStock,$CA_Num){
-        $query = "UPDATE Z_DEPOTSOUCHE SET CA_SoucheVente=$CA_SoucheVente,CA_SoucheAchat=$CA_SoucheAchat,
-                    CA_SoucheStock=$CA_SoucheStock,CA_Num='$CA_Num' WHERE DE_No={$this->DE_No}";
-        $this->db->query($query);
+        $this->getApiExecute( "/insertDepotSouche&deNo={$this->DE_No}&caNum=$CA_Num&caSoucheVente=$CA_SoucheVente&caSoucheAchat=$CA_SoucheAchat&caSoucheStock=$CA_SoucheStock");
     }
 
     public function insertDepotCaisse($CA_No){
-        $query = "INSERT INTO Z_DEPOTCAISSE VALUES ({$this->DE_No},$CA_No)";
-        $this->db->query($query);
-    }
-
-    public function modifDepotCaisse($CA_No){
-        $query = "UPDATE Z_DEPOTCAISSE SET CA_No=$CA_No WHERE DE_No={$this->DE_No}";
-        $this->db->query($query);
-    }
-
-    public function getDepotCaisse(){
-        $query = "SELECT * FROM Z_DEPOTCAISSE WHERE DE_No={$this->DE_No}";
-        $result = $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    public function getDepotSouche(){
-        $query = "SELECT * FROM Z_DEPOTSOUCHE WHERE DE_No={$this->DE_No}";
-        $result = $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        $this->getApiExecute( "/insertDepotCaisse&deNo={$this->DE_No}&caNo=$CA_No");
     }
 
     public function supprDepotClient(){
-        $query = "DELETE FROM Z_DEPOTCLIENT WHERE DE_No={$this->DE_No}";
-        $this->db->query($query);
+        $this->getApiExecute("/supprDepotClient&deNo={$this->DE_No}");
     }
+
     public function supprReglement($rg_no){
         return "DELETE FROM F_REGLECH WHERE RG_No = $rg_no AND RC_Montant=0;
                     DELETE FROM F_CREGLEMENT WHERE RG_No = $rg_no;
