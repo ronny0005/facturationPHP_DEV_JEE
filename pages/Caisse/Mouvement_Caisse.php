@@ -183,7 +183,7 @@
                                     <option value="5">Mouvement d'entrée</option>
                                     <option value="2">Fond de caisse</option>
                                 <?php }
-                                if($admin==1) echo "<option value='16'>Transfert caisse</option>";
+                                if($protection->PROT_OUVERTURE_TOUTE_LES_CAISSES==0) echo "<option value='16'>Transfert caisse</option>";
                                 ?>
                                 <option value='6'>Verst bancaire</option>
                             </select>
