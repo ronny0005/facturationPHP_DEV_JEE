@@ -114,6 +114,18 @@ body{
     .customDropdown-item{
         font-size: .85rem;
     }
+    body{
+        font-size: .75rem;
+    }
+    .form-control{
+        font-size: .75rem;
+    }
+    .btn{
+        font-size: .75rem;
+    }
+    .customDropdown-item {
+        font-size: .70rem;
+    }
 }
 
 

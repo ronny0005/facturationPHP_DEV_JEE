@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-12 col-xs-6 col-sm-4 col-md-4"><label>Date</label>
                         <div class="input-group">
-                            <input class="form-control" type="text" id="dateentete" name="dateentete" <?= $accesDate ?> value="<?= $valueDate ?>">
+                            <input class="form-control" inputmode="numeric" type="text" id="dateentete" name="dateentete" <?= $accesDate ?> value="<?= $valueDate ?>">
                             <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
                         </div>
                     </div>
@@ -103,8 +103,8 @@
                                     <?=$listeCollaborateur ?>
                                 </select>
                     </div>
-                    <div
-                            class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Caisse</label>
+                    <div class="col-6 col-xs-6 col-sm-4 col-md-4">
+                        <label>Caisse</label>
                         <div class="field">
                             <select class="form-control" id="caisse" name="caisse" <?=$accesCaisse ?>>
                                 <?= $listeCaisse ?>
@@ -113,9 +113,10 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-6 col-xs-12 col-sm-4 col-md-4"><label>&nbsp;Référence</label>
+                    <div class="col-6 col-xs-12 col-sm-4 col-md-4">
+                        <label>&nbsp;Référence</label>
                         <div id="datetimepicker1" class="input-group date">
-                            <input maxlength="17" value= "<?=$accessReference ?>" class="form-control form-control" type="text" id="ref" inputmode="numeric" name="reference" <?=$accessReference ?>>
+                            <input maxlength="17" value= "<?=$accessReference ?>" class="form-control form-control" type="text" id="ref" name="reference" <?=$accessReference ?>>
                             <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
@@ -150,7 +151,7 @@
                     <input type="hidden" value="<?php echo $qte_negative; ?>" name="qte_negative" id="qte_negative"/>
                     <input type="hidden" value="<?php echo $do_imprim; ?>" name="do_imprim" id="do_imprim"/>
                     <div class="form-row">
-                        <div class="col-3 col-sm-3 col-md-2 col-lg-2"><label>Référence</label>
+                        <div class="col-12 col-sm-3 col-md-2 col-lg-2"><label>Référence</label>
                             <div id="datetimepicker1" class="input-group date">
                                 <input type="text" id="reference" name="reference" class="form-control" placeholder="Référence" <?= $accessARRef ?>/>
                                 <input type="hidden" class="form-control" id="AR_Ref" name="AR_Ref" value="" />
@@ -158,14 +159,14 @@
                                 <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
-                        <div class="col-6 col-sm-6 col-md-4 col-lg-3"><label>Désignation</label>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3"><label>Désignation</label>
                             <input class="form-control" type="text" id="designation" placeholder="Désignation" name="designation" <?= $accessDesignation ?>>
                             <div class="field"></div>
                         </div>
-                        <div class="col-3 col-sm-3 col-md-2 col-lg-1 <?= $classQte; ?>"><label>Qté</label><input class="form-control" type="text" id="quantite" placeholder="<?= $libQte ?>" name="quantite" <?=$accessQte ?>></div>
-                        <div class="col-4 col-sm-5 col-md-4 col-lg-2"><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
-                        <div class="col-3 col-sm-3 col-md-2 col-lg-2"><label>Qté en stock</label><input class="form-control" type="text" id="quantite_stock" placeholder="Qté en stock" name="quantite_stock" disabled></div>
-                        <div class="col-5 col-sm-4 col-md-4 col-lg-2"><label>Remise</label><input class="form-control" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
+                        <div class="col-6 col-sm-3 col-md-2 col-lg-1 <?= $classQte; ?>"><label>Qté</label><input class="form-control" type="text" id="quantite" placeholder="<?= $libQte ?>" name="quantite" <?=$accessQte ?>></div>
+                        <div class="col-6 col-sm-5 col-md-4 col-lg-2"><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
+                        <div class="col-6 col-sm-3 col-md-2 col-lg-2"><label>Qté en stock</label><input class="form-control" type="text" id="quantite_stock" placeholder="Qté en stock" name="quantite_stock" disabled></div>
+                        <div class="col-6 col-sm-4 col-md-4 col-lg-2"><label>Remise</label><input class="form-control" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
                         <input type="hidden" name="taxe1" id="taxe1" value="0" />
                         <input type="hidden" name="taxe2" id="taxe2" value="0"/>
                         <input type="hidden" name="taxe3" id="taxe3" value="0"/>
@@ -375,9 +376,9 @@ if (!$isVisu)
         <input type="hidden" name="montant_total" id="montant_total" value="<?= $totalttc; ?>"/>
         <input type="hidden" name="PROT_Reglement" id="PROT_Reglement" value="<?= $protection->PROT_DOCUMENT_REGLEMENT; ?>"/>
         <input type="hidden" id="imprime_val" name="imprime_val" value="0"/>
-        <div class="col-xl-2"><button class="btn btn-primary bgcolorApplication" id="annuler" type="button">Annuler</button></div>
-        <div class="col-xl-2" <?php if(!$isModif) echo"style='display:none'" ?>><button class="btn btn-primary bgcolorApplication" id="valider" type="button">Valider</button></div>
-        <div class="col"><button class="btn btn-primary bgcolorApplication" id="imprimer" type="button">Imprimer</button></div>
+        <div class="col-4 col-sm-2"><button class="btn btn-primary bgcolorApplication" id="annuler" type="button">Annuler</button></div>
+        <div class="col-4 col-sm-2" <?php if(!$isModif) echo"style='display:none'" ?>><button class="btn btn-primary bgcolorApplication" id="valider" type="button">Valider</button></div>
+        <div class="col-4 col-sm-2"><button class="btn btn-primary bgcolorApplication" id="imprimer" type="button">Imprimer</button></div>
     </div>
     </form>
 </div>
