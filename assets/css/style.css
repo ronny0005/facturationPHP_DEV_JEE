@@ -129,6 +129,20 @@ body{
     .h3 {
         font-size: .70rem;
     }
+
+    .sidebar .nav-item .nav-link{
+        padding: 0.5rem 0rem;
+    }
+    .dropdown-menu{
+        background-color: #d3d3d330;
+    }
+
+    h3{
+        font-size: 1rem;
+    }
+    .fa-bars{
+        color : black;
+    }
 }
 
 

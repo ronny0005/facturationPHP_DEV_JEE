@@ -124,6 +124,10 @@ $("table.table > tbody > tr #transform").on('click', function() {
                 footer: true
             },
             "initComplete": function(settings, json) {
+
+                $("#tableListeFacture_wrapper").addClass("row")
+                $("#tableListeFacture_length").addClass("col-6")
+                $("#tableListeFacture_filter").addClass("col-5")
                 $("#tableListeFacture_filter").find(":input").addClass("form-control");
                 $("#tableListeFacture_length").find(":input").addClass("form-control");
             }

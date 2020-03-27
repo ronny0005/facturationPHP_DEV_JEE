@@ -3,6 +3,10 @@ jQuery(function ($) {
   $(window).on('load',function() {
     $(".se-pre-con").fadeOut("slow")
   });
+
+  $(document).ready(function() {
+    $(".se-pre-con").fadeOut("slow")
+  });
 // Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
     $("body").toggleClass("sidebar-toggled");
