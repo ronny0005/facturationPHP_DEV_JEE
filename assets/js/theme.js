@@ -1,6 +1,9 @@
 jQuery(function ($) {
-  var width = $(window).width();
-  // Toggle the side navigation
+
+  $(window).on('load',function() {
+    $(".se-pre-con").fadeOut("slow")
+  });
+// Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
     $("body").toggleClass("sidebar-toggled");
     $(".sidebar").toggleClass("toggled");
@@ -65,5 +68,6 @@ jQuery(function ($) {
     }, 1000, 'easeInOutExpo');
     e.preventDefault();
   });
+
 
 }); // End of use strict

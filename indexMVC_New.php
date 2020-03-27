@@ -41,6 +41,7 @@ if(!isset($_SESSION))
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 ?>
 <body id="page-top">
+    <div class="se-pre-con"></div>
     <div id="wrapper">
         <?php include ("module/Menu/barreMenuGauche.php"); ?>
 
