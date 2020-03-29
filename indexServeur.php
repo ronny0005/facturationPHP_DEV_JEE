@@ -1079,9 +1079,9 @@ switch ($val) {
                 <td><?= $objet->getDateDDMMYYYY($row->DO_Date) ?></td>
                 <td id="libelleS"><?= $row->DO_Piece ?></td>
                 <td><?= $row->DO_Ref ?></td>
-                <td id="avanceS"><?= $row->avance ?></td>
-                <td id="ttcS"><?= $row->ttc ?></td>
-                <td><?= ($row->ttc - $row->avance) ?></td>
+                <td id="avanceS" class="text-right"><?= $objet->formatChiffre($row->avance) ?></td>
+                <td id="ttcS" class="text-right"><?= $objet->formatChiffre($row->ttc) ?></td>
+                <td class="text-right"><?= $objet->formatChiffre($row->ttc - $row->avance) ?></td>
             </tr>
             <?php
         }
@@ -1090,9 +1090,9 @@ switch ($val) {
             <td>Total</td>
             <td></td>
             <td></td>
-            <td><?= $sommeAvance ?></td>
-            <td><?= $sommeTTC ?></td>
-            <td><?= $sommeResteAPayer ?></td>
+            <td class="text-right"><?= $objet->formatChiffre($sommeAvance) ?></td>
+            <td class="text-right"><?= $objet->formatChiffre($sommeTTC) ?></td>
+            <td class="text-right"><?= $objet->formatChiffre($sommeResteAPayer) ?></td>
         </tr>
         <?php
         break;

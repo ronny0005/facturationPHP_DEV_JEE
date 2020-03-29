@@ -62,3 +62,6 @@ RewriteRule ^ficheCaisse-([0-z]+)$  indexMVC_New.php?module=3&action=15&CA_No=$1
 
 RewriteRule ^ficheCollaborateur$  indexMVC_New.php?module=3&action=13 [L]
 RewriteRule ^ficheCollaborateur-([0-z]+)$  indexMVC_New.php?module=3&action=13&CO_No=$1 [L]
+
+RewriteRule ^impressionFacture-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)$ export/exportSSRS.php?cbMarq=$1&format=$2&societe=$3&type=$4 [L]
+RewriteRule ^impressionFacture-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)$ export/exportSSRS.php?cbMarq=$1&format=$2&societe=$3&type=$4&facture=$5 [L]

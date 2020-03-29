@@ -762,7 +762,7 @@ jQuery(function($) {
                         class: 'btn btn-primary',
                         text: 'A4 CLIENT SOCIETE',
                         click: function () {
-                            window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A4&societe=CMI&type=CLIENT_SOCIETE", '_blank');
+                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
                             $("#redirectFacture").submit();
                         }
                     },
@@ -770,7 +770,7 @@ jQuery(function($) {
                         class: 'btn btn-primary',
                         text: 'A4 CLIENT DIVERS',
                         click: function () {
-                            window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A4&societe=CMI&type=CLIENT_DIVERS", '_blank');
+                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_DIVERS", '_blank');
                             $("#redirectFacture").submit();
                         }
                     },
@@ -778,7 +778,7 @@ jQuery(function($) {
                         class: 'btn btn-primary',
                         text: 'A4 PROFORMA',
                         click: function () {
-                            window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A4&societe=CMI&type=CLIENT_SOCIETE", '_blank');
+                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
                             $("#redirectFacture").submit();
                         }
                     },
@@ -786,7 +786,7 @@ jQuery(function($) {
                         class: 'btn btn-primary',
                         text: 'A5 CLIENT SOCIETE',
                         click: function () {
-                            window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A5&societe=CMI&type=CLIENT_SOCIETE", '_blank');
+                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
                             $("#redirectFacture").submit();
                         }
                     },
@@ -794,7 +794,7 @@ jQuery(function($) {
                         class: 'btn btn-primary',
                         text: 'A5 CLIENT DIVERS',
                         click: function () {
-                            window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A5&societe=CMI&type=CLIENT_DIVERS", '_blank');
+                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_DIVERS", '_blank');
                             $("#redirectFacture").submit();
                         }
                     },
@@ -802,7 +802,7 @@ jQuery(function($) {
                         class: 'btn btn-primary',
                         text: 'A5 PROFORMA',
                         click: function () {
-                            window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A5&societe=CMI&type=CLIENT_SOCIETE", '_blank');
+                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
                             $("#redirectFacture").submit();
                         }
                     }
@@ -823,7 +823,7 @@ jQuery(function($) {
                             text: 'A4',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("export/exportSSRS.php?facture=0&cbMarq=" + $("#cbMarqEntete").val() + "&format=A4&societe=" + words[0] + "&type=A4", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4-0", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A4", '_blank');
                                 $("#redirectFacture").submit();
@@ -834,7 +834,7 @@ jQuery(function($) {
                             text: 'A5',
                             click: function() {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("export/exportSSRS.php?facture=0&cbMarq=" + $("#cbMarqEntete").val() + "&format=A5&societe=" + words[0] + "&type=A5", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5-0", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A5", '_blank');
                                 $("#redirectFacture").submit();
@@ -845,7 +845,7 @@ jQuery(function($) {
                             text: 'A4 Facture',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("export/exportSSRS.php?facture=1&cbMarq=" + $("#cbMarqEntete").val() + "&format=A4&societe=" + words[0] + "&type=A4", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4-0", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A4", '_blank');
                                 $("#redirectFacture").submit();
@@ -856,7 +856,7 @@ jQuery(function($) {
                             text: 'A5 Facture',
                             click: function() {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("export/exportSSRS.php?facture=1&cbMarq=" + $("#cbMarqEntete").val() + "&format=A5&societe=" + words[0] + "&type=A5", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5-1", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A5", '_blank');
                                 $("#redirectFacture").submit();
@@ -878,7 +878,7 @@ jQuery(function($) {
                             text: 'A4',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A4&societe=" + words[0] + "&type=A4", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A4", '_blank');
                                 $("#redirectFacture").submit();
@@ -889,7 +889,7 @@ jQuery(function($) {
                             text: 'A5',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("export/exportSSRS.php?cbMarq=" + $("#cbMarqEntete").val() + "&format=A5&societe=" + words[0] + "&type=A5", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A5", '_blank');
                                 $("#redirectFacture").submit();
@@ -1541,7 +1541,6 @@ jQuery(function($) {
 
     $("#remise").keydown(function (event) {
         if(event.keyCode == 13)ajout_ligne(event);
-        else isRemise($("#remise"),event);
     });
 
     $('#quantite').keydown(function (e){

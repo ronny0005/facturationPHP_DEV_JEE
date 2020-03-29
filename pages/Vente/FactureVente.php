@@ -166,7 +166,7 @@
                         <div class="col-6 col-sm-3 col-md-2 col-lg-1 <?= $classQte; ?>"><label>Qté</label><input class="form-control" type="text" id="quantite" placeholder="<?= $libQte ?>" name="quantite" <?=$accessQte ?>></div>
                         <div class="col-6 col-sm-5 col-md-4 col-lg-2"><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
                         <div class="col-6 col-sm-3 col-md-2 col-lg-2"><label>Qté en stock</label><input class="form-control" type="text" id="quantite_stock" placeholder="Qté en stock" name="quantite_stock" disabled></div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-2"><label>Remise</label><input class="form-control" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
+                        <div class="col-6 col-sm-4 col-md-4 col-lg-2"><label>Remise</label><input class="form-control only_remise" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
                         <input type="hidden" name="taxe1" id="taxe1" value="0" />
                         <input type="hidden" name="taxe2" id="taxe2" value="0"/>
                         <input type="hidden" name="taxe3" id="taxe3" value="0"/>
@@ -219,6 +219,7 @@ if (!$isVisu)
                   if($cat_tarif == null)
                       $cat_tarif =0;
                   $rows = $docligne->getPrixClientHT($docligne->AR_Ref, $docEntete->N_CatCompta, $cat_tarif, 0, 0, $docligne->DL_Qte, $fournisseur);
+                  if(sizeof($rows)>0)
                   $rows = $rows[0];
                   if ($rows != null) {
                       $typefac = $rows->AC_PrixTTC;

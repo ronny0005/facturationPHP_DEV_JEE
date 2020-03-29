@@ -79,7 +79,7 @@ class Objet {
     }
 
     function formatString($valeur){
-        return urlencode(htmlentities(str_replace('/',',,,',$valeur)));
+        return urlencode(htmlentities(str_replace('%',',,,,',str_replace('/',',,,',$valeur))));
     }
 
     public function setuserName($login,$mobile){
@@ -99,7 +99,7 @@ class Objet {
 
 
     public function maj($name,$value){
-        $this->getApiExecute("/maj&nom=$name&valeur=".htmlspecialchars_decode($value)."&cbMarq={$this->cbMarq}&cbCreateur={$_SESSION["id"]}");
+        $this->getApiExecute("/maj&nom=$name&valeur={$this->formatString($value)}&cbMarq={$this->cbMarq}&cbCreateur={$_SESSION["id"]}");
     }
 
     public function majCbMarq($name,$value,$cbMarq){
@@ -116,7 +116,7 @@ class Objet {
     }
 
     public function delete(){
-        $this->getApiJson("/delete&cbMarq=".$this->cbMarq);
+        $this->getApiJson("/delete&cbMarq={$this->cbMarq}");
     }
 
     public function formatDate($val){
@@ -127,6 +127,16 @@ class Objet {
             return $date->format('Y-m-d');
         }
     }
+
+    public function formatDateAffichage($val){
+        if($val==NULL)
+            return null;
+        else {
+            $date = DateTime::createFromFormat('Y-m-d', $val);
+            return $date->format('d-m-Y');
+        }
+    }
+
     public function formatDateSage($val){
         $date = DateTime::createFromFormat('Y-m-d', $val);
         return $date->format('dmy');

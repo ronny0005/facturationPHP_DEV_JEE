@@ -278,11 +278,11 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                         Ce reglement est lettré, cette action n'est pas possible !
                     </div>
                     <!-- Alert -->
-                    <table class="table" id="tableRecouvrement">
+                    <table class="table table-striped" id="tableRecouvrement">
                         <thead>
                         <tr>
-                            <?php if($flagProtected) echo "<th></th>" ?>
-                            <?php if($flagSuppr) echo "<th></th>" ?>
+                            <?= ($flagProtected) ? "<th></th>" : "" ?>
+                            <?= ($flagSuppr) ? "<th></th>" : ""  ?>
                             <th>N° Piece</th>
                             <th>Date</th>
                             <th>Libelle</th>
@@ -296,6 +296,16 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                         </thead>
                         <tbody>
                         <?php
+                        $colspan = 0;
+                        if($flagProtected)
+                            $colspan ++;
+
+                        if($flagSuppr)
+                            $colspan ++;
+                        if($protection->PROT_Right==1)
+                            $colspan ++;
+                        $colspan = $colspan + 8;
+
                         $collab= 0;
                         if($typeRegl=="Collaborateur") $collab=1;
                         $datedebval = "";
@@ -316,7 +326,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                         $someRC=0;
                         $someRG=0;
                         if($rows==null){
-                            echo "<tr id='reglement_' class='reglement'><td>Aucun élément trouvé ! </td></tr>";
+                            echo "<tr id='reglement_' class='reglement'><td colspan='$colspan' class='text-center'>Aucun élément trouvé ! </td></tr>";
                         }else{
                             foreach ($rows as $row){
                                 $someRC=$someRC+$row->RC_Montant;
@@ -328,11 +338,11 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                                 if($flagProtected)  echo "<td id='modifRG_Piece'><i class='fa fa-pencil fa-fw'></i></td>";
                                 if($flagSuppr)  echo "<td id='supprRG_Piece'><i class='fa fa-trash-o'></i></td>";
                                 echo "<td id='RG_Piece' style='color:blue;text-decoration: underline;'>{$row->RG_Piece}</td>
-                                        <td id='RG_Date'>{$row->RG_Date}</td>
+                                        <td id='RG_Date'>{$protection->formatDateAffichage($row->RG_Date)}</td>
                                         <td id='RG_Libelle'>{$row->RG_Libelle}</td>
-                                        <td id='RG_Montant'>{$objet->formatChiffre(round($row->RG_Montant))}</td>
-                                        <td id='RC_Montant'>{$objet->formatChiffre(round($row->RC_Montant))}</td>
-                                        <td id='RA_Montant'>{$objet->formatChiffre(round($row->RG_Montant-$row->RC_Montant))}</td>
+                                        <td id='RG_Montant' class='text-right'>{$objet->formatChiffre(round($row->RG_Montant))}</td>
+                                        <td id='RC_Montant' class='text-right'>{$objet->formatChiffre(round($row->RC_Montant))}</td>
+                                        <td id='RA_Montant' class='text-right'>{$objet->formatChiffre(round($row->RG_Montant-$row->RC_Montant))}</td>
                                         <td id='CA_NoTable'>{$row->CA_Intitule}</td>
                                         <td>{$row->CO_Nom}<span style='display:none' id='N_Reglement'>{$row->N_Reglement}</span></td>";
                                 if($protection->PROT_Right==1)
@@ -348,9 +358,9 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                             $diffSomme=$someRG-$someRC;
                             echo "<tr class='reglement' style='background-color:grey;color:white;font-weight:bold'>
                                         <td>Total</td><td></td><td></td><td></td><td></td>
-                                        <td>{$objet->formatChiffre($someRG)}</td>
-                                        <td>{$objet->formatChiffre($someRC)}</td>
-                                        <td>{$objet->formatChiffre($diffSomme)}</td><td></td><td></td>";
+                                        <td class='text-right'>{$objet->formatChiffre($someRG)}</td>
+                                        <td class='text-right'>{$objet->formatChiffre($someRC)}</td>
+                                        <td class='text-right'>{$objet->formatChiffre($diffSomme)}</td><td></td><td></td>";
                             if($protection->PROT_Right==1)
                                 echo "<td></td>";
                             echo"</tr>";
@@ -362,7 +372,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                 </div>
                 <div  class="col-lg-6" id="blocFacture">
                     <div style="clear: both;height: 300px;overflow: scroll;">
-                        <table class="table" id="tableFacture">
+                        <table class="table table-striped" id="tableFacture">
                             <thead>
                             <tr>
                                 <th>Date</th>
@@ -412,7 +422,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
                                     <th>Référence</th>
                                     <th>Avance</th>
                                     <th>TTC</th>
-                                    <th>Montant réglé </th>
+                                    <th>Montant réglé</th>
                                 </tr>
                                 </thead>
                                 <tbody id="Listefacture_dialog">
@@ -458,7 +468,7 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
             <div id="blocTransfert" title="CONVERSION DU TRANSFERT" style="display: none;">
                 <label for="inputdateofbirth" class="col-md-1 control-label">Caisse </label>
                 <div class="col-md-3">
-                    <select class="form-control" name="caisseTransfert" id="caisseTransfert" <?php if($profil_caisse==1) echo "disabled"; ?>>
+                    <select class="form-control" name="caisseTransfert" id="caisseTransfert" <?= ($profil_caisse==1) ? "disabled" : "" ; ?>>
                         <?php
                         $caisseClass = new CaisseClass(0);
                         $rows = $caisseClass->listeCaisseShort();

@@ -35,6 +35,7 @@ if(!isset($_SESSION))
 <script src="assets/js/theme.js"></script>
 <script src="assets/js/chart.min.js"></script>
 <script src="assets/js/bs-charts.js"></script>
+<script src="js/scriptFonctionUtile.js"></script>
 
 <?php
     include("module/includeHeader.php");
