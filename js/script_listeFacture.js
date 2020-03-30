@@ -116,15 +116,13 @@ $("table.table > tbody > tr #transform").on('click', function() {
 
     $("#tableListeFacture").DataTable(
         {
+            scrollY:        "300px",
+            scrollCollapse: true,
+            fixedColumns:   true,
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },
-            fixedHeader: {
-                header: true,
-                footer: true
-            },
-            "initComplete": function(settings, json) {
-
+            }
+            ,"initComplete": function(settings, json) {
                 $("#tableListeFacture_wrapper").addClass("row")
                 $("#tableListeFacture_length").addClass("col-6")
                 $("#tableListeFacture_filter").addClass("col-5")

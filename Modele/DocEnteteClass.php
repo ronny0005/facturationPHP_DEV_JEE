@@ -1113,25 +1113,6 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         }
     }
 
-    public function suppressionReglement(){
-        $query= "DELETE 
-                FROM F_CREGLEMENT 
-                WHERE RG_No IN(SELECT RG_No
-                                FROM F_REGLECH R
-                                WHERE DO_PIECE='{$this->DO_Piece}' AND DO_Domaine={$this->DO_Domaine} AND DO_Type={$this->DO_Type});
-                DELETE 
-                FROM F_REGLECH 
-                WHERE DO_PIECE='{$this->DO_Piece}' AND DO_Domaine={$this->DO_Domaine} AND DO_Type={$this->DO_Type};
-                DELETE 
-                FROM F_DOCREGL 
-                WHERE DO_PIECE='{$this->DO_Piece}' AND DO_Domaine={$this->DO_Domaine} AND DO_Type={$this->DO_Type};
-                DELETE
-                FROM F_DOCENTETE
-                WHERE DO_PIECE='{$this->DO_Piece}' AND DO_Domaine={$this->DO_Domaine} AND DO_Type={$this->DO_Type}";
-        $this->db->requete($query);
-    }
-
-
     public function getStatutAchat($type){
         return $this->getApiJson("/statutAchat&type=$type");
     }

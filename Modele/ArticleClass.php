@@ -107,7 +107,7 @@ class ArticleClass Extends Objet{
         parent::__construct($this->table, $id, 'AR_Ref',$db);
 
         if($id=="") $id="%20";
-        $this->data = $this->getApiJson("/getF_ArticleJSON&arRef=$id");
+        $this->data = $this->getApiJson("/getF_ArticleJSON&arRef={$this->formatString($id)}");
         if (sizeof($this->data) > 0) {
             $this->AR_Ref = $this->data[0]->AR_Ref;
             $this->AR_Design = $this->data[0]->AR_Design;
@@ -527,7 +527,7 @@ class ArticleClass Extends Objet{
 
     public function isStock($de_no){
         $this->lien = "fartstock";
-        return $this->getApiJson("/isStockJSON&arRef={$this->AR_Ref}&deNo=$de_no");
+        return $this->getApiJson("/isStockJSON&arRef={$this->formatString($this->AR_Ref)}&deNo=$de_no");
     }
 
     public function isStockDENo($de_no, $ar_ref,$dlQte) {

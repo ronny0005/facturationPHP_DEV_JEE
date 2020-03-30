@@ -22,8 +22,8 @@
         </div>
         <div class="col-6 col-sm-6 col-md-6">
             <label>Dépot : </label>
-            <input class="form-control" type="hidden" name="DE_No" id="DE_No" value="<?php if($docEntete->DE_No==NULL) echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation") echo $docEntete->DE_No; else echo $docEntete->DO_Tiers;  ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
-            <input class="form-control" type="text" name="depot" id="depot" value="<?php if($docEntete->DE_No==NULL)  echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation") echo (new DepotClass($docEntete->DE_No,$objet->db))->DE_Intitule; else echo (new DepotClass($docEntete->DO_Tiers,$objet->db))->DE_Intitule; ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
+            <input class="form-control" type="hidden" name="DE_No" id="DE_No" value="<?php if(!isset($_GET["cbMarq"])) echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation") echo $docEntete->DE_No; else echo $docEntete->DO_Tiers;  ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
+            <input class="form-control" type="text" name="depot" id="depot" value="<?php if(!isset($_GET["cbMarq"]))  echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation") echo (new DepotClass($docEntete->DE_No))->DE_Intitule; else echo (new DepotClass($docEntete->DO_Tiers))->DE_Intitule; ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
         </div>
         <?php
         if($type=="Transfert" || $type=="Transfert_confirmation"){

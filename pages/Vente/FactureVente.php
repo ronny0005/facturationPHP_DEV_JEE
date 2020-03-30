@@ -9,7 +9,7 @@
         <div id="alertStatut" class="alert alert-danger" style="display:none " role="alert">Choississez un statut valide !</div>
         <div id="alertEntete" class="alert alert-danger" style="display:none " role="alert"></div>
     <!-- List alert -->
-    <fieldset class="border rounded">
+    <fieldset class="">
         <legend>Entête</legend>
         <form id="form-entete" action="Document-Facture<?=$type ?>" method="get">
             <input type="hidden" id="flagMinMax" value="<?php if($type=="Vente" || $type=="BonLivraison") echo $flag_minMax; else echo "0"; ?>"/>
@@ -40,7 +40,7 @@
             }
             ?>
 
-            <div style="padding-bottom: 15px;padding-left: 15px;padding-right: 15px;">
+            <div>
                 <div></div>
 
                 <div class="form-row">
@@ -142,10 +142,10 @@
         <div id="alertLigneMessage" class="alert alert-danger" style="display:none " role="alert"></div>
         <div id="alertLigne" class="alert alert-danger" style="display:none " role="alert"></div>
     <!-- List alert -->
-    <fieldset class="border rounded">
+    <fieldset class="">
         <legend>Ligne</legend>
         <form>
-            <div style="padding-bottom: 15px;padding-left: 15px;padding-right: 15px;">
+            <div>
                 <div></div>
                 <form id="form-ligne" name="form-ligne" method="get">
                     <input type="hidden" value="<?php echo $qte_negative; ?>" name="qte_negative" id="qte_negative"/>
@@ -180,7 +180,7 @@
                 </form>
                 <div>
                     <div class="table-responsive" style="margin-top: 30px;">
-                        <table class="table table-striped">
+                        <table id="ligneFacture" class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Référence</th>
@@ -259,11 +259,12 @@ if (!$isVisu)
                       <td id='DL_MontantTTC' style="<?php
                           if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
                               echo "display:none";?>">
+
+                          <span style='display:none' id='DL_NoColis'><?= $docligne->DL_NoColis; ?></span>
+                          <span style='display:none' id='cbMarq'><?= $docligne->cbMarq; ?></span>
+                          <span style='display:none' id='DL_CMUP'><?= $docligne->DL_CMUP; ?></span>
+                          <span style='display:none' id='DL_TYPEFAC'><?= $typefac; ?></span>
                       <?= $objet->formatChiffre($montantTTCLigne); ?></td>
-                      <td style='display:none' id='DL_NoColis'><?= $docligne->DL_NoColis; ?></td>
-                      <td style='display:none' id='cbMarq'><?= $docligne->cbMarq; ?></td>
-                      <td style='display:none' id='DL_CMUP'><?= $docligne->DL_CMUP; ?></td>
-                      <td style='display:none' id='DL_TYPEFAC'><?= $typefac; ?></td>
                   <?php
                   if (!$isVisu && ($typefac == "PreparationCommande" || $typefac == "AchatPreparationCommande"))
                       echo "<td id='lignea_{$docligne->cbMarq}'><i class='fa fa-sticky-note fa-fw'></i></td>";
@@ -292,13 +293,13 @@ if (!$isVisu)
             </div>
         </form>
     </fieldset>
-    <fieldset class="border rounded">
+    <fieldset class="">
         <legend>Pied</legend>
         <div id="piedPage"></div>
     </fieldset>
 </div>
 <div class="container-fluid">
-    <fieldset id="liste_reglement" class="border rounded" style="<?php if($isVisu == 0) echo "display:none"; ?>">
+    <fieldset id="liste_reglement" class="" style="<?php if($isVisu == 0) echo "display:none"; ?>">
         <legend>R&egrave;glement</legend>
         <table class="table table-striped" id="tableRecouvrement">
             <thead>

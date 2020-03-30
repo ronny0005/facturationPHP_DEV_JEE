@@ -530,47 +530,12 @@ jQuery(function($) {
         var racine = "";
         var racineTTC = "";
         var societeParam = "/";
-
-        racineTTC = "export/CMI/exportFactureTTC.php?";
+        racineTTC = "impressionFactureCMI";
         if (societe == "CMI CAMEROUN SARL")
             societeParam = "/CMI/";
-        racine = "export" + societeParam + "exportFacture.php?";
-        if (fich == "Vente") {
-            listeFacture = "indexMVC.php?module=2&action=1&type=" + fich;
-        }
-        if (fich == "VenteC") {
-            listeFacture = "indexMVC.php?module=2&action=1&type=" + fich;
-        }
-        if (fich == "Ticket") {
-            listeFacture = "indexMVC.php?module=2&action=13&type=" + fich;
-        }
-        if (fich == "BonLivraison") {
-            listeFacture = "indexMVC.php?module=2&action=5&type=" + fich;
-        }
-        if (fich == "Retour") {
-            listeFacture = "indexMVC.php?module=2&action=9&type=" + fich;
-        }
-        if (fich == "Avoir") {
-            listeFacture = "indexMVC.php?module=2&action=7&type=" + fich;
-        }
-        if (fich == "Devis") {
-            listeFacture = "indexMVC.php?module=2&action=2&type=" + fich;
-        }
-        if (fich == "Achat") {
-            listeFacture = "indexMVC.php?module=7&action=1&type=" + fich;
-        }
-        if (fich == "AchatC") {
-            listeFacture = "indexMVC.php?module=7&action=1&type=" + fich;
-        }
-
-        if (fich == "PreparationCommande") {
-            listeFacture = "indexMVC.php?module=7&action=3&type=" + fich;
-        }
-        if (fich == "AchatPreparationCommande") {
-            listeFacture = "indexMVC.php?module=7&action=5&type=" + fich;
-        }
-        impressionFacture = racine + "cbMarq=" + $("#cbMarqEntete").val() + "&type=" + fich;
-        impressionFactureTTC = racineTTC + "cbMarq=" + $("#cbMarqEntete").val() + "&type=" + fich;
+        listeFacture = "listeFacture-" + fich;
+        impressionFacture = racineTTC + "-" + $("#cbMarqEntete").val() + "-" + fich;
+        impressionFactureTTC = racineTTC + "-" + $("#cbMarqEntete").val() + "-" + fich;
     }
     fichierTraitement()
 
@@ -847,7 +812,7 @@ jQuery(function($) {
                                 if (societe != "CMI CAMEROUN SARL")
                                     window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4-0", '_blank');
                                 else
-                                    window.open(impressionFacture + "&format=A4", '_blank');
+                                    window.open(impressionFacture + "-A4", '_blank');
                                 $("#redirectFacture").submit();
                             }
                         },
@@ -858,7 +823,7 @@ jQuery(function($) {
                                 if (societe != "CMI CAMEROUN SARL")
                                     window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5-1", '_blank');
                                 else
-                                    window.open(impressionFacture + "&format=A5", '_blank');
+                                    window.open("impressionFactureCMI-" + "-A5", '_blank');
                                 $("#redirectFacture").submit();
                             }
                         }
@@ -880,7 +845,7 @@ jQuery(function($) {
                                 if (societe != "CMI CAMEROUN SARL")
                                     window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4", '_blank');
                                 else
-                                    window.open(impressionFacture + "&format=A4", '_blank');
+                                    window.open(impressionFacture + "-A4", '_blank');
                                 $("#redirectFacture").submit();
                             }
                         },
@@ -891,7 +856,7 @@ jQuery(function($) {
                                 if (societe != "CMI CAMEROUN SARL")
                                     window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5", '_blank');
                                 else
-                                    window.open(impressionFacture + "&format=A5", '_blank');
+                                    window.open(impressionFacture + "-A5", '_blank');
                                 $("#redirectFacture").submit();
                             }
                         }
@@ -900,6 +865,21 @@ jQuery(function($) {
             }
         }
     }
+
+
+    $("#ligneFacture").DataTable(
+        {
+            scrollY:        "300px",
+            paging:         false,
+            searching:      false,
+            scrollCollapse: true,
+            fixedColumns:   true,
+            info:           false,
+            "language": {
+                "url":      "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            }
+        }
+    );
 
 
     function ajout_ligne(e){
@@ -1134,7 +1114,7 @@ jQuery(function($) {
 
 
     function fiche_article(AR_Ref){
-        window.open('indexMVC.php?module=3&action=1&window=1&AR_Ref='+AR_Ref, "Fiche Article", "height=800,width=800");
+        window.open('ficheArticle-'+AR_Ref+'-1', "Fiche Article", "height=600,width=600");
 //        window.open('indexMVC.php?module=3&action=1&AR_Ref='+AR_Ref, '_blank');
         /*        $.ajax({
                     url: 'indexServeur.php',

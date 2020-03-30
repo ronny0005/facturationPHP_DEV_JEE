@@ -26,6 +26,8 @@ RewriteRule ^ficheFamille-([A-z]+) indexMVC_New.php?module=3&action=7&FA_CodeFam
 
 RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1 [L]
 RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
+RewriteRule ^ficheArticle-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1&window=$2 [L]
+
 
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4 [L]
 RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4&CT_Num=$1 [L]
@@ -65,3 +67,10 @@ RewriteRule ^ficheCollaborateur-([0-z]+)$  indexMVC_New.php?module=3&action=13&C
 
 RewriteRule ^impressionFacture-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)$ export/exportSSRS.php?cbMarq=$1&format=$2&societe=$3&type=$4 [L]
 RewriteRule ^impressionFacture-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)$ export/exportSSRS.php?cbMarq=$1&format=$2&societe=$3&type=$4&facture=$5 [L]
+RewriteRule ^impressionFactureCMI-([0-z]+)-([0-z]+)-([0-z]+)$ export/CMI/exportFacture.php?cbMarq=$1&type=$2&format=$4 [L]
+
+
+
+RewriteRule ^impressionMouvement-Transfert-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtTransfertpdf.php?cbMarq=$1&type=$2&format=$3 [L]
+RewriteRule ^impressionMouvement-Entree-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtEntreepdf.php?cbMarq=$1&type=$2&format=$3 [L]
+RewriteRule ^impressionMouvement-Sortie-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtSortiepdf.php?cbMarq=$1&type=$2&format=$3 [L]

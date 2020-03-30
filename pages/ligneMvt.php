@@ -122,8 +122,8 @@ echo "<th></th>";
                 <?php
                     echo "<td id='DL_Qte'>{$objet->formatChiffre(round($row->DL_Qte*100)/100)}</td>";
                 if($flagPxRevient==0) echo    "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
-                    echo "<td style='display:none' id='cbMarq'>{$row->cbMarq}</td>
-                            <td style='display:none' id='id_sec'>{$row->idSec}</td>";
+                    echo "<span style='display:none' id='cbMarq'>{$row->cbMarq}</span>
+                            <span style='display:none' id='id_sec'>{$row->idSec}</span>";
                 if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation")
                         echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
                 if(!$isVisu && $type!="Transfert_valid_confirmation")

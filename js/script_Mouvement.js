@@ -526,7 +526,7 @@ jQuery(function($){
                     class: 'btn btn-primary',
                     text: 'A4',
                     click: function () {
-                        window.open(impressionMouvement + "&format=A4", '_blank');
+                        window.open(impressionMouvement + "-A4", '_blank');
                         window.location.replace(listeMouvement);
                     }
                 },
@@ -534,7 +534,7 @@ jQuery(function($){
                     class: 'btn btn-primary',
                     text: 'A5',
                     click: function () {
-                        window.open(impressionMouvement + "&format=A5", '_blank');
+                        window.open(impressionMouvement + "-A5", '_blank');
                         window.location.replace(listeMouvement);
                     }
                 }
@@ -626,36 +626,18 @@ jQuery(function($){
 
         function fichierTraitement() {
             var fich = typeFac;
+            listeMouvement = "listeFacture-" + fich;
+            impressionMouvement = "impressionMouvement-"+fich+"-" + $("#cbMarqEntete").val() + "-" + fich;
             if (fich == "Transfert" || fich == "Transfert_confirmation" || fich == "Transfert_valid_confirmation" ) {
-                listeMouvement = "indexMVC.php?module=4&action=1&type=" + fich;
-                if ($_GET("cbMarq") != null)
-                    impressionMouvement = "etatspdf/MvtTransfertpdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
-                else
-                    impressionMouvement = "etatspdf/MvtTransfertpdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
                 return "Transfert.php";
             }
             if (fich == "Transfert_detail") {
-                listeMouvement = "indexMVC.php?module=4&action=9&type=" + fich;
-                if ($_GET("cbMarq") != null)
-                    impressionMouvement = "etatspdf/MvtTransfertpdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
-                else
-                    impressionMouvement = "etatspdf/MvtTransfertpdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
                 return "Transfert_detail.php";
             }
             if (fich == "Entree") {
-                listeMouvement = "indexMVC.php?module=4&action=3&type=" + fich;
-                if ($_GET("cbMarq") != null)
-                    impressionMouvement = "etatspdf/MvtEntreepdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
-                else
-                    impressionMouvement = "etatspdf/MvtEntreepdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
                 return "Entree.php";
             }
             if (fich == "Sortie") {
-                listeMouvement = "indexMVC.php?module=4&action=4&type=" + fich;
-                if ($_GET("cbMarq") != null)
-                    impressionMouvement = "etatspdf/MvtSortiepdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
-                else
-                    impressionMouvement = "etatspdf/MvtSortiepdf.php?entete=" + $("#n_doc").val() + "&CT_Num=" + $("#client").val() + "&type=" + fich;
                 return "Sortie.php";
             }
             return "";

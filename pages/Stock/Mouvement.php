@@ -28,7 +28,7 @@ $do_imprim = 0;
     // Données liées au client
     if(isset($_GET["client"])){
         $client=$_GET["client"];
-        $comptet = new ComptetClass($_GET["client"],$this->db);
+        $comptet = new ComptetClass($_GET["client"]);
         $cat_tarif=$comptet->N_CatTarif;
         $cat_compta=$comptet->N_CatCompta;
         $libcat_tarif=$comptet->LibCatTarif;
@@ -38,10 +38,10 @@ $do_imprim = 0;
 $isModif = 1;
 $isVisu = 1;
 $type = $_GET["type"];
-$docEntete = new DocEnteteClass(0,$objet->db);
+$docEntete = new DocEnteteClass(0);
 $docEntete->type_fac=$type;
     if(isset($_GET["cbMarq"])){
-        $docEntete = new DocEnteteClass($_GET["cbMarq"],$objet->db);
+        $docEntete = new DocEnteteClass($_GET["cbMarq"]);
         $docEntete->type_fac=$type;
         $reference=$docEntete->DO_Ref;
         $do_imprim = $docEntete->DO_Imprim;

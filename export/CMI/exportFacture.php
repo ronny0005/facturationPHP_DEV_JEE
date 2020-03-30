@@ -141,14 +141,15 @@ $client= $docEntete->DO_Tiers;
 $souche =  $docEntete->DO_Souche;
 $co_no =  $docEntete->CO_No;
 $caisse =  $docEntete->CA_No;
-
-$typefac = $docEntete->typeFacture;
-$cbMarq = $docEntete->cbMarq;
-$catcompta = $docEntete->N_CatCompta;
-$cattarif = 0;
-//$docEntete->getApiString("/getPiedPage&cbMarq=$cbMarq&typeFacture=$typefac&catCompta=$catcompta&catTarif=$cattarif");
-
-
+/*
+$result=$objet->db->requete($objet->getLibTaxePied($typeFac, $docEntete->N_CatCompta));
+$rowsLibelle = $result->fetchAll(PDO::FETCH_OBJ);
+if($rowsLibelle!=null){
+    $libelle1 = $rowsLibelle[0]->LIB1;
+    $libelle2 = $rowsLibelle[0]->LIB2;
+    $libelle3 = $rowsLibelle[0]->LIB3;
+}
+*/
 $comptet = new ComptetClass($docEntete->DO_Tiers);
 $nomclient=$comptet->CT_Intitule;
 $telclient=$comptet->CT_Telephone;
@@ -188,18 +189,22 @@ $tel = "";
 $email = "";
 $commentaire ="";
 $profession = "";
-$rowsContribuable = $protection->getNumContribuable();
-    $commentaire =$rowsContribuable->D_Commentaire;
-    $profession = $rowsContribuable->D_Profession;
-    $nomSociete=$rowsContribuable->D_RaisonSoc;
-    $cp = $rowsContribuable->D_CodePostal;
-    $ville = $rowsContribuable->D_Ville;
-    $pays=$rowsContribuable->D_Pays;
-    $email = $rowsContribuable->D_EmailSoc;
-    $tel = $rowsContribuable->D_Telephone;
-    $bp=$rowsContribuable->D_CodePostal." ".$rowsContribuable->D_Ville." ".$rowsContribuable->D_Pays;
-    $rcn=$rowsContribuable->D_Identifiant;
-    $nc=$rowsContribuable->D_Siret;
+
+$protection = new ProtectionClass("", "");
+$rows = $protection->getNumContribuable();
+
+    $commentaire =$rows[0]->D_Commentaire;
+    $profession = $rows[0]->D_Profession;
+    $nomSociete=$rows[0]->D_RaisonSoc;
+    $cp = $rows[0]->D_CodePostal;
+    $ville = $rows[0]->D_Ville;
+    $pays=$rows[0]->D_Pays;
+    $email = $rows[0]->D_EmailSoc;
+    $tel = $rows[0]->D_Telephone;
+    $bp=$rows[0]->D_CodePostal." ".$rows[0]->D_Ville." ".$rows[0]->D_Pays;
+    $rcn=$rows[0]->D_Identifiant;
+    $nc=$rows[0]->D_Siret;
+
 ob_start();
 ?>
     <style>
@@ -265,8 +270,6 @@ ob_start();
                     </td>
                     <td>
                         <?php "<br/>RCN° : ".$rcn."<br/>NC : ".$nc;$date = new DateTime($dateEntete); //echo $villeDepot; ?>
-                        <br/>
-                        <br/>
                     </td>
                 <tr></tr>
                 </tr>
@@ -353,9 +356,6 @@ ob_start();
                     </td>
                     <td>
                         <?php "<br/>RCN° : ".$rcn."<br/>NC : ".$nc;$date = new DateTime($dateEntete); //echo $villeDepot; ?>
-                        <br/>
-                        <br/>
-
                     </td>
                 <tr></tr>
                 </tr>

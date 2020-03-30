@@ -52,6 +52,8 @@ if($_GET["acte"] =="ajout_entete"){
     }
 
     $docEntete = new DocEnteteClass(0);
+    $cloture = 0;
+    if($_GET["type_fac"]!="Entree" && $_GET["type_fac"]!="Sortie" && $_GET["type_fac"]!="Transfert" && $_GET["type_fac"]!="Transfert_detail" && $_GET["type_fac"]!="Transfert_emission")
     $cloture = $docEntete->journeeCloture($_GET["date"],$_GET["ca_no"]);
 
     if($admin==0 && $cloture == 0) {
@@ -671,19 +673,19 @@ if($_GET["acte"]=="ligneFacture"){
                 <td style='display:none' id='DL_TYPEFAC'><?= $typefac; ?></td>
                 <?php
             if ((!$isVisu && ($typeDocument == "PreparationCommande" || $typeDocument == "AchatPreparationCommande")))
-                echo "<td id='lignea_" . $docligne->cbMarq . "'><i class='fa fa-sticky-note fa-fw'></i></td>";
+                echo "<td id='lignea_{$docligne->cbMarq}'><i class='fa fa-sticky-note fa-fw'></i></td>";
             if ($protectionClass->PROT_Administrator || $protectionClass->PROT_Right)
-                echo "  <td id='modif_" . $docligne->cbMarq . "'>
+                echo "  <td id='modif_{$docligne->cbMarq}'>
                             <i class='fa fa-pencil fa-fw'></i>
                         </td>
-                        <td id='suppr_" . $docligne->cbMarq . "'>
+                        <td id='suppr_{$docligne->cbMarq}'>
                             <i class='fa fa-trash-o'></i>
                         </td>";
             else
                 if(!$isVisu)
-                    echo "<td id='modif_" . $docligne->cbMarq . "'>
+                    echo "<td id='modif_{$docligne->cbMarq}'>
                             <i class='fa fa-pencil fa-fw'></i></td>
-                            <td id='suppr_" . $docligne->cbMarq . "'><i class='fa fa-trash-o'></i></a></td>";
+                            <td id='suppr_{$docligne->cbMarq}'><i class='fa fa-trash-o'></i></a></td>";
                 if($protectionClass->PROT_CBCREATEUR!=2)
                     echo "<td></td><td>{$docligne->getcbCreateurName()}</td>";
                 echo"</tr>";
@@ -778,6 +780,12 @@ if($_GET["acte"]=="ligneFactureStock"){
     $i=0;
     $id_sec=0;
     $classe="";
+    $totalht=0;
+    $totalqte=0;
+    $tva = 0;
+    $precompte=0;
+    $marge=0;
+    $totalttc=0;
     if($rows==null){
     }else{
         foreach ($rows as $row){
@@ -872,41 +880,18 @@ if($_GET["acte"] =="suppr"){
 // mise à jour de la référence
 if( $_GET["acte"] =="suppr_facture"){
     $docEntete = new DocEnteteClass($_GET["cbMarq"]);
-    $rows = $docEntete->getLigneFacture();
-    if ($rows != null) {
-        foreach ($rows as $row){
-            $docligne = new DocLigneClass($row->cbMarq);
-            $DL_Qte=$row->DL_Qte;
-            $DE_No=$row->DE_No;
-            $AR_PrixAch=$row->AR_PrixAch;
-            $AR_Ref=$row->AR_Ref;
-            $article = new ArticleClass($AR_Ref);
-            $docligne ->delete();
-            if($_GET["type"]=="Vente" ||$_GET["type"]=="BonLivraison"||$_GET["type"]=="Sortie")
-                $article->updateArtStock($DE_No,+$DL_Qte,+($AR_PrixAch*$DL_Qte));
-            if($_GET["type"]=="Entree" || $_GET["type"]=="Achat")
-                $article->updateArtStock($DE_No,-$DL_Qte,-($AR_PrixAch*$DL_Qte));
-            if($_GET["type"]=="Transfert"){
-                if($row->DL_MvtStock==3)
-                    $article->updateArtStock($DE_No,+$DL_Qte,+($AR_PrixAch*$DL_Qte));
-                else
-                    $article->updateArtStock($DE_No,-$DL_Qte,-($AR_PrixAch*$DL_Qte));
-            }
-        }
-    }
-	
     $type=$_GET["type"];
-    $docEntete->suppressionReglement();
+    $docEntete->getApiExecute("/suppr_facture&cbMarq={$_GET["cbMarq"]}&typeFacture={$type}");
+
     $ajout="";
         if(isset($_GET["datedebut"]))
-            $ajout=$ajout."&datedebut=".$_GET["datedebut"];
+            $ajout="{$ajout}&datedebut={$_GET["datedebut"]}";
         if(isset($_GET["datefin"]))
-            $ajout=$ajout."&datefin=".$_GET["datefin"];
+            $ajout="{$ajout}&datefin={$_GET["datefin"]}";
         if(isset($_GET["depot"]))
-            $ajout=$ajout."&depot=".$_GET["depot"];
-	
-	
-		header("Location: ".$docEntete->redirectToListe(type));      
+            $ajout="{$ajout}&depot={$_GET["depot"]}";
+
+		header("Location: ../{$docEntete->redirectToListe($type)}");
     }
 
 

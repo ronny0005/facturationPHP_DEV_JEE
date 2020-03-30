@@ -116,7 +116,7 @@
                         <td <?= ($protection->afficheStatutListe ($type)) ?>><?= $objet->formatChiffre($avance) ?></td>
                         <td <?= ($protection->afficheStatutListe ($type)) ?>><?= $message ?></td>
                         <td <?= ($protectedSuppression) ? "" : "style='display:none'" ?> >
-                            <a href="Traitement\Facturation.php?type=$type&acte=suppr_facture&cbMarq=<?=$row->cbMarq ?>" onclick="if(window.confirm('Voulez-vous vraiment supprimer la facture <?= $row->DO_Piece ?> ?')){return true;}else{return false;}">
+                            <a href="Traitement\Facturation.php?type=<?= $type ?>&acte=suppr_facture&cbMarq=<?= $row->cbMarq ?>" onclick="if(window.confirm('Voulez-vous vraiment supprimer la facture <?= $row->DO_Piece ?> ?')){return true;}else{return false;}">
                                 <i class='fa fa-trash-o'></i></a></td>
                         </td>
                         <td <?= $protection->afficheTransformListe($type) ?>><input type="button" class="btn btn-primary" value="Convertir en facture" id="transform"/></td>
