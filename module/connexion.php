@@ -6,7 +6,6 @@ include("../Modele/ProtectionClass.php");
 $nom=$_POST["user"];
 $mdp=$_POST["password"];
 $protection = new ProtectionClass($nom, $mdp);
-
 if($protection->cbMarq!=null) {
     $isCalendar = $protection->isCalendarUser($protection->Prot_No);
     if($isCalendar ==1)

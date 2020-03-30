@@ -93,15 +93,12 @@ jQuery(function($){
                             modification = false;
                             acte = "modif";
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?type_fac=" + typeFac + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cb_Marq").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?type_fac=" + typeFac + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarqEntete").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
-                                dataType: 'html',
+                                dataType: 'json',
                                 data: "cbMarqEntete=" + $("#cbMarqEntete").val() + ajoutParam+"&PROT_No="+$("#PROT_No").val()+"&typeFacture="+$("#typeFacture").val(),
                                 success: function (data) {
-                                    if(data!="")
-                                        alert(data)
-                                    else {
                                         alimLigne();
                                         tr_clickArticle();
                                         $('#reference').prop('disabled', false);
@@ -114,7 +111,6 @@ jQuery(function($){
                                         }
                                         $('#reference').focus();
                                         $("#ADL_Qte").val(0);
-                                    }
                                 },
                                 error: function (resultat, statut, erreur) {
                                     alert(resultat.responseText);
@@ -123,7 +119,7 @@ jQuery(function($){
                         } else {
                             var cbmarq = "";
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#reference").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarq").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#reference").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarqEntete").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',

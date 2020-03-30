@@ -31,7 +31,7 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
             if (isset($_GET["machineName"]))
                 $machine = $_GET["machineName"];
             $ref_article = $_GET["designation"];
-            $docLigne->ajoutLigneTransfert($qte, $prix, $typefac, $cbMarq, $cbMarqEntete, $_SESSION["id"], $_GET["acte"], $ref_article, $machine);
+            echo json_encode($docLigne->ajoutLigneTransfert($qte, $prix, $typefac, $cbMarq, $cbMarqEntete, $_SESSION["id"], $_GET["acte"], $ref_article, $machine));
         }
 }
 

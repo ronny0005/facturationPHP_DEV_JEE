@@ -12,9 +12,6 @@ require_once("../Modele/DepotClass.php");
 require_once("../Modele/CollaborateurClass.php");
 session_start();
 ob_start();
-?>
-    <div style="width:730px;">
-        <?php
         $objet = new ObjetCollector();
         $cat_tarif=0;
         $cat_compta=0;
@@ -87,7 +84,9 @@ ob_start();
         if($protection->ProfilName=="GESTIONNAIRE")
             $profil_gestionnaire=1;
 
-        ?><style>
+        ?>
+    <div style="width:730px;">
+    <style>
             table {
                 font-size: 12px;
             }

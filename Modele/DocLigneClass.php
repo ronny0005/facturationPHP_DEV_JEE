@@ -670,7 +670,7 @@ class DocLigneClass Extends Objet
     }
 
     public function ajoutLigneTransfert($qte,$prix,$typeFacture,$cbMarq,$cbMarqEntete,$protNo,$acte,$arRef,$machineName){
-        return $this->getApiJson("/ajoutLigneTransfert&qte=$qte&prix=$prix&typeFacture=$typeFacture&cbMarq=$cbMarq&cbMarqEntete=$cbMarqEntete&protNo=$protNo&acte=$acte&arRef=$arRef&machineName=$machineName");
+        return $this->getApiJson("/ajoutLigneTransfert&qte=$qte&prix=$prix&typeFacture=$typeFacture&cbMarq=$cbMarq&cbMarqEntete=$cbMarqEntete&protNo=$protNo&acte=$acte&arRef={$this->formatString($arRef)}&machineName={$this->formatString($machineName)}");
     }
 
     public function addDocligneTransfertProcess($AR_Ref, $prix, $DL_Qte, $MvtStock, $machine, $cbMarqEntete, $protNo, $cbFirst)

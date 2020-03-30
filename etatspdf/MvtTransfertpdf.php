@@ -96,8 +96,8 @@ if($protection->ProfilName=="GESTIONNAIRE")
             $depot=$docentete->DE_No;
             $dotiers=$docentete->DO_Tiers;
             $date=$docentete->DO_Date;
-            $dateenJMA = $objet->getDateDDMMYYYY($docentete->DO_Date);
             $cono=$docentete->CO_No;
+            $dateenJMA = $objet->getDateDDMMYYYY($date);
             if($type=="Transfert_detail"){
                 $result=$objet->db->requete($objet->getDoPiece($entete,$do_domaine,41));
                 $rows = $result->fetchAll(PDO::FETCH_OBJ);
