@@ -49,6 +49,18 @@ jQuery(function($) {
         getDateecheanceSelect();
     });
 
+
+    $( "#collaborateur" ).change(function() {
+        $.ajax({
+            url: "traitement/Facturation.php?acte=maj_collaborateur&collab="+$("#collaborateur").val()+"&entete="+$("#n_doc").val()+"&cbMarq="+$("#cbMarqEntete").val(),
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+
+            }
+        });
+    });
+
     $("#getBarCode").click(function() {
         $("#barCode").show("slow")
     })

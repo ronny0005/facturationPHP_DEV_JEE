@@ -87,7 +87,7 @@ $docEntete = new DocEnteteClass(0);
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtTransfert") ?>" role="presentation" href="listeFacture-Transfert">Transfert</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtEntree") ?>" role="presentation" href="listeFacture-Entree">Entrée</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtSortie") ?>" role="presentation" href="listeFacture-Sortie">Sortie</a>
-                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtTrsftDetail") ?>" role="presentation" href="listeFacture-TrsftDetail">Trsft détail</a>
+                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtTrsftDetail") ?>" role="presentation" href="listeFacture-Transfert_detail">Trsft détail</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtEmission") ?>" role="presentation" href="listeFacture-Emission">Emission</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"MvtConfirmation") ?>" role="presentation" href="listeFacture-Confirmation">Confirmation</a>
                 </div>

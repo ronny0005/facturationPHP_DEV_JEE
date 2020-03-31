@@ -192,6 +192,10 @@ class DocLigneClass Extends Objet
         return $result->fetchAll(PDO::FETCH_OBJ)[0];
     }
 
+    public function verifSupprAjout(){
+        return $this->getApiJson("/verifSupprAjout&cbMarq={$this->cbMarq}");
+    }
+
     public function ligneConfirmationVisuel($cbMarqEntete)
     {
         echo "

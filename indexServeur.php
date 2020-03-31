@@ -584,10 +584,8 @@ switch ($val) {
         echo json_encode($article->isStockDENo($_GET['DE_No'], $_GET['AR_Ref'],str_replace(' ', '', str_replace(',', '.', $_GET["DL_Qte"]))));
         break;
     case "verifSupprAjout":
-        $docligne = new DocLigneClass($_GET["cbMarq"], $objet->db);
-        $docEntete = new DocEnteteClass($docligne->getcbMarqEntete());
-        $article = new ArticleClass($docligne->AR_Ref, $objet->db);
-        echo json_encode($article->isStock($docEntete->DE_No));
+        $docligne = new DocLigneClass($_GET["cbMarq"]);
+        echo json_encode($docligne->verifSupprAjout());
         break;
     case "getClientByCTNum":
         $comptet = new ComptetClass($_GET['CT_Num']);

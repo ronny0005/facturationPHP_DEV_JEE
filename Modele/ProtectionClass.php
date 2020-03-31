@@ -265,7 +265,7 @@ class ProtectionClass extends Objet{
     }
 
     function afficheClientListe($type){
-        if(!($type=="Achat" || $type=="AchatC" || $type=="AchatT" ||
+        if(!($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="Sortie" || $type=="Entree" ||$type=="Transfert" || $type=="Transfert_detail" ||
             $type=="AchatRetour" || $type=="AchatRetourC" || $type=="AchatRetourT" || $type=="PreparationCommande"|| $type=="AchatPreparationCommande"))
             return "";
         return "style='display:none'";

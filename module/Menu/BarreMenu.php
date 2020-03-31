@@ -29,8 +29,6 @@ if($pparametrecial->p_GestionPlanning==1 || $pparametrecial->p_ReportPrixRev==1)
 if($protection->Prot_No!=null) {
     if ($_GET["module"] == 1 && $_GET["action"] == 1)
         $texteMenu = "Accueil";
-    if ($_GET["module"] == 1 && $_GET["action"] == 2)
-        $texteMenu = "Règlement client";
     if ($_GET["module"] == 7 && ($_GET["action"] == 1 || $_GET["action"] == 2))
         $texteMenu = "Factures d'achat";
     if ($_GET["module"] == 6 && $_GET["action"] == 1)

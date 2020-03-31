@@ -924,13 +924,13 @@ if($_GET["acte"] =="regle") {
 	$date_ech = $date_reglt;
 	if (isset($_GET["date_ech"]))
 		$date_ech = $_GET["date_ech"];
-	//$date_ech = $objet->getDate($_GET["date_ech"]);
-	
-    $docEntete = new DocEnteteClass(0);
+
+    $docEntete = new DocEnteteClass($cbMarq);
     $mttAvance = str_replace(" ", "", $_GET["mtt_avance"]);
     $typeFacture = $_GET["typeFacture"];
     $protNo = $_GET["PROT_No"];
-    $url = "/regle&cbMarq=$cbMarq&typeFacture=".urlencode($typeFacture)."&protNo=$protNo&valideRegle=$valideRegle&valideRegltImprime=$valideRegltImprime&montantAvance=$mttAvance&modeReglement=$mode_reglement&dateReglt=$date_reglt&libReglt=".urlencode($lib_reglt)."&dateEch=$date_ech";
+    $lib_reglt = substr($lib_reglt, 0, 30);
+    $url = "/regle&cbMarq=$cbMarq&typeFacture={$docEntete ->formatString($typeFacture)}&protNo=$protNo&valideRegle=$valideRegle&valideRegltImprime=$valideRegltImprime&montantAvance=$mttAvance&modeReglement=$mode_reglement&dateReglt={$objet->getDate($date_reglt)}&libReglt={$docEntete->formatString($lib_reglt)}&dateEch={$objet->getDate($date_ech)}";
 	$docEntete->getApiString($url);
 }
 

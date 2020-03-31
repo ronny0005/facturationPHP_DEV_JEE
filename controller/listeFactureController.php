@@ -83,7 +83,7 @@ function lien ($entete,$type,$cbMarq){
     $lienfinal="";
     if($entete!="")
         $lienentete="-$cbMarq";
-    if($type !="Entree" && $type !="Sortie" && $type !="Transfert" && $type !="TrsftDetail" && $type !="Emission" && $type !="Confirmation")
+    if($type !="Entree" && $type !="Sortie" && $type !="Transfert" && $type !="Transfert_detail" && $type !="Emission" && $type !="Confirmation")
         $lienfinal = "Document-Facture$type{$lienentete}";
     else
         $lienfinal = "Document-Mvt$type{$lienentete}";

@@ -1467,28 +1467,8 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
     }
 
     public function listeTransfertDetail($do_tiers, $datedeb, $datefin){
-        $query = "SELECT *
-                    FROM(
-                    SELECT PROT_User,DO_Imprim,CASE WHEN ABS(DATEDIFF(d,GETDATE(),E.DO_Date))>= (select PR_DelaiPreAlert
-from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbMarq,E.DO_Type,E.DO_Domaine,E.DO_Piece,E.DO_Ref,CAST(CAST(E.DO_Date AS DATE) AS VARCHAR(10)) AS DO_Date,E.DO_Tiers as CT_Num,E.DE_No,DE_Intitule
-                    ,ISNULL(SUM(L.DL_Qte * DL_CMUP),0) AS ttc
-                    FROM F_DOCENTETE E
-                    LEFT JOIN F_DOCLIGNE L on E.DO_Piece=L.DO_Piece AND E.DO_Domaine= L.DO_Domaine AND E.DO_Type=L.DO_Type
-                    INNER JOIN F_DEPOT DE ON DE.DE_No=E.DE_No 
-                    LEFT JOIN F_PROTECTIONCIAL P ON E.cbCreateur = CAST(P.PROT_No AS VARCHAR(5))
-                    WHERE E.DO_Domaine=4 AND E.DO_Type=41 AND ('0'='$do_tiers' OR E.DE_No ='$do_tiers') AND CAST(E.DO_Date as DATE) BETWEEN '$datedeb' AND '$datefin'
-                    GROUP BY PROT_User,DO_Imprim,E.cbMarq,E.DO_Type,E.DO_Domaine,E.DO_Piece,E.DO_Ref,E.DO_Date,E.DO_Tiers,E.DE_No,DE_Intitule)A
-                    LEFT JOIN(
-                    SELECT E.DO_Type AS DO_Type_dest,E.DO_Domaine AS DO_Domaine_dest,E.DO_Piece AS DO_Piece_dest,E.DO_Ref AS DO_Ref_dest,
-                    CAST(CAST(E.DO_Date AS DATE) AS VARCHAR(10)) AS DO_Date_dest,E.DO_Tiers as CT_Num_dest,E.DE_No AS DE_No_dest,DE_Intitule AS DE_Intitule_dest
-                    ,ISNULL(SUM(L.DL_Qte * DL_CMUP),0) AS ttc_dest
-                    FROM F_DOCENTETE E
-                    LEFT JOIN F_DOCLIGNE L on E.DO_Piece=L.DO_Piece AND E.DO_Domaine= L.DO_Domaine AND E.DO_Type=L.DO_Type
-                    INNER JOIN F_DEPOT DE ON DE.DE_No=E.DE_No 
-                    WHERE E.DO_Domaine=4 AND E.DO_Type=40
-                    GROUP BY E.DO_Type,E.DO_Domaine,E.DO_Piece,E.DO_Ref,E.DO_Date,E.DO_Tiers,E.DE_No,DE_Intitule) B ON A.DO_PIECE=B.DO_Piece_dest ";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getlisteTransfertDetail&client={$this->formatString($do_tiers)}&dateDeb=$datedeb&dateFin=$datefin");
+
     }
 
 

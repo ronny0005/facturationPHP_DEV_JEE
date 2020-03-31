@@ -27,6 +27,8 @@ if(isset($_POST["typeRegl"]))
 if(isset($_GET["typeRegl"]))
     $typeRegl = $_GET["typeRegl"];
 
+    $texteMenu = "Règlement client";
+
 if(isset($_POST["client"])) $client=$_POST["CT_Num"];
 if(isset($_POST["type"])) $type=$_POST["type"];
 if(isset($_POST["caisse"])) $caisse=$_POST["caisse"];
@@ -51,16 +53,25 @@ if ($typeRegl == "Client") {
     $flagProtected = $protection->protectedType("ReglementClient");
     $flagSuppr = $protection->SupprType("ReglementClient");
     $flagNouveau = $protection->NouveauType("ReglementClient");
+    $lienForm="Reglement-client";
+    $actionForm="2";
 }
-else {
+if ($typeRegl == "fournisseur") {
+    $texteMenu = "Règlement fournisseur";
     $flagProtected = $protection->protectedType("ReglementFournisseur");
     $flagSuppr = $protection->SupprType("ReglementFournisseur");
     $flagNouveau = $protection->NouveauType("ReglementFournisseur");
+    $lienForm="Reglement-fournisseur";
+    $actionForm = "4";
 }
 $typeDocument = 0;
-if($typeRegl=="Fournisseur") $typeDocument = 1;
+if($typeRegl=="fournisseur") $typeDocument = 1;
 if($typeRegl=="Collaborateur") $typeDocument = 2;
 
+if($typeRegl=="Collaborateur"){
+    $lienForm="Reglement-bonCaisse";
+    $actionForm = "5";
+}
 ?>
 
 <div id="protectionPage" style="visibility: hidden;"><?php echo $flagProtected;?></div>
@@ -69,19 +80,6 @@ if($typeRegl=="Collaborateur") $typeDocument = 2;
 <section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
     <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php echo $texteMenu; ?></h3>
 </section>
-
-        <?php
-        $lienForm="Reglement-client";
-        $actionForm="2";
-        if($typeRegl=="Fournisseur"){
-            $lienForm="Reglement-fournisseur";
-            $actionForm = "4";
-        }
-        if($typeRegl=="Collaborateur"){
-            $lienForm="Reglement-bonCaisse";
-            $actionForm = "5";
-        }
-        ?>
         <input type="hidden" value="" name="ValRGPiece" id="Val_RG_Piece" />
         <input type="hidden" value="<?php echo $_SESSION["CO_No"]; ?>" name="CO_NoSession" id="CO_NoSession" />
 
