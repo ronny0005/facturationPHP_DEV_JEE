@@ -413,22 +413,7 @@ class ArticleClass Extends Objet{
     }
 
     public function getArtFournisseur(){
-        $query = "SELECT	AF_RefFourniss
-                            ,A.CT_Num
-                            ,CT_Intitule
-                            ,AF_PrixAch
-                            ,AF_TypeRem
-                            ,AF_Remise
-                            ,CASE WHEN AF_TypeRem=0 THEN cast(cast(AF_Remise as numeric(9,2)) as varchar(10)) 
-                                    WHEN AF_TypeRem=1 THEN cast(cast(AF_Remise as numeric(9,2)) as varchar(10))+'%' 
-                                        ELSE cast(cast(AF_Remise as numeric(9,2)) as varchar(10))+'U' END DL_Remise
-                            ,CONCAT(CAST(AF_Conversion AS INT),CONCAT('/',CAST(AF_ConvDiv AS INT))) AF_Conv
-                            ,A.cbMarq
-                            FROM F_ARTFOURNISS A 
-                            LEFT JOIN F_COMPTET B ON A.CT_Num = B.CT_Num
-                            WHERE AR_Ref='".$this->AR_Ref."'";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getArtFournisseur&arRef={$this->AR_Ref}");
     }
 
     public function deleteArtFournisseur ($cbMarq){
@@ -437,13 +422,9 @@ class ArticleClass Extends Objet{
     }
 
     public function getArtFournisseurSelect ($cbMarq){
-        $query="SELECT  *,
-                        CASE WHEN AF_DateApplication='1900-01-01' THEN 0 ELSE AF_DateApplication END DateApplication 
-                FROM F_ARTFOURNISS 
-                WHERE cbMarq = $cbMarq";
-        $result = $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getArtFournisseurSelect&cbMarq=$cbMarq");
     }
+
     public function getArtFournisseurByTiers ($ct_num){
         return $this->getApiJson("/getArtFournisseurByTiers&ctNum={$this->formatString($ct_num)}");
     }

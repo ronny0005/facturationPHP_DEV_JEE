@@ -40,8 +40,8 @@ $do_type = $docEntete->DO_Type;
      </div>
 </div>
  </form>
-<div class="form-group">
- <table id="tableLigne" class="table mt-3">
+<div class="form-group mt-3">
+ <table id="tableLigne" class="table table-striped">
     <thead>
       <tr>
         <th>Référence</th>
@@ -117,13 +117,15 @@ echo "<th></th>";
                     style="<?php
                     if($flagPxRevient!=0)
                         echo "display:none";?>">
-                    <?= $objet->formatChiffre(round($row->DL_PrixUnitaire, 2)); ?></td>
+                    <?= $objet->formatChiffre(round($row->DL_PrixUnitaire, 2)); ?>
+                    <span style='display:none' id='cbMarq'><?= $row->cbMarq ?></span>
+                    <span style='display:none' id='id_sec'><?= $row->idSec ?></span>
+                </td>
 
                 <?php
                     echo "<td id='DL_Qte'>{$objet->formatChiffre(round($row->DL_Qte*100)/100)}</td>";
                 if($flagPxRevient==0) echo    "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
-                    echo "<span style='display:none' id='cbMarq'>{$row->cbMarq}</span>
-                            <span style='display:none' id='id_sec'>{$row->idSec}</span>";
+
                 if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation")
                         echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
                 if(!$isVisu && $type!="Transfert_valid_confirmation")

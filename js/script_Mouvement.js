@@ -196,6 +196,21 @@ jQuery(function($){
         }
 
 
+
+
+    $("#tableLigne").DataTable(
+        {
+            scrollY:        "300px",
+            paging:         false,
+            searching:      false,
+            scrollCollapse: true,
+            fixedColumns:   true,
+            info:           false,
+            "language": {
+                "url":      "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            }
+        }
+    )
         function tr_clickArticle() {
             $("tr[id^='article']").each(function () {
                 $(this).unbind();
@@ -210,7 +225,6 @@ jQuery(function($){
                 $(this).find("#suppr_" + cbMarq).click(function () {
                     suppression(cbMarq, id_sec, AR_Ref, DL_Qte, DL_CMUP);
                 });
-
                 $(this).find("#AR_Ref").click(function () {
                     fiche_article(AR_Ref);
                 });
@@ -358,32 +372,7 @@ jQuery(function($){
         }
 
     function fiche_article(AR_Ref){
-        $.ajax({
-            url: 'indexServeur.php',
-            method: 'GET',
-            dataType: 'html',
-            data : 'page=ficheArticle&AR_Ref='+AR_Ref,
-            async : false,
-            success: function(data) {
-                $("#formArticleFactureBis").html(data);
-                $("#formArticleFactureBis").dialog({
-                    resizable: false,
-                    height: "auto",
-                    width: 1000,
-                    modal: true,
-                    title : "Article "+AR_Ref,
-                    buttons: {
-                        "Valider": {
-                            class: 'btn btn-primary',
-                            text: 'Valider',
-                            click: function() {
-                                $( this ).dialog( "close" );
-                            }
-                        }
-                    }
-                });
-            }
-        });
+        window.open('ficheArticle-'+AR_Ref+'-1', "Fiche Article", "height=600,width=600");
     }
 
 

@@ -27,9 +27,9 @@
                             if($liste!=null)
                                 foreach($liste as $row){
                                     if($row->FA_Type==0) {
-                                        echo "<option value='" . $row->FA_CodeFamille . "'";
+                                        echo "<option value='{$row->FA_CodeFamille}'";
                                         if ($row->FA_CodeFamille == $famille) echo " selected";
-                                        echo ">" . $row->FA_Intitule . "</option>";
+                                        echo ">{$row->FA_Intitule}</option>";
                                     }
                                 }
                             ?>
@@ -38,6 +38,7 @@
                     <div class="col-4 col-sm-6 col-md-3">
                         <label>Référence </label>
                         <input maxlength="19" style="text-transform: uppercase" onkeyup="this.value=this.value.replace(' ','')" type="text" value="<?= $ref; ?>" name="reference" class="form-control only_alpha_num" id="reference" placeholder="Référence" <?php if(isset($_GET["AR_Ref"])) echo "readonly"; ?>/>
+                        <input type="text" value="<?= $articleClass->cbMarq ; ?>" name="cbMarqArticle" class="form-control" id="cbMarqArticle" />
                     </div>
                     <div class="col-8 col-sm-6 col-md-5">
                         <label>Désignation </label>
@@ -212,12 +213,12 @@
                                             if($listArtFourniss!=null){
                                                 foreach($listArtFourniss as $row){
                                                     echo "<tr id='listeFournisseur'>
-                                                            <td id='CT_Num'>".$row->CT_Num."</td>
-                                                            <td id='CT_Intitule'>".$row->CT_Intitule."</td>
-                                                            <td>".$objet->formatChiffre(($row->AF_PrixAch))."</td>
-                                                            <td>".$row->DL_Remise."</td>
-                                                            <td>".$row->AF_Conv."</td>
-                                                            <td id='cbMarq' style='display: none;'>".$row->cbMarq."</td>
+                                                            <td id='CT_Num'>{$row->CT_Num}</td>
+                                                            <td id='CT_Intitule'>{$row->CT_Intitule}</td>
+                                                            <td>{$objet->formatChiffre(($row->AF_PrixAch))}</td>
+                                                            <td>{$row->DL_Remise}</td>
+                                                            <td>{$row->AF_Conv}</td>
+                                                            <td id='cbMarq' style='display: none;'>{$row->cbMarq}</td>
                                                             <td id='modifFournisseur'><i class='fa fa-pencil fa-fw'></i></td>
                                                             <td id='supprFournisseur'><i class='fa fa-trash fa-fw'></i></td>
                                                             </tr>";
