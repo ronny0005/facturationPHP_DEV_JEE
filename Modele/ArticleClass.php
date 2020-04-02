@@ -221,8 +221,8 @@ class ArticleClass Extends Objet{
     }
 
     public function maj_article(){
-        parent::maj("AR_Design" , $this->AR_Design);
-        parent::maj("FA_CodeFamille" , $this->FA_CodeFamille);
+        parent::maj("AR_Design" , $this->formatString($this->AR_Design));
+        parent::maj("FA_CodeFamille" , $this->formatString($this->FA_CodeFamille));
         parent::maj("AR_Raccourci" , $this->AR_Raccourci);
         parent::maj("AR_Garantie" , $this->AR_Garantie);
         parent::maj("AR_UnitePoids" , $this->AR_UnitePoids);
