@@ -239,7 +239,7 @@ if(strcmp($_GET["acte"],"ListeClientRemise") == 0){
 if(strcmp($_GET["acte"],"articleByDesign") == 0){
     $article = new ArticleClass(0,$objet->db);
     $rows = $article->getArticleByIntitule($_POST["AR_Design"]);
-    if (sizeof($rows)>1){
+    if (sizeof($rows)>0){
         echo "Ce nom est déjà utilisé pour un article !";
     }
 }

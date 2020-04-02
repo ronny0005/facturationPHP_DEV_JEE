@@ -488,7 +488,7 @@ class ArticleClass Extends Objet{
     }
 
     public function getArticleByIntitule($intitule){
-        return $this->getApiJson("/getArticleByIntitule&arIntitule=$intitule");
+        return $this->getApiJson("/getArticleByIntitule&arIntitule={$this->formatString($intitule)}");
     }
 
     public function getTaxeArticle($fcpChamp,$fcpType){
