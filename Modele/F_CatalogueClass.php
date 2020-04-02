@@ -21,7 +21,7 @@ class F_CatalogueClass Extends Objet{
 
     function __construct($id,$db=null) {
         parent::__construct($this->table, $id,'CL_No',$db);
-        $this->data = $this->getApiJson("/cbMarq=$id");
+        $this->data = $this->getApiJson("/clNo=$id");
         if(sizeof($this->data)>0) {
             $this->CL_No = $this->data[0]->CL_No ;
             $this->CL_Intitule = $this->data[0]->CL_Intitule ;

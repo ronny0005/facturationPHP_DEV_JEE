@@ -68,7 +68,7 @@ $objet = new ObjetCollector();
                 <select id="catalniv2" class="form-control" <?php if($cl_no1!=0) if(!$flagProtected) echo "disabled"; else echo""; else echo "disabled";?>>
                 <option value="0"></option>
                 <?php
-                        $rows = $catalogue->getCatalogueChildren(1,$cl_no1);
+                        $rows = $catalogue->getCatalogueByCL(1,$cl_no1);
                         foreach ($rows as $row){
                         echo "<option value='{$row->CL_No}'";
                                 if($row->CL_No==$cl_no2) echo " selected";
@@ -80,7 +80,7 @@ $objet = new ObjetCollector();
                 <select id="catalniv3" class="form-control" <?php if($cl_no1!=0) if(!$flagProtected) echo "disabled"; else echo""; else echo "disabled";?>>
                     <option value="0"></option>
                     <?php
-                        $rows = $catalogue->getCatalogueChildren(2,$cl_no2);
+                        $rows = $catalogue->getCatalogueByCL(2,$cl_no2);
                         foreach ($rows as $row){
                             echo "<option value='{$row->CL_No}'";
                             if($row->CL_No==$cl_no3) echo " selected";
@@ -92,7 +92,7 @@ $objet = new ObjetCollector();
                 <select id="catalniv4" class="form-control" <?php if($cl_no1!=0) if(!$flagProtected) echo "disabled"; else echo""; else echo "disabled";?>>
                     <option value="0"></option>
                     <?php
-                        $rows = $catalogue->getCatalogueChildren(3, $cl_no3);
+                        $rows = $catalogue->getCatalogueByCL(3, $cl_no3);
                         foreach ($rows as $row) {
                             echo "<option value='{$row->CL_No}'";
                             if ($row->CL_No == $cl_no4) echo " selected";

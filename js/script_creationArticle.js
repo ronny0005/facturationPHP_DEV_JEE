@@ -140,132 +140,7 @@ jQuery(function($) {
         });
     }
 
-    $("#pxAchat").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-    $("#pxCond").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-    $("#AC_Coef").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-    $("#AF_Remise").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-    $("#AF_Colisage").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-    $("#AF_QteMini").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-    $("#AF_ConvDiv").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-    $("#AF_Conversion").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-
-    $("#AF_PrixAch").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-    $("#pxHT").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-    $("#pxMin").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-    $("#pxMax").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-    $("#stock_min").inputmask({
-        'alias': 'decimal',
-        'groupSeparator': ' ',
-        'autoGroup': true,
-        'digits': 2,
-        'rightAlign': true,
-        'digitsOptional': false,
-        'placeholder': '0.00'
-    });
-
-    $("#stock_max").inputmask({
+    $("#pxMin, #pxMax, #stock_min, #stock_max, #pxHT, #AF_PrixAch, #AF_Conversion, #AF_ConvDiv, #AF_QteMini, #pxCond, #pxAchat, #AC_Coef, #AF_Remise, #AF_Colisage, #qteGros").inputmask({
         'alias': 'decimal',
         'groupSeparator': ' ',
         'autoGroup': true,
@@ -276,7 +151,7 @@ jQuery(function($) {
     });
 
     function ajouterArticle() {
-        if ($('#reference').is(':disabled')) {
+        if ($("#cbMarqArticle").val()!=0) {
             $.ajax({
                 url: 'traitement/Creation.php?acte=modif_article&reference=' + $("#reference").val(),
                 method: 'GET',
@@ -284,7 +159,7 @@ jQuery(function($) {
                 data: $("#formArticle").serialize(),
                 success: function (data) {
                     if($_GET("window")==undefined)
-                        window.location.replace("indexMVC.php?module=3&action=3&acte=modifOK&AR_Ref=" + data.AR_Ref);
+                        window.location.replace("listeArticle-" + data.AR_Ref);
                     else
                         window.close();
                 }
@@ -362,7 +237,7 @@ jQuery(function($) {
     $("tr[id^='detailCond_']").dblclick(function () {
         if (protect != 1) {
 
-            if ($_GET("AR_Ref") != null) {
+            if ($("#cbMarqArticle").val != 0) {
                 $("#panel_cond").dialog({
                     resizable: false,
                     height: "auto",
@@ -376,12 +251,12 @@ jQuery(function($) {
                 prixCond = $(this).find("#value_cond").val();
                 i = 0;
                 $.ajax({
-                    url: 'traitement/Creation.php?acte=cond_detail&value_cond=' + $(this).find("#value_cond").val() + '&reference=' + $_GET("AR_Ref"),
+                    url: 'traitement/Creation.php?acte=cond_detail&value_cond=' + $(this).find("#value_cond").val() + '&reference=' + $("#reference").val(),
                     method: 'GET',
                     dataType: 'json',
                     success: function (data) {
                         $.ajax({
-                            url: 'traitement/Creation.php?acte=cond_detail_pxMinMax&value_cond=' + prixCond + '&reference=' + $_GET("AR_Ref"),
+                            url: 'traitement/Creation.php?acte=cond_detail_pxMinMax&value_cond=' + prixCond + '&reference=' + $("#reference").val(),
                             method: 'GET',
                             dataType: 'json',
                             success: function (data) {
@@ -595,10 +470,10 @@ jQuery(function($) {
         }
     });
     
-    $("#pxCond").keyup(function (e){
+    $("#pxCond, #AC_Coef").keyup(function (e){
         if(e.keyCode == 13){
             $.ajax({
-                url: 'traitement/Creation.php?acte=maj_prix_detail&prix='+$("#pxCond").val()+'&ref='+$_GET("AR_Ref")+'&val='+prixCond+'&Prix_TTC='+$("#COND_PrixTTC").val(),
+                url: 'traitement/Creation.php?acte=maj_prix_detail&prix='+$("#pxCond").val()+'&ref='+$("#reference").val()+'&val='+prixCond+'&Prix_TTC='+$("#COND_PrixTTC").val(),
                 method: 'GET',
                 dataType: 'html',
                 data : "AC_Coef="+$("#AC_Coef").val(),
@@ -607,7 +482,7 @@ jQuery(function($) {
                     $("#titre_cond").val("");
                     $("#qte_cond").val("");
                     $('#panel_cond').dialog('close');
-                    window.location.replace("indexMVC.php?module=3&action=1&AR_Ref="+$_GET("AR_Ref"));
+                    window.location.replace("ficheArticle-"+$("#reference").val());
                 }
             });
         }

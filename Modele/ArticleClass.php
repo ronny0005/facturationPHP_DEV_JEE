@@ -235,94 +235,88 @@ class ArticleClass Extends Objet{
         parent::maj("AR_PrixTTC" , $this->AR_PrixTTC);
         parent::maj("AR_Gamme1" , $this->AR_Gamme1);
         parent::maj("AR_Gamme2" , $this->AR_Gamme2);
-    //    parent::maj("AR_SuiviStock" , $this->AR_SuiviStock);
         parent::maj("AR_Nomencl" , $this->AR_Nomencl);
-        parent::maj("AR_Stat01" , $this->AR_Stat01);
-        parent::maj("AR_Stat02" , $this->AR_Stat02);
-        parent::maj("AR_Stat03" , $this->AR_Stat03);
-        parent::maj("AR_Stat04" , $this->AR_Stat04);
-        parent::maj("AR_Stat05" , $this->AR_Stat05);
-        parent::maj("AR_Escompte" , $this->AR_Escompte);
-        parent::maj("AR_Delai" , $this->AR_Delai);
-        parent::maj("AR_HorsStat" , $this->AR_HorsStat);
-        parent::maj("AR_VteDebit" , $this->AR_VteDebit);
-        parent::maj("AR_NotImp" , $this->AR_NotImp);
         parent::maj("AR_Sommeil" , $this->AR_Sommeil);
-        parent::maj("AR_Langue1" , $this->AR_Langue1);
-        parent::maj("AR_Langue2" , $this->AR_Langue2);
-        parent::maj("AR_CodeEdiED_Code1" , $this->AR_CodeEdiED_Code1);
-        parent::maj("AR_CodeEdiED_Code2" , $this->AR_CodeEdiED_Code2);
-        parent::maj("AR_CodeEdiED_Code3" , $this->AR_CodeEdiED_Code3);
-        parent::maj("AR_CodeEdiED_Code4" , $this->AR_CodeEdiED_Code4);
         parent::maj("AR_CodeBarre" , $this->AR_CodeBarre);
         parent::maj("AR_CodeFiscal" , $this->AR_CodeFiscal);
-        parent::maj("AR_Pays" , $this->AR_Pays);
-        parent::maj("AR_Frais01FR_Denomination" , $this->AR_Frais01FR_Denomination);
-        parent::maj("AR_Frais01FR_Rem01REM_Valeur" , $this->AR_Frais01FR_Rem01REM_Valeur);
-        parent::maj("AR_Frais01FR_Rem01REM_Type" , $this->AR_Frais01FR_Rem01REM_Type);
-        parent::maj("AR_Frais01FR_Rem02REM_Valeur" , $this->AR_Frais01FR_Rem02REM_Valeur);
-        parent::maj("AR_Frais01FR_Rem02REM_Type" , $this->AR_Frais01FR_Rem02REM_Type);
-        parent::maj("AR_Frais01FR_Rem03REM_Valeur" , $this->AR_Frais01FR_Rem03REM_Valeur);
-        parent::maj("AR_Frais01FR_Rem03REM_Type" , $this->AR_Frais01FR_Rem03REM_Type);
-        parent::maj("AR_Frais02FR_Denomination" , $this->AR_Frais02FR_Denomination);
-        parent::maj("AR_Frais02FR_Rem01REM_Valeur" , $this->AR_Frais02FR_Rem01REM_Valeur);
-        parent::maj("AR_Frais02FR_Rem01REM_Type" , $this->AR_Frais02FR_Rem01REM_Type);
-        parent::maj("AR_Frais02FR_Rem02REM_Valeur" , $this->AR_Frais02FR_Rem02REM_Valeur);
-        parent::maj("AR_Frais02FR_Rem02REM_Type" , $this->AR_Frais02FR_Rem02REM_Type);
-        parent::maj("AR_Frais02FR_Rem03REM_Valeur" , $this->AR_Frais02FR_Rem03REM_Valeur);
-        parent::maj("AR_Frais02FR_Rem03REM_Type" , $this->AR_Frais02FR_Rem03REM_Type);
-        parent::maj("AR_Frais03FR_Denomination" , $this->AR_Frais03FR_Denomination);
-        parent::maj("AR_Frais03FR_Rem01REM_Valeur" , $this->AR_Frais03FR_Rem01REM_Valeur);
-        parent::maj("AR_Frais03FR_Rem01REM_Type" , $this->AR_Frais03FR_Rem01REM_Type);
-        parent::maj("AR_Frais03FR_Rem02REM_Valeur" , $this->AR_Frais03FR_Rem02REM_Valeur);
-        parent::maj("AR_Frais03FR_Rem02REM_Type" , $this->AR_Frais03FR_Rem02REM_Type);
-        parent::maj("AR_Frais03FR_Rem03REM_Valeur" , $this->AR_Frais03FR_Rem03REM_Valeur);
-        parent::maj("AR_Frais03FR_Rem03REM_Type" , $this->AR_Frais03FR_Rem03REM_Type);
-        parent::maj("AR_Condition" , $this->AR_Condition);
-        parent::maj("AR_PUNet" , $this->AR_PUNet);
-        parent::maj("AR_Contremarque" , $this->AR_Contremarque);
-        parent::maj("AR_FactPoids" , $this->AR_FactPoids);
-        parent::maj("AR_FactForfait" , $this->AR_FactForfait);
-        parent::maj("AR_DateCreation" , $this->AR_DateCreation);
-        parent::maj("AR_SaisieVar" , $this->AR_SaisieVar);
-        parent::maj("AR_Transfere" , $this->AR_Transfere);
-        parent::maj("AR_Publie" , $this->AR_Publie);
-        parent::maj("AR_DateModif" , $this->AR_DateModif);
-        parent::maj("AR_Photo" , $this->AR_Photo);
-        parent::maj("AR_PrixAchNouv" , $this->AR_PrixAchNouv);
-        parent::maj("AR_CoefNouv" , $this->AR_CoefNouv);
-        parent::maj("AR_PrixVenNouv" , $this->AR_PrixVenNouv);
-        parent::maj("AR_DateApplication" , $this->AR_DateApplication);
-        parent::maj("AR_CoutStd" , $this->AR_CoutStd);
-        parent::maj("AR_QteComp" , $this->AR_QteComp);
-        parent::maj("AR_QteOperatoire" , $this->AR_QteOperatoire);
-        parent::maj("CO_No" , $this->CO_No);
-        parent::maj("AR_Prevision" , $this->AR_Prevision);
-        parent::maj("AR_DateApplication" , $this->AR_DateApplication);
-        parent::maj("AR_CoutStd" , $this->AR_CoutStd);
-        parent::maj("AR_QteComp" , $this->AR_QteComp);
-        parent::maj("AR_QteOperatoire" , $this->AR_QteOperatoire);
-        parent::maj("CO_No" , $this->CO_No);
-        parent::maj("cbCO_No" , $this->cbCO_No);
-        parent::maj("AR_Prevision" , $this->AR_Prevision);
-        parent::maj("cbCreateur" , $this->userName);
-        parent::maj("cbModification" , $this->cbModification);
+        parent::maj("cbModification" , $this->formatDate(substr($this->cbModification,0,10)));
         parent::maj("Prix_Min" , $this->Prix_Min);
         parent::maj("Prix_Max" , $this->Prix_Max);
         parent::maj("Qte_Gros" , $this->Qte_Gros);
-        $query= "UPDATE F_ARTICLE SET  
-                CL_No1=".$this->CL_No1.",cbCL_No1=(SELECT CASE WHEN ".$this->CL_No1."=0 THEN NULL ELSE ".$this->CL_No1." END),
-                CL_No2=".$this->CL_No1.",cbCL_No2=(SELECT CASE WHEN ".$this->CL_No2."=0 THEN NULL ELSE ".$this->CL_No2." END),
-                CL_No3=".$this->CL_No1.",cbCL_No3=(SELECT CASE WHEN ".$this->CL_No3."=0 THEN NULL ELSE ".$this->CL_No3." END),
-                CL_No4=".$this->CL_No1.",cbCL_No4=(SELECT CASE WHEN ".$this->CL_No4."=0 THEN NULL ELSE ".$this->CL_No4." END),
-                AR_Substitut=(SELECT CASE WHEN '".$this->AR_Substitut."'='' THEN NULL ELSE '".$this->AR_Substitut."' END)
-                WHERE cbMarq=".$this->cbMarq;
-        $this->db->query($query);
-        $this->majcbModification();
-        parent::maj("cbCreateur" , $this->cbCreateur);
+        parent::maj("CL_No1" , $this->CL_No1);
+        parent::maj("CL_No2" , $this->CL_No2);
+        parent::maj("CL_No3" , $this->CL_No3);
+        parent::maj("CL_No4" , $this->CL_No4);
+        parent::maj("CO_No" , $this->CO_No);
+        parent::maj("AR_Condition" , $this->AR_Condition);
+        parent::maj("AR_PrixAchNouv" , $this->AR_PrixAchNouv);
+        parent::maj("AR_CoefNouv" , $this->AR_CoefNouv);
+        parent::maj("AR_PrixVenNouv" , $this->AR_PrixVenNouv);
+        parent::maj("AR_QteComp" , $this->AR_QteComp);
+        parent::maj("AR_Publie" , $this->AR_Publie);
+        /*
+             parent::maj("cbCreateur" , $this->cbCreateur);
+             parent::maj("AR_Pays" , $this->AR_Pays);
+             parent::maj("AR_SuiviStock" , $this->AR_SuiviStock);
+             parent::maj("AR_Stat01" , $this->AR_Stat01);
+             parent::maj("AR_Stat02" , $this->AR_Stat02);
+             parent::maj("AR_Stat03" , $this->AR_Stat03);
+             parent::maj("AR_Stat04" , $this->AR_Stat04);
+             parent::maj("AR_Stat05" , $this->AR_Stat05);
+             parent::maj("AR_Escompte" , $this->AR_Escompte);
+             parent::maj("AR_Delai" , $this->AR_Delai);
+             parent::maj("AR_HorsStat" , $this->AR_HorsStat);
+             parent::maj("AR_VteDebit" , $this->AR_VteDebit);
+             parent::maj("AR_NotImp" , $this->AR_NotImp);
+             parent::maj("AR_Langue1" , $this->AR_Langue1);
+             parent::maj("AR_Langue2" , $this->AR_Langue2);
+             parent::maj("AR_CodeEdiED_Code1" , $this->AR_CodeEdiED_Code1);
+             parent::maj("AR_CodeEdiED_Code2" , $this->AR_CodeEdiED_Code2);
+             parent::maj("AR_CodeEdiED_Code3" , $this->AR_CodeEdiED_Code3);
+             parent::maj("AR_CodeEdiED_Code4" , $this->AR_CodeEdiED_Code4);
+             parent::maj("AR_Frais01FR_Denomination" , $this->AR_Frais01FR_Denomination);
+             parent::maj("AR_Frais01FR_Rem01REM_Valeur" , $this->AR_Frais01FR_Rem01REM_Valeur);
+             parent::maj("AR_Frais01FR_Rem01REM_Type" , $this->AR_Frais01FR_Rem01REM_Type);
+             parent::maj("AR_Frais01FR_Rem02REM_Valeur" , $this->AR_Frais01FR_Rem02REM_Valeur);
+             parent::maj("AR_Frais01FR_Rem02REM_Type" , $this->AR_Frais01FR_Rem02REM_Type);
+             parent::maj("AR_Frais01FR_Rem03REM_Valeur" , $this->AR_Frais01FR_Rem03REM_Valeur);
+             parent::maj("AR_Frais01FR_Rem03REM_Type" , $this->AR_Frais01FR_Rem03REM_Type);
+             parent::maj("AR_Frais02FR_Denomination" , $this->AR_Frais02FR_Denomination);
+             parent::maj("AR_Frais02FR_Rem01REM_Valeur" , $this->AR_Frais02FR_Rem01REM_Valeur);
+             parent::maj("AR_Frais02FR_Rem01REM_Type" , $this->AR_Frais02FR_Rem01REM_Type);
+             parent::maj("AR_Frais02FR_Rem02REM_Valeur" , $this->AR_Frais02FR_Rem02REM_Valeur);
+             parent::maj("AR_Frais02FR_Rem02REM_Type" , $this->AR_Frais02FR_Rem02REM_Type);
+             parent::maj("AR_Frais02FR_Rem03REM_Valeur" , $this->AR_Frais02FR_Rem03REM_Valeur);
+             parent::maj("AR_Frais02FR_Rem03REM_Type" , $this->AR_Frais02FR_Rem03REM_Type);
+             parent::maj("AR_Frais03FR_Denomination" , $this->AR_Frais03FR_Denomination);
+             parent::maj("AR_Frais03FR_Rem01REM_Valeur" , $this->AR_Frais03FR_Rem01REM_Valeur);
+             parent::maj("AR_Frais03FR_Rem01REM_Type" , $this->AR_Frais03FR_Rem01REM_Type);
+             parent::maj("AR_Frais03FR_Rem02REM_Valeur" , $this->AR_Frais03FR_Rem02REM_Valeur);
+             parent::maj("AR_Frais03FR_Rem02REM_Type" , $this->AR_Frais03FR_Rem02REM_Type);
+             parent::maj("AR_Frais03FR_Rem03REM_Valeur" , $this->AR_Frais03FR_Rem03REM_Valeur);
+             parent::maj("AR_Frais03FR_Rem03REM_Type" , $this->AR_Frais03FR_Rem03REM_Type);
+             parent::maj("AR_PUNet" , $this->AR_PUNet);
+             parent::maj("AR_Contremarque" , $this->AR_Contremarque);
+             parent::maj("AR_FactPoids" , $this->AR_FactPoids);
+             parent::maj("AR_FactForfait" , $this->AR_FactForfait);
+             parent::maj("AR_SaisieVar" , $this->AR_SaisieVar);
+             parent::maj("AR_Transfere" , $this->AR_Transfere);
+             parent::maj("AR_Substitut" , $this->AR_Substitut);
+            parent::maj("AR_DateCreation" , $this->formatDate($this->AR_DateCreation));
+            parent::maj("AR_DateModif" ,  $this->formatDate($this->AR_DateModif));
+            parent::maj("AR_DateApplication" ,  $this->formatDate($this->AR_DateApplication));
+            parent::maj("AR_DateApplication" ,  $this->formatDate($this->AR_DateApplication));
+     */
+        parent::maj("AR_Photo" , $this->AR_Photo);
+        parent::maj("AR_CoutStd" , $this->AR_CoutStd);
+        parent::maj("AR_QteOperatoire" , $this->AR_QteOperatoire);
+        parent::maj("AR_Prevision" , $this->AR_Prevision);
+        parent::maj("AR_CoutStd" , $this->AR_CoutStd);
+        parent::maj("AR_QteComp" , $this->AR_QteComp);
+        parent::maj("AR_Prevision" , $this->AR_Prevision);
     }
     public function insertArticle(){
-        return $this->getApiJson("/ajout_article&reference={$this->AR_Ref}&designation={$this->AR_Design}&pxAchat={$this->AR_PrixAch}&faCodeFamille={$this->FA_CodeFamille}&condition={$this->AR_Condition}&pxHt={$this->AR_PrixTTC}&pxMin={$this->Prix_Min}&pxMax={$this->Prix_Max}&qteGros={$this->Qte_Gros}&arPrixTTC={$this->AR_PrixTTC}&clNo1={$this->CL_No1}&clNo2={$this->CL_No2}&clNo3={$this->CL_No3}&clNo4={$this->CL_No4}&cbCreateur={$this->cbCreateur}");
+        return $this->getApiJson("/ajout_article&reference={$this->formatString($this->AR_Ref)}&designation={$this->formatString($this->AR_Design)}&pxAchat={$this->AR_PrixAch}&faCodeFamille={$this->formatString($this->FA_CodeFamille)}&condition={$this->AR_Condition}&pxHt={$this->AR_PrixTTC}&pxMin={$this->Prix_Min}&pxMax={$this->Prix_Max}&qteGros={$this->Qte_Gros}&arPrixTTC={$this->AR_PrixTTC}&clNo1={$this->CL_No1}&clNo2={$this->CL_No2}&clNo3={$this->CL_No3}&clNo4={$this->CL_No4}&cbCreateur={$this->cbCreateur}");
     }
 
     public function updateF_ArtStockBorne($AR_Ref,$DE_No,$QteMin,$QteMax){
@@ -339,12 +333,7 @@ class ArticleClass Extends Objet{
     }
 
     public function getPxMinMaxCatCompta($catCompta){
-        $query ="   SELECT AC_Coef,AC_PrixVen
-                FROM F_ARTCLIENT
-                WHERE AR_Ref='".$this->AR_Ref."'
-                AND AC_Categorie=$catCompta";
-        $result = $this->db->query($query);
-        return json_encode($result->fetchAll(PDO::FETCH_OBJ));
+        return $this->getApiJson("/getPxMinMaxCatCompta&arRef={$this->AR_Ref}&acCategorie=$catCompta");
     }
 
     public function listeArticlePagination(){

@@ -106,9 +106,6 @@ class Objet {
         $this->getApiExecute("/maj/$name/{$this->formatString($value)}/$cbMarq");
     }
 
-    public function majcbModification(){
-    }
-
     public function majNull($name){
     }
 

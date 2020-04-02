@@ -38,7 +38,7 @@
                     <div class="col-4 col-sm-6 col-md-3">
                         <label>Référence </label>
                         <input maxlength="19" style="text-transform: uppercase" onkeyup="this.value=this.value.replace(' ','')" type="text" value="<?= $ref; ?>" name="reference" class="form-control only_alpha_num" id="reference" placeholder="Référence" <?php if(isset($_GET["AR_Ref"])) echo "readonly"; ?>/>
-                        <input type="text" value="<?= $articleClass->cbMarq ; ?>" name="cbMarqArticle" class="form-control" id="cbMarqArticle" />
+                        <input type="hidden" value="<?= (isset($_GET["AR_Ref"])) ? $article->cbMarq : 0 ; ?>" name="cbMarqArticle" class="form-control" id="cbMarqArticle"  />
                     </div>
                     <div class="col-8 col-sm-6 col-md-5">
                         <label>Désignation </label>
@@ -345,7 +345,7 @@
                             <select id="catalniv2" name="catalniv2" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                                 <option value="0"></option>
                                 <?php
-                                $rows = $fcatalogue->getCatalogueChildren(1,$cl_no1);
+                                $rows = $fcatalogue->getCatalogueByCL(1,$cl_no1);
                                 if($rows==null){
                                 }else{
                                     if($cl_no2==0) echo '<option value="0"></option>';
@@ -366,7 +366,7 @@
                         <select id="catalniv3" name="catalniv3" class="form-control" <?php if(!$flagProtected) echo "disabled"; else ""; ?>>
                             <option value="0"></option>
                             <?php
-                            $rows = $fcatalogue->getCatalogueChildren(2,$cl_no2);
+                            $rows = $fcatalogue->getCatalogueByCL(2,$cl_no2);
                             if($rows==null){
                             }else{
                                 if($cl_no3==0) echo '<option value="0"></option>';

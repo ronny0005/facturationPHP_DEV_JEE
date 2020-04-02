@@ -13,10 +13,11 @@ include("../Modele/DepotClass.php");
 include("../Modele/CaisseClass.php");
 include("../Modele/CatTarifClass.php");
 include("../Modele/F_TarifClass.php");
+include("../Modele/F_ArtClientClass.php");
 include("../Modele/ProtectionClass.php");
 
 if(strcmp($_GET["acte"],"modif_article") == 0){
-    $article = new ArticleClass(strtoupper($_GET["reference"]),$objet->db);
+    $article = new ArticleClass(strtoupper($_GET["reference"]));
     $ancienPxMin = $article->Prix_Min;
     $ancienPxMax = $article->Prix_Max;
     $article->AR_Design = str_replace("'", "''", $_GET["designation"]);
@@ -645,14 +646,13 @@ if(strcmp($_GET["acte"],"modif_client") == 0){
 }
 
 if(strcmp($_GET["acte"],"cond_detail") == 0){
-    $result=$objet->db->requete($objet->detailConditionnement($_GET["reference"],$_GET["value_cond"]));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    echo json_encode($rows);
+    $article = new ArticleClass($_GET["reference"]);
+    echo json_encode($article->detailConditionnement($_GET["value_cond"]));
 }
 
 if(strcmp($_GET["acte"],"cond_detail_pxMinMax") == 0){
-    $article = new ArticleClass($_GET["reference"],$objet->db);
-    echo $article->getPxMinMaxCatCompta($_GET["value_cond"]);
+    $article = new ArticleClass($_GET["reference"]);
+    echo json_encode($article->getPxMinMaxCatCompta($_GET["value_cond"]));
 }
 
 if(strcmp($_GET["acte"],"maj_cond_detail") == 0){
@@ -669,11 +669,8 @@ if(strcmp($_GET["acte"],"maj_prix_detail") == 0){
     $ac_coef = 0;
     if(isset($_GET["AC_Coef"]))
         $ac_coef= str_replace(" ","",$_GET["AC_Coef"]);
-    $result=$objet->db->requete($objet->selectFArtClient($AR_Ref,$ncat));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null)
-        $objet->db->requete($objet->insertFArtClient($AR_Ref,$ncat,$pxTTC));    
-    $objet->db->requete($objet->majPrixDetail($ac_prixVen,$ac_coef,$AR_Ref,$ncat,$pxTTC));
+    $fartclientClass = new F_ArtClientClass(0);
+    $fartclientClass->updateFArtClient($ac_prixVen,$ac_coef,$AR_Ref,$ncat,$pxTTC);
 }
 
 if(strcmp($_GET["acte"],"ajout_article") == 0){
@@ -725,13 +722,13 @@ if(strcmp($_GET["acte"],"ajout_article") == 0){
         $article->AR_PrixTTC=$_GET["AR_PrixTTC"];
     else
         $article->AR_PrixTTC = 0;
-    if(isset($_GET["catalniv1"])  && $_GET["catalniv2"]!="null")
+    if(isset($_GET["catalniv1"])  && $_GET["catalniv1"]!="")
         $article->CL_No1 = $_GET["catalniv1"];
-    if(isset($_GET["catalniv2"]) && $_GET["catalniv2"]!="null")
+    if(isset($_GET["catalniv2"]) && $_GET["catalniv2"]!="")
         $article->CL_No2 = $_GET["catalniv2"];
-    if(isset($_GET["catalniv3"])  && $_GET["catalniv3"]!="null")
+    if(isset($_GET["catalniv3"])  && $_GET["catalniv3"]!="")
         $article->CL_No3 = $_GET["catalniv3"];
-    if(isset($_GET["catalniv4"])  && $_GET["catalniv4"]!="null")
+    if(isset($_GET["catalniv4"])  && $_GET["catalniv4"]!="")
         $article->CL_No4 = $_GET["catalniv4"];
     $article->AR_Nomencl=0;
     $article->AR_QteOperatoire=1;

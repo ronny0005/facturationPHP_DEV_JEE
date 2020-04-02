@@ -4915,10 +4915,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
                                         SELECT P_Conditionnement,cbIndice FROM P_CONDITIONNEMENT WHERE P_Conditionnement<>'')A ";
     }
 
-    public function majPrixDetail($prix,$ac_coef,$ref,$val,$pxTTC){
-        return "UPDATE F_ARTCLIENT SET AC_PrixVen = $prix, AC_PrixTTC= $pxTTC , AC_Coef= $ac_coef 
-                    WHERE AR_Ref='$ref' AND AC_Categorie=$val";
-    }
     public function insertFCondition($AR_Ref,$enumere,$qte){
         return"INSERT INTO [dbo].[F_CONDITION]
                     ([AR_Ref],[CO_No],[EC_Enumere],[EC_Quantite]
