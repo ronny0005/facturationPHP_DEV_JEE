@@ -20,14 +20,22 @@ $protected = 0;
 $flagNouveau = 0;
 $flagProtected = 0;
 $flagSuppr = 0;
+$cbMarqTiers = 0;
+$ctSommeil = 0;
+$ctEncours = "";
+$CT_ControlEnc = 0;
 $objet = new ObjetCollector();
 
 $comptet = new ComptetClass(0);
 
 
 $type = "client";
-if($_GET["action"]==9) $type="fournisseur";
-if($_GET["action"]==17) $type="salarie";
+//if($_GET["action"]==9) $type="fournisseur";
+//if($_GET["action"]==17) $type="salarie";
+if($_GET["type"]==1)
+    $type= "fournisseur";
+if($_GET["type"]==2)
+    $type= "salarie";
 $ncompte = $comptet->getCodeAuto($type);
 $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 if($type=="client"){
@@ -60,6 +68,10 @@ if(isset($_GET["CT_Num"])){
         $cattarif= $comptet->N_CatTarif;
         $MR_No = $comptet->MR_No;
         $affaire = $comptet->CA_Num;
+        $cbMarqTiers = $comptet->cbMarq;
+        $ctSommeil = $comptet->CT_Sommeil;
+        $ctEncours = $comptet->CT_Encours;
+        $CT_ControlEnc = $comptet->CT_ControlEnc;
 }
 
 if(isset($_GET["ajouter"]) ||isset($_GET["modifier"]) ){

@@ -1,9 +1,7 @@
-<script src="js/script_creationClient.js"></script>
+<script src="js/script_creationClient.js?d=<?php echo time(); ?>"></script>
 <?php
 include("controller/structure/TiersController.php");
 ?>
-
-
     <form id="form-creationClient" action="FicheClient" method="GET">
         <section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
             <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php if($type=="client") echo "Fiche client"; if($type=="fournisseur") echo "Fiche fournisseur"; if($type=="salarie") echo "Fiche salarié"; ?></h3>
@@ -14,6 +12,8 @@ include("controller/structure/TiersController.php");
                     <input type="hidden" id="type" name="type" type="hidden" value="<?php if($type=="fournisseur") echo "1"; if($type=="client") echo "0";if($type=="salarie") echo "2"; ?>"/>
                 <input type="hidden" id="DE_No" name="DE_No" type="hidden" value="1"/>
                 <label for="inputfirstname" class="control-label"> Num&eacute;ro compte : </label>
+                <input value="<?= $cbMarqTiers ?>" type="hidden" name="cbMarqTiers" id="cbMarqTiers" />
+
                 <input maxlength="17" value="<?php echo $ncompte; ?>" style=";text-transform:uppercase" type="text" onkeyup="this.value=this.value.replace(' ','')" name="CT_Num" id="CT_Num" class="form-control only_alpha_num" placeholder="Numéro compte" <?php if(isset($_GET["CT_Num"])) echo "disabled"; ?> />
             </div>
             <div class="col" >
@@ -172,6 +172,27 @@ include("controller/structure/TiersController.php");
                         }
                     }
                     ?>
+                </select>
+            </div>
+            <div class="col-lg-3" >
+                <label for="inputfirstname" class="control-label"> Sommeil: </label>
+                <select style="" class="form-control" name="CT_Sommeil" id="CT_Sommeil" <?= (!$flagProtected) ? "disabled":""; ?>>
+                    <option value="0" <?= ($ctSommeil==0) ? " selected" : "" ?>>Non</option>
+                    <option value="1" <?= ($ctSommeil==1) ? " selected" : "" ?>>Oui</option>
+                </select>
+            </div>
+
+            <div class="form-group col-lg-3" >
+                <label for="inputfirstname" class="control-label"> Encours max autorisé : </label>
+                <input value="<?= $ctEncours ?>" style="" name="CT_Encours" type="text" class="form-control" id="CT_Encours" placeholder="" <?= (!$flagProtected) ? "disabled" : "" ?>/>
+            </div>
+
+            <div class="col-lg-3" >
+                <label for="inputfirstname" class="control-label"> Ctrle de l'encours client : </label>
+                <select style="" class="form-control" name="CT_ControlEnc" id="CT_ControlEnc" <?= (!$flagProtected) ? "disabled":""; ?>>
+                    <option value="0" <?= ($CT_ControlEnc==0) ? " selected" : "" ?>>Contrôle automatique</option>
+                    <option value="1" <?= ($CT_ControlEnc==1) ? " selected" : "" ?>>Selon code risque</option>
+                    <option value="2" <?= ($CT_ControlEnc==2) ? " selected" : "" ?>>Compte bloqué</option>
                 </select>
             </div>
         </div>

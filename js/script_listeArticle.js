@@ -54,19 +54,6 @@ jQuery(function($){
         }
     });
 
-function referencement(){
-    $("table.table > tbody > tr").on('click', function() {
-        document.location.href = "indexMVC.php?module=&action=1&AR_Ref="+$(this).find("td a").html();
-    }); 
-}
-
-$("#dynatable-query-search-table").keyup(function(e){
-    referencement(); 
-});
-
-referencement();
-
-
 var protect = 0;
 var sommeil = $("#Inputsommeil").val();
 var prixFlag = $("#InputprixFlag").val();
@@ -156,6 +143,9 @@ var stockFlag = $("#InputstockFlag").val();
         "columns": info,
         "processing": true,
         "serverSide": true,
+        scrollY:        "300px",
+        scrollCollapse: true,
+        fixedColumns:   true,
         "ajax": {
             url: 'traitement/Creation.php?acte=listeArticle&PROT_No='+$("#PROT_No").val()+'&AR_Sommeil='+sommeil+'&flagPxAchat='+$("#flagPxAchat").val()+'&flagPxRevient='+$("#flagInfoLibreArticle").val()+"&prixFlag="+prixFlag+"&stockFlag="+stockFlag,
             type: 'POST'

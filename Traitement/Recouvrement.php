@@ -24,6 +24,7 @@ $mobile="";
 }
 
 if(strcmp($_POST["acte"],"addReglement") == 0){
+    var_dump($_POST);
     $reglement = new ReglementClass(0);
 
     $mobile=0;
@@ -31,7 +32,7 @@ if(strcmp($_POST["acte"],"addReglement") == 0){
         $mobile=1;
     $jo_num = $_POST["journal"];
     $rg_no_lier = $_POST["RG_NoLier"];
-    $ct_num = $_POST['client'];
+    $ct_num = $_POST['CT_Num'];
     $ca_no = $_POST["caisse"];
     $boncaisse = $_POST["boncaisse"];
     $libelle = $_POST['libelleRec'];
@@ -45,14 +46,15 @@ if(strcmp($_POST["acte"],"addReglement") == 0){
     $type = $_POST["type"];
     $dateReglementEntete_deb = $_POST["dateReglementEntete_deb"];
     $dateReglementEntete_fin = $_POST["dateReglementEntete_fin"];
-    $reglement->addReglement($mobile,urlencode($jo_num),$rg_no_lier,urlencode($ct_num)
+/*    $reglement->addReglement($mobile,urlencode($jo_num),$rg_no_lier,urlencode($ct_num)
         ,$ca_no,$boncaisse,urlencode($libelle),$caissier
         ,$date,$modeReglementRec,$montant,$impute,$RG_Type,true,$typeRegl);
-    $valAction = 2;
+*/    $valAction = 2;
     if($typeRegl=="Fournisseur")
         $valAction = 4;
     if($typeRegl=="Collaborateur")
         $valAction = 5;
+    die();
     header("Location: ../Reglement-$typeRegl-$caissier-$ct_num-$dateReglementEntete_deb-$dateReglementEntete_fin-$modeReglementRec-$jo_num-$ca_no-$type");
 }
 

@@ -67,6 +67,7 @@ jQuery(function ($) {
             event.preventDefault()
             $("#client").val(ui.item.label)
             $("#CT_Num").val(ui.item.value)
+            $("#client_ligne").val(ui.item.value);
         },
         focus: function(event, ui) {
         }
@@ -481,7 +482,9 @@ jQuery(function ($) {
             }
         });
     }
-    infoCaisse();
+
+    infoCaisse()
+
     function rafraichir_liste_collab(){
         $.ajax({
             url: "indexServeur.php?page=getCaissierByCaisse&CA_No=" + $("#caisse").val(),
@@ -492,9 +495,9 @@ jQuery(function ($) {
                 $("#caissier_choix").empty();
                 $.each(data, function(index, item) {
                     $("#caissier_choix").append(new Option(item.CO_Nom,item.CO_No));
-                });
+                })
             }
-        });
+        })
     }
 
     function calcul_montantRegle(emodeler,check,avance,ttc,avanceInit){
@@ -1022,8 +1025,8 @@ jQuery(function ($) {
         var caisse = $("#caisse").val();
         var rgType = 0;
         if($("#typeRegl").val()!="Client") rgType = 1;
-
-        $("#client_ligne").val($("#CT_Num").val());
+        alert($("#client_ligne").val())
+        //$("#client_ligne").val($("#CT_Num").val());
         $("#dateReglementEntete_deb_ligne").val($("#dateReglementEntete_deb").val());
         $("#dateReglementEntete_fin_ligne").val($("#dateReglementEntete_fin").val());
         $("#mode_reglement_ligne").val($("#mode_reglement").val());

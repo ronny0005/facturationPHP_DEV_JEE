@@ -56,13 +56,13 @@ $docEntete = new DocEnteteClass(0);
             <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(2,78,5);font-weight: bold;">Structure</a>
                 <div class="dropdown-menu" role="menu" style="border: none;">
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeArticle") ?>" role="presentation" href="listeArticle">Article</a>
-                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeClient") ?>" role="presentation" href="listeClient">Client</a>
-                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeFournisseur") ?>" role="presentation" href="listeFournisseur">Fournisseur</a>
+                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeClient") ?>" role="presentation" href="listeTiers-0-0">Client</a>
+                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeFournisseur") ?>" role="presentation" href="listeTiers-0-1">Fournisseur</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeFamille") ?>" role="presentation" href="listeFamille">Famille</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeDepot") ?>" role="presentation" href="listeDepot">Depot</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeCollaborateur") ?>" role="presentation" href="listeCollaborateur">Collaborateur</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeCaisse") ?>" role="presentation" href="listeCaisse">Caisse</a>
-                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeSalarie") ?>" role="presentation" href="listeSalarie">Salarié</a>
+                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"ListeSalarie") ?>" role="presentation" href="listeTiers-0-2">Salarié</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"RabaisRemiseRistourne") ?>" role="presentation" href="listeSalarie">Rabais remise et ristournes</a>
                 </div>
             </li>

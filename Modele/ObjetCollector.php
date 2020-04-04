@@ -4637,94 +4637,59 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
         return $requete;
     }
 
-    public function modifClientUpdateCANum($ct_num,$CA_Num) {
-        $requete = "UPDATE ".$this->db->baseCompta.".[dbo].[F_COMPTET] SET CA_Num=(CASE WHEN '$CA_Num'='' THEN NULL ELSE '$CA_Num' END),cbModification=GETDATE(),
-            N_Analytique=(CASE WHEN '$CA_Num'='' THEN NULL ELSE (SELECT N_Analytique FROM ".$this->db->baseCompta.".[dbo].F_COMPTEA WHERE CA_Num='$CA_Num') END),
-            cbN_Analytique=(CASE WHEN '$CA_Num'='' THEN NULL ELSE (SELECT N_Analytique FROM ".$this->db->baseCompta.".[dbo].F_COMPTEA WHERE CA_Num='$CA_Num') END)
-            WHERE CT_Num='$ct_num'";
-        return $requete;
-    }
 
 
     public function createFLivraison($ct_num,$ct_intitule,$adresse,$ct_complement,$ct_codepostal,$ct_ville,$ct_coderegion,$expedition,$condition,$ct_telecopie,$ct_email,$ct_pays,$ct_contact,$ct_telephone){
-        $requete="INSERT INTO ".$this->db->baseCompta.".[dbo].[F_LIVRAISON]
+        $requete="
+                DECLARE @ctNum VARCHAR(50) = ?
+                        ,@liIntitule VARCHAR(50) = ?
+                        ,@liAdresse VARCHAR(50) = ?
+                        ,@liComplement VARCHAR(50) = ?
+                        ,@liCodePostal VARCHAR(50) = ?
+                        ,@liVille VARCHAR(50) = ?
+                        ,@liCodeRegion VARCHAR(50) = ?
+                        ,@liPays VARCHAR(50) = ?
+                        ,@liContact VARCHAR(50) = ?
+                        ,@nExpedition VARCHAR(50) = ?
+                        ,@nCondition VARCHAR(50) = ?
+                        ,@liTelephone VARCHAR(50) = ?
+                        ,@liTelecopie VARCHAR(50) = ?
+                        ,@liEmail VARCHAR(50) = ?;
+
+INSERT INTO [F_LIVRAISON]
                     ([LI_No],[CT_Num],[LI_Intitule],[LI_Adresse]
 		   ,[LI_Complement],[LI_CodePostal],[LI_Ville],[LI_CodeRegion],[LI_Pays],[LI_Contact]
                     ,[N_Expedition],[N_Condition],[LI_Principal],[LI_Telephone]
                     ,[LI_Telecopie],[LI_EMail],[cbProt],[cbCreateur],[cbModification],[cbReplication],[cbFlag])
               VALUES
-                    (/*LI_No*/ISNULL((SELECT Max(LI_No) FROM ".$this->db->baseCompta.".[dbo].[F_LIVRAISON]),0)+1,/*CT_Num*/LEFT('$ct_num',17)
-                    ,/*LI_Intitule*/LEFT('$ct_intitule',35),/*LI_Adresse*/LEFT('$adresse',35)
-                    ,/*LI_Complement*/LEFT('$ct_complement',35),/*LI_CodePostal*/LEFT('$ct_codepostal',9)
-                    ,/*LI_Ville*/LEFT('$ct_ville',35),/*LI_CodeRegion*/LEFT('$ct_coderegion',25)
-                    ,/*LI_Pays*/LEFT('$ct_pays',35),/*LI_Contact*/LEFT('$ct_contact',35)
-                    ,/*N_Expedition*/$expedition,/*N_Condition*/$condition
-                    ,/*LI_Principal*/1,/*LI_Telephone, varchar(21),*/LEFT('$ct_telephone',21)
-                    ,/*LI_Telecopie*/LEFT('$ct_telecopie',21),/*LI_EMail*/LEFT('$ct_email',69)
+                    (/*LI_No*/ISNULL((SELECT Max(LI_No) FROM [F_LIVRAISON]),0)+1,/*CT_Num*/LEFT(@ctNum,17)
+                    ,/*LI_Intitule*/LEFT(@liIntitule,35),/*LI_Adresse*/LEFT(@liAdresse,35)
+                    ,/*LI_Complement*/LEFT(@liComplement,35),/*LI_CodePostal*/LEFT(@liCodePostal,9)
+                    ,/*LI_Ville*/LEFT(@liVille,35),/*LI_CodeRegion*/LEFT(@liCodeRegion,25)
+                    ,/*LI_Pays*/LEFT(@liPays,35),/*LI_Contact*/LEFT(@liContact,35)
+                    ,/*N_Expedition*/@nExpedition,/*N_Condition*/@nCondition
+                    ,/*LI_Principal*/1,/*LI_Telephone, varchar(21),*/LEFT(@liTelephone,21)
+                    ,/*LI_Telecopie*/LEFT(@liTelecopie,21),/*LI_EMail*/LEFT(@liEmail,69)
                     ,/*cbProt*/0,/*cbCreateur*/'AND',/*cbModification*/CAST(GETDATE() AS DATE)
                     ,/*cbReplication*/0,/*cbFlag*/0)";
         return $requete;
     }
 
     public function creationComptetg($ct_num,$cg_num){
-        $requete = "INSERT INTO ".$this->db->baseCompta.".[dbo].[F_COMPTETG]
-           ([CT_Num],[CG_Num],[cbProt],[cbCreateur],[cbModification]
-           ,[cbReplication],[cbFlag])
-     VALUES
-           (/*CT_Num*/'$ct_num',/*CG_Num*/'$cg_num',/*cbProt*/0
-           ,/*cbCreateur*/'AND',/*cbModification*/CAST(GETDATE() AS DATE)
-           ,/*cbReplication*/0,/*cbFlag*/0)";
+        $requete = "DECLARE @ctNum VARCHAR(50) = ?
+                            ,@cgNum VARCHAR(50) = ?
+                        INSERT INTO [F_COMPTETG]
+                           ([CT_Num],[CG_Num],[cbProt]
+                           ,[cbCreateur],[cbModification]
+                           ,[cbReplication],[cbFlag])
+                     VALUES
+                           (/*CT_Num*/@ctNum,/*CG_Num*/@cgNum,/*cbProt*/0
+                           ,/*cbCreateur*/'AND',/*cbModification*/CAST(GETDATE() AS DATE)
+                           ,/*cbReplication*/0,/*cbFlag*/0)";
         return $requete;
     }
 
-    public function insertFReglementT($CT_Num,$Condition,$nbJour,$jour,$trepart,$vrepart){
-        return "
-            DELETE FROM [dbo].[F_REGLEMENTT] WHERE CT_Num ='$CT_Num';
-            INSERT INTO [dbo].[F_REGLEMENTT]
-           ([CT_Num],[N_Reglement],[RT_Condition],[RT_NbJour]
-           ,[RT_JourTb01],[RT_JourTb02],[RT_JourTb03],[RT_JourTb04]
-           ,[RT_JourTb05],[RT_JourTb06],[RT_TRepart],[RT_VRepart]
-           ,[cbProt],[cbCreateur],[cbModification],[cbReplication],[cbFlag])
-     VALUES
-           (/*CT_Num*/'$CT_Num',/*N_Reglement*/1
-           ,/*RT_Condition*/$Condition,/*RT_NbJour*/$nbJour
-           ,/*RT_JourTb01*/$jour,/*RT_JourTb02*/0
-           ,/*RT_JourTb03*/0,/*RT_JourTb04*/0
-           ,/*RT_JourTb05*/0,/*RT_JourTb06*/0
-           ,/*RT_TRepart*/$trepart,/*RT_VRepart*/$vrepart
-           ,/*cbProt*/0,/*cbCreateur*/'AND'
-           ,/*cbModification*/CAST(GETDATE() AS DATE),/*cbReplication*/0,/*cbFlag*/0)";
-    }
-    public function modifReglement($rg_libelle,$rg_montant,$rg_date,$rg_no,$mode_reglement){
-        $requete="UPDATE F_CREGLEMENT SET RG_Libelle='$rg_libelle',RG_Montant=$rg_montant,RG_Date='$rg_date',N_Reglement = $mode_reglement WHERE RG_No=$rg_no";
-        return $requete;
-    }
-    public function removeFacRglt($do_piece,$do_type,$do_domaine,$rg_no){
-        $requete="  UPDATE F_DOCREGL SET DR_Regle = 
-                     (SELECT CASE WHEN DR_Regle= 1 THEN 0 ELSE DR_Regle END
-                        FROM F_DOCREGL A
-                        INNER JOIN F_REGLECH B ON A.DR_No=B.DR_No
-                        WHERE RG_No=$rg_no 
-                        AND A.DO_Piece='$do_piece' 
-                        AND A.DO_Domaine='$do_domaine' 
-                          AND A.DO_Type='$do_type')
-                    FROM F_REGLECH 
-                    WHERE F_DOCREGL.DR_No=F_REGLECH.DR_No 
-                    AND RG_No=$rg_no 
-                    AND F_DOCREGL.DO_Piece='$do_piece' 
-                    AND F_DOCREGL.DO_Domaine='$do_domaine' 
-                    AND F_DOCREGL.DO_Type='$do_type';
-                    DELETE FROM F_REGLECH
-                    WHERE   RG_No=$rg_no 
-                    AND     DO_Piece='$do_piece' 
-                    AND     DO_Domaine='$do_domaine' 
-                    AND     DO_Type='$do_type';
-                    UPDATE F_CREGLEMENT SET RG_Impute = 
-                     (SELECT CASE WHEN RG_Impute = 1 THEN 0 ELSE RG_Impute END
-                    FROM F_CREGLEMENT
-                    WHERE RG_No=$rg_no) WHERE RG_No=$rg_no";
-        return $requete;
-    }
+
     public function insertFactReglSuppr($DO_Domaine,$DO_Type,$DO_Piece,$CbMarq_Entete,$RG_No,$CbMarq_RG){
         $requete="  INSERT INTO [dbo].[Z_FACT_REGL_SUPPR]([DO_Domaine],[DO_Type],[DO_Piece],[CbMarq_Entete],[RG_No],[CbMarq_RG])
                     VALUES      (/*DO_Domaine*/ $DO_Domaine          ,/*DO_Type*/    $DO_Type       ,/*DO_Piece, varchar(25),*/'$DO_Piece'
@@ -4732,10 +4697,6 @@ from(select  row_number() over (order by u.subject) as idcompta,u.marks
         return $requete;
     }
 
-    public function supprRglt($rg_no){
-        $requete="  DELETE FROM F_CREGLEMENT WHERE RG_No=$rg_no";
-        return $requete;
-    }
     public function createClientMin($ct_num, $ct_intitule, $cg_num, $adresse, $cp, $ville, $coderegion, $siret, $ape, $numpayeur, $co_no, $cattarif, $catcompta, $de_no, $tel, $anal,$type,$identifiant,$mode_reglement,$CA_Num) {
         $requete = "INSERT INTO ".$this->db->baseCompta.".[dbo].[F_COMPTET] " .
             " ([CT_Num],[CT_Intitule],[CT_Type],[CG_NumPrinc],[CT_Qualite],[CT_Classement] " .
@@ -5956,16 +5917,17 @@ GROUP BY A.CA_No,A.CA_Intitule,B.NB
     }
 
     function getModeleReglementByMRNo($mr_no) {
-        return "SELECT MR_No,MR_Intitule
-                FROM ".$this->db->baseCompta.".dbo.F_MODELER
-                WHERE MR_No = $mr_no";
+        return "SELECT  MR_No,MR_Intitule
+                FROM    F_MODELER
+                WHERE   MR_No = $mr_no";
     }
 
     function getOptionModeleReglementByMRNo($mr_no) {
-        return "SELECT E.*,R_Intitule
-                FROM ".$this->db->baseCompta.".dbo.F_EMODELER E
-                INNER JOIN ".$this->db->baseCompta.".dbo.P_REGLEMENT P ON E.N_Reglement = P.R_Code
-                WHERE MR_No = $mr_no";
+        return "SELECT  E.*,R_Intitule
+                FROM    F_EMODELER E
+                INNER JOIN P_REGLEMENT P 
+                    ON E.N_Reglement = P.R_Code
+                WHERE   MR_No = $mr_no";
     }
 
     public function getSaisieAnal($EC_No,$N_Analytique){

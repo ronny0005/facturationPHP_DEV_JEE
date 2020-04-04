@@ -136,104 +136,47 @@ class ComptetClass Extends Objet{
         }
     }
 
-    public function maj_Tier(){
-        parent::maj(CT_Num , $this->CT_Num);
-        parent::maj(CT_Intitule , $this->CT_Intitule);
-        parent::maj(CT_Type , $this->CT_Type);
-        parent::maj(CG_NumPrinc , $this->CG_NumPrinc);
-        parent::maj(CT_Qualite , $this->CT_Qualite);
-        parent::maj(CT_Classement , $this->CT_Classement);
-        parent::maj(CT_Contact , $this->CT_Contact);
-        parent::maj(CT_Adresse , $this->CT_Adresse);
-        parent::maj(CT_Complement , $this->CT_Complement);
-        parent::maj(CT_CodePostal , $this->CT_CodePostal);
-        parent::maj(CT_Ville , $this->CT_Ville);
-        parent::maj(CT_CodeRegion , $this->CT_CodeRegion);
-        parent::maj(CT_Pays , $this->CT_Pays);
-        parent::maj(CT_Raccourci , $this->CT_Raccourci);
-        parent::maj(BT_Num , $this->BT_Num);
-        parent::maj(N_Devise , $this->N_Devise);
-        parent::maj(CT_Ape , $this->CT_Ape);
-        parent::maj(CT_Identifiant , $this->CT_Identifiant);
-        parent::maj(CT_Siret , $this->CT_Siret);
-        parent::maj(CT_Statistique01 , $this->CT_Statistique01);
-        parent::maj(CT_Statistique02 , $this->CT_Statistique02);
-        parent::maj(CT_Statistique03 , $this->CT_Statistique03);
-        parent::maj(CT_Statistique04 , $this->CT_Statistique04);
-        parent::maj(CT_Statistique05 , $this->CT_Statistique05);
-        parent::maj(CT_Statistique06 , $this->CT_Statistique06);
-        parent::maj(CT_Statistique07 , $this->CT_Statistique07);
-        parent::maj(CT_Statistique08 , $this->CT_Statistique08);
-        parent::maj(CT_Statistique09 , $this->CT_Statistique09);
-        parent::maj(CT_Statistique10 , $this->CT_Statistique10);
-        parent::maj(CT_Commentaire , $this->CT_Commentaire);
-        parent::maj(CT_Encours , $this->CT_Encours);
-        parent::maj(CT_Assurance , $this->CT_Assurance);
-        parent::maj(CT_NumPayeur , $this->CT_NumPayeur);
-        parent::maj(N_Risque , $this->N_Risque);
-        parent::maj(CO_No , $this->CO_No);
-        parent::maj(N_CatTarif , $this->N_CatTarif);
-        parent::maj(CT_Taux01 , $this->CT_Taux01);
-        parent::maj(CT_Taux02 , $this->CT_Taux02);
-        parent::maj(CT_Taux03 , $this->CT_Taux03);
-        parent::maj(CT_Taux04 , $this->CT_Taux04);
-        parent::maj(N_CatCompta , $this->N_CatCompta);
-        parent::maj(N_Period , $this->N_Period);
-        parent::maj(CT_Facture , $this->CT_Facture);
-        parent::maj(CT_BLFact , $this->CT_BLFact);
-        parent::maj(CT_Langue , $this->CT_Langue);
-        parent::maj(CT_Edi1 , $this->CT_Edi1);
-        parent::maj(CT_Edi2 , $this->CT_Edi2);
-        parent::maj(CT_Edi3 , $this->CT_Edi3);
-        parent::maj(N_Expedition , $this->N_Expedition);
-        parent::maj(N_Condition , $this->N_Condition);
-        parent::maj(CT_DateCreate , $this->CT_DateCreate);
-        parent::maj(CT_Saut , $this->CT_Saut);
-        parent::maj(CT_Lettrage , $this->CT_Lettrage);
-        parent::maj(CT_ValidEch , $this->CT_ValidEch);
-        parent::maj(CT_Sommeil , $this->CT_Sommeil);
-        parent::maj(DE_No , $this->DE_No);
-        parent::maj(CT_ControlEnc , $this->CT_ControlEnc);
-        parent::maj(CT_NotRappel , $this->CT_NotRappel);
-        parent::maj(N_Analytique , $this->N_Analytique);
-        parent::maj(CA_Num , $this->CA_Num);
-        parent::maj(CT_Telephone , $this->CT_Telephone);
-        parent::maj(CT_Telecopie , $this->CT_Telecopie);
-        parent::maj(CT_EMail , $this->CT_EMail);
-        parent::maj(CT_Site , $this->CT_Site);
-        parent::maj(CT_Coface , $this->CT_Coface);
-        parent::maj(CT_Surveillance , $this->CT_Surveillance);
-        parent::maj(CT_SvDateCreate , $this->CT_SvDateCreate);
-        parent::maj(CT_SvFormeJuri , $this->CT_SvFormeJuri);
-        parent::maj(CT_SvEffectif , $this->CT_SvEffectif);
-        parent::maj(CT_SvCA , $this->CT_SvCA);
-        parent::maj(CT_SvResultat , $this->CT_SvResultat);
-        parent::maj(CT_SvIncident , $this->CT_SvIncident);
-        parent::maj(CT_SvDateIncid , $this->CT_SvDateIncid);
-        parent::maj(CT_SvPrivil , $this->CT_SvPrivil);
-        parent::maj(CT_SvRegul , $this->CT_SvRegul);
-        parent::maj(CT_SvCotation , $this->CT_SvCotation);
-        parent::maj(CT_SvDateMaj , $this->CT_SvDateMaj);
-        parent::maj(CT_SvObjetMaj , $this->CT_SvObjetMaj);
-        parent::maj(CT_SvDateBilan , $this->CT_SvDateBilan);
-        parent::maj(CT_SvNbMoisBilan , $this->CT_SvNbMoisBilan);
-        parent::maj(N_AnalytiqueIFRS , $this->N_AnalytiqueIFRS);
-        parent::maj(CA_NumIFRS , $this->CA_NumIFRS);
-        parent::maj(CT_PrioriteLivr , $this->CT_PrioriteLivr);
-        parent::maj(CT_LivrPartielle , $this->CT_LivrPartielle);
-        parent::maj(MR_No , $this->MR_No);
-        parent::maj(CT_NotPenal , $this->CT_NotPenal);
-        parent::maj(EB_No , $this->EB_No);
-        parent::maj(CT_NumCentrale , $this->CT_NumCentrale);
-        parent::maj(CT_DateFermeDebut , $this->CT_DateFermeDebut);
-        parent::maj(CT_DateFermeFin , $this->CT_DateFermeFin);
-        parent::maj(CT_FactureElec , $this->CT_FactureElec);
-        parent::maj(CT_TypeNIF , $this->CT_TypeNIF);
-        parent::maj(CT_RepresentInt , $this->CT_RepresentInt);
-        parent::maj(CT_RepresentNIF , $this->CT_RepresentNIF);
-        parent::maj(cbMarq , $this->cbMarq);
-        parent::maj(cbCreateur , $this->userName);
-        parent::maj(cbModification , $this->cbModification);
+    public function maj_client(){
+
+        parent::maj("CT_Intitule" , $this->CT_Intitule);
+        parent::maj("CG_NumPrinc" , $this->CG_NumPrinc);
+        parent::maj("CT_Contact" , $this->CT_Contact);
+        parent::maj("CT_Adresse" , $this->CT_Adresse);
+        parent::maj("CT_Complement" , $this->CT_Complement);
+        parent::maj("CT_CodePostal" , $this->CT_CodePostal);
+        parent::maj("CT_Ville" , $this->CT_Ville);
+        parent::maj("CT_CodeRegion" , $this->CT_CodeRegion);
+        parent::maj("CT_Pays" , $this->CT_Pays);
+        parent::maj("CT_Ape" , $this->CT_Ape);
+        parent::maj("CT_Identifiant" , $this->CT_Identifiant);
+        parent::maj("CT_Siret" , $this->CT_Siret);
+        parent::maj("CO_No" , $this->CO_No);
+        parent::maj("N_CatTarif" , $this->N_CatTarif);
+        parent::maj("N_CatCompta" , $this->N_CatCompta);
+        parent::maj("N_Expedition" , $this->N_Expedition);
+        parent::maj("N_Condition" , $this->N_Condition);
+        parent::maj("DE_No" , $this->DE_No);
+        parent::maj("CA_Num" , $this->CA_Num);
+        parent::maj("CT_Telephone" , $this->CT_Telephone);
+        parent::maj("CT_Telecopie" , $this->CT_Telecopie);
+        parent::maj("CT_EMail" , $this->CT_EMail);
+        parent::maj("MR_No" , $this->MR_No);
+/*
+        parent::maj("CT_Encours" , $this->CT_Encours);
+        parent::maj("CT_ControlEnc" , $this->CT_ControlEnc);
+        parent::maj("N_AnalytiqueIFRS" , $this->N_AnalytiqueIFRS);
+        parent::maj("CA_NumIFRS" , $this->CA_NumIFRS);
+        parent::maj("N_Devise" , $this->N_Devise);
+        parent::maj("N_Analytique" , $this->N_Analytique);
+        parent::maj("CT_Sommeil" , $this->CT_Sommeil);
+*/    }
+
+    public function modifClientUpdateCANum(){
+        $this->getApiExecute("/modifClientUpdateCANum&ctNum={$this->formatString($this->CT_Num)}&caNum={$this->formatString($this->CA_Num)}");
+    }
+
+    public function majMrNo(){
+        $this->getApiExecute("/majMRNo&ctNum={$this->formatString($this->CT_Num)}&mrNo={$this->MR_No}");
     }
 
     public function allClients($sommeil=-1) {

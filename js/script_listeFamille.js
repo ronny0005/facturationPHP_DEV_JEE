@@ -41,10 +41,9 @@ $('#table').DataTable({
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
     },
 
-    fixedHeader: {
-        header: true,
-        footer: true
-    },
+    scrollY:        "300px",
+    scrollCollapse: true,
+    fixedColumns:   true,
     "initComplete": function(settings, json) {
         $("#table_filter").find(":input").addClass("form-control");
         $("#table_length").find(":input").addClass("form-control");

@@ -26,9 +26,8 @@
         </tr>
         </form>
 </table>
-<div class="err" id="add_err"></div>
-<table id="table" class="table">
-    <thead style="background-color: #dbdbed;color:black">
+<table id="table" class="table table-striped">
+    <thead>
             <th>Code</th>
             <th>Intitulé</th>
             <?php if($flagSuppr) echo "<th></th>"; ?>

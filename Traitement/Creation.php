@@ -562,38 +562,7 @@ if(strcmp($_GET["acte"],"ajout_client") == 0){
         $ct_numP = "";
         $comptetClass->setuserName("", "");
         $comptetClass->createClientMin();
-    $comptetClass = new ComptetClass($ncompte,"all",$objet->db);
-        $ct_numP=$comptetClass->CT_Num;
-            if($comptetClass->CT_Type!=1)
-                $result=$objet->db->requete($objet->createFLivraison($comptetClass->CT_Num
-                ,str_replace("'", "''", $comptetClass->CT_Intitule)
-                ,str_replace("'", "''", $comptetClass->CT_Adresse)
-                ,str_replace("'", "''", $comptetClass->CT_Complement)
-                ,str_replace("'", "''", $comptetClass->CT_CodePostal)
-                ,str_replace("'", "''", $comptetClass->CT_Ville)
-                ,str_replace("'", "''", $comptetClass->CT_CodeRegion)
-                ,$comptetClass->N_Expedition,$comptetClass->N_Condition,$comptetClass->CT_Telecopie
-                ,str_replace("'", "''", $comptetClass->CT_EMail)
-                ,str_replace("'", "''", $comptetClass->CT_Pays)
-                ,str_replace("'", "''", $comptetClass->CT_Contact)
-                ,$comptetClass->CT_Telephone));
-                $result=$objet->db->requete($objet->creationComptetg($comptetClass->CT_Num,$comptetClass->CG_NumPrinc));
-
-            if($comptetClass->MR_No!=0 && $comptetClass->MR_No!=""){
-                $result =  $objet->db->requete( $objet->getOptionModeleReglementByMRNo($mode_reglement));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if($rows !=null){
-                    foreach ($rows as $row){
-                        $Condition = $row->ER_Condition;
-                        $jour = $row->ER_JourTb01;
-                        $nbjour = $row->ER_NbJour;
-                        $trepart = $row->ER_TRepart;
-                        $vrepart = $row->ER_VRepart;
-                    }
-                    $objet->db->requete($objet->insertFReglementT($comptetClass->CT_Num,$Condition,$nbjour,$jour,$trepart,$vrepart));
-                }
-            }
-            $data = array('CT_Num' => $comptetClass->CT_Num);
+            $data = array('CT_Num' => $ncompte);
             echo json_encode($data);
     }else {
         echo $ncompte." existe déjà !";
@@ -601,48 +570,39 @@ if(strcmp($_GET["acte"],"ajout_client") == 0){
     }
 
 if(strcmp($_GET["acte"],"modif_client") == 0){
-        $ncompte = $_GET["CT_Num"];
-        $type = $_GET["type"];
-        
-        $intitule = str_replace("'", "''", $_GET["CT_Intitule"]);
-        $adresse = str_replace("'", "''", $_GET["CT_Adresse"]);
-        $compteg = $_GET["CG_NumPrinc"];
-        $codePostal = "";//$_GET["CT_CodePostal"];
-        $depot = $_GET["depot"];
-        $region= str_replace("'", "''", $_GET["CT_CodeRegion"]);
-        $ville= str_replace("'", "''",$_GET["CT_Ville"]);
-        $nsiret= $_GET["CT_Siret"];
-        $identifiant= $_GET["CT_Identifiant"];
-        $tel= $_GET["CT_Telephone"];
-        $catcompta= $_GET["N_CatCompta"];
-        $cattarif= $_GET["N_CatTarif"];
-        $mode_reglement= $_GET["mode_reglement"];
-        $CA_Num= $_GET["CA_Num"];
-        $CO_No= $_GET["CO_No"];
+    $ncompte = $_GET["CT_Num"];
+    //$type = $_GET["type"];
+    $comptetClass = new ComptetClass($ncompte,$objet->db);
+
+    $comptetClass->CT_Intitule= str_replace("'", "''", $_GET["CT_Intitule"]);
+    $comptetClass->CT_Adresse= str_replace("'", "''", $_GET["CT_Adresse"]);
+    $comptetClass->CG_NumPrinc= $_GET["CG_NumPrinc"];
+    //$comptetClass ->CT_CodePostal= "";//$_GET["CT_CodePostal"];
+    $comptetClass->DE_No= $_GET["depot"];
+    $comptetClass->CT_CodeRegion= str_replace("'", "''", $_GET["CT_CodeRegion"]);
+    $comptetClass ->CT_Ville= str_replace("'", "''",$_GET["CT_Ville"]);
+    $comptetClass->CT_Siret = $_GET["CT_Siret"];
+    $comptetClass ->CT_Identifiant= $_GET["CT_Identifiant"];
+    $comptetClass ->CT_Telephone= $_GET["CT_Telephone"];
+    $comptetClass ->N_CatCompta= $_GET["N_CatCompta"];
+    $comptetClass ->N_CatTarif= $_GET["N_CatTarif"];
+    $comptetClass ->MR_No= $_GET["mode_reglement"];
+    $comptetClass ->CA_Num= $_GET["CA_Num"];
+    $comptetClass ->CO_No= $_GET["CO_No"];
+    $comptetClass ->CT_Sommeil= $_GET["CT_Sommeil"];
+    $comptetClass->CT_ControlEnc = $_GET["CT_ControlEnc"];
+    $comptetClass->CT_Encours = str_replace(" ", "", $_GET["CT_Encours"]);
 
     if($_GET["CA_Num"]=="selected")
         $CA_Num= "";
-        $comptetClass = new ComptetClass($ncompte,$objet->db);
-        $comptetClass->setuserName("","");
-        $comptetClass->maj("cbCreateur",$comptetClass->userName);
-        $result=$objet->db->requete($objet->modifClient($ncompte,$intitule,$compteg,$adresse,$codePostal,$ville,$region,$nsiret,'',$ncompte,$CO_No,$cattarif,$catcompta,$depot,$tel,'0',$identifiant,$mode_reglement,$CA_Num));
-        $result=$objet->db->requete($objet->modifClientUpdateCANum($ncompte,$CA_Num));
-            if($mode_reglement!=0 && $mode_reglement!=""){
-                $result =  $objet->db->requete( $objet->getOptionModeleReglementByMRNo($mode_reglement));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if($rows !=null){
-                    foreach ($rows as $row){
-                        $Condition = $row->ER_Condition;
-                        $jour = $row->ER_JourTb01;
-                        $nbjour = $row->ER_NbJour;
-                        $trepart = $row->ER_TRepart;
-                        $vrepart = $row->ER_VRepart;
-                    }
-                    $objet->db->requete($objet->insertFReglementT($ncompte,$Condition,$nbjour,$jour,$trepart,$vrepart));  
-                }
-            }
-        $data = array('CT_Num' => $ncompte);
+    $comptetClass->maj_client();
+    $comptetClass->modifClientUpdateCANum();
+    if($comptetClass ->MR_No!=0 && $comptetClass ->MR_No!=""){
+        $comptetClass ->majMrNo();
+    }
+    $data = array('CT_Num' => $ncompte);
     echo json_encode($data);
+
 }
 
 if(strcmp($_GET["acte"],"cond_detail") == 0){

@@ -19,15 +19,15 @@ $post = 0;
 
 if(isset($_POST["client"]))
     $post=1;
-if(isset($_GET["client"]))
-    $post=1;
+
 $typeRegl = "Client";
 if(isset($_POST["typeRegl"]))
     $typeRegl = $_POST["typeRegl"];
+
 if(isset($_GET["typeRegl"]))
     $typeRegl = $_GET["typeRegl"];
 
-    $texteMenu = "Règlement client";
+$texteMenu = "Règlement client";
 
 if(isset($_POST["client"])) $client=$_POST["CT_Num"];
 if(isset($_POST["type"])) $type=$_POST["type"];
@@ -49,7 +49,8 @@ if(isset($_GET["dateReglementEntete_fin"])) $datefin=$_GET["dateReglementEntete_
 $objet = new ObjetCollector();
 $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 $comptet = new ComptetClass($client);
-if ($typeRegl == "Client") {
+
+if ($typeRegl == "client") {
     $flagProtected = $protection->protectedType("ReglementClient");
     $flagSuppr = $protection->SupprType("ReglementClient");
     $flagNouveau = $protection->NouveauType("ReglementClient");
@@ -211,7 +212,7 @@ if($typeRegl=="Collaborateur"){
                 <input type="hidden" value="1" name="module"/>
                 <input type="hidden" value="2" name="action"/>
                 <input type="hidden" value="addReglement" name="acte"/>
-                <input type="hidden" value="" name="client" id="client_ligne" />
+                <input type="hidden" value="<?=$client ?>" name="client" id="client_ligne" />
                 <input type="hidden" value="" name="dateReglementEntete_deb" id="dateReglementEntete_deb_ligne" />
                 <input type="hidden" value="" name="dateReglementEntete_fin" id="dateReglementEntete_fin_ligne" />
                 <input type="hidden" value="" name="mode_reglement" id="mode_reglement_ligne" />

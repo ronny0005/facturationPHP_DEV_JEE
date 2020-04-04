@@ -30,17 +30,12 @@ RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$
 RewriteRule ^ficheArticle-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1&window=$2 [L]
 
 
-RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4 [L]
-RewriteRule ^listeClient$  indexMVC_New.php?module=3&action=4&CT_Num=$1 [L]
+RewriteRule ^listeTiers-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=4&statut=$1&type=$2 [L]
+RewriteRule ^listeTiers-([0-z]+)-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=4&statut=$1&type=$2&CT_Num=$3 [L]
+RewriteRule ^listeTiers-([0-z]+)-([0-z]+)-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=4&statut=$1&type=$2&CT_Sommeil=$3&CT_Num=$4 [L]
 
-RewriteRule ^listeFournisseur$  indexMVC_New.php?module=3&action=8 [L]
-RewriteRule ^listeFournisseur$  indexMVC_New.php?module=3&action=8&CT_Num=$1 [L]
-
-RewriteRule ^FicheFournisseur$  indexMVC_New.php?module=3&action=9 [L]
-RewriteRule ^FicheFournisseur-([0-z]+)$  indexMVC_New.php?module=3&action=9&CT_Num=$1 [L]
-
-RewriteRule ^FicheClient$  indexMVC_New.php?module=3&action=2 [L]
-RewriteRule ^FicheClient-([0-z]+)$  indexMVC_New.php?module=3&action=2&CT_Num=$1 [L]
+RewriteRule ^FicheTiers-([0-z]+)$  indexMVC_New.php?module=3&action=2&type=$1 [L]
+RewriteRule ^FicheTiers-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=2&type=$1&CT_Num=$2 [L]
 
 RewriteRule ^mvtCaisse$  indexMVC_New.php?module=6&action=1 [L]
 
