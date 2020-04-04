@@ -432,7 +432,7 @@ jQuery(function($) {
     });
 
     function ajout_entete(){
-        if(!$("#souche").is(':disabled'))
+        if(!$("#cbMarqEntete").val()==0)
             if((typeFac=="Ticket") || ($("#do_statut").val()==0 || $("#do_statut").val()==1 || $("#do_statut").val()==2)){
                 if($("#CT_Num").val()!=""){
                     if($('#dateentete').val()!=""){
