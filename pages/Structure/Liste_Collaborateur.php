@@ -36,6 +36,7 @@ include("module/Menu/BarreMenu.php");
     <?php
     $statut = $_GET["statut"];
     if(isset($_GET["CO_No"]) && $statut!=0) {
+        $collaborateurClass = new CollaborateurClass($_GET["CO_No"]);
         $type = "La création ";
         $alert = "alert-success";
         if($statut == 3) {
@@ -51,7 +52,7 @@ include("module/Menu/BarreMenu.php");
 
         ?>
         <div class="mt-3 alert <?= $alert ?>">
-            <?= $type ?>de l'article <?= $_GET["CO_No"] ?> a été effectuée !
+            <?= $type ?>du collaborateur <?= $collaborateurClass->CO_Nom ?> a été effectuée !
         </div>
         <?php
     }
