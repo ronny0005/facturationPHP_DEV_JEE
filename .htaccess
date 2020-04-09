@@ -16,14 +16,17 @@ RewriteRule ^Document-Facture([A-z]+)-([0-9]+)$  indexMVC_New.php?module=2&actio
 RewriteRule ^Document-Mvt([A-z]+)-([0-9]+)$  indexMVC_New.php?module=4&action=7&type=$1&cbMarq=$2 [L]
 
 
-RewriteRule ^listeArticle$  indexMVC_New.php?module=3&action=3 [L]
-RewriteRule ^listeArticle-([0-z]+)$  indexMVC_New.php?module=3&action=3&AR_Ref=$1 [L]
-RewriteRule ^listeArticle-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=3&acte=$1&AR_Ref=$2 [L]
-RewriteRule ^listeArticle-(-?[0-9]+)-(-?[0-9]+)-(-?[0-9]+)$  indexMVC_New.php?module=3&action=3&sommeil=$1&stockFlag=$2&prixFlag=$3 [L]
+RewriteRule ^listeArticle-([0-z]+)$  indexMVC_New.php?module=3&action=3&statut=$1 [L]
+RewriteRule ^listeArticle-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=3&statut=$1&AR_Ref=$2 [L]
+RewriteRule ^listeArticle-([0-z]+)-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=3&statut=$1&acte=$2&AR_Ref=$3 [L]
+RewriteRule ^listeArticle-([0-z]+)-(-?[0-9]+)-(-?[0-9]+)-(-?[0-9]+)$  indexMVC_New.php?module=3&action=3&statut=$1&sommeil=$2&stockFlag=$3&prixFlag=$4 [L]
 
-RewriteRule ^listeFamille$  indexMVC_New.php?module=3&action=6 [L]
+RewriteRule ^listeFamille-([0-z]+)$  indexMVC_New.php?module=3&action=6&statut=$1 [L]
+RewriteRule ^supprFamille-([0-z]+)$  Traitement\Creation.php?acte=suppr_famille&FA_CodeFamille=$1 [L]
+
+
 RewriteRule ^ficheFamille indexMVC_New.php?module=3&action=7 [L]
-RewriteRule ^ficheFamille-([A-z]+) indexMVC_New.php?module=3&action=7&FA_CodeFamille=$1 [L]
+RewriteRule ^ficheFamille-([0-z]+) indexMVC_New.php?module=3&action=7&FA_CodeFamille=$1 [L]
 
 RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1 [L]
 RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
@@ -49,8 +52,8 @@ RewriteRule ^listeDepot-([0-z]+)$  indexMVC_New.php?module=3&action=10&DE_No=$1 
 RewriteRule ^ficheDepot$  indexMVC_New.php?module=3&action=11 [L]
 RewriteRule ^ficheDepot-([0-z]+)$  indexMVC_New.php?module=3&action=11&DE_No=$1 [L]
 
-RewriteRule ^listeCollaborateur$  indexMVC_New.php?module=3&action=12 [L]
-RewriteRule ^listeCollaborateur$  indexMVC_New.php?module=3&action=12&DE_No=$1 [L]
+RewriteRule ^listeCollaborateur-([0-z]+)$  indexMVC_New.php?module=3&action=12&statut=$1 [L]
+RewriteRule ^listeCollaborateur-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=12&statut=$1&CO_No=$2 [L]
 
 RewriteRule ^listeCaisse$  indexMVC_New.php?module=3&action=14 [L]
 RewriteRule ^listeCaisse-([0-z]+)$  indexMVC_New.php?module=3&action=14&CA_No=$1 [L]
@@ -70,3 +73,12 @@ RewriteRule ^impressionFactureCMI-([0-z]+)-([0-z]+)-([0-z]+)$ export/CMI/exportF
 RewriteRule ^impressionMouvement-Transfert-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtTransfertpdf.php?cbMarq=$1&type=$2&format=$3 [L]
 RewriteRule ^impressionMouvement-Entree-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtEntreepdf.php?cbMarq=$1&type=$2&format=$3 [L]
 RewriteRule ^impressionMouvement-Sortie-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtSortiepdf.php?cbMarq=$1&type=$2&format=$3 [L]
+
+RewriteRule ^clotureDeCaisse$ indexMVC_New.php?module=9&action=18 [L]
+
+RewriteRule ^majAnalytique$ indexMVC_New.php?module=9&action=17 [L]
+RewriteRule ^majComptable$ indexMVC_New.php?module=9&action=16 [L]
+
+
+
+

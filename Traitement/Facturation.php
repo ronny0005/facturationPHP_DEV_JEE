@@ -179,23 +179,24 @@ if($_GET["acte"] =="saisie_comptable") {
 if($_GET["acte"] =="majComptaFonction") {
     $typeTransfert = $_GET["typeTransfert"];
     if($typeTransfert ==1 || $typeTransfert ==2) {
-        $docEntete = new DocEnteteClass(0);
+        $docEntete = new DocEnteteClass(0,$objet->db);
         $listeFacture = $docEntete->getListeFactureMajComptable($_GET["typeTransfert"], $objet->getDate($_GET["datedebut"]), $objet->getDate($_GET["datefin"]),
             $_GET["facturedebut"], $_GET["facturefin"], $_GET["souche"], $_GET["transfert"], $_GET["catCompta"], $_GET["caisse"]);
         foreach ($listeFacture as $liste) {
-            $reglement = new ReglementClass(0);
+            $reglement = new ReglementClass(0,$objet->db);
             $listeRglt = $reglement->getReglementByFacture($liste->DO_Domaine,$liste->DO_Type,$liste->DO_Piece);
+
             if(sizeof($listeRglt)!=0)
                 majComptaCaisse($liste->DO_Piece, $liste->DO_Domaine, $liste->DO_Type, 0);
             majCompta($liste->DO_Piece, $liste->DO_Domaine, $liste->DO_Type, 0);
             $doTypeCible = 7;
             if ($liste->DO_Domaine == 1) $doTypeCible = 17;
-            $result = $objet->db->requete($objet->majEnteteComptable($liste->DO_Piece, $liste->DO_Domaine, $liste->DO_Type, $doTypeCible));
+            $docEntete->majEnteteComptable($liste->DO_Piece, $liste->DO_Domaine, $liste->DO_Type,$doTypeCible);
         }
     }
 
     if($typeTransfert ==3 || $typeTransfert ==4){
-        $reglement = new ReglementClass(0);
+        $reglement = new ReglementClass(0,$objet->db);
         $listeFacture = $reglement->getListeReglementMajComptable($_GET["typeTransfert"], $objet->getDate($_GET["datedebut"]), $objet->getDate($_GET["datefin"]),$_GET["transfert"], $_GET["caisse"]);
         foreach ($listeFacture as $liste) {
             majComptaCaisseReglement($liste->RG_No);

@@ -360,7 +360,7 @@ class ArticleClass Extends Objet{
             if(isset($_GET['prixFlag']))
                 $prixFlag = $_GET['prixFlag'];
 
-            $recordsTotal = sizeof($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,""));
+            $recordsTotal = sizeof($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString("")));
 
             /* SEARCH CASE : Filtered data */
             if(!empty($_POST['search']['value'])){
@@ -373,16 +373,16 @@ class ArticleClass Extends Objet{
                 $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
                 /* End WHERE */
                 $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
-                $recordsFiltered = count($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql));//Count of search result
+                $recordsFiltered = count($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql)));//Count of search result
 
                 /* SQL Query for search with limit and orderBy clauses*/
                 $sql = sprintf(" %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
-                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql);
+                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql));
             }
             /* END SEARCH */
             else {
                 $sql = sprintf("ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
-                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql);
+                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql));
                 $recordsFiltered = $recordsTotal;
             }
 

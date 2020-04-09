@@ -7,6 +7,7 @@ include("Modele/CollaborateurClass.php");
 include("Modele/JournalClass.php");
 include("Modele/DepotClass.php");
 include("Modele/DepotCaisseClass.php");
+include("Modele/CompteaClass.php");
 include("Modele/DepotUserClass.php");
 include("Modele/DocEnteteClass.php");
 include("Modele/CatComptaClass.php");

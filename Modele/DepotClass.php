@@ -67,7 +67,6 @@ class DepotClass Extends Objet{
         parent::maj('DP_NoDefaut', $this->DP_NoDefaut);
         parent::maj('cbModification', $this->formatString(substr($this->cbModification,0,10)));
         $this->majCatTarif();
-        $this->majcbModification();
     }
 
     public function __toString() {

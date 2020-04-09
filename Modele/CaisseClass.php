@@ -29,6 +29,11 @@ class CaisseClass Extends Objet{
         }
     }
 
+    public function clotureCaisse($dateCloture,$caisseDebut,$caisseFin,$ProtNo,$typeCloture)
+    {
+        $this->getApiExecute("/clotureCaisse/dateCloture=$dateCloture&caisseDebut=$caisseDebut&caisseFin=$caisseFin&protNo=$ProtNo&typeCloture=$typeCloture");
+    }
+
     public function getCaNum(){
         return $this->getApiJson("/getCaNum&caNo={$this->CA_No}");
     }

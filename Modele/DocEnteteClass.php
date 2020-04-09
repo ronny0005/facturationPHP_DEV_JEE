@@ -1379,6 +1379,33 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
             return "active";
         if($type=="AchatRetour" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
             return "active";
+
+        if($type=="listeArticle" && $typeMenu == $type && $module==3 && ($action == 3 || $action == 1))
+            return "active";
+        if($type=="listeClient" && $typeMenu == $type && $module==3 &&  ($action == 4 || $action == 2))
+            return "active";
+        if($type=="listeFournisseur" && $typeMenu == $type && $module==3 &&  ($action == 4 || $action == 2))
+            return "active";
+        if($type=="listeFamille" && $typeMenu == $type && $module==3  &&  ($action == 7 || $action == 6))
+            return "active";
+        if($type=="listeDepot" && $typeMenu == $type && $module==3  &&  ($action == 11 || $action == 10))
+            return "active";
+        if($type=="listeCollaborateur" && $typeMenu == $type && $module==3  &&  ($action == 13 || $action == 12))
+            return "active";
+        if($type=="listeCaisse" && $typeMenu == $type && $module==3  &&  ($action == 15 || $action == 14))
+            return "active";
+        if($type=="listeSalarie" && $typeMenu == $type && $module==3  &&  ($action == 4 || $action == 2))
+            return "active";
+        if($type=="RabaisRemiseRistourne" && $typeMenu == $type && $module==3  &&  ($action == 4 || $action == 2))
+            return "active";
+
+        if($type=="ClotureCaisse" && $typeMenu == $type && $module==9 && $action == 18)
+            return "active";
+        if($type=="majComptable" && $typeMenu == $type && $module==9 && $action == 16)
+            return "active";
+        if($type=="majAnalytique" && $typeMenu == $type && $module==9 && $action == 17)
+            return "active";
+
         return "";
     }
     public function getEnteteDispo(){
@@ -1476,6 +1503,11 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/getlisteSortie&client={$this->formatString($do_tiers)}&dateDeb=$datedeb&dateFin=$datefin");
     }
 
+    function majEnteteComptable($doPiece,$doDomaine,$doType,$doTypeCible){
+        $this->getApiExecute("/majEnteteComptable&doType=$doType&doDomaine=$doDomaine&doPiece=$doPiece&doTypeCible=$doTypeCible");
+    }
+
+
     public function getListeFactureMajComptable($typeTransfert, $datedeb, $datefin,$doPiecedeb,$doPiecefin,$souche,$etatPiece,$catCompta,$caisse){
         $query = "
                     DECLARE @doDomaine INT = 0
@@ -1507,6 +1539,7 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
                       AND (@doSouche='-1' OR DO_Souche=@doSouche)
                       AND (@catCompta='0' OR N_CatCompta>=@catCompta)
                       AND (@caisse='0' OR CA_No =@caisse)";
+
         $result= $this->db->query($query);
         $this->list = array();
         foreach ($result->fetchAll(PDO::FETCH_OBJ) as $resultat)

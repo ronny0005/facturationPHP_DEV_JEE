@@ -318,9 +318,9 @@ if(strcmp($_GET["acte"],"suppr_article") == 0){
     $article = new ArticleClass($_GET["AR_Ref"]);
     $rows = $article->delete();
     if($rows==1){
-        header('Location: ../listeArticle-supprOK-'.$_GET["AR_Ref"]);
+        header('Location: ../listeArticle-3-'.$_GET["AR_Ref"]);
     }else
-        header('Location: ../listeArticle-supprKO-'.$_GET["AR_Ref"]);
+        header('Location: ../listeArticle-4-'.$_GET["AR_Ref"]);
 }
 
 if(strcmp($_GET["acte"],"liste_clientNum") == 0){

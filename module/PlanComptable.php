@@ -13,58 +13,75 @@
  */
 class PlanComptable {
     public function doAction($action) {
-            switch($action) {
-                    case 1 : 
-                        $this->Plan_comptable(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 2 : 
-                        $this->Creation_Plan_comptable(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 3 : 
-                        $this->Plan_analytique(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 4 : 
-                        $this->Creation_Plan_analytique(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 5 : 
-                        $this->Taxe(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 6 : 
-                        $this->Creation_Taxe(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 7 : 
-                        $this->Journaux(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 8 : 
-                        $this->Creation_Journaux(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 9 : 
-                        $this->Banque(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 10 : 
-                        $this->Creation_Banque(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 11 : 
-                        $this->ModeReglement(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 12 : 
-                        $this->Creation_ModeReglement(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 13 : 
-                        $this->Liste_journauxExercice(); //rechercher un étudiant par domaine d'activité 
-                        break;
-                    case 14 : 
-                        $this->Saisie_journauxExercice(); //rechercher un étudiant par domaine d'activité 
-                        break;
+        $objet = new ObjetCollector();
+        $protection = new ProtectionClass("","");
+        if(isset($_SESSION["login"]))
+            $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+        if($protection->Prot_No!="") {
+            switch ($action) {
+                case 1 :
+                    $this->Plan_comptable(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 2 :
+                    $this->Creation_Plan_comptable(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 3 :
+                    $this->Plan_analytique(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 4 :
+                    $this->Creation_Plan_analytique(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 5 :
+                    $this->Taxe(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 6 :
+                    $this->Creation_Taxe(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 7 :
+                    $this->Journaux(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 8 :
+                    $this->Creation_Journaux(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 9 :
+                    $this->Banque(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 10 :
+                    $this->Creation_Banque(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 11 :
+                    $this->ModeReglement(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 12 :
+                    $this->Creation_ModeReglement(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 13 :
+                    $this->Liste_journauxExercice(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 14 :
+                    $this->Saisie_journauxExercice(); //rechercher un étudiant par domaine d'activité
+                    break;
                 case 15 :
                     $this->Controle_de_caisse(); //rechercher un étudiant par domaine d'activité
                     break;
                 case 16 :
                     $this->mise_a_jour_comptable(); //rechercher un étudiant par domaine d'activité
                     break;
-                    default : 
-                            $this->Plan_comptable(); // On décide ce que l'on veut faire		
+                case 17 :
+                    $this->mise_a_jour_analytique(); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 18 :
+                    if ($protection->PROT_Right == 1 || ($protection->PROT_CLOTURE_CAISSE != 2))
+                        $this->cloture_caisse();
+                    else
+                        header('accueil');
+                    break;
+                default :
+                    $this->Plan_comptable(); // On décide ce que l'on veut faire
             }
+        }
+        else
+            header('accueil');
     }
 
     public function Plan_comptable() {
@@ -73,7 +90,7 @@ class PlanComptable {
     public function Creation_Plan_comptable() {
         include("pages/Structure/PlanComptable/CreationPlanComptable.php");
     }
-    
+
     public function Plan_analytique() {
         include("pages/Structure/PlanComptable/PlanAnalytique.php");
     }
@@ -115,6 +132,12 @@ class PlanComptable {
     }
     public function mise_a_jour_comptable() {
         include("pages/Structure/PlanComptable/Mise_a_jour_comptable.php");
+    }
+    public function mise_a_jour_analytique() {
+        include("pages/Structure/PlanComptable/mise_a_jour_analytique.php");
+    }
+    public function cloture_caisse() {
+        include("pages/Structure/PlanComptable/clotureCaisse.php");
     }
 }
 ?>

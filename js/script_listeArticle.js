@@ -37,15 +37,15 @@ jQuery(function($){
     }
 
     $("#sommeil").change(function(){
-        window.location.replace("listeArticle-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
+        window.location.replace("listeArticle-0-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
     });
 
     $("#stockFlag").change(function(){
-        window.location.replace("listeArticle-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
+        window.location.replace("listeArticle-0-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
     });
 
     $("#prixFlag").change(function(){
-        window.location.replace("listeArticle-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
+        window.location.replace("listeArticle-0-"+$("#sommeil").val()+"-"+$("#stockFlag").val()+"-"+$("#prixFlag").val());
     });
 
     $('#table').dynatable({

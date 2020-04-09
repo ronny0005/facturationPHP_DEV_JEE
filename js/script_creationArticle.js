@@ -159,7 +159,7 @@ jQuery(function($) {
                 data: $("#formArticle").serialize(),
                 success: function (data) {
                     if($_GET("window")==undefined)
-                        window.location.replace("listeArticle-" + data.AR_Ref);
+                        window.location.replace("listeArticle-2-" + data.AR_Ref);
                     else
                         window.close();
                 }
@@ -172,7 +172,7 @@ jQuery(function($) {
                 data: $("#formArticle").serialize(),
                 success: function (data) {
                     if(data.code==0)
-                        window.location.replace("indexMVC.php?module=3&action=3&acte=ajoutOK&AR_Ref=" + $("#reference").val());
+                        window.location.replace("listeArticle-1-" + $("#reference").val());
                     else
                         alert(data.message)
                 },

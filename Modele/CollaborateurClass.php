@@ -93,7 +93,7 @@ class CollaborateurClass Extends Objet{
 
     public function insertCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $cbCreateur)
     {
-	    $this->getApiJson("/insertCollaborateur&coNom={$this->formatString($nom)}&coPrenom={$this->formatString($prenom)}&coFonction={$this->formatString($fonction)}&coAdresse={$this->formatString($adresse)}&coComplement={$this->formatString($complement)}&coVille={$this->formatString($ville)}&coCodeRegion={$this->formatString($region)}&coPays={$this->formatString($pays)}&coService={$this->formatString($service)}&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone={$this->formatString($telephone)}&coTelecopie={$this->formatString($telecopie)}&coEmail={$this->formatString($email)}&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur");
+	    return $this->getApiJson("/insertCollaborateur/coNom={$this->formatString($nom)}&coPrenom={$this->formatString($prenom)}&codePostal=$codepostal&coFonction={$this->formatString($fonction)}&coAdresse={$this->formatString($adresse)}&coComplement={$this->formatString($complement)}&coVille={$this->formatString($ville)}&coCodeRegion={$this->formatString($region)}&coPays={$this->formatString($pays)}&coService={$this->formatString($service)}&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone={$this->formatString($telephone)}&coTelecopie={$this->formatString($telecopie)}&coEmail={$this->formatString($email)}&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur");
     }
 
 
@@ -104,7 +104,7 @@ class CollaborateurClass Extends Objet{
 
     public function modifCollaborateur($nom, $prenom, $adresse, $complement, $codepostal, $fonction, $ville, $region, $pays, $service, $vendeur, $caissier, $acheteur, $telephone, $telecopie, $email, $controleur, $recouvrement, $coNo,$cbCreateur)
     {
-		$this->getApiJson("/modifCollaborateur&coNom={$this->formatString($nom)}&coPrenom={$this->formatString($prenom)}&coFonction={$this->formatString($fonction)}&coAdresse={$this->formatString($adresse)}&coComplement={$this->formatString($complement)}&coVille={$this->formatString($ville)}&coCodeRegion={$this->formatString($region)}&coPays={$this->formatString($pays)}&coService={$this->formatString($service)}&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail={$this->formatString($email)}&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur&coNo=$coNo");
+		$this->getApiJson("/modifCollaborateur/coNom={$this->formatString($nom)}&coPrenom={$this->formatString($prenom)}&codePostal=$codepostal&coFonction={$this->formatString($fonction)}&coAdresse={$this->formatString($adresse)}&coComplement={$this->formatString($complement)}&coVille={$this->formatString($ville)}&coCodeRegion={$this->formatString($region)}&coPays={$this->formatString($pays)}&coService={$this->formatString($service)}&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail={$this->formatString($email)}&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur&coNo=$coNo");
     }
 
 

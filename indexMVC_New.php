@@ -20,6 +20,8 @@ if(!isset($_SESSION))
     <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="css/select2.min.css">
+    <link rel="stylesheet" href="css/select2-bootstrap.css">
 
 </head>
     <script src="assets/js/jquery.min.js"></script>
@@ -37,6 +39,8 @@ if(!isset($_SESSION))
     <script src="assets/js/bs-charts.js"></script>
     <script src="js/scriptFonctionUtile.js"></script>
     <script src="js/dataTables.fixedHeader.min.js"></script>
+    <script src="js/select2.min.js"></script>
+
 <?php
     include("module/includeHeader.php");
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);

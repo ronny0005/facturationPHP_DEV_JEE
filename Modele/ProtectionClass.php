@@ -26,7 +26,7 @@ class ProtectionClass extends Objet{
     ,$PROT_ETAT_RELEVE_CPTE_CLIENT,$PROT_ETAT_STAT_COLLAB_PAR_TIERS,$PROT_OUVERTURE_TOUTE_LES_CAISSES
     ,$PROT_ETAT_STAT_COLLAB_PAR_ARTICLE,$PROT_ETAT_STAT_COLLAB_PAR_FAMILLE,$PROT_ETAT_STAT_FRS_PAR_FAMILLE,$PROT_ETAT_STAT_FRS_PAR_ARTICLE
     ,$PROT_ETAT_STAT_ACHAT_ANALYTIQUE
-    ,$PROT_ETAT_RELEVE_ECH_CLIENT,$PROT_ETAT_RELEVE_ECH_FRS,$PROT_VENTE_COMPTOIR
+    ,$PROT_ETAT_RELEVE_ECH_CLIENT,$PROT_ETAT_RELEVE_ECH_FRS,$PROT_VENTE_COMPTOIR,$PROT_CLOTURE_CAISSE
     ,$PROT_SAISIE_PX_VENTE_REMISE,$PROT_TARIFICATION_CLIENT,$PROT_CBCREATEUR;
     public $table = 'F_PROTECTIONCIAL';
     public $lien = 'fprotectioncial';
@@ -34,9 +34,7 @@ class ProtectionClass extends Objet{
 
     function __construct($nom,$mdp)
     {
-        if($mdp=="") $mdp="%20";
-        if($nom=="") $nom="%20";
-        $objhigher = $this->getApiJson("/user=$nom&mdp=$mdp");
+        $objhigher = $this->getApiJson("/user={$this->formatString($nom)}&mdp={$this->formatString($mdp)}");
 
         if(isset($objhigher))
             $this->initParam($objhigher);
@@ -132,6 +130,7 @@ class ProtectionClass extends Objet{
             $this->PROT_ETAT_RELEVE_ECH_FRS = $rows->PROT_ETAT_RELEVE_ECH_FRS;
             $this->PROT_SAISIE_PX_VENTE_REMISE = $rows->PROT_SAISIE_PX_VENTE_REMISE;
             $this->PROT_CBCREATEUR = $rows->PROT_CBCREATEUR;
+            $this->PROT_CLOTURE_CAISSE = $rows->PROT_CLOTURE_CAISSE;
         }
     }
 
@@ -482,6 +481,21 @@ class ProtectionClass extends Objet{
     public function getSoucheVente(){
         $this->lien = "psouche";
         return $this->getApiJson("/soucheVente");
+    }
+
+    public function getPSoucheAchat($cbIndice){
+        $this->lien = "psouche";
+        return $this->getApiJson("/getPSoucheAchat/cbIndice=$cbIndice");
+    }
+
+    public function getPSoucheInterne($cbIndice){
+        $this->lien = "psouche";
+        return $this->getApiJson("/getPSoucheInterne/cbIndice=$cbIndice");
+    }
+
+    public function getPSoucheVente($cbIndice){
+        $this->lien = "psouche";
+        return $this->getApiJson("/getPSoucheVente/cbIndice=$cbIndice");
     }
 
     public function getCoNo(){

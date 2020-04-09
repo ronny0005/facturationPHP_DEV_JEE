@@ -67,7 +67,7 @@ include("module/Menu/BarreMenu.php");
             <div class="row">
         <div class="col-lg-3" >
             <label>Nom</label>
-            <input type="hidden" name="CO_No" id="CO_No" value="<?php echo $co_no; ?>" />
+            <input type="hidden" name="CO_No" id="CO_No" value="<?= $co_no; ?>" />
                 <input type="text" class="form-control" value="<?php echo $nom; ?>" name="nom" id="nom" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         <div class="col-lg-3">

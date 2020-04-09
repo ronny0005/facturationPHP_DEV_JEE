@@ -17,7 +17,7 @@
         <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
         <input type="hidden" id="login" value="<?php echo $_SESSION["login"]; ?>"/>
 
-<form action="indexMVC.php?module=2&action=2" method="GET">
+<form action="listeFamille-0" method="GET">
     <table style="margin-bottom: 20px;width:100%">
     <thead>
         <tr>
@@ -26,6 +26,25 @@
         </tr>
         </form>
 </table>
+<?php
+$statut = $_GET["statut"];
+if(isset($_GET["FA_CodeFamille"]) && $statut!=0) {
+    $type = "La création ";
+    $alert = "alert-success";
+    if($statut == 3) {
+        $type = "La suppression ";
+    }
+
+    if($statut == 2)
+        $type = "La modification ";
+
+    ?>
+    <div class="mt-3 alert <?= $alert ?>">
+        <?= $type ?>de la famille <?= $_GET["FA_CodeFamille"] ?> a été effectuée !
+    </div>
+    <?php
+}
+?>
 <table id="table" class="table table-striped">
     <thead>
             <th>Code</th>
@@ -47,9 +66,9 @@
             if($i%2==0) $classe = "info";
                     else $classe="";
             echo "<tr class='article $classe' id='article_{$row->FA_CodeFamille}'>
-                    <td><a href='FicheFamille-{$row->FA_CodeFamille}'>{$row->FA_CodeFamille}</a></td>
+                    <td><a href='ficheFamille-{$row->FA_CodeFamille}'>{$row->FA_CodeFamille}</a></td>
                     <td>{$row->FA_Intitule}</td>";
-                    if($flagSuppr) echo "<td><a href='Traitement\Creation.php?acte=suppr_famille&FA_CodeFamille={$row->FA_CodeFamille}' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer {$row->FA_CodeFamille} ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
+                    if($flagSuppr) echo "<td><a href='supprFamille-{$row->FA_CodeFamille}' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer {$row->FA_CodeFamille} ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
                     echo "</tr>";
             }
         }

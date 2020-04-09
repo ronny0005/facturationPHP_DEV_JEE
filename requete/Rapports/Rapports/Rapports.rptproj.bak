@@ -9,42 +9,222 @@
   </DataSources>
   <DataSets>
     <ProjectItem>
+      <Name>Affaire.rsd</Name>
+      <FullPath>Affaire.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Analytique.rsd</Name>
+      <FullPath>Analytique.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Article.rsd</Name>
       <FullPath>Article.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Caisse.rsd</Name>
+      <FullPath>Caisse.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Collaborateur.rsd</Name>
+      <FullPath>Collaborateur.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>CompteA.rsd</Name>
+      <FullPath>CompteA.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>CompteG.rsd</Name>
+      <FullPath>CompteG.rsd</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>Depot.rsd</Name>
       <FullPath>Depot.rsd</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Entete.rsd</Name>
+      <FullPath>Entete.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>EtatReglement.rsd</Name>
+      <FullPath>EtatReglement.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Famille.rsd</Name>
       <FullPath>Famille.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>ModeReglement.rsd</Name>
+      <FullPath>ModeReglement.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>MvtDeCaisse.rsd</Name>
+      <FullPath>MvtDeCaisse.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Tiers.rsd</Name>
+      <FullPath>Tiers.rsd</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>Type.rsd</Name>
       <FullPath>Type.rsd</FullPath>
     </ProjectItem>
+    <ProjectItem>
+      <Name>TypeDocAchat.rsd</Name>
+      <FullPath>TypeDocAchat.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>TypeFacture.rsd</Name>
+      <FullPath>TypeFacture.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>TypeLettrage.rsd</Name>
+      <FullPath>TypeLettrage.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>TypeReglement.rsd</Name>
+      <FullPath>TypeReglement.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>TypeTiers.rsd</Name>
+      <FullPath>TypeTiers.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Utilisateur.rsd</Name>
+      <FullPath>Utilisateur.rsd</FullPath>
+    </ProjectItem>
   </DataSets>
   <Reports>
     <ProjectItem>
-      <Name>Inventaire_preparatoire.rdl</Name>
-      <FullPath>Inventaire_preparatoire.rdl</FullPath>
+      <Name>Accueil.rdl</Name>
+      <FullPath>Accueil.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Mouvement_de_stock.rdl</Name>
-      <FullPath>Mouvement_de_stock.rdl</FullPath>
+      <Name>Balance des tiers commercial.rdl</Name>
+      <FullPath>Balance des tiers commercial.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Balance des tiers.rdl</Name>
+      <FullPath>Balance des tiers.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Caisse d'exploitation.rdl</Name>
+      <FullPath>Caisse d'exploitation.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Centrale_rap_article.rdl</Name>
+      <FullPath>Centrale_rap_article.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Controle des reports de fond de caisse.rdl</Name>
+      <FullPath>Controle des reports de fond de caisse.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Echeance client.rdl</Name>
+      <FullPath>Echeance client.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Echeance fournisseur.rdl</Name>
+      <FullPath>Echeance fournisseur.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>Equation_du_stock.rdl</Name>
       <FullPath>Equation_du_stock.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Etat caisse.rdl</Name>
+      <FullPath>Etat caisse.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Etat caisse_fondCaisse.rdl</Name>
+      <FullPath>Etat caisse_fondCaisse.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Etat des dettes detail.rdl</Name>
+      <FullPath>Etat des dettes detail.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Etat des dettes.rdl</Name>
+      <FullPath>Etat des dettes.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Etat du compte du résultat.rdl</Name>
+      <FullPath>Etat du compte du résultat.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Etat réaprovisionnement.rdl</Name>
+      <FullPath>Etat réaprovisionnement.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>ETAT_BUDGET.rdl</Name>
+      <FullPath>ETAT_BUDGET.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Inventaire_preparatoire.rdl</Name>
+      <FullPath>Inventaire_preparatoire.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Livre d'inventaire.rdl</Name>
+      <FullPath>Livre d'inventaire.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Mouvement_de_stock.rdl</Name>
+      <FullPath>Mouvement_de_stock.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Rapport journalier d'achat.rdl</Name>
+      <FullPath>Rapport journalier d'achat.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Règlement client.rdl</Name>
+      <FullPath>Règlement client.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Relevé compte client.rdl</Name>
+      <FullPath>Relevé compte client.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Statistique article par agence.rdl</Name>
       <FullPath>Statistique article par agence.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Statistique article par fournisseur.rdl</Name>
+      <FullPath>Statistique article par fournisseur.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Statistique client par agence.rdl</Name>
       <FullPath>Statistique client par agence.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Statistique collaborateur par article.rdl</Name>
+      <FullPath>Statistique collaborateur par article.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Statistique collaborateur par client.rdl</Name>
+      <FullPath>Statistique collaborateur par client.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Statistique des achats analytique.rdl</Name>
+      <FullPath>Statistique des achats analytique.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Statistique des achats.rdl</Name>
+      <FullPath>Statistique des achats.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Stock_grand_depot.rdl</Name>
+      <FullPath>stock_grand_depot.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Transfert caisse.rdl</Name>
+      <FullPath>Transfert caisse.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Versement bancaire.rdl</Name>
+      <FullPath>Versement bancaire.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Versement distant.rdl</Name>
+      <FullPath>Versement distant.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
@@ -54,11 +234,11 @@
       <Options>
         <OutputPath>bin\Debug</OutputPath>
         <TargetServerVersion>SSRS2016</TargetServerVersion>
-        <TargetServerURL>http://localhost/ReportServer</TargetServerURL>
-        <TargetFolder>Rapports</TargetFolder>
-        <TargetDataSourceFolder>Data Sources</TargetDataSourceFolder>
+        <TargetServerURL>http://itsolution.ddns.net:1822/ReportServer</TargetServerURL>
+        <TargetFolder>RapportBOUMKO/Rapports</TargetFolder>
+        <TargetDataSourceFolder>RapportBOUMKO/DataSources</TargetDataSourceFolder>
         <OverwriteDataSources>true</OverwriteDataSources>
-        <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+        <TargetDatasetFolder>RapportBOUMKO/Datasets</TargetDatasetFolder>
         <OverwriteDatasets>true</OverwriteDatasets>
         <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
         <StartItem>Mouvement_de_stock.rdl</StartItem>

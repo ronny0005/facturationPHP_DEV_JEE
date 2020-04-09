@@ -640,13 +640,22 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
         $rg_compta = 0;
         if($etatPiece==1) $rg_compta = 1;
 
-        $query = "SELECT RG_No
+        $query = "
+                    DECLARE @dateDebut VARCHAR(50) = ?
+                            ,@dateFin VARCHAR(50) = ?
+                            ,@etatPiece INT = ? 
+                            ,@typeTransfert INT = ?;
+                    DECLARE @rgCompta INT = (SELECT CASE WHEN @etatPiece = 1 THEN 1 ELSE 0 END)
+                            ,@rgType INT = (SELECT CASE WHEN @typeTransfert = 4 THEN 1 ELSE 0 END)
+                            ,@caNo INT = ?;
+
+                    SELECT RG_No
                   FROM F_CREGLEMENT
-                  WHERE ('$datedeb'='' OR RG_Date>='$datedeb')
-                  AND ('$datefin'='' OR RG_Date<='$datefin')
-                  AND  RG_Compta = $rg_compta
-                  AND RG_Type = $rg_type
-                  AND ($caisse=0 OR CA_No = $caisse)";
+                  WHERE (@dateDebut ='' OR RG_Date>= @dateDebut )
+                  AND ( @dateFin ='' OR RG_Date<= @dateFin )
+                  AND  RG_Compta = @rgCompta
+                  AND RG_Type = @rgType
+                  AND (@caNo =0 OR CA_No = @caNo) ";
         $result= $this->db->query($query);
         $this->list = array();
         foreach ($result->fetchAll(PDO::FETCH_OBJ) as $resultat)

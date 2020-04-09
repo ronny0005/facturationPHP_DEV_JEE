@@ -9,9 +9,9 @@ if(!isset($mobile)){
 }
 if($_GET["acte"] =="suppr"){
     $CO_No = $_GET["CO_No"];
-    $collaborateurClass = new CollaborateurClass($CO_No,$objet->db);
+    $collaborateurClass = new CollaborateurClass($CO_No);
     $collaborateurClass ->delete();
-    header('Location: ../listeCollaborateur-'.$CO_No);
+    header('Location: ../listeCollaborateur-3-'.$CO_No);
 }
 
 if($_GET["acte"]=="ajout"){
@@ -40,8 +40,8 @@ if($_GET["acte"]=="ajout"){
     else $btnRecouv=0;
     $collaborateurClass = new CollaborateurClass(0,$objet->db);
     $value = $collaborateurClass->insertCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv,$_SESSION["id"]);
-    if($value->CO_No==0){
-        echo $value->Message;
+    if($value[0]->CO_No==0){
+        echo $value[0]->Message;
     }else{
         echo json_encode($value);
     }
@@ -72,8 +72,8 @@ if($_GET["acte"]=="modif"){
     else $btnControleur=0;
     if(isset($_GET["recouvrement"]))$btnRecouv=1;
     else $btnRecouv=0;
-    $collaborateurClass = new CollaborateurClass($co_no,$objet->db);
-    $collaborateurClass->modifCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv,$co_no);
+    $collaborateurClass = new CollaborateurClass($co_no);
+    $collaborateurClass->modifCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv,$co_no,$_SESSION["id"]);
     $data = array('CO_No' => $co_no);
     echo json_encode($data);
 }

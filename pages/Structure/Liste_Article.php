@@ -78,8 +78,29 @@ $depot=$_SESSION["DE_No"];
     if($flagNouveau){ ?>
     <?php } ?>
         </form>
-<div class="err" id="add_err"></div>
+    <?php
+    $statut = $_GET["statut"];
+    if(isset($_GET["AR_Ref"]) && $statut!=0) {
+        $type = "La création ";
+        $alert = "alert-success";
+        if($statut == 3) {
+            $type = "La suppression ";
+        }
+        if($statut == 4) {
+            $alert = "alert-danger";
+            $type = "Echec de la suppression ";
+        }
 
+        if($statut == 2)
+            $type = "La modification ";
+
+        ?>
+        <div class="mt-3 alert <?= $alert ?>">
+            <?= $type ?>de l'article <?= $_GET["AR_Ref"] ?> a été effectuée !
+        </div>
+        <?php
+    }
+    ?>
 <div class="table-responsive" style="margin-top: 30px;clear:both">
     <table id="users" class="table table-striped">
         <thead>

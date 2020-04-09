@@ -1,32 +1,17 @@
 jQuery(function($){
 
-        var protect=0;
-        var type =0;
-            
-    function $_GET(param) {
-	var vars = {};
-	window.location.href.replace( location.hash, '' ).replace( 
-		/[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-		function( m, key, value ) { // callback
-			vars[key] = value !== undefined ? value : '';
-		}
-	);
+    var protect=0;
+    var type =0;
 
-	if ( param ) {
-		return vars[param] ? vars[param] : null;	
-	}
-	return vars;
-    }
-    
     $('#Ajouter').click(function(){
         Ajouter();
     });
-        
+
     function protection(){
         $.ajax({
-           url: "indexServeur.php?page=connexionProctection",
-           method: 'GET',
-           dataType: 'json',
+            url: "indexServeur.php?page=connexionProctection",
+            method: 'GET',
+            dataType: 'json',
             success: function(data) {
                 $(data).each(function() {
                     protect=this.PROT_DEPOT;
@@ -46,7 +31,7 @@ jQuery(function($){
             }
         });
     }
-    
+
     protection();
 
     $("#majCompta").click(function () {
@@ -54,9 +39,7 @@ jQuery(function($){
             url: "traitement/Facturation.php?acte=majComptaFonction",
             method: 'GET',
             dataType: 'html',
-            data: $("#form-entete").serialize(),/*"typeTransfert="+$("#typeTransfert").val()+"&datedeb="+$("#datedebut").val()+"&datefin="+$("#datefin").val()+
-            "&doPiecedeb="+$("#facturedebut").val()+"&doPiecefin="+$("#facturefin").val()+"&souche="+$("#souche").val()+
-            "&etatPiece="+$("#transfert").val()+"&catCompta="+$("#catCompta").val(),*/
+            data: $("#form-entete").serialize(),
             async: false,
             success: function (data) {
                 if (data!=""){
@@ -85,7 +68,8 @@ jQuery(function($){
             $("#journal").prop("disabled",false);
         }
     });
-        $("#soucheJournal").change(function(){
+
+    $("#soucheJournal").change(function(){
         $.ajax({
             url: 'indexServeur.php?page=getSoucheVenteByIndice',
             method: 'GET',

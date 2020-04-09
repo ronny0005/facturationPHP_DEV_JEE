@@ -8,3 +8,12 @@
 <li class="<?php if($_GET["module"]==9 && ($_GET["action"]==13||$_GET["action"]==14)) echo "active"; ?>"><a href="indexMVC.php?module=9&action=13">Saisie comptable</a></li>
 <li class="<?php if($_GET["module"]==9 && ($_GET["action"]==15)) echo "active"; ?>"><a href="indexMVC.php?module=9&action=15">Contrôle de caisse</a></li>
 <li class="<?php if($_GET["module"]==9 && ($_GET["action"]==16)) echo "active"; ?>"><a href="indexMVC.php?module=9&action=16">Mise à jour Comptable</a></li>
+<?php
+if(($protection->PROT_Right==1 || ($protection->PROT_CLOTURE_CAISSE!=2))) {
+    ?>
+    <li class="<?php if ($_GET["module"] == 9 && ($_GET["action"] == 18)) echo "active"; ?>">
+        <a href="clotureDeCaisse">Clotûre de caisse</a>
+    </li>
+    <?php
+}
+?>

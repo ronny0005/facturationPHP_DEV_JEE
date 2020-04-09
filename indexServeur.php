@@ -909,7 +909,8 @@ switch ($val) {
         envoiRequete($objet->getSoucheVente(), $objet);
         break;
     case "getSoucheVenteByIndice":
-        envoiRequete($objet->getSoucheVenteByIndice($_GET["indice"]), $objet);
+        $protection = new ProtectionClass("", "");
+        echo json_encode($protection->getPSoucheVente($_GET["indice"]));
         break;
     case "updateDrRegleByDOPiece":
         $result = $objet->db->requete($objet->isRegleFullDOPiece($_GET['DO_Piece']));
@@ -1381,6 +1382,24 @@ switch ($val) {
         break;
     case "listeReglementCaisse":
         envoiRequete($objet->listeReglementCaisse($_GET["datedeb"], $_GET["datefin"], $_GET["ca_no"], $_GET["type"]), $objet);
+        break;
+
+    case "listeTable":
+        $reglement = new ReglementClass(0);
+        $rows = $reglement->getMajAnalytique($objet->getDate($_GET["dateDeb"]),$objet->getDate($_GET["dateFin"]),$_GET["statut"],$_GET["caNum"]);
+        foreach ($rows as $row){
+            ?>
+            <tr>
+                <td><?= $row->RG_No ?></td>
+                <td><?= $row->RG_Libelle ?></td>
+                <td><?= $objet->formatChiffre($row->RG_Montant) ?></td>
+                <td><?= $row->CA_Intitule ?></td>
+                <td class="text-center"> -> </td>
+                <td><?= $row->CA_Num ?></td>
+                <td><?= $objet->formatChiffre($row->EA_Montant) ?></td>
+            </tr>
+            <?php
+        }
         break;
     case "listeReglementCaisseFormat":
         $reglement = new ReglementClass(0);

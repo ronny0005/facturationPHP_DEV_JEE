@@ -5795,51 +5795,7 @@ GROUP BY A.CA_No,A.CA_Intitule,B.NB
     }
 
     function majEnteteComptable($doPiece,$doDomaine,$doType,$doTypeCible){
-        return "DECLARE @do_type AS int
-                DECLARE @do_domaine AS int
-                DECLARE @do_piece AS varchar(20)
-                DECLARE @do_typeCible AS int
-                SET @do_type = $doType
-                SET @do_domaine = $doDomaine
-                SET @do_piece = '$doPiece'
-                SET @do_typeCible = $doTypeCible;
-                
-                DISABLE TRIGGER TG_UPD_F_DOCLIGNE ON F_DOCLIGNE;
-                DISABLE TRIGGER TG_UPD_F_DOCREGL ON F_DOCREGL;
-                DISABLE TRIGGER TG_UPD_F_REGLECH ON F_REGLECH;
-                
-                UPDATE F_DOCLIGNE SET F_DOCLIGNE.DO_Type=@do_typeCible
-                FROM (SELECT DO_Piece,DO_Domaine,DO_Type	
-                        FROM F_DOCENTETE		
-                        WHERE DO_Piece = @do_piece
-                        AND DO_Domaine=@do_domaine
-                        AND DO_Type=@do_type)A
-                WHERE A.DO_Piece= F_DOCLIGNE.DO_Piece AND A.DO_Domaine= F_DOCLIGNE.DO_Domaine AND A.DO_Type = F_DOCLIGNE.DO_Type
-                
-                UPDATE F_DOCREGL SET F_DOCREGL.DO_Type=@do_typeCible
-                FROM (SELECT DO_Piece,DO_Domaine,DO_Type	
-                        FROM F_DOCENTETE	
-                        WHERE DO_Piece = @do_piece
-                        AND DO_Domaine=@do_domaine
-                        AND DO_Type=@do_type)A
-                WHERE A.DO_Piece= F_DOCREGL.DO_Piece AND A.DO_Domaine= F_DOCREGL.DO_Domaine AND A.DO_Type = F_DOCREGL.DO_Type
-                
-                UPDATE F_REGLECH SET F_REGLECH.DO_Type=@do_typeCible
-                FROM (SELECT DO_Piece,DO_Domaine,DO_Type	
-                        FROM F_DOCENTETE		
-                        WHERE DO_Piece = @do_piece
-                        AND DO_Domaine=@do_domaine
-                        AND DO_Type=@do_type)A
-                WHERE A.DO_Piece= F_REGLECH.DO_Piece AND A.DO_Domaine= F_REGLECH.DO_Domaine AND A.DO_Type = F_REGLECH.DO_Type
-                
-                UPDATE F_DOCENTETE SET DO_Type=@do_typeCible
-                WHERE DO_Piece = @do_piece
-                AND DO_Domaine=@do_domaine
-                AND DO_Type=@do_type;
-                
-                ENABLE TRIGGER TG_UPD_F_DOCLIGNE ON F_DOCLIGNE;
-                ENABLE TRIGGER TG_UPD_F_DOCREGL ON F_DOCREGL;
-                ENABLE TRIGGER TG_UPD_F_REGLECH ON F_REGLECH;
+            return "/majEnteteComptable&doType={doType}&doDomaine={doDomaine}&doPiece={doPiece}&doTypeCible={doTypeCible}
                 ";
     }
     function insertFEcritureA($EC_No,$N_Analytique,$CA_Num,$EA_Montant,$EA_Quantite){

@@ -24,7 +24,7 @@ include("module/Menu/BarreMenu.php");
 
 <fieldset class="entete">
 <div class="form-group">
-<form action="indexMVC.php?module=2&action=2" method="GET">
+<form action="listeCollaborateur-0" method="GET">
     <table style="margin-bottom: 20px;width:100%">
     <thead>
         <tr>
@@ -32,7 +32,30 @@ include("module/Menu/BarreMenu.php");
         </tr>
         </form>
 </table>
-<div class="err" id="add_err"></div>
+
+    <?php
+    $statut = $_GET["statut"];
+    if(isset($_GET["CO_No"]) && $statut!=0) {
+        $type = "La création ";
+        $alert = "alert-success";
+        if($statut == 3) {
+            $type = "La suppression ";
+        }
+        if($statut == 4) {
+            $alert = "alert-danger";
+            $type = "Echec de la suppression ";
+        }
+
+        if($statut == 2)
+            $type = "La modification ";
+
+        ?>
+        <div class="mt-3 alert <?= $alert ?>">
+            <?= $type ?>de l'article <?= $_GET["CO_No"] ?> a été effectuée !
+        </div>
+        <?php
+    }
+    ?>
 <table id="table" class="table table-striped table-bordered">
         <thead>
             <th>Nom</th>
