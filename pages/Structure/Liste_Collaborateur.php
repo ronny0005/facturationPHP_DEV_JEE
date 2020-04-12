@@ -57,7 +57,7 @@ include("module/Menu/BarreMenu.php");
         <?php
     }
     ?>
-<table id="table" class="table table-striped table-bordered">
+<table id="table" class="table table-striped">
         <thead>
             <th>Nom</th>
             <th>Prénom</th>

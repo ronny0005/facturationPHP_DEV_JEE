@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION))
+if(!isset($_SESSION["login"]))
     header('Location: connexion'); //rechercher un étudiant par domaine d'activité
 
 ?>
@@ -43,7 +43,12 @@ if(!isset($_SESSION))
 
 <?php
     include("module/includeHeader.php");
+$objet = new ObjetCollector();
+$protection = new ProtectionClass("","");
+if(isset($_SESSION["login"]))
     $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+
+
 ?>
 <body id="page-top">
     <div class="se-pre-con"></div>

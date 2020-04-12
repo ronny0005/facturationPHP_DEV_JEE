@@ -14,8 +14,11 @@
 class Facturation {
 
     public function doAction($action) {
-        $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
-        if($protection->Prot_No !=null && isset($_SESSION)){
+        $objet = new ObjetCollector();
+        $protection = new ProtectionClass("","");
+        if(isset($_SESSION["login"]))
+            $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+        if($protection->Prot_No!=""){
             switch($action) {
                     case 1 :
                         if($protection->protectionListeFacture($_GET["type"]))

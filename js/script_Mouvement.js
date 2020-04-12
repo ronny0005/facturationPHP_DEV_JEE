@@ -176,6 +176,8 @@ jQuery(function($){
                         click: function () {
                             if (typeFac == "Transfert" || typeFac == "Transfert_confirmation" || typeFac == "Entree") {
                                 var de_no = $("#DE_No").val();
+                                if(typeFac =="Transfert")
+                                    de_no = $("#CO_No").val()
                                 var texte = $("#depot").text();
                                 verifSupprAjout(cbMarq, id_sec, AR_Ref, DL_Qte, DL_CMUP, de_no, texte);
                             } else

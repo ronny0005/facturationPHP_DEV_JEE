@@ -38,7 +38,7 @@ class Menu {
                     $this->Accueil(); // On décide ce que l'on veut faire
             }
         } else
-            header('Location: index.php');
+            header('Location: connexion');
     }
 
     public function Accueil() {

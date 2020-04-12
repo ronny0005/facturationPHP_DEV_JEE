@@ -6,6 +6,7 @@ RewriteEngine on
 RewriteRule ^accueil$  indexMVC_New.php?module=1&action=1 [L]
 RewriteRule ^connexion$  index.php [L]
 RewriteRule ^connexion-([0-9]+)$  index.php?code=$1 [L]
+RewriteRule ^logout$  index.php?action=logout [L]
 
 RewriteRule ^listeFacture-([A-z]+)$  indexMVC_New.php?module=2&action=1&type=$1 [L]
 
