@@ -911,7 +911,7 @@ jQuery(function ($) {
 
     actionReglement ();
 
-    $("#montantRec").inputmask({
+    $("#montantRec, #mttRemboursement").inputmask({
         'alias': 'decimal',
         'groupSeparator': ' ',
         'autoGroup': true,
@@ -1025,8 +1025,6 @@ jQuery(function ($) {
         var caisse = $("#caisse").val();
         var rgType = 0;
         if($("#typeRegl").val()!="Client") rgType = 1;
-        alert($("#client_ligne").val())
-        //$("#client_ligne").val($("#CT_Num").val());
         $("#dateReglementEntete_deb_ligne").val($("#dateReglementEntete_deb").val());
         $("#dateReglementEntete_fin_ligne").val($("#dateReglementEntete_fin").val());
         $("#mode_reglement_ligne").val($("#mode_reglement").val());

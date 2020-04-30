@@ -349,10 +349,18 @@ class DocEnteteClass Extends Objet{
         return $this->getApiJson("/majAffaire&caNum=$caNum&cbMarq={$this->cbMarq}");
     }
 
+    public function saisieComptableCaisse($cbMarq,$trans){
+        return $this->getApiJson("/saisieComptableCaisse&cbMarq=$cbMarq&trans=$trans");
+    }
+
     public function saisieComptable($cbMarq,$trans){
         return $this->getApiJson("/saisieComptable&cbMarq=$cbMarq&trans=$trans");
     }
 
+    public function saisieCompteAnal($cbMarq,$insert)
+    {
+        return $this->getApiJson("/saisieCompteAnal&cbMarq=$cbMarq&insert=$insert");
+    }
 
     public function getDocReglByDO_Piece() {
         $query = "SELECT  * 
@@ -412,6 +420,18 @@ class DocEnteteClass Extends Objet{
     {
         return $this->getApiJson("/testCorrectLigneA&cbMarq={$this->cbMarq}");
     }
+
+    public function enteteTransfertDetail($cbMarq)
+    {
+        return $this->getApiJson("/enteteTransfertDetail&cbMarq={$cbMarq}");
+    }
+
+    public function getLigneTransfert_detail()
+    {
+        return $this->getApiJson("/getLigneTransfertDetail&doPiece={$this->DO_Piece}");
+    }
+
+
 
     public function GetMontantReglee(){
         $query = "  SELECT ISNULL(SUM(DL_MontantTTC),0) MontantTTC

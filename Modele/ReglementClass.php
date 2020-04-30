@@ -410,35 +410,8 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
         $this->getApiJson("/supprReglementTiers&mvtCaisse=$mvtCaisse&rgNo=$rgNo&protNo=$protNo");
     }
 
-    public function remboursementRglt($date,$montant,$mobile){
-		
-		$this->getApiJson("/remboursementRglt&rgNo={$this->RG_No}&rgDate=$date&montant=$montant&mobile=$mobile");
-        // création du remboursement
-        $creglement = new ReglementClass(0);
-        $creglement->initVariables();
-        $creglement->RG_Date = $date;
-        $creglement->RG_DateEchCont = $date;
-        $creglement->JO_Num = $this->JO_Num;
-        $creglement->CG_Num = $this->CG_Num;
-        $creglement->CA_No = $this->CA_No;
-        $creglement->CO_NoCaissier = $this->CO_NoCaissier;
-        $creglement->RG_Libelle = "Remboursement N° ".$this->RG_Piece;
-        $creglement->RG_Montant = -$montant;
-        $creglement->RG_Impute = 1;
-        $creglement->RG_Type = $this->RG_Type;
-        $creglement->N_Reglement = "01";
-        $creglement->RG_TypeReg=4;
-        if($this->RG_Type==1)
-            $creglement->RG_TypeReg=5;
-        $creglement->RG_Ticket=0;
-        $creglement->RG_Banque=$this->RG_Banque;
-        $creglement->CT_NumPayeur = $this->CT_NumPayeur;
-        $creglement->setuserName("",$mobile);
-        $rg_noRembours = $creglement->insertF_Reglement();
-        //liaison du remboursement et reglement
-        $this->insertZ_RGLT_BONDECAISSE($rg_noRembours,$this->RG_No);
-        $this->RG_Impute = $this->isImpute()[0]->isImpute;
-        $this->maj_reglement();
+    public function remboursementRglt($date,$montant){
+		$this->getApiExecute("/remboursementRglt/rgNo={$this->RG_No}&date=$date&montant=$montant");
     }
 
     public function getFactureRGNo($rg_no){

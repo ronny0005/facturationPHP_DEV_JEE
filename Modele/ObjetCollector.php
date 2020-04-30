@@ -5908,8 +5908,10 @@ GROUP BY A.CA_No,A.CA_Intitule,B.NB
     public function getLigne_compteA($cbMarq){
         return "SELECT A.CbMarq_Ligne,A_Intitule,A.N_Analytique,EA_Ligne,A.CA_Num,CA_Intitule,EA_Montant,EA_Quantite,A.cbMarq
                 FROM Z_LIGNE_COMPTEA A
-                LEFT JOIN ".$this->db->baseCompta.".dbo.F_COMPTEA B ON A.CA_Num = B.CA_Num 
-                LEFT JOIN P_Analytique PA ON PA.cbIndice = A.N_Analytique
+                LEFT JOIN F_COMPTEA B 
+                    ON A.CA_Num = B.CA_Num 
+                LEFT JOIN P_Analytique PA 
+                    ON PA.cbIndice = A.N_Analytique
                 WHERE CbMarq_Ligne=$cbMarq
                 ORDER BY CbMarq_Ligne,EA_Ligne";
     }

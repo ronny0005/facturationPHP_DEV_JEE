@@ -78,6 +78,11 @@ class Objet {
         return str_replace(" ","",$valeur);
     }
 
+
+    public function formatChiffre($chiffre){
+        return number_format($chiffre, 2, '.', ' ');
+    }
+
     function formatString($valeur){
         return urlencode(htmlentities(str_replace('%',',,,,',str_replace('/',',,,',$valeur))));
     }

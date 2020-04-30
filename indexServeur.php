@@ -1002,6 +1002,17 @@ switch ($val) {
     case "insertClient":
         envoiRequete($objet->createClientMin($_GET["CT_Num"], $_GET["CT_Intitule"], $_GET["CG_Num"], $_GET["adresse"], $_GET["cp"], $_GET["ville"], $_GET["coderegion"], $_GET["siret"], $_GET["ape"], $_GET["numpayeur"], $_GET["co_no"], $_GET["cattarif"], $_GET["catcompta"], $_GET["de_no"], $_GET["tel"], $_GET["anal"]) . ";" . $objet->getLastClient(), $objet);
         break;
+
+    case "getArticleByRefDesignationMvtTransfert":
+        $article = new ArticleClass(0);
+        $de_no = $_GET["DE_No"];
+        $searchTerm = "";
+        if(isset($_GET['term']))
+            $searchTerm = $_GET['term'];
+        if($de_no!="null") {
+            echo json_encode($article->all(0, $searchTerm,10,0));
+        }
+        break;
     case "modifReglement":
         $fcreglement = new ReglementClass(0);
         $boncaisse = 0;
@@ -1020,7 +1031,7 @@ switch ($val) {
         break;
     case "remboursementRglt":
         $reglement = new ReglementClass($_GET["RG_No"]);
-        $reglement->remboursementRglt($_GET["RG_Date"], $_GET["RG_Montant"], "");
+        $reglement->remboursementRglt($_GET["RG_Date"], $_GET["RG_Montant"]);
         break;
     case "addReglement":
 

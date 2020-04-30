@@ -22,16 +22,16 @@
         </div>
         <div class="col-6 col-sm-6 col-md-6">
             <label>Dépot : </label>
-            <input class="form-control" type="hidden" name="DE_No" id="DE_No" value="<?php if(!isset($_GET["cbMarq"])) echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation") echo $docEntete->DE_No; else echo $docEntete->DO_Tiers;  ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
-            <input class="form-control" type="text" name="depot" id="depot" value="<?php if(!isset($_GET["cbMarq"]))  echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation") echo (new DepotClass($docEntete->DE_No))->DE_Intitule; else echo (new DepotClass($docEntete->DO_Tiers))->DE_Intitule; ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
+            <input class="form-control" type="hidden" name="DE_No" id="DE_No" value="<?php if(!isset($_GET["cbMarq"])) echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation" || $type=="Transfert_detail") echo $docEntete->DE_No; else echo $docEntete->DO_Tiers;  ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
+            <input class="form-control" type="text" name="depot" id="depot" value="<?php if(!isset($_GET["cbMarq"]))  echo ""; else if($type=="Transfert" || $type=="Transfert_confirmation" || $type=="Transfert_detail") echo (new DepotClass($docEntete->DE_No))->DE_Intitule; else echo (new DepotClass($docEntete->DO_Tiers))->DE_Intitule; ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />
         </div>
         <?php
-        if($type=="Transfert" || $type=="Transfert_confirmation"){
+        if($type=="Transfert" || $type=="Transfert_confirmation" || $type=="Transfert_detail"){
             $depotDestNo = "";
             $depotDest = "";
             if($docEntete->DE_No!=NULL){
-                $depotDestNo = ($type=="Transfert" || $type=="Transfert_confirmation") ? $docEntete->DO_Tiers : $docEntete->DE_No;
-                $depotDest = ($type=="Transfert" || $type=="Transfert_confirmation") ? (new DepotClass($docEntete->DO_Tiers,$objet->db))->DE_Intitule : (new DepotClass($docEntete->DE_No,$objet->db))->DE_Intitule;
+                $depotDestNo = ($type=="Transfert" || $type=="Transfert_confirmation") ? $docEntete->DO_Tiers : ($type=="Transfert_detail") ? $docEnteteTransfertDetail->DE_No : $docEntete->DE_No;
+                $depotDest = ($type=="Transfert" || $type=="Transfert_confirmation") ? (new DepotClass($docEntete->DO_Tiers))->DE_Intitule : ($type=="Transfert_detail") ? (new DepotClass($docEnteteTransfertDetail->DE_No))->DE_Intitule : (new DepotClass($docEntete->DE_No))->DE_Intitule;
             }
         ?>
             <div class="col-6 col-sm-6 col-md-6">
@@ -55,9 +55,9 @@
                         if($rows==null){
                         }else{
                             foreach($rows as $row){
-                                echo "<option value='".$row->CA_Num."'";
+                                echo "<option value='{$row->CA_Num}'";
                                 if($row->CA_Num==$affaire) echo " selected";
-                                echo ">".$row->CA_Intitule."</option>";
+                                echo ">{$row->CA_Intitule}</option>";
                             }
                         }
 

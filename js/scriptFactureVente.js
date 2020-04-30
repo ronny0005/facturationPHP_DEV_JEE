@@ -115,7 +115,7 @@ jQuery(function($) {
 
     function entete_document(){
         if(!$("#souche").is(':disabled'))
-            if((isVisu == 0 && $_GET("cbMarq")==undefined))
+            if(isVisu == 0 && $("#cbMarqEntete").val()==0)
                 $.ajax({
                     url: 'traitement/Facturation.php?acte=entete_document',
                     method: 'GET',
@@ -1201,31 +1201,22 @@ jQuery(function($) {
             $.ajax({
                 url: "traitement/Facturation.php?acte=saisie_comptable",
                 method: 'GET',
-                dataType: 'json',
+                dataType: 'html',
                 data: "cbMarq=" + $("#cbMarqEntete").val() +"&TransDoc="+transDoc,
                 async: false,
                 success: function (data) {
                     $("#tableEC > tbody").html("");
                     var compteur = 0;
-                    $(data).each(function () {
-                        var dateEch = "";
-                        if (this.EC_Echeance != "") {
-                            var d = new Date(this.EC_Echeance);
-                            dateEch = (("00" + d.getDay()).substr(-2) + "/" + ("00" + d.getMonth()).substr(-2) + "/" + d.getFullYear());
-                        }
-                        var dataTab = "<tr><td>" + this.JO_Num + "</td><td>" + this.Annee_Exercice + "</td><td>" + this.EC_Jour + "</td><td>" + this.EC_RefPiece + "</td><td>" + this.EC_Reference + "</td>" +
-                            "<td>" + this.CG_Num + "</td><td>" + this.CT_Num + "</td><td>" + this.EC_Intitule + "</td><td>" + dateEch + "</td>" +
-                            "<td>" + (Math.round(this.EC_MontantDebit * 100) / 100) + "</td><td>" + (Math.round(this.EC_MontantCredit * 100) / 100) + "</td></tr>";
-                        $("#tableEC > tbody").append(dataTab);
+                        $("#tableEC > tbody").append(data);
                         if (insert == 1) {
                             $.ajax({
                                 url: 'traitement/Structure/Comptabilite/SaisieJournalExercice.php?acte=ajout',
                                 method: 'GET',
                                 dataType: 'json',
-                                data: "nomFichier=" + this.nomFichier + '&JO_Num=' + this.JO_Num + '&Annee_Exercice=' + this.Annee_Exercice + '&EC_Jour=' + this.EC_Jour + '&EC_Piece=' + this.EC_Piece + '&EC_RefPiece=' + this.EC_RefPiece
-                                    + '&EC_Reference=' + this.EC_Reference + '&CG_Num=' + this.CG_Num + '&CG_NumCont=' + this.CG_Num + '&CT_Num=' + this.CT_Num
-                                    + '&CT_NumCont=' + this.CT_Num + '&EC_Intitule=' + this.EC_Intitule + '&N_Reglement=1&EC_Echeance=' + this.EC_Echeance + '&EC_MontantCredit=' + this.EC_MontantCredit +
-                                    '&EC_MontantDebit=' + this.EC_MontantDebit + '&TA_Code=' + this.TA_Code,
+                                data: "nomFichier=" + this.nomFichier + '&JO_Num=' + this.jo_Num + '&Annee_Exercice=' + this.annee_Exercice + '&EC_Jour=' + this.ec_Jour + '&EC_Piece=' + this.ec_Piece + '&EC_RefPiece=' + this.ec_RefPiece
+                                    + '&EC_Reference=' + this.ec_Reference + '&CG_Num=' + this.cg_Num + '&CG_NumCont=' + this.cg_Num + '&CT_Num=' + this.ct_Num
+                                    + '&CT_NumCont=' + this.ct_Num + '&EC_Intitule=' + this.ec_Intitule + '&N_Reglement=1&EC_Echeance=' + this.ec_Echeance + '&EC_MontantCredit=' + this.ec_MontantCredit +
+                                    '&EC_MontantDebit=' + this.ec_MontantDebit + '&TA_Code=' + this.ta_Code,
                                 async: false,
                                 success: function (data) {
                                     if(compteur==0)
@@ -1239,31 +1230,26 @@ jQuery(function($) {
                         $.ajax({
                             url: "traitement/Facturation.php?acte=saisie_comptableAnal",
                             method: 'GET',
-                            dataType: 'json',
+                            dataType: 'html',
                             data: "cbMarq=" + $("#cbMarqEntete").val(),
                             async: false,
                             success: function (data) {
                                 $("#tableAnal > tbody").html("");
-                                $(data).each(function () {
-                                    if(this.CA_Num!="")
-                                        var dataTab = "<tr><td>" + this.JO_Num + "</td><td>" + this.A_Intitule + "</td><td>" + this.CG_Num + "</td><td>" + this.AnneExercice + "</td><td>" + this.CA_Num + "</td><td>" + this.A_Qte + "</td><td>" + (Math.round(this.A_Montant*100)/100) + "</td>" +
-                                            "</tr>";
-                                    $("#tableAnal > tbody").append(dataTab);
+                                $("#tableAnal > tbody").append(data);
 
-                                    if (insert == 1 && compteur==0) {
-                                        $(data).each(function () {
-                                            $.ajax({
-                                                url: 'traitement/Structure/Comptabilite/SaisieJournalExerciceAnal.php?acte=ajout',
-                                                method: 'GET',
-                                                dataType: 'html',
-                                                data: 'CA_Num=' + this.CA_Num + '&A_Qte=' + this.A_Qte + '&A_Montant=' + this.A_Montant + '&EC_No=' + valECNo + "&N_Analytique=" + this.N_Analytique,
-                                                async: false,
-                                                success: function (data) {
-                                                }
-                                            });
+                                if (insert == 1 && compteur==0) {
+                                    $(data).each(function () {
+                                        $.ajax({
+                                            url: 'traitement/Structure/Comptabilite/SaisieJournalExerciceAnal.php?acte=ajout',
+                                            method: 'GET',
+                                            dataType: 'html',
+                                            data: 'CA_Num=' + this.ca_Num + '&A_Qte=' + this.a_Qte + '&A_Montant=' + this.ea_Montant + '&EC_No=' + valECNo + "&N_Analytique=" + this.n_Analytique,
+                                            async: false,
+                                            success: function (data) {
+                                            }
                                         });
-                                    }
-                                });
+                                    });
+                                }
 
                                 SaisieA=1;
                             },complete: function(){
@@ -1272,25 +1258,14 @@ jQuery(function($) {
                         compteur=compteur +1;
                         SaisieE=1;
 
-                    });
-
                     $.ajax({
                         url: "traitement/Facturation.php?acte=saisie_comptableCaisse",
                         method: 'GET',
-                        dataType: 'json',
+                        dataType: 'html',
                         data: "cbMarq=" + $("#cbMarqEntete").val() + "&TransDoc="+transDoc,
                         success: function (data) {
                             $(data).each(function () {
-                                var dateEch = "";
-                                if (this.EC_Echeance != "") {
-                                    var d = new Date(this.EC_Echeance);
-                                    dateEch = ( ("00" + d.getDay()).substr(-2) + "/" + ("00" + d.getMonth()).substr(-2) + "/" + d.getFullYear());
-                                }
-                                var d = new Date(this.EC_Echeance);
-                                var dataTab = "<tr><td>" + this.JO_Num + "</td><td>" + this.Annee_Exercice + "</td><td>" + this.EC_Jour + "</td><td>" + this.EC_RefPiece + "</td><td>" + this.EC_Reference + "</td>" +
-                                    "<td>" + this.CG_Num + "</td><td>" + this.CT_Num + "</td><td>" + this.EC_Intitule + "</td><td>" + dateEch + "</td>" +
-                                    "<td>" + (Math.round(this.EC_MontantDebit * 100) / 100) + "</td><td>" + (Math.round(this.EC_MontantCredit * 100) / 100) + "</td></tr>";
-                                $("#tableEC > tbody").append(dataTab);
+                                $("#tableEC > tbody").append(data);
                                 if (insert == 1) {
                                     /*$.ajax({
                                         url: 'traitement/Structure/Comptabilite/SaisieJournalExercice.php?acte=ajout',
@@ -1337,6 +1312,7 @@ jQuery(function($) {
             });
         }
     }
+
     testCorrectLigneA();
     function alimLigne(){
         $.ajax({

@@ -258,5 +258,7 @@ $docEntete = new DocEnteteClass(0);
             ?>
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button" style="background-color: rgb(2,78,5);color: rgb(255,255,255);"></button></div>
+        <div><input id="machineName" style="visibility:hidden;" value="<?= gethostname(); ?>"/></div>
     </div>
 </nav>
+

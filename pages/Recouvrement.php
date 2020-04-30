@@ -31,6 +31,9 @@ $texteMenu = "Règlement client";
 
 if(isset($_POST["client"])) $client=$_POST["CT_Num"];
 if(isset($_POST["type"])) $type=$_POST["type"];
+//le -1 posant souci, pour tout les types on utilise la valeur 2
+if ($type==2)
+    $type = -1;
 if(isset($_POST["caisse"])) $caisse=$_POST["caisse"];
 
 if(isset($_GET["client"])) $client=$_GET["client"];
@@ -212,7 +215,7 @@ if($typeRegl=="Collaborateur"){
                 <input type="hidden" value="1" name="module"/>
                 <input type="hidden" value="2" name="action"/>
                 <input type="hidden" value="addReglement" name="acte"/>
-                <input type="hidden" value="<?=$client ?>" name="client" id="client_ligne" />
+                <input type="hidden" value="<?=$client ?>" name="clientLigne" id="client_ligne" />
                 <input type="hidden" value="" name="dateReglementEntete_deb" id="dateReglementEntete_deb_ligne" />
                 <input type="hidden" value="" name="dateReglementEntete_fin" id="dateReglementEntete_fin_ligne" />
                 <input type="hidden" value="" name="mode_reglement" id="mode_reglement_ligne" />

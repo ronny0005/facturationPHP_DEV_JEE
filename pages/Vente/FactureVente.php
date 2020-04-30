@@ -192,7 +192,9 @@
                                 <th <?=$accessMontantHT ?>>Montant HT</th>
                                 <th <?=$accessMontantTTC ?>>Montant TTC</th>
                                 <th></th>
-<?php
+                                <?php if ($type=="AchatPreparationCommande" && !$isVisu)
+                                    echo "<th></th>";
+
 if (!$isVisu)
     echo "<th></th>
             <th></th>";

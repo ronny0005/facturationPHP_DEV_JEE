@@ -30,15 +30,39 @@ $do_type = $docEntete->DO_Type;
     <div class="col-12 col-sm-4 col-md-4 col-lg-2">
         <input type="text" class="form-control" id="quantite_stock"  value="" placeholder="Quantité en stock" disabled />
     </div>
+
 	 <div class="">
             <input type="hidden" name="ADL_Qte" id="ADL_Qte" value="0"/>
             <input type="hidden" name="APrix" id="APrix" value="0"/>
             <input type="hidden" name="cb_Marq" id="cb_Marq" value="0"/>
             <input type="hidden" name="idSec" id="idSec" value="0"/>
             <input type="hidden" name="acte" id="acte" value="ajout_ligne"/>
-
+             <input type="hidden" name="ADL_Qte_dest" id="ADL_Qte_dest" value="0"/>
+             <input type="hidden" name="APrix_dest" id="APrix_dest" value="0"/>
      </div>
+
+
 </div>
+
+    <?php if($type=="Transfert_detail"){ ?>
+        <div class="row mt-3">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2">
+                <input type="hidden" class="form-control" id="AR_Ref_Dest" name="AR_Ref_Dest" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
+                <input type="text" class="form-control" id="reference_dest" name="reference_dest" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
+            </div>
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                <input class="form-control" id="designation_dest" name="designation_dest" placeholder="Désignation" disabled/>
+            </div>
+
+            <div class="col-6 col-sm-4 col-sm-4 col-md-3 col-lg-2" style="width:90px">
+                <input type="text" class="form-control  only_float" name="quantite_dest" id="quantite_dest"  value="" placeholder="Qté" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
+            </div>
+
+            <div class="col-6 col-sm-4 col-md-8 col-lg-2" style="width:200px">
+                <input type="text" class="form-control  only_float" name="prix_dest" id="prix_dest"  value="" placeholder="Prix dest." disabled/>
+            </div>
+        </div>
+    <?php }?>
  </form>
 <div class="form-group mt-3">
  <table id="tableLigne" class="table table-striped">
@@ -53,8 +77,17 @@ $do_type = $docEntete->DO_Type;
         <th>Quantité</th>
           <?php if($flagPxRevient==0) echo "<th>Montant</th>"; ?>
 <?php
+
+if ($type == "Transfert_detail")
+    echo "<th>Référence Dest.</th>
+                <th>Désignation Dest.</th>
+                <th>Quantité Dest.</th>
+                    <th>Montant HT Dest.</th>";
+
 if(!$isVisu && $type!="Transfert_confirmation")
     echo "<th></th>";
+
+
 if(!$isVisu && $type=="Transfert" && $type=="Transfert_confirmation")
 echo "<th></th>";
       if($protection->PROT_CBCREATEUR!=2)
@@ -70,6 +103,8 @@ echo "<th></th>";
           $rows=$docEntete->getLigneTransfert();
       else if($type=="Transfert_valid_confirmation")
           $rows=$docEntete->getLignetConfirmation();
+      else if($type=="Transfert_detail")
+          $rows = $docEntete-> getLigneTransfert_detail();
         else
             $rows=$docEntete->getLigneFactureTransfert();
         $i=0;
@@ -125,8 +160,12 @@ echo "<th></th>";
                 <?php
                     echo "<td id='DL_Qte'>{$objet->formatChiffre(round($row->DL_Qte*100)/100)}</td>";
                 if($flagPxRevient==0) echo    "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
-
-                if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation")
+                if($type=="Transfert_detail")
+                    echo "<td id='AR_Ref_dest'>{$row->AR_Ref_Dest}</td>
+                             <td id='AR_Design_dest'>{$row->DL_Design_Dest}</td>
+                                <td id='DL_Qte_dest'>{$objet->formatChiffre($row->DL_Qte_dest)}</td>
+                                <td id='DL_MontantHT_dest'>{$objet->formatChiffre($row->DL_MontantHT_dest)}</td>";
+                if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation" && $type!="Transfert_detail")
                         echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
                 if(!$isVisu && $type!="Transfert_valid_confirmation")
                     echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";

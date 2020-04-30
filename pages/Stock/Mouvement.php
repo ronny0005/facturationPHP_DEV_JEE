@@ -39,20 +39,31 @@ $isModif = 1;
 $isVisu = 1;
 $type = $_GET["type"];
 $docEntete = new DocEnteteClass(0);
+$docEnteteTransfertDetail = new DocEnteteClass(0);
 $docEntete->type_fac=$type;
-    if(isset($_GET["cbMarq"])){
-        $docEntete = new DocEnteteClass($_GET["cbMarq"]);
-        $docEntete->type_fac=$type;
-        $reference=$docEntete->DO_Ref;
-        $do_imprim = $docEntete->DO_Imprim;
-        if($_GET["type"]=="Entree" || $_GET["type"]=="Sortie")
-            $depot_no=$docEntete->DO_Tiers;
-        else
-            $depot_no=$docEntete->DE_No;
-        $collaborateur=$docEntete->DO_Tiers;
-        $affaire= $docEntete->CA_Num;
-        $dateEntete = $docEntete->DO_Date;
+if(isset($_GET["cbMarq"])){
+    $docEntete = new DocEnteteClass($_GET["cbMarq"]);
+    if($_GET["type"]=="Transfert_detail"){
+        $listEntete = $docEntete->enteteTransfertDetail($_GET["cbMarq"]);
+        foreach($listEntete as $elt)
+        {
+            if($elt->DO_Type == 41)
+                $docEntete = new DocEnteteClass($elt->cbMarq);
+            if($elt->DO_Type == 40)
+                $docEnteteTransfertDetail = new DocEnteteClass($elt->cbMarq);
+        }
     }
+    $docEntete->type_fac=$type;
+    $reference=$docEntete->DO_Ref;
+    $do_imprim = $docEntete->DO_Imprim;
+    if($_GET["type"]=="Entree" || $_GET["type"]=="Sortie")
+        $depot_no=$docEntete->DO_Tiers;
+    else
+        $depot_no=$docEntete->DE_No;
+    $collaborateur=$docEntete->DO_Tiers;
+    $affaire= $docEntete->CA_Num;
+    $dateEntete = $docEntete->DO_Date;
+}
 $isModif = $docEntete->isModif($_SESSION["id"],$type);
 $isVisu = $docEntete->isVisu($_SESSION["id"],$type);
 

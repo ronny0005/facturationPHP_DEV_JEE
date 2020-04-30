@@ -31,7 +31,7 @@ jQuery(function($){
     }
 
 
-    $("#prix, #quantite").inputmask({   'alias': 'decimal',
+    $("#prix, #quantite, #quantite_dest, #prix_dest").inputmask({   'alias': 'decimal',
         'groupSeparator': ' ',
         'autoGroup': true,
         'digits': 2,
@@ -65,8 +65,26 @@ jQuery(function($){
 
                 if (!modification)
                     $("#prix").val(Math.round(ui.item.AR_PrixAch * 100) / 100);
-                alimente_qteStock($("#reference").val());
+                alimente_qteStock($("#reference").val(),0);
                 $("#quantite").focus()
+
+            }
+        })
+
+
+        $("#reference_dest").autocomplete({
+            source: "indexServeur.php?page=getArticleByRefDesignationMvtTransfert&type=" + $("#typeFacture").val() + "&DE_No=" + $("#CO_No").val(),
+            autoFocus: true,
+            select: function (event, ui) {
+                event.preventDefault();
+                $("#designation_dest").val(ui.item.AR_Design)
+                $("#reference_dest").val(ui.item.AR_Ref)
+                $("#AR_Ref_Dest").val(ui.item.AR_Ref)
+
+                if (!modification)
+                    $("#prix_dest").val(Math.round(ui.item.AR_PrixAch * 100) / 100);
+                alimente_qteStock($("#reference_dest").val(), 1);
+                $("#quantite_dest").focus()
 
             }
         })
@@ -74,19 +92,44 @@ jQuery(function($){
         setArticle()
 
 
-        function ajout_ligne(e) {
+    function verifLigne(){
+        if($("#quantite").val().replace(/ /g,"")!="" && $("#quantite_dest").val()!="" && $("#prix").val().replace(/ /g,"")!="" && $("#reference").val()!="" && $("#reference_dest").val()!="" )
+            return true;
+        else return false;
+    }
+
+    $("#quantite_dest").keyup(function(){
+        calculPrixDest()
+    })
+
+    $("#quantite").keyup(function(){
+        calculPrixDest()
+    })
+
+    $("#prix").keyup(function(){
+        calculPrixDest()
+    })
+
+    function calculPrixDest(){
+        var pfinal=0;
+        if($("#quantite_dest").val()!=0)
+            pfinal = Math.round(($("#prix").val().replace(/ /g,"")*$("#quantite").val().replace(/ /g,""))/$("#quantite_dest").val()*100)/100;
+        if($("#quantite").val().replace(/ /g,"")!="" &&  $("#prix").val().replace(/ /g,"")!="" && $("#quantite_dest").val()!="")
+            $("#prix_dest").val(pfinal);
+    }
+
+    function ajout_ligne(e) {
             if (e.keyCode == 13) {
                 if ((typeFac == "Transfert_detail" && verifLigne()) || typeFac != "Transfert_detail") {
                     var compl_dest = "";
                     if (typeFac == "Transfert_detail") {
                         var complref = "";
                         if (!modification)
-                            complref = "&designation_dest=" + $("#reference_dest").val();
+                            complref = "&designation_dest=" + $("#AR_Ref_Dest").val();
                         else
-                            complref = "&designation_dest=" + $("#reference_dest").val();
-                        compl_dest = "&quantite_dest=" + $("#quantite_dest").val() + "&prix_dest=" + $("#prix_dest").val() + complref;
+                            complref = "&designation_dest=" + $("#AR_Ref_Dest").val();
+                        compl_dest = "&quantite_dest=" + $("#quantite_dest").val().replace(/ /g, "") + "&prix_dest=" + $("#prix_dest").val().replace(/ /g, "") + complref;
                     }
-                    var ajoutParam = "";
                     if ($("#quantite").val().replace(/ /g, "") > 0 && (typeFac == "Entree" || (Math.round(Math.round($("#quantite_stock").val().replace(/ /g, "")) + Math.round($("#ADL_Qte").val())) >= Math.round($("#quantite").val().replace(/ /g, ""))))) {
                         var acte = "ajout_ligne";
                         if (modification) {
@@ -97,7 +140,7 @@ jQuery(function($){
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',
-                                data: "cbMarqEntete=" + $("#cbMarqEntete").val() + ajoutParam+"&PROT_No="+$("#PROT_No").val()+"&typeFacture="+$("#typeFacture").val(),
+                                data: "cbMarqEntete=" + $("#cbMarqEntete").val() +"&PROT_No="+$("#PROT_No").val()+"&typeFacture="+$("#typeFacture").val(),
                                 success: function (data) {
                                         alimLigne();
                                         tr_clickArticle();
@@ -117,13 +160,13 @@ jQuery(function($){
                                 }
                             });
                         } else {
-                            var cbmarq = "";
+                            alert("ajout")
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#reference").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarqEntete").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#AR_Ref").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarqEntete").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',
-                                data: "cbMarqEntete=" + $("#cbMarqEntete").val() + ajoutParam+"&PROT_No="+$("#PROT_No").val(),
+                                data: "cbMarqEntete=" + $("#cbMarqEntete").val() +"&PROT_No="+$("#PROT_No").val()+compl_dest,
                                 success: function (data) {
                                     alimLigne();
                                     tr_clickArticle();
@@ -266,7 +309,7 @@ jQuery(function($){
                         $('#prix_dest').val(Math.round(($(this).find("#DL_MontantHT_dest").html() / $(this).find("#DL_Qte_dest").html()) * 100) / 100);
                         $('#designation_dest').val($(this).find("#DL_Design_dest").html());
                         $('#reference_dest').val($(this).find("#DL_Design_dest").html());
-                        $('.comboreferenceDest').val($(this).find("#AR_Ref_dest").html());
+                        $('.comboreferenceDest').val($(this).find("#AR_Ref_Dest").html());
                     }
                     alimente_qteStock(AR_Ref);
                     modification = true;
@@ -304,7 +347,7 @@ jQuery(function($){
                         $('#prix_dest').val(Math.round(($(this).find("#DL_MontantHT_dest").html() / $(this).find("#DL_Qte_dest").html()) * 100) / 100);
                         $('#designation_dest').val($(this).find("#DL_Design_dest").html());
                         $('#reference_dest').val($(this).find("#DL_Design_dest").html());
-                        $('.comboreferenceDest').val($(this).find("#AR_Ref_dest").html());
+                        $('.comboreferenceDest').val($(this).find("#AR_Ref_Dest").html());
                     }
                     alimente_qteStock(AR_Ref);
                     modification = true;
@@ -344,7 +387,7 @@ jQuery(function($){
                     $('#prix_dest').val(Math.round(($(this).parent('tr').find("#DL_MontantHT_dest").html() / $(this).parent('tr').find("#DL_Qte_dest").html()) * 100) / 100);
                     $('#designation_dest').val($(this).parent('tr').find("#DL_Design_dest").html());
                     $('#reference_dest').val($(this).parent('tr').find("#DL_Design_dest").html());
-                    $('.comboreferenceDest').val($(this).parent('tr').find("#AR_Ref_dest").html());
+                    $('.comboreferenceDest').val($(this).parent('tr').find("#AR_Ref_Dest").html());
                 }
                 alimente_qteStock(AR_Ref);
                 modification = true;
@@ -408,7 +451,7 @@ jQuery(function($){
 
 
         function entete_document() {
-            if ($_GET("cbMarq") == undefined && isVisu == 0)
+            if ($("#cbMarqEntete").val()==0 && isVisu == 0)
                 $.ajax({
                     url: 'traitement/Facturation.php?acte=entete_document',
                     method: 'GET',
@@ -454,7 +497,7 @@ jQuery(function($){
                         $('#annuler').prop('disabled', true);
                         $('#valider').prop('disabled', true);
 
-                        if ($_GET("cbMarq") == null)
+                        if ($("#cbMarqEntete").val() == 0)
                             actionClient(false);
                         else
                             bloque_entete();
@@ -586,30 +629,47 @@ jQuery(function($){
             else isRemise($("#remise"), event);
         });
 
-        function alimente_qteStock(reference) {
-            $.ajax({
-                url: 'indexServeur.php?page=isStock&AR_Ref=' + reference + '&DE_No=' + $("#DE_No").val(),
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $(data).each(function () {
-                        if (typeFac != "Entree")
-                            if (!modification)
-                                if (this.AS_QteSto > 0)
+    function alimente_qteStock(reference,dest) {
+        de_no = $("#DE_No").val();
+        if(dest==1) de_no = $("#CO_No").val();
+        $.ajax({
+            url: 'indexServeur.php?page=isStock&AR_Ref=' + reference + '&DE_No=' + de_no,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function () {
+                    if ($_GET("type") != "Entree")
+                        if (!modification)
+                            if (this.AS_QteSto > 0) {
+                                if (dest==1)
+                                    $("#prix_dest").val(Math.round((this.AS_MontSto / this.AS_QteSto) * 100) / 100);
+                                else
                                     $("#prix").val(Math.round((this.AS_MontSto / this.AS_QteSto) * 100) / 100);
+                            }
+                            else {
+                                if (dest==1)
+                                    $("#prix_dest").val("0");
                                 else
                                     $("#prix").val("0");
+                            }
 
+                    if (dest==1)
+                        $("#quantite_dest").val(Math.round(this.AS_QteSto * 100) / 100);
+                    else
                         $("#quantite_stock").val(Math.round(this.AS_QteSto * 100) / 100);
-                        if (!modification && Math.round(this.AS_QteSto) >= 1)
+//                        $("#quantite_stock").val(Math.round(this.AS_QteSto * 100) / 100);
+                    if (!modification && Math.round(this.AS_QteSto) >= 1)
+                        if (dest==1)
+                            $("#quantite_dest").val("1");
+                        else
                             $("#quantite").val("1");
-                    })
-                },
-                error: function (resultat, statut, erreur) {
-                    alert(resultat.responseText);
-                }
-            });
-        }
+                })
+            },
+            error: function (resultat, statut, erreur) {
+                alert(resultat.responseText);
+            }
+        });
+    }
 
         function fichierTraitement() {
             var fich = typeFac;

@@ -173,7 +173,25 @@ if($_GET["acte"] =="saisie_comptable") {
     $trans = 0;
     if(isset($_GET["TransDoc"]))
         $trans = $_GET["TransDoc"];
-    echo json_encode(saisie_comptable($_GET["cbMarq"],$trans));
+
+    $list = $docEntete->saisieComptable($_GET["cbMarq"],$trans);
+    foreach($list as $elt) {
+        ?>
+        <tr>
+            <td><?= $elt->jo_Num ?></td>
+            <td><?= $elt->annee_Exercice ?></td>
+            <td><?= $elt->ec_Jour ?></td>
+            <td><?= $elt->ec_RefPiece ?></td>
+            <td><?= $elt->ec_Reference ?></td>
+            <td><?= $elt->cg_Num ?></td>
+            <td><?= $elt->ct_Num ?></td>
+            <td><?= $elt->ec_Intitule ?></td>
+            <td><?= $docEntete->formatDateAffichage(substr($elt->ec_Echeance,0,10)) ?></td>
+            <td><?= $docEntete->formatChiffre($elt->ec_MontantDebit) ?></td>
+            <td><?= $docEntete->formatChiffre($elt->ec_MontantCredit) ?></td>
+        </tr>
+        <?php
+    }
 }
 
 if($_GET["acte"] =="majComptaFonction") {
@@ -353,84 +371,26 @@ function saisie_comptable ($cbMarq,$trans){
 
 if($_GET["acte"] =="saisie_comptableAnal") {
     $docEntete = new DocEnteteClass($_GET["cbMarq"],$objet->db);
-    echo json_encode(saisie_comptableAnal($docEntete->DO_Piece,$docEntete->DO_Domaine,$docEntete->DO_Type));
+    $list = $docEntete->saisieCompteAnal($_GET["cbMarq"], 0);
+    foreach($list as $elt) {
+        ?>
+        <tr>
+            <td><?= $elt->jo_Num ?></td>
+            <td><?= $elt->a_Intitule ?></td>
+            <td><?= $elt->cg_Num ?></td>
+            <td><?= $elt->anneExercice ?></td>
+            <td><?= $elt->ca_Num ?></td>
+            <td><?= $docEntete->formatChiffre($elt->ea_Quantite) ?></td>
+            <td><?= $docEntete->formatChiffre($elt->ea_Montant) ?></td>
+        </tr>
+        <?php
+    }
+
 }
 
-function saisie_comptableAnal($do_piece,$do_domaine,$do_type,$insert=0){
-    $objet = new ObjetCollector();
-    $jo_num="";
-    $cg_num="";
-    $souche="";
-    $total_regle= 0;
-    $dateEntete = "";
-    $reference="";
-    $date_ech="";
-    $cg_numContrepartie="";
-    $cmpcol=0;
-    $alldata=null;
-    $result=$objet->db->requete($objet->getDoPiece($do_piece,$do_domaine,$do_type));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        $reference=$rows[0]->DO_Ref;
-        $dateEntete=$rows[0]->DO_Date;
-        $client=$rows[0]->DO_Tiers;
-        $souche = $rows[0]->DO_Souche;
-        $affaire=$rows[0]->CA_Num;
-    }
-    $result=$objet->db->requete($objet->getSoucheAchat());
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    foreach ($rows as $row) {
-        if($row->cbIndice==$souche)
-            $jo_num=$row->JO_Num;
-    }
-    $result = $objet->db->requete($objet->getJournauxByJONum($jo_num));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows!=null){
-        foreach($rows as $row){
-            if($row->JO_SaisAnal==1){
-                $result=$objet->db->requete($objet->getLigneFacture($do_piece,$do_domaine,$do_type));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                foreach ($rows as $row) {
-                    $EC_No="";
-                    if($insert==1)
-                        $EC_No=$row->cbMarq;
-                    if($row->DL_NoColis=="")
-                        $DL_NoColis=1;
-                    else
-                        $DL_NoColis =$row->DL_NoColis;
-                    $result = $objet->db->requete($objet->getTaxeArticle($row->AR_Ref, $DL_NoColis, 1));
-                    $rowsa = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rowsa!=null)
-                        $CG_Num =$rowsa[0]->COMPTEG_ARTICLE;
-                    else
-                        $CG_Num = "";
-                    $result=$objet->db->requete($objet->getPlanComptableByCGNum($CG_Num));
-                    $rowsa = $result->fetchAll(PDO::FETCH_OBJ);
-                    $result=$objet->db->requete($objet->getLigne_compteA($row->cbMarq));
-                    $rowsaff = $result->fetchAll(PDO::FETCH_OBJ);
-                    if($rowsaff!= null) {
-                        foreach ($rowsaff as $rowaff) {
-                           $data = array("JO_Num"=>$jo_num,"AnneExercice"=>substr($dateEntete, 0, 4) . substr($dateEntete, 5, 2),
-                                "CA_Num" => $rowaff->CA_Num,"CG_Num" => $CG_Num,"A_Intitule" => $rowaff->A_Intitule,
-                                "A_Qte" => $rowaff->EA_Quantite, "A_Montant" => $rowaff->EA_Montant,
-                                "EC_No" => $EC_No,"N_Analytique" => $rowaff->N_Analytique);
-                            $alldata[$cmpcol] = $data;
-                            $cmpcol++;
-                        }
-                    }else{
-                        $data = array("JO_Num"=>$jo_num,"AnneExercice"=>substr($dateEntete, 0, 4) . substr($dateEntete, 5, 2),"CA_Num" => $row->CA_Num,
-                            "A_Qte" => $row->DL_Qte, "A_Montant" => $row->DL_MontantHT,
-                            "EC_No" => $EC_No,
-                            "N_Analytique"=> "","CbMarq" => $EC_No);
-                        $alldata[$cmpcol] = $data;
-                        $cmpcol++;
-                    }
-                }
-            }
-        }
-    }
-    return $alldata;
+function saisie_comptableAnal($cbMarq,$insert=0){
+    $docEntete = new DocEnteteClass(0);
+    echo json_encode($docEntete->saisieCompteAnal($cbMarq,$insert));
 }
 
 if($_GET["acte"] =="stockMinDepasse") {
@@ -440,76 +400,34 @@ if($_GET["acte"] =="stockMinDepasse") {
 
 if($_GET["acte"] =="saisie_comptableCaisse") {
     $trans = 0;
-    $docEntete = new DocEnteteClass($_GET["cbMarq"],$objet->db);
-    if(isset($_GET["TransDoc"]))
-        $trans = $_GET["TransDoc"];
-    echo json_encode(saisieComptableCaisse($docEntete->DO_Piece,$docEntete->DO_Domaine,$docEntete ->DO_Type,$trans));
+    if($_GET["cbMarq"]!=0) {
+        $docEntete = new DocEnteteClass($_GET["cbMarq"], $objet->db);
+        if (isset($_GET["TransDoc"]))
+            $trans = $_GET["TransDoc"];
+        $list = $docEntete->saisieComptableCaisse($_GET["cbMarq"], $trans);
+        foreach($list as $elt) {
+            ?>
+            <tr>
+                <td><?= $elt->jo_Num ?></td>
+                <td><?= $elt->annee_Exercice ?></td>
+                <td><?= $elt->ec_Jour ?></td>
+                <td><?= $elt->ec_RefPiece ?></td>
+                <td><?= $elt->ec_Reference ?></td>
+                <td><?= $elt->cg_Num ?></td>
+                <td><?= $elt->ct_Num ?></td>
+                <td><?= $elt->ec_Intitule ?></td>
+                <td><?= $docEntete->formatDateAffichage(substr($elt->ec_Echeance,0,10)) ?></td>
+                <td><?= $docEntete->formatChiffre($elt->ec_MontantDebit) ?></td>
+                <td><?= $docEntete->formatChiffre($elt->ec_MontantCredit) ?></td>
+            </tr>
+        <?php
+        }
+    }
 }
 
 function saisieComptableCaisse($cbMarq,$TransDoc){
-    $jo_num="";
-    $cg_num="";
-    $souche="";
-    $docEntete = new DocEnteteClass($cbMarq);
-    $do_piece = $docEntete->DO_Piece;
-    $do_domaine = $docEntete->DO_Domaine;
-    $do_type = $docEntete->DO_Type;
-    $trans = $TransDoc;
-    $alldata=null;
-    $total_regle= 0;
-    $dateEntete = "";
-    $reference="";
-    $date_ech="";
-    $cg_numContrepartie="";
-    $cmpcol=0;
-    $caisse="";
-    $reference=$docEntete->DO_Ref;
-    $dateEntete=$docEntete->DO_Date;
-    $client=$docEntete->DO_Tiers;
-    $souche = $docEntete->DO_Souche;
-    $affaire=$docEntete->CA_Num;
-    $caisse = $docEntete->CA_No;
-
-    $total_regle=$docEntete->avance;
-    $caisseClass = new CaisseClass($caisse);
-    $jo_num = $caisseClass->JO_Num;
-
-    $comptetClass = new ComptetClass($client);
-    if($comptetClass->CG_NumPrinc!=""){
-        $cg_num=$comptetClass->CG_NumPrinc;
-        $comptegClass = new CompteGClass($cg_num);
-        if($comptegClass->CG_Tiers==0)
-            $client="";
-    }
-
-    $docRegl = $docEntete->getDocReglByDO_Piece();
-    $date_ech=$docRegl->DR_Date;
-
-    if($trans==0){
-        $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
-            "EC_Jour" => substr($dateEntete,8,2),"EC_RefPiece" =>$do_piece, "EC_Reference" =>$reference,"CG_Num"=> $cg_num,
-            "TA_Provenance" => 0,"EC_StatusRegle" => 0,"EC_MontantRegle" => 0,"EC_Sens" => 1,"EC_Lettrage" => "d","CG_NumCont" => "","CT_Num" =>$client,"CT_NumCont" =>"","EC_Intitule"=>"Rglt ".$do_piece."_".$reference,"N_Reglement"=>1,"EC_Echeance"=>$date_ech,"EC_MontantCredit"=>"",
-            "EC_MontantDebit"=>$total_regle,"TA_Code"=>"");
-        $alldata[$cmpcol] = $data;
-        $cmpcol++;
-    }
-    $cg_numold = $cg_num;
-    $ct_numold = $client;
-    $journalClass = new JournalClass($jo_num);
-    if($journalClass->CG_Num!=""){
-        $cg_num=$journalClass->CG_Num;
-        $comptegClass = new CompteGClass($cg_num);
-        if($comptegClass->CG_Tiers==0)
-            $client="";
-    }
-
-    $data = array("nomFichier" =>"","JO_Num" => $jo_num,"Annee_Exercice" =>substr($dateEntete,0,4).substr($dateEntete,5,2),
-        "EC_Jour" => substr($dateEntete,8,2),"EC_RefPiece" =>$do_piece, "EC_Reference" =>$reference,"CG_Num"=> $cg_num,
-        "TA_Provenance" => 0,"EC_StatusRegle" => 0,"EC_MontantRegle" => 0,"EC_Sens" => 0,"EC_Lettrage" => "","CG_NumCont" => $cg_numold,"CT_Num" =>$client,"CT_NumCont" =>$ct_numold,"EC_Intitule"=>"Rglt ".$do_piece."_".$reference,"N_Reglement"=>1,"EC_Echeance"=>$date_ech,"EC_MontantCredit"=>$total_regle,
-        "EC_MontantDebit"=>"","TA_Code"=>"");
-    $alldata[$cmpcol] = $data;
-
-    return $alldata;
+    $docEntete = new DocEnteteClass(0);
+    return $docEntete->saisieComptable($cbMarq,$TransDoc);
 }
 
 function saisieComptableCaisseReglement($RG_No){
