@@ -324,7 +324,8 @@ if ($readonly || $isVisu)
     $accessStatut = "disabled";
 
 if( $type!="AchatRetour" && $type!="AchatRetourC" && $type!="Achat" && $type!="AchatC" && $type!="PreparationCommande" && $type!="AchatPreparationCommande" ) {
-    $typeparam = $type;
+    if($type=="VenteRetour") $typeparam ="Retour";
+    //$typeparam = $type;
     $rows = $docEntete->getStatutVente($typeparam);
 }
 else {

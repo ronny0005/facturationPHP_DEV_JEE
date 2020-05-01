@@ -684,7 +684,6 @@ if($_GET["acte"]=="ligneFactureStock"){
     $isVisu = $docEntete->isVisu($protection->PROT_Administrator,$protection->protectedType($typeDocument ),$protection->PROT_APRES_IMPRESSION);
     $docligne = new DocLigneClass(0);
     $totalqte = 0;
-
     if($typeDocument=="Transfert")
         $rows=$docEntete->getLigneTransfert();
     else if($typeDocument=="Transfert_confirmation")
@@ -740,45 +739,42 @@ if($_GET["acte"]=="ligneFactureStock"){
             $totalttc=$totalttc+round(($a+$b+$c)+$d,0);
 
             if($typeDocument!="Transfert_detail") {
-                echo "<tr class='facture $classe' id='article_" . $row->cbMarq . "'";
-                echo "><td id='AR_Ref' style='color:blue;text-decoration: underline'>" . $row->AR_Ref . "</td>"
-                    . "<td id='DL_Design' style='align:left'>" . $row->DL_Design . "</td>";
-                ?>
-                <td id='DL_PrixUnitaire' style="<?php
+                echo "<tr class='facture $classe' id='article_{$row->cbMarq}'>
+                        <td id='AR_Ref' style='color:blue;text-decoration: underline'>{$row->AR_Ref}</td>
+                        <td id='DL_Design' style='align:left'>{$row->DL_Design}</td>
+                        <td id='DL_PrixUnitaire' style='";
                 if ($flagPxRevient != 0)
-                    echo "display:none"; ?>"><?= $objet->formatChiffre(round($row->DL_PrixUnitaire, 2)); ?> </td>
-                <?php
-                echo "<td id='DL_Qte'>" . $objet->formatChiffre(round($row->DL_Qte * 100) / 100) . "</td>";
-                //. "<td id='DL_Remise'>".$row->DL_Remise."</td>"
+                    echo "display:none';>{$objet->formatChiffre($row->DL_PrixUnitaire)}</td>";
+                echo "<td id='DL_Qte'>{$objet->formatChiffre($row->DL_Qte)}</td>";
                 if ($flagPxRevient == 0)
-                    echo "<td id='DL_MontantHT'>" . $objet->formatChiffre($row->DL_MontantHT) . "</td>";
+                    echo "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
                 else "<td></td>";
-                echo "<td style='display:none' id='cbMarq'>" . $row->cbMarq . "</td>"
-                    . "<td style='display:none' id='id_sec'>" . $row->idSec . "</td>";
+                echo "<td style='display:none' id='cbMarq'>{$row->cbMarq}</td>
+                        <td style='display:none' id='id_sec'>{$row->idSec}</td>";
 
                     if(!$isVisu && $typeDocument!="Transfert" && $typeDocument!="Transfert_confirmation" && $typeDocument!="Transfert_detail")
-                        echo "<td id='modif_".$row->cbMarq."'><i class='fa fa-pencil fa-fw'></i></td>";
+                        echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
                     if(!$isVisu && $typeDocument!="Transfert_valid_confirmation")
-                        echo "<td id='suppr_".$row->cbMarq."'><i class='fa fa-trash-o'></i></td>";
+                        echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";
 
                     if($protection->PROT_CBCREATEUR!=2)
                         echo "<td>{$docligne->getcbCreateurName()}</td>";
                     echo"</tr>";
                 }else{
-                $montantHT = round($row->DL_MontantHT*100)/100;
-                $montantHT_dest = round($row->DL_MontantHT_dest*100)/100;
+                $montantHT = $objet->formatChiffre($row->DL_MontantHT);
+                $montantHT_dest = $objet->formatChiffre($row->DL_MontantHT_dest);
                 ?>
                 <tr class='facture <?= $classe ?>' id='article_<?= $row->cbMarq ?>'>
                     <td id='AR_Ref'><?= $row->AR_Ref ?></td>
                     <td id='DL_Design'><?= $row->DL_Design ?></td>
-                    <td id='DL_PrixUnitaire'><?= round($row->DL_PrixUnitaire,2); ?></td>
-                    <td id='DL_Qte'><?= (round($row->DL_Qte*100)/100) ?></td>
+                    <td id='DL_PrixUnitaire'><?= $objet->formatChiffre($row->DL_PrixUnitaire); ?></td>
+                    <td id='DL_Qte'><?= $objet->formatChiffre($row->DL_Qte) ?></td>
                     <td id='DL_MontantHT'><?= $montantHT ?></td>
                     <td style='display:none' id='cbMarq'><?= $row->cbMarq ?></td>
                     <td style='display:none' id='id_sec'><?= $row->idSec ?></td>
                     <td id='AR_Ref_dest'><?= $row->AR_Ref_Dest ?></td>
                              <td id='AR_Design_dest'><?= $row->DL_Design_Dest ?></td>
-                                <td id='DL_Qte_dest'><?= (round($row->DL_Qte_dest*100)/100) ?></td>
+                                <td id='DL_Qte_dest'><?= $objet->formatChiffre($row->DL_Qte_dest) ?></td>
                                 <td id='DL_MontantHT_dest'><?= $montantHT_dest ?></td>
                 <?php
                 if(!isset($_GET["visu"])) echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";

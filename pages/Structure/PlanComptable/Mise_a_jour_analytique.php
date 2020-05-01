@@ -80,7 +80,7 @@ include("module/Menu/BarreMenu.php");
         <div class="col-xs-8 col-md-4  col-sm-6 col-lg-4">
             <label>Compte analytique</label>
             <select class="form-control" name="caNumIntitule" id="caNumIntitule" >
-                <option value="">Tout les comptes</option>
+                <option value="">Tous les comptes</option>
                 <?php
                 $comptea = new CompteaClass(0);
                 $rows = $comptea->allSearch();

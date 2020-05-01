@@ -152,7 +152,7 @@ if(isset($_POST["dateCloture"])){
                         <select id="regrReglt" name="regrReglt" class="form-control">
                             <option value="1">Aucun regroupement</option>
                             <option value="2">Regrouper les espèces uniquement</option>
-                            <option value="3">Regrouper tout les mode de règlements</option>
+                            <option value="3">Regrouper tous les mode de règlements</option>
                         </select>
                     </div>
                 </div>

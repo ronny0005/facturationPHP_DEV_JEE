@@ -60,7 +60,7 @@ include("enteteParam.php");
     <div class="form-group col-lg-2" >
         <label>Type règlement :</label>
                 <select class="form-control" name="type_reglement" id="type_reglement">
-                    <option value="-1"<?php if($type_reglement==-1) echo " selected"; ?>>TOUT LES MOUVEMENTS</option>
+                    <option value="-1"<?php if($type_reglement==-1) echo " selected"; ?>>TOUS LES MOUVEMENTS</option>
                     <option value="0"<?php if($type_reglement==0) echo " selected"; ?>>Règlement</option>
                     <option value="5"<?php if($type_reglement==5) echo " selected"; ?>>Entrée</option>
                     <option value="4"<?php if($type_reglement==4) echo " selected"; ?>>Sortie</option>

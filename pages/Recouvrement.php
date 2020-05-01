@@ -131,7 +131,7 @@ if($typeRegl=="Collaborateur"){
                     //if($flagRisqueClient!=0)
                     echo "<option value='0'";
                     if($treglement==0) echo " selected ";
-                    echo ">TOUT REGLEMENTS</option>";
+                    echo ">TOUS REGLEMENTS</option>";
                     if($rows !=null){
                         foreach ($rows as $row){
                             echo "<option value='{$row->R_Code}' ";
@@ -192,7 +192,7 @@ if($typeRegl=="Collaborateur"){
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Type réglement</label>
                 <select class="form-control" name="type" id="type">
-                    <option value="-1" <?= ($type==-1) ? "selected" :""; ?> >Tout les règlements</option>
+                    <option value="-1" <?= ($type==-1) ? "selected" :""; ?> >Tous les règlements</option>
                     <option value="1"  <?= ($type==1) ? "selected" :""; ?> >Règlements imputés</option>
                     <option value="0"  <?= ($type==0) ? "selected" :""; ?> >Règlements non imputés</option>
                 </select>

@@ -120,7 +120,7 @@ include("module/Menu/BarreMenu.php");
                             <div>
                             <div style="margin-left:90px" class="col-md-3">
                                 <select class="form-control" style="width:200px" name="type" id="type">
-                                    <option value="-1">Tout les règlements</option>
+                                    <option value="-1">Tous les règlements</option>
                                     <option value="1">Règlements imputés</option>
                                     <option value="0">Règlements non imputés</option>
                                 </select>

@@ -133,14 +133,14 @@ ELSE CASE WHEN TA_TTaux=1 THEN cast(cast(TA_Taux as numeric(9,2)) as varchar(10)
 
     public function getListeTypePlan()
     {
-        return "SELECT * FROM " . $this->db->baseCompta . ".dbo.P_ANALYTIQUE";
+        return "SELECT * FROM P_ANALYTIQUE";
     }
 
     public function getListeTypePlanByVal($val)
     {
-        return "SELECT * 
-                FROM " . $this->db->baseCompta . ".dbo.P_ANALYTIQUE 
-                WHERE ($val=0 OR cbIndice = $val)";
+        return "SELECT  * 
+                FROM    P_ANALYTIQUE 
+                WHERE   ($val=0 OR cbIndice = $val)";
     }
 
     public function insertDepotUser($prot_user, $de_no)

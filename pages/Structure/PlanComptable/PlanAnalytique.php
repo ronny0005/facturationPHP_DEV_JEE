@@ -55,7 +55,7 @@ include("module/Menu/BarreMenu.php");
                 <input type="hidden" value="<?php echo $module; ?>" name="module"/>
                 <input type="hidden" value="<?php echo $action; ?>" name="action"/>
                 <select name="type" id="type" class="form-control" style="width: 200px">
-                    <option value="0" <?php if($val==0) echo " selected "; ?>>Tout les sections</option>
+                    <option value="0" <?php if($val==0) echo " selected "; ?>>Tous les sections</option>
                     <option value="1" <?php if($val==1) echo " selected "; ?>>Sections actives</option>
                     <option value="2" <?php if($val==2) echo " selected "; ?>>Sections mises en sommeil</option>
                 </select>

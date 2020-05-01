@@ -167,7 +167,7 @@ function lien ($entete,$depot,$type,$cbMarq){
                                     if(sizeof($rows)>1){
                                         echo "<option value='0'";
                                         if('0'== $depot) echo " selected ";
-                                        echo">TOUT LES DEPOTS</option>";
+                                        echo">TOUS LES DEPOTS</option>";
                                     }
                                     if($rows==null){
                                     }else{

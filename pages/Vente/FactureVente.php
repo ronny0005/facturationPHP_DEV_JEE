@@ -1,4 +1,4 @@
-<script src="js/scriptFactureVente.js?d=<?php echo time(); ?>"></script>
+<script src="js/scriptFactureVente.js?d=<?= time(); ?>"></script>
 <div class="container-fluid">
     <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
         <h3 class="text-center text-uppercase bgcolorApplication"><?= $protection->listeFactureNom($type) ?></h3>
@@ -12,7 +12,7 @@
     <fieldset class="">
         <legend>Entête</legend>
         <form id="form-entete" action="Document-Facture<?=$type ?>" method="get">
-            <input type="hidden" id="flagMinMax" value="<?php if($type=="Vente" || $type=="BonLivraison") echo $flag_minMax; else echo "0"; ?>"/>
+            <input type="hidden" id="flagMinMax" value="<?= ($type=="Vente" || $type=="BonLivraison") ? $flag_minMax : "0" ?>"/>
             <input type="hidden" id="flagDelai" value="<?= $protection->getDelai(); ?>"/>
             <input type="hidden" id="flagPxRevient" value="<?= $flagPxRevient; ?>"/>
             <input type="hidden" id="flagPxAchat" value="<?= $flagPxAchat; ?>"/>
@@ -116,7 +116,7 @@
                     <div class="col-6 col-xs-12 col-sm-4 col-md-4">
                         <label>&nbsp;Référence</label>
                         <div id="datetimepicker1" class="input-group date">
-                            <input maxlength="17" value= "<?=$accessReference ?>" class="form-control form-control" type="text" id="ref" name="reference" <?=$accessReference ?>>
+                            <input maxlength="17" value= "" class="form-control form-control" type="text" id="ref" name="reference" <?=$accessReference ?>>
                             <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
@@ -317,7 +317,6 @@ if (!$isVisu)
             <?=$listeReglement ?>
             </tbody>
         </table>
-
     </fieldset>
 </div>
 <div class="container" <?=$accessListeSaisie ?>>

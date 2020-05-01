@@ -53,7 +53,7 @@ include("module/Menu/BarreMenu.php");
                 <input type="hidden" value="<?php echo $module; ?>" name="module"/>
                 <input type="hidden" value="<?php echo $action; ?>" name="action"/>
                 <select name="type" id="type" class="form-control" style="width: 200px">
-                    <option value="0" <?php if($val==0) echo " selected "; ?>>Tout les comptes généraux</option>
+                    <option value="0" <?php if($val==0) echo " selected "; ?>>Tous les comptes généraux</option>
                     <option value="1" <?php if($val==1) echo " selected "; ?>>Comptes généraux actifs</option>
                     <option value="2" <?php if($val==2) echo " selected "; ?>>Compte généraux mis en sommeil</option>
                 </select>

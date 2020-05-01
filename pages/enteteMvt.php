@@ -30,10 +30,15 @@
             $depotDestNo = "";
             $depotDest = "";
             if($docEntete->DE_No!=NULL){
-                $depotDestNo = ($type=="Transfert" || $type=="Transfert_confirmation") ? $docEntete->DO_Tiers : ($type=="Transfert_detail") ? $docEnteteTransfertDetail->DE_No : $docEntete->DE_No;
-                $depotDest = ($type=="Transfert" || $type=="Transfert_confirmation") ? (new DepotClass($docEntete->DO_Tiers))->DE_Intitule : ($type=="Transfert_detail") ? (new DepotClass($docEnteteTransfertDetail->DE_No))->DE_Intitule : (new DepotClass($docEntete->DE_No))->DE_Intitule;
+                $depotDestNo = $docEntete->DE_No;
+                if($type=="Transfert" || $type=="Transfert_confirmation")
+                    $depotDestNo = $docEntete->DO_Tiers;
+                if($type=="Transfert_detail")
+                    $depotDestNo =  $docEnteteTransfertDetail->DE_No;
+                $depotDest = (new DepotClass($depotDestNo))->DE_Intitule;
             }
-        ?>
+
+            ?>
             <div class="col-6 col-sm-6 col-md-6">
             <label>Destination : </label>
             <input class="form-control" type="hidden" name="CO_No" id="CO_No" value="<?= $depotDestNo ?>" <?php if(isset($_GET["cbMarq"]) || $isVisu) echo "disabled"; ?> />

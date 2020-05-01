@@ -136,7 +136,7 @@ jQuery(function($){
                             modification = false;
                             acte = "modif";
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?type_fac=" + typeFac + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarqEntete").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?type_fac=" + typeFac + "&acte=" + acte + "&entete=" + $("#n_doc").val() + "&id_sec=" + $("#idSec").val() + "&quantite=" + $("#quantite").val().replace(/ /g, "") + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarq").val() + compl_dest + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',
@@ -149,8 +149,8 @@ jQuery(function($){
                                         $('#reference').val("");
                                         $('#designation').val("");
                                         if (typeFac == "Transfert_detail") {
-                                            $("#article_" + $("#cb_Marq").val()).find("#DL_Qte_dest").html((Math.round(data[0].DL_Qte_Dest * 100) / 100));
-                                            $("#article_" + $("#cb_Marq").val()).find("#DL_MontantHT_dest").html(Math.round(data[0].DL_MontantHT_Dest));
+                                            $("#article_" + $("#cbMarq").val()).find("#DL_Qte_dest").html((Math.round(data[0].DL_Qte_Dest * 100) / 100));
+                                            $("#article_" + $("#cbMarq").val()).find("#DL_MontantHT_dest").html(Math.round(data[0].DL_MontantHT_Dest));
                                         }
                                         $('#reference').focus();
                                         $("#ADL_Qte").val(0);
@@ -160,9 +160,8 @@ jQuery(function($){
                                 }
                             });
                         } else {
-                            alert("ajout")
                             $.ajax({
-                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#AR_Ref").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarqEntete").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
+                                url: "traitement/" + fichierTraitement() + "?acte=" + acte + "&type_fac=" + typeFac + "&id_sec=0&quantite=" + $("#quantite").val().replace(/ /g, "") + "&designation=" + $("#AR_Ref").val() + "&prix=" + $("#prix").val().replace(/ /g, "") + "&remise=" + $("#remise").val() + "&cbMarq=" + $("#cbMarq").val() + "&userName=" + $("#userName").html() + "&machineName=" + $("#machineName").html(),
                                 method: 'GET',
                                 async: false,
                                 dataType: 'json',
@@ -297,7 +296,7 @@ jQuery(function($){
                     $('#quantite').val(DL_Qte);
                     $('#ADL_Qte').val(DL_Qte);
                     $('#APrix').val(DL_PrixUnitaire);
-                    $('#cb_Marq').val(cbMarq);
+                    $('#cbMarq').val(cbMarq);
                     $('#idSec').val(id_sec);
 
                     $('#reference').prop('disabled', true);
@@ -336,7 +335,7 @@ jQuery(function($){
                     $('#quantite').val(DL_Qte);
                     $('#ADL_Qte').val(DL_Qte);
                     $('#APrix').val(DL_PrixUnitaire);
-                    $('#cb_Marq').val(cbMarq);
+                    $('#cbMarq').val(cbMarq);
                     $('#idSec').val(id_sec);
 
                     if (typeFac == "Transfert_detail") {
@@ -376,7 +375,7 @@ jQuery(function($){
                 $('#quantite').val(DL_Qte);
                 $('#ADL_Qte').val(DL_Qte);
                 $('#APrix').val(DL_PrixUnitaire);
-                $('#cb_Marq').val(cbMarq);
+                $('#cbMarq').val(cbMarq);
                 $('#idSec').val(id_sec);
 
                 if (typeFac == "Transfert_detail") {
@@ -852,8 +851,11 @@ jQuery(function($){
                     $("#depot").prop('disabled', true);
                     $("#collaborateur").prop('disabled', true);
                     $("#reference").prop('disabled', true);
+                    $("#reference_dest").prop('disabled', true);
+
                     $("#nclient").prop('disabled', true);
                     $("#reference").prop('disabled', false);
+                    $("#reference_dest").prop('disabled', false);
                     $("#dateentete").prop('disabled', true);
                     $("#referenceDest").prop('disabled', false);
                     if(typeFac!="Sortie")

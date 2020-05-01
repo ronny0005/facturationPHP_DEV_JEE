@@ -98,7 +98,7 @@ $rows=$depotUserClass->getDepotUser($protection->Prot_No);
 if(sizeof($rows)>1){
     $listeDepot = "<option value='0'";
     if('0'== $depot) $listeDepot = $listeDepot." selected ";
-    $listeDepot = $listeDepot.">TOUT LES DEPOTS</option>";
+    $listeDepot = $listeDepot.">TOUS LES DEPOTS</option>";
 }
 
 if($rows==null){
@@ -120,11 +120,11 @@ $libTiers = "Client";
 $libToutTiers = "TOUS LES CLIENTS";
 
 $libClient="";
-$libClient="TOUT LES CLIENTS";
+$libClient="TOUS LES CLIENTS";
 if($type=="Achat"||$type=="AchatT"||$type=="AchatC"
     || $type=="AchatRetour"||$type=="AchatRetourT"||$type=="AchatRetourC"
     || $type=="AchatPreparationCommande"||$type=="PreparationCommande")
-    $libClient="TOUT LES FOURNISSEURS";
+    $libClient="TOUS LES FOURNISSEURS";
 
 if(isset($_POST["client"]))
     $client = $_POST["client"];

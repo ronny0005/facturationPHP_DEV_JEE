@@ -34,7 +34,7 @@ $do_type = $docEntete->DO_Type;
 	 <div class="">
             <input type="hidden" name="ADL_Qte" id="ADL_Qte" value="0"/>
             <input type="hidden" name="APrix" id="APrix" value="0"/>
-            <input type="hidden" name="cb_Marq" id="cb_Marq" value="0"/>
+            <input type="hidden" name="cbMarq" id="cbMarq" value="0"/>
             <input type="hidden" name="idSec" id="idSec" value="0"/>
             <input type="hidden" name="acte" id="acte" value="ajout_ligne"/>
              <input type="hidden" name="ADL_Qte_dest" id="ADL_Qte_dest" value="0"/>
@@ -51,11 +51,11 @@ $do_type = $docEntete->DO_Type;
                 <input type="text" class="form-control" id="reference_dest" name="reference_dest" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
             </div>
             <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                <input class="form-control" id="designation_dest" name="designation_dest" placeholder="Désignation" disabled/>
+                <input class="form-control" id="designation_dest" name="designation_dest" placeholder="Désignation dest." disabled/>
             </div>
 
             <div class="col-6 col-sm-4 col-sm-4 col-md-3 col-lg-2" style="width:90px">
-                <input type="text" class="form-control  only_float" name="quantite_dest" id="quantite_dest"  value="" placeholder="Qté" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
+                <input type="text" class="form-control  only_float" name="quantite_dest" id="quantite_dest"  value="" placeholder="Qté dest." <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
             </div>
 
             <div class="col-6 col-sm-4 col-md-8 col-lg-2" style="width:200px">
@@ -88,7 +88,7 @@ if(!$isVisu && $type!="Transfert_confirmation")
     echo "<th></th>";
 
 
-if(!$isVisu && $type=="Transfert" && $type=="Transfert_confirmation")
+if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation" && $type!="Transfert_detail")
 echo "<th></th>";
       if($protection->PROT_CBCREATEUR!=2)
         echo "<th>Createur</th>";

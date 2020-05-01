@@ -3,7 +3,7 @@
   <DataSet Name="DataSet1">
     <Query>
       <DataSourceReference>DataSource</DataSourceReference>
-      <CommandText>SELECT -1 as Id,'Tout les mouvements' Intitule
+      <CommandText>SELECT -1 as Id,'Tous les mouvements' Intitule
 UNION
 SELECT 1 ,'Règlement'
 UNION

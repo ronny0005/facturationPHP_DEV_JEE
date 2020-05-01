@@ -234,7 +234,7 @@ class ProtectionClass extends Objet{
         if($value=="VenteAvoir")
             return "Document-FactureAvoir";
         if($value=="VenteRetour")
-            return "Document-FactureRetour";
+            return "Document-FactureVenteRetour";
         if($value=="Ticket")
             return "Document-Ticket";
 
