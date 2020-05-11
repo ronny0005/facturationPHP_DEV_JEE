@@ -197,5 +197,5 @@ include("controller/structure/TiersController.php");
             </div>
         </div>
 
-        <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right bgcolorApplication mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
+        <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
     </form>

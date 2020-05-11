@@ -52,28 +52,24 @@ class MenuAchat {
         include("pages/Vente/FactureVente.php");
     }
     public function Facture_Achat() {
-        include("module/Menu/BarreMenu.php");
-        include("pages/ListeFacture_old.php");
+        include("pages/Vente/FactureVente.php");
     }
     public function PreparationCommande() {
         include("pages/Vente/FactureVente.php");
     }
     public function Facture_PreparationCommande() {
-        include("module/Menu/BarreMenu.php");
-        include("pages/ListeFacture_old.php");
+        include("pages/Vente/FactureVente.php");
     }
     public function AchatPreparationCommande() {
         include("pages/Vente/FactureVente.php");
     }
     public function Facture_AchatPreparationCommande() {
-        include("module/Menu/BarreMenu.php");
-        include("pages/ListeFacture_old.php");
+        include("pages/Vente/FactureVente.php");
     }
     public function AchatRetour() {
         include("pages/Vente/FactureVente.php");
     }
     public function Facture_AchatRetour() {
-        include("module/Menu/BarreMenu.php");
-        include("pages/ListeFacture_old.php");
+        include("pages/Vente/FactureVente.php");
     }
 }

@@ -126,15 +126,15 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif") {
 
 //suppression d'article
 if($_GET["acte"] =="suppr") {
-    $docligne = new DocLigneClass($_GET["id"], $objet->db);
-    $article = new ArticleClass($docligne->AR_Ref, $objet->db);
+    $docligne = new DocLigneClass($_GET["id"]);
+    $article = new ArticleClass($docligne->AR_Ref);
     $docEntete = new DocEnteteClass($docligne->getcbMarqEntete());
     if (isset($_GET["PROT_No"])) {
-        $protection = new ProtectionClass("", "", $objet->db);
+        $protection = new ProtectionClass("", "");
         $protection->connexionProctectionByProtNo($_GET["PROT_No"]);
         $isVisu = $docEntete->isVisu($protection->PROT_Administrator, $protection->protectedType("Entree"), $protection->PROT_APRES_IMPRESSION);
         if (!$isVisu) {
-            $article->updateArtStock($docEntete->DO_Tiers, -$docligne->DL_Qte, -($docligne->DL_CMUP * $docligne->DL_Qte));
+            $article->updateArtStock($docEntete->DO_Tiers, -$docligne->DL_Qte, -($docligne->DL_CMUP * $docligne->DL_Qte),"Suppr_ligne",$_GET["PROT_No"]);
             $docligne->delete();
         }
     }

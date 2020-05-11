@@ -82,4 +82,20 @@ RewriteRule ^majComptable$ indexMVC_New.php?module=9&action=16 [L]
 
 
 
+RewriteRule ^etatMvtStock$ indexMVC_New.php?module=5&action=1 [L]
+RewriteRule ^etatEqStock$ indexMVC_New.php?module=5&action=3 [L]
+RewriteRule ^etatStatArticle$ indexMVC_New.php?module=5&action=4 [L]
+RewriteRule ^etatStatClient$ indexMVC_New.php?module=5&action=5 [L]
+RewriteRule ^etatEcheanceClient$ indexMVC_New.php?module=5&action=6&typeTiers=0 [L]
+RewriteRule ^etatEcheanceClientAgee$ indexMVC_New.php?module=5&action=30&typeTiers=0 [L]
+RewriteRule ^etatEcheanceClient2$ indexMVC_New.php?module=5&action=26&typeTiers=0 [L]
+RewriteRule ^etatEcheanceFournisseur$ indexMVC_New.php?module=5&action=6&typeTiers=1 [L]
+RewriteRule ^etatRgltClient$ indexMVC_New.php?module=5&action=7 [L]
+RewriteRule ^etatReleveCompteClient$ indexMVC_New.php?module=5&action=8 [L]
+RewriteRule ^etatDeCaisse$ indexMVC_New.php?module=5&action=9 [L]
+RewriteRule ^etatLivreInventaire$ indexMVC_New.php?module=5&action=12 [L]
+RewriteRule ^etatStatCollaborateurParArticle$ indexMVC_New.php?module=5&action=13 [L]
+
+
+
 

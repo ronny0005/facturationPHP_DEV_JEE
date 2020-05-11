@@ -19,9 +19,9 @@ if($type=="Transfert_detail")
         <input type="hidden" name="montant_avance" id="montant_avance" value="0"/>
         <input type="hidden" name="montant_total" id="montant_total" value="<?php if($flagPxRevient==0) echo $totalttc; ?>"/>
         <input type="hidden" id="imprime_val" name="imprime_val" value="0"/>
-	    <button type="button" class="btn btn-primary bgcolorApplication" id="annuler" <?php if($isVisu==1 || !isset($_GET["cbMarq"])) echo "disabled"; ?> >Annuler</button>
-        <button type="button" class="btn btn-primary bgcolorApplication" id="valider" <?php if($isVisu==1 || !isset($_GET["cbMarq"])) echo "disabled"; ?>>Valider</button>
-        <input type="button"  class="btn btn-primary bgcolorApplication" value="Imprimer" id="imprimer" <?php if($isVisu==1 || !isset($_GET["cbMarq"])) echo "disabled"; ?>/>
+	    <button type="button" class="btn btn-primary" id="annuler" <?php if($isVisu==1 || !isset($_GET["cbMarq"])) echo "disabled"; ?> >Annuler</button>
+        <button type="button" class="btn btn-primary" id="valider" <?php if($isVisu==1 || !isset($_GET["cbMarq"])) echo "disabled"; ?>>Valider</button>
+        <input type="button"  class="btn btn-primary" value="Imprimer" id="imprimer" <?php if($isVisu==1 || !isset($_GET["cbMarq"])) echo "disabled"; ?>/>
     </form>
 </div>
 

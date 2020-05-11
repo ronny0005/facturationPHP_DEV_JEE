@@ -67,10 +67,10 @@ $depot=$_SESSION["DE_No"];
             </select>
         </div>
         <div class="col-6 col-sm-6 col-md-6 col-lg-4 mt-4">
-            <button type="button" class="btn btn-primary bgcolorApplication" id="imprimer">Export excel</button>
+            <button type="button" class="btn btn-primary" id="imprimer">Export excel</button>
         </div>
         <div class="col-6 col-sm-6 col-md-6 col-lg-2 text-right mt-4" style="float:right">
-            <a href="ficheArticle"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a>
+            <a href="ficheArticle"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a>
         </div>
 
     </div>

@@ -26,10 +26,10 @@
                 ?>
                 <div class="row">
                     <div class="col-6 col-lg-2">
-                        <input class="btn btn-primary bgcolorApplication" type="button" name="majCompta" id="majCompta" value="Mise à jour comptable <?php if($docEntete->DO_Coord03==1) echo "(effectué)"; ?>" <?php if($docEntete->DO_Coord03==1) echo "disabled"; ?>/>
+                        <input class="btn btn-primary" type="button" name="majCompta" id="majCompta" value="Mise à jour comptable <?php if($docEntete->DO_Coord03==1) echo "(effectué)"; ?>" <?php if($docEntete->DO_Coord03==1) echo "disabled"; ?>/>
                     </div>
                     <div class="col-6 col-lg-2">
-                        <input class="btn btn-primary bgcolorApplication" type="button" name="rattacher" id="rattacher" value="Rattacher" />
+                        <input class="btn btn-primary" type="button" name="rattacher" id="rattacher" value="Rattacher" />
                     </div>
                     <div class="col-12 col-lg-3 text-center">
                         <label>Transfert des documents de caisse</label>
@@ -379,9 +379,9 @@ if (!$isVisu)
         <input type="hidden" name="montant_total" id="montant_total" value="<?= $totalttc; ?>"/>
         <input type="hidden" name="PROT_Reglement" id="PROT_Reglement" value="<?= $protection->PROT_DOCUMENT_REGLEMENT; ?>"/>
         <input type="hidden" id="imprime_val" name="imprime_val" value="0"/>
-        <div class="col-4 col-sm-2"><button class="btn btn-primary bgcolorApplication" id="annuler" type="button">Annuler</button></div>
-        <div class="col-4 col-sm-2" <?php if(!$isModif) echo"style='display:none'" ?>><button class="btn btn-primary bgcolorApplication" id="valider" type="button">Valider</button></div>
-        <div class="col-4 col-sm-2"><button class="btn btn-primary bgcolorApplication" id="imprimer" type="button">Imprimer</button></div>
+        <div class="col-4 col-sm-2"><button class="btn btn-primary" id="annuler" type="button">Annuler</button></div>
+        <div class="col-4 col-sm-2" <?php if(!$isModif) echo"style='display:none'" ?>><button class="btn btn-primary" id="valider" type="button">Valider</button></div>
+        <div class="col-4 col-sm-2"><button class="btn btn-primary" id="imprimer" type="button">Imprimer</button></div>
     </div>
     </form>
 </div>

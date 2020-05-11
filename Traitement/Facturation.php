@@ -796,7 +796,7 @@ if($_GET["acte"] =="suppr"){
 if( $_GET["acte"] =="suppr_facture"){
     $docEntete = new DocEnteteClass($_GET["cbMarq"]);
     $type=$_GET["type"];
-    $docEntete->getApiExecute("/suppr_facture&cbMarq={$_GET["cbMarq"]}&typeFacture={$type}");
+    $docEntete->getApiExecute("/suppr_facture&cbMarq={$_GET["cbMarq"]}&typeFacture={$type}&protNo={$_SESSION["id"]}");
 
     $ajout="";
         if(isset($_GET["datedebut"]))

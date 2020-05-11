@@ -3,17 +3,17 @@
         <ul class="nav navbar-nav">
             <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(2,78,5);font-weight: bold;">Etats</a>
                 <div class="dropdown-menu" role="menu">
-                    <a class="dropdown-item" role="presentation" href="#">Mouvement de stock</a>
-                    <a class="dropdown-item" role="presentation" href="#">Equation de stock</a>
-                    <a class="dropdown-item" role="presentation" href="#">Echéance</a>
-                    <a class="dropdown-item" role="presentation" href="#">Statistique article</a>
-                    <a class="dropdown-item" role="presentation" href="#">Statistique client</a>
-                    <a class="dropdown-item" role="presentation" href="#">Règlement client</a>
-                    <a class="dropdown-item" role="presentation" href="#">Relevé compte client</a>
-                    <a class="dropdown-item" role="presentation" href="#">Etat de caisse</a>
+                    <a class="dropdown-item" role="presentation" href="etatMvtStock">Mouvement de stock</a>
+                    <a class="dropdown-item" role="presentation" href="etatEqStock">Equation de stock</a>
+                    <a class="dropdown-item" role="presentation" href="etatEcheanceClient">Echéance</a>
+                    <a class="dropdown-item" role="presentation" href="etatStatArticle">Statistique article</a>
+                    <a class="dropdown-item" role="presentation" href="etatStatClient">Statistique client</a>
+                    <a class="dropdown-item" role="presentation" href="etatRgltClient">Règlement client</a>
+                    <a class="dropdown-item" role="presentation" href="etatReleveCompteClient">Relevé compte client</a>
+                    <a class="dropdown-item" role="presentation" href="etatDeCaisse">Etat de caisse</a>
                     <a class="dropdown-item" role="presentation" href="#">Etat des dettes</a>
-                    <a class="dropdown-item" role="presentation" href="#">Livre d'inventaire</a>
-                    <a class="dropdown-item" role="presentation" href="#">Statistique collaborateur</a>
+                    <a class="dropdown-item" role="presentation" href="etatLivreInventaire">Livre d'inventaire</a>
+                    <a class="dropdown-item" role="presentation" href="etatStatCollaborateurParArticle">Statistique collaborateur</a>
                     <a class="dropdown-item" role="presentation" href="#">Statistique achat</a>
                     <a class="dropdown-item" role="presentation" href="#">Versement distant</a>
                     <a class="dropdown-item" role="presentation" href="#">Versement bancaire</a>

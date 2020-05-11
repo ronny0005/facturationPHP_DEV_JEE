@@ -28,7 +28,7 @@ include("module/Menu/BarreMenu.php");
     <table style="margin-bottom: 20px;width:100%">
     <thead>
         <tr>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="ficheCollaborateur"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td> <?php } ?>
+        <?php if($flagNouveau){ ?><td style="float:right"><a href="ficheCollaborateur"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>

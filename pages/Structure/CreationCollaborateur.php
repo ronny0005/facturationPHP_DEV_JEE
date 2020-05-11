@@ -143,6 +143,6 @@ include("module/Menu/BarreMenu.php");
             <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnRecouv==1) echo " checked "; ?> name="recouvrement" id="recouvrement" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         <div class="col-12">
-            <input type="button"  class="btn btn-primary bgcolorApplication" value="Valider" name="valider" id="valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+            <input type="button"  class="btn btn-primary" value="Valider" name="valider" id="valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         </form>

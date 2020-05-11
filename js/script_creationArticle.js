@@ -2,6 +2,7 @@ jQuery(function($) {
     var modification = 0;
     var prixCond = 0;
     var protect = 0;
+    var emodelerComplement;
 //    $("#formSelectCompte").hide();
     $("#CodeSelect").combobox();
     $("#CodeSelect").parent().find(".custom-combobox :input").attr("id", "codeSelection");
@@ -657,15 +658,73 @@ jQuery(function($) {
             event.preventDefault();
             $("#compteGSelectInput").val(ui.item.text)
             $("#comptegCode").val(ui.item.CG_Num)
+            getCatComptaByArRef();
+        }
+    }).keypress(function (e, data, ui) {
+        if (e.which == 13) {
+            if($("#compteGSelectInput").val()=="")
+                $("#comptegCode").val("")
+            updateCatCompta($("#comptegCode").val())
         }
     })
 
-    $("#p_catcompta").change(function() {
-        var type = $(this).val().slice(-1);
+    $("#taxeSelectInput").autocomplete({
+        source: "indexServeur.php?page=getTaxeByTaCodeSearch",
+        autoFocus: true,
+        closeOnSelect: true,
+        select: function (event, ui) {
+            event.preventDefault();
+            $("#taxeSelectInput").val(ui.item.text)
+            $("#taxeCode").val(ui.item.TA_Code)
+        }
+    }).keypress(function (e, data, ui) {
+        if (e.which == 13) {
+            if($("#taxeSelectInput").val()=="")
+                $("#taxeCode").val("")
+            updateCatCompta($("#taxeCode").val())
+        }
+    })
+
+    function updateCatCompta(val){
+        var type = $("#p_catcompta").val().slice(-1);
         var fcp_type = 0;
         if(type=="A")
             fcp_type=1;
-        var acp_champ = $(this).val().replace(type,"");
+        var acp_champ = $("#p_catcompta").val().replace(type,"");
+
+        $.ajax({
+            url: "indexServeur.php?page=majCatComptaByArRef&val="+val+"&champ="+$("#typeCatCompta").val(),
+            method: 'GET',
+            dataType: 'html',
+            async : false,
+            data : "ACP_Type="+fcp_type+"&ACP_Champ="+acp_champ+"&AR_Ref="+$("#reference").val()+"&cbMarq="+$("#cbMarqArtCompta").val(),
+            success: function(data) {
+                if(data=="") {
+                    alert("la modification a bien été pris en compte !")
+                    $("#typeCatCompta").val("")
+                    $("#taxeCode").val("")
+                    $("#taxeSelectInput").val("")
+                    $("#compteGSelectInput").val("")
+                    $("#comptegCode").val("")
+                    getCatComptaByArRef()
+                }
+                else{
+                    alert(data);
+                }
+            }
+        });
+    }
+
+    $("#p_catcompta").change(function() {
+        getCatComptaByArRef();
+    });
+
+    function getCatComptaByArRef(){
+        var type = $("#p_catcompta").val().slice(-1);
+        var fcp_type = 0;
+        if(type=="A")
+            fcp_type=1;
+        var acp_champ = $("#p_catcompta").val().replace(type,"");
         $.ajax({
             url: "indexServeur.php?page=getCatComptaByArRef&ACP_Type="+fcp_type+"&ACP_Champ="+acp_champ+"&AR_Ref="+$("#reference").val(),
             method: 'GET',
@@ -677,156 +736,35 @@ jQuery(function($) {
                 fonctionCodeCompte();
             }
         });
-    });
-
-    function getCompteg(emodeler,compte) {
-        $.ajax({
-            url: "indexServeur.php?page=getCompteg",
-            method: 'GET',
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                $("#CodeSelect").empty();
-                $("#codeSelection").unbind("keydown");
-                $.each(data, function (index, item) {
-                    $("#CodeSelect").append(new Option("", ""));
-                    $("#CodeSelect").append(new Option(item.CG_Num + " - " + item.CG_Intitule, item.CG_Num));
-                });
-                $("#codeSelection").keydown(function (event) {
-                    if(event.keyCode == 13)
-                        selection (emodeler,compte);
-                });
-            }
-        });
     }
-
-    function getTaxe(emodeler,compte) {
-        $.ajax({
-            url: "indexServeur.php?page=getF_Taxe",
-            method: 'GET',
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                $("#CodeSelect").empty();
-                $("#CodeSelect").append(new Option("", ""));
-                $("#codeSelection").unbind("keydown");
-                $.each(data, function (index, item) {
-                    $("#CodeSelect").append(new Option(item.TA_Code + " - " + item.TA_Intitule, item.TA_Code));
-                });
-
-                $("#codeSelection").keydown(function (event) {
-                    if(event.keyCode == 13)
-                        selection (emodeler,compte);
-                });
-            }
-        });
-    }
-
-    function getTaxeByCode(emodeler,val) {
-        $.ajax({
-            url: "indexServeur.php?page=getTaxeByTACode&TA_Code="+val,
-            method: 'GET',
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                if(val=="") {
-                    emodeler.parent().find("#intituleCompte").html("");
-                    emodeler.parent().find("#valCompte").html("");
-                }else{
-                    emodeler.parent().find("#intituleCompte").html(data[0].TA_Intitule);
-                    emodeler.parent().find("#valCompte").html(Math.round(data[0].TA_Taux * 100) / 100);
-                }
-            }
-        });
-    }
-
-    function getComptegByCode(emodeler,val) {
-        $.ajax({
-            url: "indexServeur.php?page=getPlanComptableByCGNum&CG_Num="+val,
-            method: 'GET',
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                if(val=="") {
-                    emodeler.parent().find("#intituleCompte").html("");
-                }else{
-                    emodeler.parent().find("#intituleCompte").html(data[0].CG_Intitule);
-                }
-            }
-        });
-    }
-
-    function insertF_ArtCompta(acp_champ,acp_type,cg_num,cg_numa,ta_code1,ta_code2,ta_code3) {
-        $.ajax({
-            url: "indexServeur.php?page=insertF_ArtCompta",
-            method: 'GET',
-            dataType: 'html',
-            async: false,
-            data : 'AR_Ref='+$("#reference").val()+'&ACP_Champ='+acp_champ+'&ACP_Type='+acp_type+'&CG_Num='+cg_num+'&CG_NumA='+cg_numa+'&TA_Code1='+ta_code1+'&TA_Code2='+ta_code2+'&TA_Code3='+ta_code3,
-            success: function (data) {
-                if(data=="") {
-                    alert("la modification a bien été pris en compte !");
-                    $("#codeSelection").val("");
-                }
-                else{
-                    alert(data);
-                }
-            }
-        });
-    }
+    getCatComptaByArRef()
 
     function fonctionCodeCompte() {
         $("td[id^='codeCompte']").each(function () {
-            var emodeler = $(this);
+
+            $("#comptegSelect").hide()
             var compte = $(this).parent().find("#libCompte").html();
-            var intitule= $(this).parent().find("#intituleCompte").html();
+
             $(this).click(function () {
-                $("#labelCode").html(compte);
-                if (compte == "Code taxe 1" || compte == "Code taxe 2" || compte == "Code taxe 3")
-                    getTaxe(emodeler,compte);
-                else
-                    getCompteg(emodeler,compte);
-                $("#CodeSelect").val($(this).html());
-                $("#codeSelection").val($(this).html()+" - "+intitule);
+                var libelle = $(this).parent().find("#intituleCompte").html()
+                $("#typeCatCompta").val($(this).parent().find("#typeCompta").val())
+                if (compte == "Code taxe 1" || compte == "Code taxe 2" || compte == "Code taxe 3") {
+                    $("#taxeCode").val($(this).html())
+                    $("#taxeSelectInput").val($(this).html()+" - "+libelle)
+                    $("#taxeSelect").show()
+                    $("#comptegSelect").hide()
+                }
+                else{
+                    $("#comptegCode").val($(this).html())
+                    $("#compteGSelectInput").val($(this).html()+" - "+libelle)
+                    $("#taxeSelect").hide()
+                    $("#comptegSelect").show()
+                }
             });
         });
     }
+
     fonctionCodeCompte();
 
-    function selection (emodeler,compte){
-        var type ="";
-        var acp_type=0;
-        var acp_champ = "";
-        var compteg = "";var comptea = "";var taxe1 = "";var taxe2 = "";var taxe3 = "";
-        type = $("#p_catcompta").val().slice(-1);
-        if(type=="A")
-            acp_type=1;
-        acp_champ = $("#p_catcompta").val().replace(type,"");
-        var compteval = " - ";
-        if($("#CodeSelect").val()!=null) compteval = $("#CodeSelect").val();
-        emodeler.parent().find("#codeCompte").html(compteval);
-        $("#table_compteg >tbody").find("tr").each(function(){
-            if($(this).find("#libCompte").html()=="Compte général"){
-                compteg = $(this).find("#codeCompte").html();
-            }
-            if($(this).find("#libCompte").html()=="Compte analytique"){
-                comptea = $(this).find("#codeCompte").html();
-            }
-            if($(this).find("#libCompte").html()=="Code taxe 1"){
-                taxe1 = $(this).find("#codeCompte").html();
-            }
-            if($(this).find("#libCompte").html()=="Code taxe 2"){
-                taxe2 = $(this).find("#codeCompte").html();
-            }
-            if($(this).find("#libCompte").html()=="Code taxe 3"){
-                taxe3 = $(this).find("#codeCompte").html();
-            }
-        });
-        if (compte == "Code taxe 1" || compte == "Code taxe 2" || compte == "Code taxe 3")
-            getTaxeByCode(emodeler, $("#CodeSelect").val());
-        else
-            getComptegByCode(emodeler, $("#CodeSelect").val());
-        insertF_ArtCompta(acp_champ,acp_type,compteg,comptea,taxe1,taxe2,taxe3);
-    }
     protection();
 });

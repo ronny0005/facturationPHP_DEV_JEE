@@ -33,7 +33,7 @@ include("module/Menu/BarreMenu.php");
         <?php if($flagNouveau){ ?>
             <div class="mb-3" style="float:right">
                 <a href="ficheDepot">
-                    <button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button>
+                    <button type="button" id="nouveau" class="btn btn-primary">Nouveau</button>
                 </a>
             </div> <?php } ?>
 </form>

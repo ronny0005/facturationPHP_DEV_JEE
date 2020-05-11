@@ -164,7 +164,7 @@ $objet = new ObjetCollector();
             </div>
         </div>
     </div>
-        <input style="float: left;clear: both;" type="button" id="ajouter" name="<?php if(isset($_GET["AR_Ref"])) echo "modifier"; else echo "ajouter"; ?>" class="btn btn-success bgcolorApplication" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        <input style="float: left;clear: both;" type="button" id="ajouter" name="<?php if(isset($_GET["AR_Ref"])) echo "modifier"; else echo "ajouter"; ?>" class="btn btn-success" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
     </form>
 
         

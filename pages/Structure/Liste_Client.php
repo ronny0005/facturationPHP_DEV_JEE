@@ -92,7 +92,7 @@ if($type=="salarie") {
                     <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
                 </select>
             </td>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="FicheTiers-<?= $_GET["type"] ?>"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td> <?php } ?>
+        <?php if($flagNouveau){ ?><td style="float:right"><a href="FicheTiers-<?= $_GET["type"] ?>"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>

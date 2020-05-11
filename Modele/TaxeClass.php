@@ -27,10 +27,11 @@ class TaxeClass Extends Objet{
     ,$cbModification;
 
     public $table = 'F_TAXE';
+    public $lien = 'ftaxe';
 
     function __construct($id,$db=null)
     {
-        parent::__construct($this->table, $id, 'CA_No',$db);
+        $this->data = $this->getApiJson("/taCode=$id");
         if (sizeof($this->data) > 0) {
             $this->TA_Intitule = $this->data[0]->TA_Intitule;
             $this->TA_TTaux = $this->data[0]->TA_TTaux;
@@ -70,6 +71,10 @@ class TaxeClass Extends Objet{
         parent::maj(cbMarq , $this->cbMarq);
         parent::maj(cbCreateur , $this->userName);
         parent::maj(cbModification , $this->cbModification);
+    }
+
+    public function allSearch($intitule="",$top=0){
+        return $this->getApiJson("/allSearch&intitule=".urlencode($intitule)."&top=$top");
     }
 
     public function __toString() {

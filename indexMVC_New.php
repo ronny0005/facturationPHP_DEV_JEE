@@ -22,6 +22,7 @@ if(!isset($_SESSION["login"]))
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="css/select2.min.css">
     <link rel="stylesheet" href="css/select2-bootstrap.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
 
 </head>
     <script src="assets/js/jquery.min.js"></script>

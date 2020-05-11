@@ -314,23 +314,17 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div id="formSelectCompte" style="">
-                        <div class="form-group" >
-                            <div class="col-lg-20">
-                                <label id="labelCode">Code</label>
-                                <select class="form-control" id="CodeSelect" name="CodeSelect">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                <div id="comptegSelect" class="row">
+                <div id="comptegSelect" class="row mb-3">
                     <div class="col-12">
+                        <label>Code</label>
                         <input type="hidden" id="comptegCode" />
+                        <input type="hidden" id="typeCatCompta" />
                         <input type="text" class="form-control" id="compteGSelectInput" name="compteGSelectInput" />
                     </div>
                 </div>
-                <div id="taxeSelect" class="row">
+                <div id="taxeSelect" class="row mb-3">
                     <div class="col-12">
+                        <label>Code</label>
                         <input type="hidden" id="taxeCode" />
                         <input type="text" class="form-control" id="taxeSelectInput" name="taxeSelectInput" />
                     </div>

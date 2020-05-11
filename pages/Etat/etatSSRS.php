@@ -24,7 +24,7 @@ and open the template in the editor.
         <input type="hidden" name="ClientDebutParam" id="ClientDebutParam" value="<?php if(isset($_POST["ClientDebut"])) echo $_POST["ClientDebut"]; ?>" />
         <input type="hidden" name="ClientFinParam" id="ClientFinParam" value="<?php if(isset($_POST["ClientFin"])) echo $_POST["ClientFin"]; ?>" />
         <input type="hidden" name="typeTiersParam" id="typeTiersParam" value="<?php if(isset($_GET["typeTiers"]) || isset($_POST["typeTiers"])|| isset($_POST["typeTiersParam"])) echo $_POST["ClientFin"]; ?>" />
-        <form name="reportForm" id="reportForm" method="POST" action="indexMVC.php?module=<?php echo $module; ?>&action=<?php echo $action; ?>">
+        <form name="reportForm" id="reportForm" method="POST" action="#">
             <?php
 
             require_once 'SSRSReport.php';
@@ -60,19 +60,18 @@ and open the template in the editor.
                 //get report parameters based on either defaults or changed values
                 $reportParameters = $ssrs_report->GetReportParameters($query, null, true, $parmVals, null);
                 $i=0;
-                $controls .= "\n<div>";
+                $controls .= "\n<div class='row'>";
 
                 foreach($reportParameters as $reportParameter)
                 {
                     //are we opening or continuing a row?
                     //get the default value
-                    $controls .= '<div class="form-group col-lg-3">';
                     $default = null;
                     foreach($reportParameter->DefaultValues as $vals)
                         foreach($vals as $key=>$def)
                             $default = $def;
                         if($reportParameter->Name!="AffichePrixVen")
-                    $controls .= '<label>'.$reportParameter->Prompt . "</label>";
+                    $controls .= '<div class="col-3"><label>'.$reportParameter->Prompt . "</label>";
                     //If there is a list, then it needs to be a Select box
                     if(sizeof($reportParameter->ValidValues) > 0){
                         $dependencies = "";//empty($reportParameter->Dependencies) ? "onchange='getParameters();'" : "";
@@ -254,7 +253,7 @@ and open the template in the editor.
 
                 $controls .= "\n<input type='hidden' value='' name='parameters' id='parameters' />";
                 $controls .= "\n<div id='exportReportDiv' style='visibility: hidden; ' >";
-                $controls .= "\n<div class='form-group col-lg-3' >
+                $controls .= "\n<div class='row col-lg-3' >
                                 <label>Type d'impression:</label>
                                 <input class='form-control' name='exportName' value='$namerep' type='text' onkeypress='submitenter(event);' />
                             </div>";
@@ -608,7 +607,7 @@ and open the template in the editor.
                 }
 
                 if(value.match("HTML."))
-                    reportForm.action = "indexMVC.php?module="+$_GET("module")+"&action="+$_GET("action");
+                    reportForm.action = "#";
                 else{
                     reportForm.setAttribute("target", "_blank");
                     reportForm.action = "pages/Etat/Download.php";
@@ -625,7 +624,7 @@ and open the template in the editor.
                 reportForm.parameters.value = false;
                 //$("#montant").val($("#montant").val().replace(/ /g,"").replace(",","."));
                 if ($val == "HTML5") {
-                    reportForm.action = "indexMVC.php?module="+$_GET("module")+"&action="+$_GET("action");
+                    reportForm.action = "#";
                     //$("#DateDebut").val("20" + $("#DateDebut").val().substr(4, 2) + "-" + $("#DateDebut").val().substr(2, 2) + "-" + $("#DateDebut").val().substr(0, 2));
                     //$("#DateFin").val("20" + $("#DateFin").val().substr(4, 2) + "-" + $("#DateFin").val().substr(2, 2) + "-" + $("#DateFin").val().substr(0, 2));
                     $("#DateDebut").val("20" + $("#DateDebut").val().substr(4, 2)  + "-" + $("#DateDebut").val().substr(2, 2)+ "-" + $("#DateDebut").val().substr(0, 2)) ;

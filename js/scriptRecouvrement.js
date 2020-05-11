@@ -616,7 +616,7 @@ jQuery(function ($) {
                     modal: true,
                     buttons: {
                         "Remboursement règlement": {
-                            class: 'btn btn-primary bgcolorApplication',
+                            class: 'btn btn-primary',
                             text: 'Remboursement règlement',
                             click: function () {
                                 if ($("#protectionPage").html() == true) {

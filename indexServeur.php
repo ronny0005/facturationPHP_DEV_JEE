@@ -23,7 +23,9 @@ include("Modele/EtatClass.php");
 include("Modele/JournalClass.php");
 include("Modele/P_ParametreCialClass.php");
 include("Modele/CompteGClass.php");
+include("Modele/TaxeClass.php");
 include("Modele/LogFile.php");
+
 
 $objet = new ObjetCollector();
 $texteMenu = "";
@@ -97,13 +99,12 @@ switch ($val) {
         envoiRequete($objet->getF_FamComptaCount(), $objet);
         break;
     case "getF_Taxe":
-
-        envoiRequete($objet->getF_Taxe(), $objet);
+        $taxe = new TaxeClass(0);
+        echo json_encode($taxe->all());
         break;
     case "getTaxeByTACode":
-        envoiRequete($objet->getTaxeByTACode($_GET["TA_Code"]), $objet);
+        echo json_encode(new TaxeClass($_GET["TA_Code"]));
         break;
-
     case "getF_TaxeCount":
         envoiRequete($objet->getF_TaxeCount(), $objet);
         break;
@@ -625,107 +626,6 @@ switch ($val) {
     case "getArticleWithStockAndroidCount":
         envoiRequete($objet->getArticleWithStockAndroidCount($_GET['DE_No']), $objet);
         break;
-    case "addDocligneFacture":
-        $result = $objet->db->requete($objet->getEnteteByDOPiece($_GET['DO_Piece']));
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        if ($rows != null) {
-            $DO_Date = $rows[0]->DO_DateC;
-            $CT_Num = $rows[0]->CT_NumPayeur;
-            $DE_No = $rows[0]->DE_No;
-            $CA_Num = $rows[0]->CA_Num;
-            $DO_Ref = $rows[0]->DO_Ref;
-            $CO_No = $rows[0]->CO_No;
-            $result = $objet->db->requete($objet->getClientByCTNum($CT_Num));
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-            if ($rows != null) {
-                $cat_tarif = $rows[0]->N_CatTarif;
-                $cat_compta = $rows[0]->N_CatCompta;
-                $result = $objet->db->requete($objet->getPrixClient($_GET['AR_Ref'], $cat_compta, $cat_tarif));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if ($rows != null) {
-                    $prixVente = $rows[0]->PrixVente;
-                    $taxe1 = $rows[0]->taxe1;
-                    $taxe2 = $rows[0]->taxe2;
-                    $taxe3 = $rows[0]->taxe3;
-                    $result = $objet->db->requete($objet->getArticleByARRef($_GET['AR_Ref']));
-                    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                    if ($rows != null) {
-                        $AR_PrixAch = $rows[0]->AR_PrixAch;
-                        $AR_Design = $rows[0]->AR_Design;
-                        $AR_Ref = $rows[0]->AR_Ref;
-                        $AR_PrixVen = $rows[0]->AR_PrixVen;
-                        $AR_UniteVen = $rows[0]->AR_UniteVen;
-                        $rem = $_GET['remise'];
-                        $val_rem = $_GET['remise'];
-                        $type_rem = $_GET['type_remise'];
-                        if ($type_rem == 2)
-                            $val_rem = $rem;
-                        if ($type_rem == 1)
-                            $val_rem = $prixVente * $val_rem / 100;
-                        $montantHT = ROUND(($prixVente - $val_rem) * $_GET['DL_Qte'], 0);
-                        $tva = ROUND($montantHT * $taxe1 / 100, 0);
-                        $precompte = ROUND($montantHT * $taxe2 / 100, 0);
-                        $marge = $taxe3 * $_GET['DL_Qte'];
-                        $DL_MontantTTC = ROUND((($montantHT + $tva + $precompte) + $marge), 0);
-                        $result = $objet->db->requete($objet->getUnite($AR_UniteVen));
-                        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                        $puttc = $prixVente + ROUND($prixVente * $taxe1 / 100, 0) + ROUND($prixVente * $taxe2 / 100, 0);
-                        if ($rows != null) {
-                            $U_Intitule = $rows[0]->U_Intitule;
-                            execRequete($objet->insertDocligneFacture($CT_Num, $_GET['DO_Piece'], $DO_Date, $DO_Ref, $AR_Ref, $AR_Design, $_GET['DL_Qte'], $_GET['remise'], $prixVente, $taxe1, $taxe2, $taxe3, $CO_No, $AR_PrixAch, $U_Intitule, $DE_No, $puttc, $CA_Num, $montantHT, $DL_MontantTTC, '', '', $type_rem), $objet);
-                            execRequete($objet->updateArtStock($DE_No, $AR_Ref, -$_GET['DL_Qte'], -($AR_PrixAch * $_GET['DL_Qte'])), $objet);
-                            envoiRequete($objet->lastLigneByDOPiece($_GET['DO_Piece']), $objet);
-                        } else error();
-                    } else error();
-                } else error();
-            } else error();
-        } else error();
-        break;
-    case "addDocenteteFacture":
-        $mobile = "android";
-        include("Traitement/Facturation.php");
-        break;
-    case "addCReglementFacture":
-        $result = $objet->db->requete($objet->getEnteteByDOPiece($_GET['DO_Piece'], $_GET['DO_Domaine'], $_GET['DO_Type']));
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $creglement = new ReglementClass(0);
-        $creglement->initVariables();
-        $creglement->RG_Date = $rows[0]->DO_DateC;
-        $creglement->CT_NumPayeur = $rows[0]->CT_NumPayeur;
-        $creglement->CA_No = $rows[0]->CA_No;
-        $creglement->CO_No = $rows[0]->CO_No;
-        $creglement->CG_Num = $rows[0]->CG_Num;
-        $caisse = new CaisseClass($creglement->CA_No);
-        $creglement->JO_Num = $caisse->JO_Num;
-        $creglement->CO_NoCaissier = $caisse->CO_NoCaissier;
-        $creglement->cbCreateur = $creglement->setuserName("");
-        $creglement->RG_Montant = $_GET['montant'];
-        $creglement->RG_Libelle = "Rglt " . $rows[0]->DO_Ref;
-        $creglement->RG_Impute = $_GET['impute'];
-        $creglement->RG_Type = 1;
-        $creglement->N_Reglement = $_GET['mode_reglement'];
-        $creglement->RG_TypeReg = 0;
-        $creglement->RG_Ticket = 0;
-        $creglement->RG_Banque = 0;
-        $creglement->insertF_Reglement();
-        $result = $objet->db->requete($objet->lastLigneCReglement());
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $rg_no = $rows[0]->RG_No;
-        $result = $objet->db->requete($objet->getDocReglByDO_Piece($_GET['DO_Piece']));
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $record = $rows;
-        if (!isset($rows[0]->DR_No)) {
-            $result = $creglement->db->requete($objet->addDocRegl($_GET['DO_Domaine'], $_GET['DO_Type'], $_GET['DO_Piece'], 0, $_GET['mode_reglement'], $creglement->RG_Date));
-            $result = $objet->db->requete($objet->getDocReglByDO_Piece($_GET['DO_Piece']));
-            $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        }
-        $dr_no = $rows[0]->DR_No;
-        $result = $objet->db->requete($objet->montantRegle($_GET['DO_Piece']));
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
-        $montantRegle = $rows[0]->montantRegle;
-        $result = $objet->db->requete($objet->addReglEch($rg_no, $dr_no, 0, 6, $_GET['DO_Piece'], round($montantRegle)));
-        echo json_encode($record);
-        break;
     case "getFacture":
         envoiRequete($objet->getFacture($_GET['DO_Tiers'], $_GET['datedeb'], $_GET['datefin']), $objet);
         break;
@@ -955,36 +855,47 @@ switch ($val) {
     case "getCaissier" :
         envoiRequete($objet->getCaissier(), $objet);
         break;
+    case "majCatComptaByArRef" :
+        session_start();
+        $article = new ArticleClass(0);
+        $article->insertFArtCompta($_GET["cbMarq"],$_GET['AR_Ref'],$_GET['ACP_Type'],$_GET['ACP_Champ'],$_GET['val'],$_GET['champ'],0,$_SESSION["id"]);
+        break;
     case "getCatComptaByArRef" :
         $article = new ArticleClass(0);
         $list = $article->getCatComptaByArRef($_GET['AR_Ref'],$_GET['ACP_Champ'],$_GET['ACP_Type']);
         foreach ($list as $element) {
             ?>
             <tr>
+                <input type="hidden" value="<?= $element->cbMarq ?>" id="cbMarqArtCompta" />
+                <td style="display: none"><input type="hidden" value="ACP_ComptaCPT_CompteG" id="typeCompta"/></td>
                 <td id='libCompte'>Compte général</td>
                 <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->CG_Num ?></td>
                 <td id='intituleCompte'><?= $element->CG_Intitule ?></td>
                 <td id='valCompte'></td>
             </tr>
             <tr>
+                <td style="display: none"><input type="hidden" value="ACP_ComptaCPT_CompteA" id="typeCompta"/></td>
                 <td id='libCompte'>Section analytique</td>
                 <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->CG_NumA ?></td>
                 <td id='intituleCompte'><?= $element->CG_IntituleA ?></td>
                 <td id='valCompte'></td>
             </tr>
             <tr>
+                <td style="display: none"><input type="hidden" value="ACP_ComptaCPT_Taxe1" id="typeCompta"/></td>
                 <td id='libCompte'>Code taxe 1</td>
                 <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->Taxe1 ?></td>
                 <td id='intituleCompte'><?= $element->TA_Intitule1 ?></td>
                 <td id='valCompte'><?= $article->formatChiffre($element->TA_Taux1) ?></td>
             </tr>
             <tr>
+                <td style="display: none"><input type="hidden" value="ACP_ComptaCPT_Taxe2" id="typeCompta"/></td>
                 <td id='libCompte'>Code taxe 2</td>
                 <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->Taxe2 ?></td>
                 <td id='intituleCompte'><?= $element->TA_Intitule2 ?></td>
                 <td id='valCompte'><?= $article->formatChiffre($element->TA_Taux2) ?></td>
             </tr>
             <tr>
+                <td style="display: none"><input type="hidden" value="ACP_ComptaCPT_Taxe3" id="typeCompta"/></td>
                 <td id='libCompte'>Code taxe 3</td>
                 <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->Taxe3 ?></td>
                 <td id='intituleCompte'><?= $element->TA_Intitule3 ?></td>
@@ -1422,6 +1333,12 @@ switch ($val) {
         $compteg = new CompteGClass(0);
         echo json_encode($compteg->allSearch($_GET["term"],10));
         break;
+    case "getTaxeByTaCodeSearch":
+        $taxe = new TaxeClass(0);
+        echo json_encode($taxe->allSearch($_GET["term"],10));
+        break;
+
+
     case "updateReglementCaisseDAF":
         $fichier = $_GET['nomFichier'];
         if ($fichier != "")

@@ -9,33 +9,13 @@ $login ="";
 session_start();
 $login = $_SESSION["login"];
 
-if($societe=="ZUMI"){
-    define("REPORT", "/MFZUMI/Reports/Facture".$format);
-    $saveName = "Facture".$format.".pdf";
-}
-
-if($societe=="CMI") {
-    define("REPORT", "/MFCMI/Reports/".$format."_".$type);
-    $saveName = "{$format}_{$type}.pdf";
+if($societe!="BOUM") {
+    define("REPORT", "/MF$societe/Reports/".$format."_".$type);
+    $saveName = "{$type}_{$format}.pdf";
 }
 
 if($societe=="BOUM"){
     define("REPORT", "/MFBOUMKO/Reports/".$format."_Facture");
-    $saveName = "Facture".$format.".pdf";
-}
-
-if($societe=="SODIPROVET"){
-    define("REPORT", "/MFSODIPROVET/Reports/".$format."_Facture");
-    $saveName = "Facture".$format.".pdf";
-}
-
-if($societe=="SOMBACAM"){
-    define("REPORT", "/MFSOMBACAM/Reports/".$format."_Facture");
-    $saveName = "Facture".$format.".pdf";
-}
-
-if($societe=="ALTO"){
-    define("REPORT", "/MFALTO/Reports/".$format."_Facture");
     $saveName = "Facture".$format.".pdf";
 }
 

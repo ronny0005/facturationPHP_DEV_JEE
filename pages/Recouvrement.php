@@ -201,10 +201,10 @@ if($typeRegl=="Collaborateur"){
             <div class="mt-0 col-0 col-sm-0 col-md-0 col-lg-7" >
             </div>
             <div class="mt-2 col-6 col-sm-8 col-md-10 col-lg-10" >
-                <input type="button" id="imprimer" class="btn btn-primary bgcolorApplication" value="Imprimer"/>
+                <input type="button" id="imprimer" class="btn btn-primary" value="Imprimer"/>
             </div>
             <div class="mt-2 col-6 col-sm-4 col-md-2 col-lg-2 text-right" >
-                <input type="submit" class="btn btn-primary bgcolorApplication" value="Rechercher"/>
+                <input type="submit" class="btn btn-primary" value="Rechercher"/>
             </div>
 </div>
         </form>
@@ -268,7 +268,7 @@ if($typeRegl=="Collaborateur"){
                         </div>
                         <div class="col-md-1 col-lg-1 mb-2">
                             <input name="client" id="client_valide" type="hidden" value="2" name="action"/>
-                            <input type="button" class="btn btn-primary bgcolorApplication" name="acte" id = "validerRec" value="Valider"/>
+                            <input type="button" class="btn btn-primary" name="acte" id = "validerRec" value="Valider"/>
                         </div>
                     </div>
                 <?php } ?>

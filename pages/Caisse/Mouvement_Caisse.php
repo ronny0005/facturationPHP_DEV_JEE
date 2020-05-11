@@ -1,7 +1,7 @@
 <script src="js/scriptCombobox.js?d=<?php echo time(); ?>"></script>
 <script src="js/script_caisse.js?d=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="js/jquery.js?d=<?php echo time(); ?>"></script>
-<section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
+<section class="" style="margin: 0px;padding: 5px;">
     <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">Mouvement de caisse</h3>
 </section>
 
@@ -82,10 +82,10 @@
                             </div>
                         </div>
                         <div class="col-6 col-sm-6 col-md-4 mt-3">
-                            <button type="submit" class="btn btn-primary bgcolorApplication" id="recherche" name="recherche">Rechercher</button>
+                            <button type="submit" class="btn btn-primary" id="recherche" name="recherche">Rechercher</button>
                         </div>
                         <div class="col-6 col-sm-6 col-md-4  mt-3">
-                            <button type="button" class="btn btn-primary bgcolorApplication" id="imprimer">Imprimer</button>
+                            <button type="button" class="btn btn-primary" id="imprimer">Imprimer</button>
                         </div>
                 </div>
             </form>
@@ -247,7 +247,7 @@
                         </div>
 
                         <div class="col-md-2  mt-4">
-                            <button type="button" class="btn btn-primary bgcolorApplication" id = "validerRec" name= "validerRec">Valider</button>
+                            <button type="button" class="btn btn-primary" id = "validerRec" name= "validerRec">Valider</button>
                         </div>
                 </div>
                 <?php

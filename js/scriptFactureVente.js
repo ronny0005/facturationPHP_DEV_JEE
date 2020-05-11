@@ -641,7 +641,7 @@ jQuery(function($) {
             title : "Mode de règlement",
             buttons: {
                 "Valider": {
-                    class: 'bgColorApplication btn btn-primary',
+                    class: 'btn btn-primary',
                     text: 'Valider',
                     click: function () {
                         if ($("#date_rglt").val() != "" && $("#date_ech").val() != "") {
@@ -702,7 +702,7 @@ jQuery(function($) {
                     }
                 },
                 "Annuler": {
-                    class: 'bgColorApplication btn btn-primary',
+                    class: 'btn btn-primary',
                     text: 'Annuler',
                     click: function () {
                         $(this).dialog("close");

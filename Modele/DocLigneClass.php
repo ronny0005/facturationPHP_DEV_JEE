@@ -577,7 +577,7 @@ class DocLigneClass Extends Objet
             if ($isStock == null)
                 $article->insertF_ArtStock($DE_No, $montantTransfert, $qteTransfert);
             else
-                $article->updateArtStock($DE_No, $qteTransfert, $montantTransfert);
+                $article->updateArtStock($DE_No, $qteTransfert, $montantTransfert,"ajout_ligne",$protNo);
             $this->logStock("ajout_ligne", $AR_Ref, $DE_No,$protNo);
         } else {
             $prixSource = $isStockRepart[0]->AS_MontSto;
@@ -586,7 +586,7 @@ class DocLigneClass Extends Objet
             $qteTransfert = -$DL_Qte;
             $montantTransfert = $value * -$DL_Qte;
             $this->logStock("ajout_ligne", $AR_Ref, $DE_No,$protNo);
-            $article->updateArtStock($DE_No, $qteTransfert, $montantTransfert);
+            $article->updateArtStock($DE_No, $qteTransfert, $montantTransfert,"ajout_ligne",$protNo);
             $this->logStock("ajout_ligne", $AR_Ref, $DE_No,$protNo);
         }
         return new DocLigneClass($cbmarqligne, $this->db);

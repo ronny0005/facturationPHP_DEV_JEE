@@ -16,9 +16,7 @@ class Etat {
     public $RapportsSSRS = "";
 
     public function __construct(){
-        $objet = new ObjetCollector();
-        $objet->db = new DB();
-        $this->RapportsSSRS= str_replace("_DEV","",$objet->db->RapportsSSRS);
+        $this->RapportsSSRS= "RapportCMI";
     }
 
     public function doAction($action) {
@@ -30,181 +28,208 @@ class Etat {
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_MVT_STOCK == 0))
                         $this->Mouvement_stk();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 2 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_INVENTAIRE_PREP == 0))
                         $this->inventaire_prep();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 3 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_MVT_STOCK == 0))
                         $this->equation_stk();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 4 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_ARTICLE_PAR_ART == 0))
                         $this->stat_articleAgence();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 5 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_PALMARES_CLT==0))
                         $this->stat_clientAgence();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 6 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
                         $this->echeance_client();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 7 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
                         $this->reglement_client();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 8 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
                         $this->releveComtpeClient();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 9 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_CAISSE_ARTICLE==0))
                         $this->etatCaisse();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 10 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
                         $this->etatDette();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 11 :
                     if($protection->PROT_Right==1 || (1==1))
                         $this->stat_collaborateur();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 12 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_LIVRE_INV == 0))
                         $this->livret_inventaire();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 13 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_COLLAB_PAR_ARTICLE == 0))
                         $this->stat_collaborateur_article();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 14 :
                     if($protection->PROT_Right==1 || ($protection->PROT_RISQUE_CLIENT == 0))
                         $this->vrst_distant();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 15 :
                     if($protection->PROT_Right==1 || ($protection->PROT_RISQUE_CLIENT == 0))
                         $this->vrst_bancaire();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 16 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_CAISSE_ARTICLE==0))
                         $this->etat_fondCaisse();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 17 :
                     if($protection->PROT_Right==1 || (0==0))
                         $this->etat_dette_detail();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 18 :
                     if($protection->PROT_Right==1 || (0==0))
                         $this->stat_article_achat();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 19 :
                     if($protection->PROT_Right==1 || (0==0))
                         $this->stat_article_achatCA();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 20 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_FRS==0))
                         $this->stat_article_fournisseur();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 21 :
                     if($protection->PROT_Right==1 || (0==0))
                         $this->balance_tiers();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 22 :
                     if($protection->PROT_Right==1 || (0==0))
                         $this->ech_tiers();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 23 :
                     if($protection->PROT_Right==1 || (0==0))
                         $this->etat_reaprovisionneemnt();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 24 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_CAISSE_ARTICLE==0))
                         $this->Caisse_dexploitation();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 25 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_CAISSE_ARTICLE==0))
                         $this->etatTransfertCaisse();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 26 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
                         $this->echeance_client2();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 27 :
                     if($protection->PROT_Right==1)
                         $this->etatStockGrandDepot();
                     else
-                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 28 :
                     $this->etatCompteResultat();
                     break;
                 case 29 :
-                    $this->etatCentralRapArticle();
+                    if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_ARTICLE_PAR_ART == 0))
+                        $this->etatCentralRapArticle();
+                    else
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
-                    default :
-                            $this->Mouvement_stk(); // On décide ce que l'on veut faire		
+                case 30 :
+                    if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                        $this->echeance_client_age();
+                    else
+                        header('Location: accueil'); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 31 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->Ecriture_comptable();
+                    //else
+                    //     header('Location: accueil'); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 32 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->grand_livre_tiers_commercial();
+                    //else
+                    //     header('Location: accueil'); //rechercher un étudiant par domaine d'activité
+                    break;
+
+                default :
+                    $this->Mouvement_stk(); // On décide ce que l'on veut faire
             }
-        } else 
+        } else
             header('Location: accueil');
     }
 
+    public function Ecriture_comptable() {
+//        include("pages/Etat/EtatMvtStock.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Ecriture comptable";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
     public function Mouvement_stk() {
-        include("pages/Etat/EtatMvtStock.php");
+//        include("pages/Etat/EtatMvtStock.php");
         $query = "/".$this->RapportsSSRS."/Rapports/Mouvement_de_stock";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
+        include("pages/Etat/etatSSRS.php");
     }
     public function etatTransfertCaisse() {
 //        include("pages/Etat/EtatMvtStock.php");
@@ -232,15 +257,15 @@ class Etat {
     }
 
     public function stat_articleAgence() {
-        include("pages/Etat/stat_article.php");
-//        $query = "/".$this->RapportsSSRS."/Rapports/Statistique article par agence";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
+        //      include("pages/Etat/stat_article.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique article par agence";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
     }
 
     public function stat_clientAgence() {
-  //      $query = "/".$this->RapportsSSRS."/Rapports/Statistique client par agence";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/stat_client.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique client par agence";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/stat_client.php");
     }
 
     public function echeance_client() {
@@ -255,6 +280,19 @@ class Etat {
 //        include("pages/Etat/etatSSRS.php");
         include("pages/Etat/echeance_client.php");
     }
+
+
+    public function echeance_client_age() {
+        $query = "/".$this->RapportsSSRS."/Rapports/Echeance client age";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
+
+    public function grand_livre_tiers_commercial() {
+        $query = "/".$this->RapportsSSRS."/Rapports/Grand livre tiers commercial";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
+
+
     public function echeance_client2() {
         $query = "/".$this->RapportsSSRS."/Rapports/Echeance client";//$_REQUEST["reportName"];
         if(isset($_GET["typeTiers"]))
@@ -277,34 +315,35 @@ class Etat {
     public function releveComtpeClient() {
         //$query = "/".$this->RapportsSSRS."/Relevé compte client";//$_REQUEST["reportName"];
         //include("pages/Etat/etatSSRS.php");
-              include("pages/Etat/releveCompteClient.php");
+        include("pages/Etat/releveCompteClient.php");
     }
 
     public function etatCaisse() {
         $query = "/".$this->RapportsSSRS."/Rapports/Etat caisse";//$_REQUEST["reportName"];
-    //    include("pages/Etat/etatSSRS.php");
-       include("pages/Etat/etatCaisse.php");
+        include("pages/Etat/etatSSRS.php");
+        //   include("pages/Etat/etatCaisse.php");
     }
 
     public function etatDette() {
-        //$query = "/".$this->RapportsSSRS."/Rapports/Etat des dettes";//$_REQUEST["reportName"];
-        //include("pages/Etat/etatSSRS.php");
+        //    $query = "/".$this->RapportsSSRS."/Rapports/Etat des dettes";//$_REQUEST["reportName"];
+        //    include("pages/Etat/etatSSRS.php");
         include("pages/Etat/etatDette.php");
     }
 
     public function stat_collaborateur() {
-//        $query = "/".$this->RapportsSSRS."/Rapports/Statistique collaborateur par client";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/stat_collaborateur.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique collaborateur par client";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/stat_collaborateur.php");
     }
 
     public function stat_collaborateur_article() {
-//        $query = "/".$this->RapportsSSRS."/Rapports/Statistique collaborateur par article";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/stat_collaborateur_article.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique collaborateur par article";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/stat_collaborateur_article.php");
     }
 
     public function livret_inventaire() {
+        $dateIndique = 1;
         $query = "/".$this->RapportsSSRS."/Rapports/Livre d'inventaire";//$_REQUEST["reportName"];
 //        include("pages/Etat/etatSSRS.php");
         include("pages/Etat/livret_inventaire.php");
@@ -323,39 +362,39 @@ class Etat {
     }
 
     public function etat_fondCaisse() {
-        //$query = "/".$this->RapportsSSRS."/Rapports/Echeance client";//$_REQUEST["reportName"];
-        //include("pages/Etat/etatSSRS.php");
-       include("pages/Etat/etat_fondCaisse.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Controle des reports de fond de caisse";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+        //include("pages/Etat/etat_fondCaisse.php");
     }
 
     public function etat_dette_detail() {
- //       $query = "/".$this->RapportsSSRS."/Rapports/Etat des dettes detail";//$_REQUEST["reportName"];
- ///       include("pages/Etat/etatSSRS.php");
+        //       $query = "/".$this->RapportsSSRS."/Rapports/Etat des dettes detail";//$_REQUEST["reportName"];
+        ///       include("pages/Etat/etatSSRS.php");
         include("pages/Etat/etatDette_detail.php");
     }
 
     public function stat_article_achat() {
-//        $query = "/".$this->RapportsSSRS."/Rapports/Statistique des achats";//$_REQUEST["reportName"];
-  //      include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/stat_article_achat.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique des achats";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+        //      include("pages/Etat/stat_article_achat.php");
     }
 
     public function stat_article_achatCA() {
-       // $query = "/".$this->RapportsSSRS."/Rapports/Statistique des achats analytique";//$_REQUEST["reportName"];
-       // include("pages/Etat/etatSSRS.php");
+        // $query = "/".$this->RapportsSSRS."/Rapports/Statistique des achats analytique";//$_REQUEST["reportName"];
+        // include("pages/Etat/etatSSRS.php");
         include("pages/Etat/stat_article_achatCA.php");
     }
 
     public function stat_article_fournisseur() {
-        //$query = "/".$this->RapportsSSRS."/Rapports/Statistique article par fournisseur";//$_REQUEST["reportName"];
-        //include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/stat_article_fournisseur.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique article par fournisseur";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+        //include("pages/Etat/stat_article_fournisseur.php");
     }
 
     public function balance_tiers() {
         $query = "/".$this->RapportsSSRS."/Rapports/Balance des tiers commercial";//$_REQUEST["reportName"];
         include("pages/Etat/etatSSRS.php");
-    //        include("pages/Etat/balance_tiers.php");
+        //        include("pages/Etat/balance_tiers.php");
     }
 
     public function ech_tiers() {
@@ -383,6 +422,7 @@ class Etat {
         $query = "/".$this->RapportsSSRS."/Rapports/Centrale_rap_article";
         include("pages/Etat/etatSSRS.php");
     }
+
 
 
 }

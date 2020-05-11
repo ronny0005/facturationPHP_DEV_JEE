@@ -406,6 +406,10 @@ class ArticleClass Extends Objet{
     public function getCatComptaByArRef($arRef,$acpChamp,$acpType){
         return $this->getApiJson("/getCatComptaByArRef&arRef=$arRef&acpChamp=$acpChamp&acpType=$acpType");
     }
+
+    public function insertFArtCompta($cbMarq,$arRef,$acpType,$acpChamp,$val,$champ,$acpTypeFacture,$protNo){
+        return $this->getApiExecute("/insertFArtCompta/cbMarq=$cbMarq&arRef=$arRef&acpType=$acpType&acpChamp=$acpChamp&val=$val&champ=$champ&acpTypeFacture=$acpTypeFacture&protNo=$protNo");
+    }
     public function getArtFournisseur(){
         return $this->getApiJson("/getArtFournisseur&arRef={$this->AR_Ref}");
     }
@@ -519,10 +523,10 @@ class ArticleClass Extends Objet{
     }
 
 
-    public function updateArtStock($de_no, $qte, $montant)
+    public function updateArtStock($de_no, $qte, $montant, $action,$protNo)
     {
         $this->lien = "fartstock";
-        $this->getApiExecute("/updateArtStock&arRef={$this->AR_Ref}&deNo=$de_no&montant=$montant&qte=$qte");
+        $this->getApiExecute("/updateArtStock&arRef={$this->AR_Ref}&deNo=$de_no&montant=$montant&qte=$qte&action=$action&protNo=$protNo");
     }
 
     public function setASQteMaxiArtStock($de_no){

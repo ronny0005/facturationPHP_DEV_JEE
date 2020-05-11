@@ -22,7 +22,7 @@
     <thead>
         <tr>
             <?php if($flagNouveau){ ?>
-                <td style="float:right"><a href="ficheFamille"><button type="button" id="nouveau" class="btn btn-primary bgcolorApplication">Nouveau</button></a></td><?php } ?>
+                <td style="float:right"><a href="ficheFamille"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td><?php } ?>
         </tr>
         </form>
 </table>
