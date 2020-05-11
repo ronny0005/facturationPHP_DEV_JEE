@@ -147,7 +147,7 @@ jQuery(function ($) {
                 async : false,
                 success: function (data) {
                     $("#banque").val(data);
-
+                    $("#CG_NumBanque").val(data)
                 }
             });
             $("#libelleRec").prop("disabled",false);
@@ -170,6 +170,7 @@ jQuery(function ($) {
                 async : false,
                 success: function (data) {
                     $("#banque").val(data);
+                    $("#CG_NumBanque").val(data)
                 }
             });
             $("#libelleRec").attr("readonly", false);
@@ -194,6 +195,7 @@ jQuery(function ($) {
                 async : false,
                 success: function (data) {
                     $("#banque").val(data);
+                    $("#CG_NumBanque").val(data)
                 }
             });
             $("#libelleRec").attr("readonly", false);

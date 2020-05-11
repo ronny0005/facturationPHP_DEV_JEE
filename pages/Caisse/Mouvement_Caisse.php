@@ -266,6 +266,7 @@
                         <th>Caissier</th>
                         <th>Type</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>

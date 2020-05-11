@@ -553,7 +553,7 @@ jQuery(function($) {
 
     $('#imprimer').click(function(){
         fichierTraitement();
-        if((typeFac=="Devis" || typeFac=="BonLivraison" || typeFac=="Avoir")){
+        if((typeFac=="Devis" || typeFac=="BonLivraison" || typeFac=="VenteAvoir")){
             choixFormat();
         } else{
             if((isVisu ==0) || ($("#PROT_Reglement").val() !=2)) {
@@ -569,7 +569,7 @@ jQuery(function($) {
     });
 
     $('#valider').click(function(){
-        if((typeFac=="Devis" || typeFac=="Avoir" || typeFac=="BonLivraison"))
+        if((typeFac=="Devis" || typeFac=="VenteAvoir" || typeFac=="BonLivraison"))
             window.location.replace(listeFacture);
         else
             valider(true);

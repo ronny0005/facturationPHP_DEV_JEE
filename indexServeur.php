@@ -97,6 +97,7 @@ switch ($val) {
         envoiRequete($objet->getF_FamComptaCount(), $objet);
         break;
     case "getF_Taxe":
+
         envoiRequete($objet->getF_Taxe(), $objet);
         break;
     case "getTaxeByTACode":
@@ -955,7 +956,42 @@ switch ($val) {
         envoiRequete($objet->getCaissier(), $objet);
         break;
     case "getCatComptaByArRef" :
-        envoiRequete($objet->getCatComptaByArRef($_GET['AR_Ref'], $_GET['ACP_Champ'], $_GET['ACP_Type']), $objet);
+        $article = new ArticleClass(0);
+        $list = $article->getCatComptaByArRef($_GET['AR_Ref'],$_GET['ACP_Champ'],$_GET['ACP_Type']);
+        foreach ($list as $element) {
+            ?>
+            <tr>
+                <td id='libCompte'>Compte général</td>
+                <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->CG_Num ?></td>
+                <td id='intituleCompte'><?= $element->CG_Intitule ?></td>
+                <td id='valCompte'></td>
+            </tr>
+            <tr>
+                <td id='libCompte'>Section analytique</td>
+                <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->CG_NumA ?></td>
+                <td id='intituleCompte'><?= $element->CG_IntituleA ?></td>
+                <td id='valCompte'></td>
+            </tr>
+            <tr>
+                <td id='libCompte'>Code taxe 1</td>
+                <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->Taxe1 ?></td>
+                <td id='intituleCompte'><?= $element->TA_Intitule1 ?></td>
+                <td id='valCompte'><?= $article->formatChiffre($element->TA_Taux1) ?></td>
+            </tr>
+            <tr>
+                <td id='libCompte'>Code taxe 2</td>
+                <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->Taxe2 ?></td>
+                <td id='intituleCompte'><?= $element->TA_Intitule2 ?></td>
+                <td id='valCompte'><?= $article->formatChiffre($element->TA_Taux2) ?></td>
+            </tr>
+            <tr>
+                <td id='libCompte'>Code taxe 3</td>
+                <td id='codeCompte' style='text-decoration: underline;color:blue'><?= $element->Taxe3 ?></td>
+                <td id='intituleCompte'><?= $element->TA_Intitule3 ?></td>
+                <td id='valCompte'><?= $article->formatChiffre($element->TA_Taux3) ?></td>
+            </tr>
+        <?php
+        }
         break;
     case "getCatComptaByCodeFamille" :
         envoiRequete($objet->getCatComptaByCodeFamille($_GET['FA_CodeFamille'], $_GET['ACP_Champ'], $_GET['ACP_Type']), $objet);
@@ -968,7 +1004,8 @@ switch ($val) {
         envoiRequete($objet->getReglementByClientFacture($_GET['CT_Num'], $_GET['DO_Piece']), $objet);
         break;
     case "getCompteg":
-        envoiRequete($objet->getCompteg(), $objet);
+        $compteg = new CompteGClass(0);
+        echo json_encode($compteg->all());
         break;
     case "getComptegCount":
         envoiRequete($objet->getComptegCount(), $objet);
@@ -1413,6 +1450,11 @@ switch ($val) {
         }
         break;
     case "listeReglementCaisseFormat":
+        session_start();
+        $reglement = new ReglementClass(0);
+        $rows = $reglement->listeReglementCaisse($objet->getDate($_GET["datedeb"]),$objet->getDate($_GET["datefin"]),$_GET["ca_no"],$_GET["type"]);
+        $reglement->afficheMvtCaisse($rows,$_GET["flagAffichageValCaisse"],$_GET["flagCtrlTtCaisse"]);
+/*
         $reglement = new ReglementClass(0);
 
         function typeCaisse($val)
@@ -1473,6 +1515,7 @@ switch ($val) {
                                         <td></td>
                                 </tr>";
         echo $itemTable ;
+*/
         break;
 
     case "getCompteEntree":

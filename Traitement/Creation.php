@@ -255,25 +255,25 @@ if(strcmp($_GET["acte"],"clientByIntitule") == 0){
 
 
 if(strcmp($_GET["acte"],"listeCategRemise") == 0){
-    $cattarif = new CatTarifClass(0,$objet->db);
+    $cattarif = new CatTarifClass(0);
     echo json_encode($cattarif->allCatTarifRemise());
 }
 
 if(strcmp($_GET["acte"],"listeClient")==0){
-    $comptet = new ComptetClass(0,$objet->db);
+    $comptet = new ComptetClass(0);
     $comptet->listeClientPagination();
 }
 
 if(strcmp($_GET["acte"],"listeArticle")==0){
-    $article = new ArticleClass(0,$objet->db);
-    $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"],$objet->db);
+    $article = new ArticleClass(0);
+    $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
     $article->listeArticlePagination();
 }
 
 if(strcmp($_GET["acte"],"artStock")==0){
     $AR_Ref = $_GET["AR_Ref"];
     $DE_No = $_GET["DE_No"];
-    $article = new ArticleClass($AR_Ref,$objet->db);
+    $article = new ArticleClass($AR_Ref);
     echo json_encode($article->getStockDepot($DE_No));
 }
 
@@ -284,7 +284,7 @@ if(strcmp($_GET["acte"],"updateF_ArtStockBorne")==0){
     if($QteMin =="") $QteMin = 0;
     $QteMax = $_GET["QteMax"];
     if($QteMax =="") $QteMax = 0;
-    $article = new ArticleClass(0,$objet->db);
+    $article = new ArticleClass(0);
     $article ->setuserName("","");
     $article->updateF_ArtStockBorne($AR_Ref,$DE_No,$QteMin,$QteMax);
 }

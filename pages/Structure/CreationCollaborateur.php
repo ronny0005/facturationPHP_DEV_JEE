@@ -51,7 +51,7 @@
             $btnRecouv = $collaborateurClass->CO_ChargeRecouvr;
     }
 ?>
-<script src="js/script_creationCollaborateur.js"></script>
+<script src="js/script_creationCollaborateur.js?d=<?= time(); ?>"></script>
 </head>
 <body>    
 <?php

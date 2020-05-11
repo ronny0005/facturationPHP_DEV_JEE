@@ -201,6 +201,14 @@ class ReglementClass Extends Objet{
 		$this->DO_Modif=$this->getApiJson("/setDO_Modif&rgNo={$this->RG_No}");
     }
 
+    function typeCaisse($val){
+        if($val==5) return "Entrée";
+        if($val==4) return "Sortie";
+        if($val==2) return "Fond de caisse";
+        if($val==16) return "Transfert caisse";
+        if($val==6) return "Vrst bancaire";
+    }
+
 public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse){
         $i=0;
         $classe="";
@@ -232,9 +240,9 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
                 echo "<tr class='reglement $classe' id='reglement_{$row->RG_No}'>
                                                 <td style='color:blue;text-decoration:underline' id='RG_No'>{$row->RG_No}</a></td>
                                                 <td id='RG_Piece'>{$row->RG_Piece}</td>
-                                                <td id='RG_Date'>{$this->objetCollection->getDateDDMMYYYY($row->RG_Date)}</td>
+                                                <td id='RG_Date'>{$this->formatDateAffichage($row->RG_Date)}</td>
                                                 <td id='RG_Libelle'>{$row->RG_Libelle}</td>
-                                                <td id='RG_Montant'>{$this->objetCollection->formatChiffre($montant)}</td>
+                                                <td id='RG_Montant'>{$this->formatChiffre($montant)}</td>
                                                 <td style='display:none' id='RG_MontantHide'>$montant</td>
                                                 <td style='display:none' id='CA_No'>{$row->CA_No}</td>
                                                 <td style='display:none' id='CA_No_DestLigne'>{$row->CA_No_Dest}</td>
@@ -243,7 +251,7 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
                                                 <td style='display:none' id='JO_NumLigne'>{$row->JO_Num}</td>
                                                 <td id='CA_Intitule'>{$row->CA_Intitule}</td>
                                                 <td id='CO_Nom'><span id='RG_No' style='visibility:hidden'>{$row->RG_No}</span>{$row->CO_Nom}</td>
-                                                <td id='RG_TypeReg'>{$this->typeCaisse($rg_typereg)}</td>
+                                                    <td id='RG_TypeReg'>{$this->typeCaisse($rg_typereg)}</td>
                                                 <td style='display:none' id='RG_TypeRegLigne'>$rg_typereg</td>";
 
                 if($flagAffichageValCaisse==0) echo "<td id='RG_Modif'><i class='fa fa-pencil fa-fw'></i></td>";
@@ -265,7 +273,7 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
                 echo "</tr>";
                 $sommeMnt = $sommeMnt + $montant;
             }
-            echo "<tr class='reglement' style='background-color:grey;color:white'><td id='rgltTotal'><b>Total</b></td><td></td><td></td><td></td><td><b>{$this->objetCollection->formatChiffre($sommeMnt)}</b></td><td></td><td></td><td></td><td></td><td></td></tr>";
+            echo "<tr class='reglement' style='background-color:grey;color:white'><td id='rgltTotal'><b>Total</b></td><td></td><td></td><td></td><td><b>{$this->formatChiffre($sommeMnt)}</b></td><td></td><td></td><td></td><td></td><td></td></tr>";
         }
     }
 
@@ -647,5 +655,7 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
         $date = DateTime::createFromFormat('Y-m-d H:i:s', $val);
         return $date->format('Y-m-d');
     }
+
+
 
 }

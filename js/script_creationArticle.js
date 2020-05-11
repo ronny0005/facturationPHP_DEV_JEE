@@ -649,6 +649,17 @@ jQuery(function($) {
         }
     })
 */
+    $("#compteGSelectInput").autocomplete({
+        source: "indexServeur.php?page=getComptegByCGNum",
+        autoFocus: true,
+        closeOnSelect: true,
+        select: function (event, ui) {
+            event.preventDefault();
+            $("#compteGSelectInput").val(ui.item.text)
+            $("#comptegCode").val(ui.item.CG_Num)
+        }
+    })
+
     $("#p_catcompta").change(function() {
         var type = $(this).val().slice(-1);
         var fcp_type = 0;
@@ -658,28 +669,11 @@ jQuery(function($) {
         $.ajax({
             url: "indexServeur.php?page=getCatComptaByArRef&ACP_Type="+fcp_type+"&ACP_Champ="+acp_champ+"&AR_Ref="+$("#reference").val(),
             method: 'GET',
-            dataType: 'json',
+            dataType: 'html',
             async : false,
             success: function(data) {
                 $("#table_compteg >tbody").html("");
-                $(data).each(function () {
-                    var cg_num = " - ";
-                    var cg_numa = " - ";
-                    var taxe1 = " - ";
-                    var taxe2 = " - ";
-                    var taxe3 = " - ";
-                    if(data[0].CG_Num!="")cg_num = data[0].CG_Num;
-                    if(data[0].CG_NumA!="")cg_numa = data[0].CG_NumA;
-                    if(data[0].Taxe1!="")taxe1 = data[0].Taxe1;
-                    if(data[0].Taxe2!="")taxe2 = data[0].Taxe2;
-                    if(data[0].Taxe3!="")taxe3 = data[0].Taxe3;
-                    var donnee ="<tr><td id='libCompte'>Compte général</td><td id='codeCompte' style='text-decoration: underline;color:blue'>"+cg_num+"</td><td id='intituleCompte'>"+data[0].CG_Intitule+"</td><td id='valCompte'></td></tr>"+
-                        "<tr><td id='libCompte'>Section analytique</td><td id='codeCompte' style='text-decoration: underline;color:blue'>"+cg_numa+"</td><td id='intituleCompte'>"+data[0].CG_IntituleA+"</td><td id='valCompte'></td></tr>"+
-                        "<tr><td id='libCompte'>Code taxe 1</td><td id='codeCompte' style='text-decoration: underline;color:blue'>"+ taxe1 +"</td><td id='intituleCompte'>"+ data[0].TA_Intitule1 +"</td><td id='valCompte'>"+ (Math.round(data[0].TA_Taux1*100)/100) +"</td></tr>"+
-                    "<tr><td id='libCompte'>Code taxe 2</td><td id='codeCompte' style='text-decoration: underline;color:blue'>"+ taxe2 +"</td><td id='intituleCompte'>"+ data[0].TA_Intitule2 +"</td><td id='valCompte'>"+ (Math.round(data[0].TA_Taux2*100)/100) +"</td></tr>"+
-                    "<tr><td id='libCompte'>Code taxe 3</td><td id='codeCompte' style='text-decoration: underline;color:blue'>"+ taxe3 +"</td><td id='intituleCompte'>"+ data[0].TA_Intitule3 +"</td><td id='valCompte'>"+ (Math.round(data[0].TA_Taux3*100)/100) +"</td></tr>";
-                    $("#table_compteg >tbody").append(donnee);
-                });
+                $("#table_compteg >tbody").append(data);
                 fonctionCodeCompte();
             }
         });

@@ -324,7 +324,7 @@ class ArticleClass Extends Objet{
     }
 
     public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql){
-        $url = "/queryListeArticle&flagPxAchat=$flagPxAchat&flagPxRevient=$flagPxRevient&arSommeil=$ar_sommeil&prixFlag=$prixFlag&stockFlag=$stockFlag&sql=".str_replace(" ","!","$sql");
+        $url = "/queryListeArticle&flagPxAchat=$flagPxAchat&flagPxRevient=$flagPxRevient&arSommeil=$ar_sommeil&prixFlag=$prixFlag&stockFlag=$stockFlag&sql=$sql";
         return $this->getApiJson($url);
     }
 
@@ -361,7 +361,6 @@ class ArticleClass Extends Objet{
                 $prixFlag = $_GET['prixFlag'];
 
             $recordsTotal = sizeof($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString("")));
-
             /* SEARCH CASE : Filtered data */
             if(!empty($_POST['search']['value'])){
                 /* WHERE Clause for searching */
@@ -369,11 +368,14 @@ class ArticleClass Extends Objet{
                     $column = $_POST['columns'][$i]['data'];//we get the name of each column using its index from POST request
                     $where[]=" (AR_Design like '%".$_POST['search']['value']."%' OR AR_Ref like '%".$_POST['search']['value']."%') ";
                 }
+                var_dump($_POST['columns']);
 
                 $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
                 /* End WHERE */
                 $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
                 $recordsFiltered = count($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql)));//Count of search result
+                die();
+                var_dump($recordsFiltered);
 
                 /* SQL Query for search with limit and orderBy clauses*/
                 $sql = sprintf(" %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
@@ -401,6 +403,9 @@ class ArticleClass Extends Objet{
         }
     }
 
+    public function getCatComptaByArRef($arRef,$acpChamp,$acpType){
+        return $this->getApiJson("/getCatComptaByArRef&arRef=$arRef&acpChamp=$acpChamp&acpType=$acpType");
+    }
     public function getArtFournisseur(){
         return $this->getApiJson("/getArtFournisseur&arRef={$this->AR_Ref}");
     }
@@ -464,10 +469,6 @@ class ArticleClass Extends Objet{
 
     public function getArticleAndDepot(){
         return $this->getApiJson("/getArticleAndDepot&arRef={$this->AR_Ref}");
-    }
-
-    public function getCatComptaByArRef($acpChamp,$acpType){
-        return $this->getApiJson("/getCatComptaByArRef&arRef={$this->AR_Ref}&acpChamp=$acpChamp&acpType=$acpType");
     }
 
     public function detailConditionnement($tcRefCf){

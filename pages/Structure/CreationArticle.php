@@ -238,7 +238,7 @@
                 $libtaxe1 ="";$libtaxe2 ="";$libtaxe3 ="";$libcgnum="";$libcgnuma="";
                 $taux1 =0;$taux2 =0;$taux3 =0;
                 $articleClass = new ArticleClass($ref);
-                $rows = $articleClass->getCatComptaByArRef(1,0);
+                $rows = $articleClass->getCatComptaByArRef($articleClass->AR_Ref,1,0);
                 if($rows!=null){
                     if($rows[0]->Taxe1!="")
                         $taxe1 =$rows[0]->Taxe1;
@@ -323,6 +323,18 @@
                             </div>
                         </div>
                     </div>
+                <div id="comptegSelect" class="row">
+                    <div class="col-12">
+                        <input type="hidden" id="comptegCode" />
+                        <input type="text" class="form-control" id="compteGSelectInput" name="compteGSelectInput" />
+                    </div>
+                </div>
+                <div id="taxeSelect" class="row">
+                    <div class="col-12">
+                        <input type="hidden" id="taxeCode" />
+                        <input type="text" class="form-control" id="taxeSelectInput" name="taxeSelectInput" />
+                    </div>
+                </div>
             </div>
             <div class="tab-pane fade" id="Descriptif" role="tabpanel" style="padding-top: 20px" aria-labelledby="contact-tab">
                 <fieldset style="margin-left: 30px" class="entete">

@@ -50,7 +50,6 @@ if(isset($_POST["caisseComplete"]))
 if(isset($_POST["type_mvt_ent"]))
     $type = $_POST["type_mvt_ent"];
 if(isset($_POST["libelle"])){
-
     $montant = str_replace(" ","",$_POST["montant"]);
     $login = $_SESSION["id"];
     $CA_Num="";
@@ -61,8 +60,7 @@ if(isset($_POST["libelle"])){
     if(isset($_POST['rg_typereg']))
         $rg_typereg = $_POST['rg_typereg'];
     if($rg_typereg==6) $libelle=$libelle;
-
-    $creglement->insertMvtCaisse($montant,$login,$CA_Num,$libelle,$rg_typereg,$_POST["CA_No"],$_POST['CG_NumBanque'],$modif,$_POST['date'],$modif,$_POST['CA_No_Dest'],$_POST["CG_Analytique"],$_POST["rg_typeregModif"],$_POST["journalRec"],$_POST["RG_NoDestLigne"]);
+    $creglement->insertMvtCaisse($montant,$login,$CA_Num,$libelle,$rg_typereg,$_POST["CA_No"],$_POST['CG_NumBanque'],$modif,$creglement->formatSageToSqlDate($_POST['date']),$modif,$_POST['CA_No_Dest'],$_POST["CG_Analytique"],$_POST["rg_typeregModif"],$_POST["journalRec"],$_POST["RG_NoDestLigne"]);
 }
 
 

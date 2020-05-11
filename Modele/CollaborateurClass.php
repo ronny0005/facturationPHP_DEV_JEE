@@ -46,32 +46,32 @@ class CollaborateurClass Extends Objet{
             $this->CO_TelPortable = $this->data[0]->CO_TelPortable;
             $this->CO_ChargeRecouvr = $this->data[0]->CO_ChargeRecouvr;
             $this->cbCreateur = $this->data[0]->cbCreateur;
+            $this->cbMarq = $this->data[0]->cbMarq;
         }
     }
 
-    public function maj_collaborateur(){
-        parent::maj(CO_No, $this->CO_No);
-        parent::maj(CO_Nom, $this->CO_Nom);
-        parent::maj(CO_Prenom, $this->CO_Prenom);
-        parent::maj(CO_Fonction, $this->CO_Fonction);
-        parent::maj(CO_Adresse, $this->CO_Adresse);
-        parent::maj(CO_Complement, $this->CO_Complement);
-        parent::maj(CO_Ville, $this->CO_Ville);
-        parent::maj(CO_Prenom, $this->CO_Prenom);
-        parent::maj(CO_EMail, $this->CO_EMail);
-        parent::maj(CO_CodePostal, $this->CO_CodePostal);
-        parent::maj(CO_CodeRegion, $this->CO_CodeRegion);
-        parent::maj(CO_Service, $this->CO_Service);
-        parent::maj(CO_Vendeur, $this->CO_Vendeur);
-        parent::maj(CO_Caissier, $this->CO_Caissier);
-        parent::maj(CO_DateCreation, $this->CO_DateCreation);
-        parent::maj(CO_Acheteur, $this->CO_Acheteur);
-        parent::maj(CO_Telephone, $this->CO_Telephone);
-        parent::maj(CO_Receptionnaire, $this->CO_Receptionnaire);
-        parent::maj(PROT_No, $this->PROT_No);
-        parent::maj(CO_TelPortable, $this->CO_TelPortable);
-        parent::maj(CO_ChargeRecouvr, $this->CO_ChargeRecouvr);
-        parent::maj("cbCreateur", $this->userName);
+    public function maj_collaborateur($collab){
+        parent::majIfUpdate(CO_No,$collab->CO_No, $this->CO_No);
+        parent::majIfUpdate(CO_Nom, $collab->CO_Nom, $this->CO_Nom);
+        parent::majIfUpdate(CO_Prenom, $collab->CO_Prenom, $this->CO_Prenom);
+        parent::majIfUpdate(CO_Fonction, $collab->CO_Fonction, $this->CO_Fonction);
+        parent::majIfUpdate(CO_Adresse, $collab->CO_Adresse, $this->CO_Adresse);
+        parent::majIfUpdate(CO_Complement, $collab->CO_Complement, $this->CO_Complement);
+        parent::majIfUpdate(CO_Ville, $collab->CO_Ville, $this->CO_Ville);
+        parent::majIfUpdate(CO_Prenom, $collab->CO_Prenom, $this->CO_Prenom);
+        parent::majIfUpdate(CO_EMail, $collab->CO_EMail, $this->CO_EMail);
+        parent::majIfUpdate(CO_CodePostal, $collab->CO_CodePostal, $this->CO_CodePostal);
+        parent::majIfUpdate(CO_CodeRegion, $collab->CO_CodeRegion, $this->CO_CodeRegion);
+        parent::majIfUpdate(CO_Service, $collab->CO_Service, $this->CO_Service);
+        parent::majIfUpdate(CO_Vendeur, $collab->CO_Vendeur, $this->CO_Vendeur);
+        parent::majIfUpdate(CO_Caissier, $collab->CO_Caissier, $this->CO_Caissier);
+        parent::majIfUpdate(CO_DateCreation, $collab->CO_DateCreation, $this->CO_DateCreation);
+        parent::majIfUpdate(CO_Acheteur, $collab->CO_Acheteur, $this->CO_Acheteur);
+        parent::majIfUpdate(CO_Telephone, $collab->CO_Telephone, $this->CO_Telephone);
+        parent::majIfUpdate(CO_Receptionnaire, $collab->CO_Receptionnaire, $this->CO_Receptionnaire);
+        parent::majIfUpdate(PROT_No, $collab->PROT_No, $this->PROT_No);
+        parent::majIfUpdate(CO_TelPortable, $collab->CO_TelPortable, $this->CO_TelPortable);
+        parent::majIfUpdate(CO_ChargeRecouvr, $collab->CO_ChargeRecouvr, $this->CO_ChargeRecouvr);
     }
 
 

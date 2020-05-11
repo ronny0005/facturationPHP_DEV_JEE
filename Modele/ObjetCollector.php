@@ -3001,7 +3001,10 @@ ORDER BY  DE_Intitule,
     }
 
     public function getF_Taxe(){
-        return "SELECT TA_Intitule,TA_TTaux,TA_Taux,TA_Type,CG_Num,TA_No,TA_Code,TA_NP,TA_Sens,TA_Provenance,TA_Regroup,TA_Assujet,cbModification FROM ".$this->db->baseCompta.".DBO.F_Taxe ORDER BY TA_Code";
+        return "SELECT TA_Intitule,TA_TTaux,TA_Taux,TA_Type,CG_Num,TA_No,TA_Code,TA_NP
+                ,TA_Sens,TA_Provenance,TA_Regroup,TA_Assujet,cbModification
+                FROM F_Taxe 
+                ORDER BY TA_Code";
     }
 
     public function getF_TaxeCount(){

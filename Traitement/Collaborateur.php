@@ -73,7 +73,28 @@ if($_GET["acte"]=="modif"){
     if(isset($_GET["recouvrement"]))$btnRecouv=1;
     else $btnRecouv=0;
     $collaborateurClass = new CollaborateurClass($co_no);
-    $collaborateurClass->modifCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv,$co_no,$_SESSION["id"]);
+    $collaborateurClass->majIfUpdate("CO_Nom",$nom,$collaborateurClass->CO_Nom);
+    $collaborateurClass->majIfUpdate("CO_Prenom",$prenom,$collaborateurClass->CO_Prenom);
+    $collaborateurClass->majIfUpdate("CO_Adresse",$adresse,$collaborateurClass->CO_Adresse);
+    $collaborateurClass->majIfUpdate("CO_Complement",$complement,$collaborateurClass->CO_Complement);
+    $collaborateurClass->majIfUpdate("CO_CodePostal",$codePostal,$collaborateurClass->CO_CodePostal);
+    $collaborateurClass->majIfUpdate("CO_Fonction",$fonction,$collaborateurClass->CO_Fonction);
+    $collaborateurClass->majIfUpdate("CO_Ville",$ville,$collaborateurClass->CO_Ville);
+    $collaborateurClass->majIfUpdate("CO_CodeRegion",$region,$collaborateurClass->CO_CodeRegion);
+    $collaborateurClass->majIfUpdate("CO_Pays",$pays,$collaborateurClass->CO_Pays);
+    $collaborateurClass->majIfUpdate("CO_Service",$service,$collaborateurClass->CO_Service);
+    $collaborateurClass->majIfUpdate("CO_Vendeur",$btnVendeur,$collaborateurClass->CO_Vendeur);
+    $collaborateurClass->majIfUpdate("CO_Caissier",$btnCaissier,$collaborateurClass->CO_Caissier);
+    $collaborateurClass->majIfUpdate("CO_Acheteur",$btnAcheteur,$collaborateurClass->CO_Acheteur);
+    $collaborateurClass->majIfUpdate("CO_Telephone",$telephone,$collaborateurClass->CO_Telephone);
+    $collaborateurClass->majIfUpdate("CO_Telecopie",$telecopie,$collaborateurClass->CO_Telecopie);
+    $collaborateurClass->majIfUpdate("CO_Email",$email,$collaborateurClass->CO_EMail);
+    $collaborateurClass->majIfUpdate("CO_ChargeRecouvr",$btnControleur,$collaborateurClass->CO_ChargeRecouvr);
+    $collaborateurClass->majIfUpdate("CO_Receptionnaire",$btnRecouv,$collaborateurClass->CO_Receptionnaire);
+/*    $collaborateurClass->modifCollaborateur($nom,$prenom,$adresse,$complement,$codePostal,$fonction,$ville,$region,$pays
+        ,$service,$btnVendeur,$btnCaissier,$btnAcheteur,$telephone,$telecopie,$email,$btnControleur,$btnRecouv
+        ,$co_no,$_SESSION["id"]);
+*/
     $data = array('CO_No' => $co_no);
     echo json_encode($data);
 }
