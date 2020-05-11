@@ -30,56 +30,6 @@ $precompte=0;
 $marge=0;
 $totalttc=0;
 $reference="";
-  
-// Création de l'entete de document
-if($_GET["acte"] =="ajout_entete"){
-    $entete=$_GET["do_piece"];
-    $admin = 0;
-    $limitmoinsDate = "";
-    $limitplusDate = "";
-    if(isset($_SESSION)){
-        $protectionClass = new ProtectionClass($_SESSION["login"],$_SESSION["mdp"],$objet->db);
-        if($protectionClass->PROT_Right!=1) {
-            if($protectionClass->getDelai()!=0) {
-                $limitmoinsDate = date('d/m/Y', strtotime(date('Y-m-d') . " - " . $protectionClass->getDelai() . " day"));
-                $limitplusDate = date('d/m/Y', strtotime(date('Y-m-d') . " + " . $protectionClass->getDelai() . " day"));
-                $str = strtotime(date("M d Y ")) - (strtotime($_GET["date"]));
-                $nbDay = abs(floor($str / 3600 / 24));
-                if ($nbDay > $protectionClass->getDelai())
-                    $admin = 1;
-            }
-        }
-    }
-
-    if($admin==0) {
-        $docEntete = new DocEnteteClass(0, $objet->db);
-//    $entete = $docEntete->addDocenteteSortieProcess($_GET["date"], $_GET["reference"], $_GET["depot"], $_GET["affaire"], 0, 0);
-
-        echo json_encode($docEntete->ajoutEntete(isset($_GET["do_piece"]) ? $_GET["do_piece"] : "%20",
-            $_GET["type_fac"], $_GET["date"], $_GET["date"], $_GET["affaire"], "", isset($_GET["protNo"]) ? $_GET["protNo"] : "",
-            $mobile, isset($_GET["machineName"]) ? $_GET["machineName"] : "%20",
-            isset($_GET["doCood2"]) ? $_GET["doCood2"] : "%20", isset($_GET["doCood3"]) ? $_GET["doCood3"] : "%20", isset($_GET["DO_Coord04"]) ? $_GET["DO_Coord04"] : "%20",
-            0, 0, 0, $_GET["depot"], 0, 0, 0, 0, 0, str_replace("'", "''", $_GET["reference"])));
-    }
-    else
-        echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
-}
-
-// mise à jour de la référence
-if( $_GET["acte"] =="liste_article"){
-    $entete=$_GET["entete"];
-    $result=$objet->db->requete($objet->getLigneFacture($entete,2,21));     
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    echo json_encode($rows);
-}
-
-// mise à jour de la référence
-if( $_GET["acte"] =="liste_article_source"){
-    $depot=$_GET["depot"];
-    $result=$objet->db->requete($objet->getAllArticleDispoByArRef($depot));     
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    echo json_encode($rows);
-}
 
 //ajout article 
 if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
@@ -115,11 +65,6 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
             }
         }
     }
-}
-
-//suppression d'article
-if($_GET["acte"] =="suppr") {
-
 }
 
 ?>

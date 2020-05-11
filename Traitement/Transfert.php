@@ -35,10 +35,4 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
         }
 }
 
-if($_GET["acte"] =="suppr"){
-    $type_fac="Transfert";
-    $docligne = new DocLigneClass(0);
-    $docligne->getApiExecute("/supprLigneTransfert&cbMarq={$_GET["id"]}&cbMarqSec={$_GET["id_sec"]}&typeFacture=$type_fac&protNo={$_SESSION["id"]}");
-}
-
 ?>

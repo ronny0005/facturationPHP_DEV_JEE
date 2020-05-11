@@ -8,7 +8,6 @@ include("module/Menu/BarreMenu.php");
 include("enteteParam.php");
 $module = $_GET["module"];
 $action = $_GET["action"];
-
 //$protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
 ?>
 <div id="milieu">
@@ -23,7 +22,8 @@ and open the template in the editor.
         <input type="hidden" name="ArticleFinParam" id="ArticleFinParam" value="<?php if(isset($_POST["ArticleFin"])) echo $_POST["ArticleFin"]; ?>" />
         <input type="hidden" name="ClientDebutParam" id="ClientDebutParam" value="<?php if(isset($_POST["ClientDebut"])) echo $_POST["ClientDebut"]; ?>" />
         <input type="hidden" name="ClientFinParam" id="ClientFinParam" value="<?php if(isset($_POST["ClientFin"])) echo $_POST["ClientFin"]; ?>" />
-        <input type="hidden" name="typeTiersParam" id="typeTiersParam" value="<?php if(isset($_GET["typeTiers"]) || isset($_POST["typeTiers"])|| isset($_POST["typeTiersParam"])) echo $_POST["ClientFin"]; ?>" />
+        <input type="hidden" name="typeTiersParam" id="typeTiersParam" value="<?php if(isset($_GET["typeTiers"])) echo $_GET["typeTiers"]; else if(isset($_POST["typeTiers"])) echo $_POST["typeTiers"]; else if(isset($_POST["typeTiersParam"])) echo $_POST["typeTiersParam"]; ?>" />
+        <input type="hidden" name="dateIndique" id="dateIndique" value="<?= (isset($dateIndique)) ? "1":"0" ?>" />
         <form name="reportForm" id="reportForm" method="POST" action="#">
             <?php
 
@@ -66,32 +66,75 @@ and open the template in the editor.
                 {
                     //are we opening or continuing a row?
                     //get the default value
+                    $controls .= '<div class="col-3">';
                     $default = null;
                     foreach($reportParameter->DefaultValues as $vals)
                         foreach($vals as $key=>$def)
                             $default = $def;
-                        if($reportParameter->Name!="AffichePrixVen")
-                    $controls .= '<div class="col-3"><label>'.$reportParameter->Prompt . "</label>";
+                    if($reportParameter->Name!="AffichePrixVen" && $reportParameter->Name!="PROT_No")
+                        $controls .= '<label>'.$reportParameter->Prompt . "</label>";
                     //If there is a list, then it needs to be a Select box
                     if(sizeof($reportParameter->ValidValues) > 0){
                         $dependencies = "";//empty($reportParameter->Dependencies) ? "onchange='getParameters();'" : "";
                         if($reportParameter->Name!="ArticleDebut"
-                            && $reportParameter->Name!="ArticleFin"
-                            && $reportParameter->Name!="Agence") {
-                            $controls .= "\n<select class='form-control' name='$reportParameter->Name' id='$reportParameter->Name' $dependencies>";
+                            && $reportParameter->Name!="ArticleFin" && $reportParameter->Name !="CG_Num"
+                            && $reportParameter->Name!="ClientDebut" && $reportParameter->Name !="ClientFin") {
+                            $style="";
+                            if($reportParameter->Name=="PROT_Admin")
+                                $style="display:none";
+                            $controls .= "\n<select style='$style' class='form-control' name='$reportParameter->Name' id='$reportParameter->Name' $dependencies>";
                         }else{
                             $valueData="";
                             if (isset($_POST["ArticleDebut"]) && $reportParameter->Name=="ArticleDebut")
                                 $valueData = $_POST["ArticleDebut"];
                             if (isset($_POST["ArticleFin"]) && $reportParameter->Name=="ArticleFin")
                                 $valueData = $_POST["ArticleFin"];
-                            if (isset($_POST["Agence"]) && $reportParameter->Name=="Agence")
-                                $valueData = $_POST["Agence"];
+                            if (isset($_POST["CG_Num"]) && $reportParameter->Name=="CG_Num")
+                                $valueData = $_POST["CG_Num"];
+
+                            if (isset($_POST["ClientDebut"]) && $reportParameter->Name=="ClientDebut")
+                                $valueData = $_POST["ClientDebut"];
+                            if (isset($_POST["ClientFin"]) && $reportParameter->Name=="ClientFin")
+                                $valueData = $_POST["ClientFin"];
 
                             $controls .= "\n<input class='form-control' name='$reportParameter->Name' id='$reportParameter->Name' type='text'
                                             value='$valueData'/>";
                         }
-                            if($reportParameter->Name=="Caisse"){
+
+                        if($reportParameter->Name=="Agence"){
+                            $isPrincipal = 0;
+                            $depotClass = new DepotClass(0,$objet->db);
+                            if($admin==0){
+                                $isPrincipal = 1;
+                                $rows = $depotClass->getDepotUser($_SESSION["id"]);
+                            }
+                            else {
+                                $rows = $depotClass->alldepotShortDetail();
+                            }
+                            $deNoValue = 0;
+                            if(isset($_POST["Agence"])){
+                                $deNoValue = $_POST["Agence"];
+                            }
+                            if(sizeof($rows)>1){
+                                $controls .= "<option value='0'";
+                                if(0==$deNoValue) $controls .= " selected";
+                                $controls .= ">Tout</option>";
+                            }
+                            foreach($rows as $row) {
+                                if ($isPrincipal == 0) {
+                                    $controls .= "<option value='{$row->DE_No}'";
+                                    if ($row->DE_No == $deNoValue) $controls .= " selected";
+                                    $controls .= ">{$row->DE_Intitule}</option>";
+                                } else {
+                                    if ($row->IsPrincipal == 1) {
+                                        $controls .= "<option value='{$row->DE_No}'";
+                                        if ($row->DE_No == $deNoValue) $controls .= " selected";
+                                        $controls .=  ">{$row->DE_Intitule}</option>";
+                                    }
+                                }
+                            }
+                        }
+                        else if($reportParameter->Name=="Caisse"){
                             $isPrincipal = 0;
                             if($admin==0){
                                 $isPrincipal = 1;
@@ -118,7 +161,7 @@ and open the template in the editor.
                                     $controls .= ">{$row->CA_Intitule}</option>";
                                 } else {
                                     if ($row->IsPrincipal == 1) {
-                                        $controls .= "<option value='{$row->DE_No}'";
+                                        $controls .= "<option value='{$row->CA_No}'";
                                         if ($row->CA_No == $caNoValue) $controls .= " selected";
                                         $controls .=  ">{$row->CA_Intitule}</option>";
                                     }
@@ -126,38 +169,27 @@ and open the template in the editor.
                             }
 
                         }
-                            else if($reportParameter->Name=="ClientDebut" || $reportParameter->Name=="ClientFin"){
-                            $client = new ComptetClass(0);
-                            $clientPos = "0";
-                            if($reportParameter->Name=="ClientDebut")
-                                if(isset($_POST["ClientDebut"]))
-                                    $clientPos = $_POST["ClientDebut"];
-                            if($reportParameter->Name=="ClientFin")
-                                if(isset($_POST["ClientFin"]))
-                                    $clientPos = $_POST["ClientFin"];
-                            if($_GET["action"]==6 || $_GET["action"]==7 || $_GET["action"]==26 || ($_GET["action"]==21 &&(!isset($_POST["TypeTiers"]) ||$_POST["TypeTiers"]==0 )))
-                                $rows = $client->allClientsSelect();
-                            if(($_GET["action"]==21 &&(!isset($_POST["TypeTiers"]) ||$_POST["TypeTiers"]==-1 )))
-                                $rows = $client->allClientsSelect();
-                            if(($_GET["action"]==21 &&(isset($_POST["TypeTiers"]) && $_POST["TypeTiers"]==1 )))
-                                $rows = $client->allFournisseurSelect();
-                            foreach($rows as $row){
-                                $controls .= "<option value='{$row->CT_Num}'";
-                                if($row->CT_Num==$clientPos) $controls .= " selected";
-                                if($row->CT_Intitule=="Tout")
-                                    $controls .= ">{$row->CT_Intitule}</option>";
-                                else
-                                    $controls .= ">{$row->CT_Num} - {$row->CT_Intitule}</option>";
-                            }
-                        }
-                            else if($reportParameter->Name!="Agence" && $reportParameter->Name!="ArticleDebut"
-                                && $reportParameter->Name!="ArticleFin"){
+
+
+
+
+
+
+
+                        else if($reportParameter->Name!="ArticleDebut"
+                            && $reportParameter->Name!="ArticleFin" && $reportParameter->Name!="CG_Num"
+                            && $reportParameter->Name!="ClientDebut" && $reportParameter->Name !="ClientFin"){
                             foreach ($reportParameter->ValidValues as $values) {
                                 //choose the default value only if nothing is set
-                                if ($parmVals == null)
+
+                                if ($parmVals == null) {
                                     $selected = ($values->Value == $default)
                                         ? "selected='selected'"
                                         : "";
+                                    if($reportParameter->Name=="A_Analytique")
+                                        if($values->Value == 1)
+                                            $selected= "selected='selected'";
+                                }
                                 else {
                                     $selected = (key_exists($reportParameter->Name, $arr) && $values->Value == $arr[$reportParameter->Name])
                                         ? "selected='selected'"
@@ -214,6 +246,12 @@ and open the template in the editor.
                             $visible="hidden";
                             $selected="value='$flagPxRevient'";
                         }
+
+
+                        if($reportParameter->Name=="PROT_No"){
+                            $visible="hidden";
+                            $selected="value='".$protection->Prot_No."'";
+                        }
                         $controls .= "\n<input class='form-control' name='$reportParameter->Name' id='$reportParameter->Name' type='$visible' $selected/>";
                     }
                     //the other types should be entered in TextBoxes (DateTime, Integer, Float)
@@ -229,10 +267,17 @@ and open the template in the editor.
                                 ? "value='" . $arr[$reportParameter->Name] . "'"
                                 : "";
                         $visible ="text";
+
                         if($reportParameter->Name=="AffichePrixVen"){
                             $visible="hidden";
                             $selected="value='$flagPxRevient'";
                         }
+
+                        if($reportParameter->Name=="PROT_No"){
+                            $visible="hidden";
+                            $selected="value='".$protection->Prot_No."'";
+                        }
+
                         $controls .= "\n<input class='form-control' name='$reportParameter->Name' id='$reportParameter->Name' type='$visible' $selected/>";
                     }
 
@@ -253,7 +298,7 @@ and open the template in the editor.
 
                 $controls .= "\n<input type='hidden' value='' name='parameters' id='parameters' />";
                 $controls .= "\n<div id='exportReportDiv' style='visibility: hidden; ' >";
-                $controls .= "\n<div class='row col-lg-3' >
+                $controls .= "\n<div class='form-group col-lg-3' >
                                 <label>Type d'impression:</label>
                                 <input class='form-control' name='exportName' value='$namerep' type='text' onkeypress='submitenter(event);' />
                             </div>";
@@ -434,6 +479,7 @@ and open the template in the editor.
             function getStreamRootParams()
             {
                 $params = null;
+                $module = null;
                 $i=0;
                 foreach($_REQUEST as $key => $post)
                 {
@@ -445,10 +491,18 @@ and open the template in the editor.
                         continue;
                     if(strpos($key,'ps:') === 0)
                         continue;
-
-                    if(!empty($post))
+                    if($key!="module" && $key!="action")
                     {
-                        $params .= $key . '=' . $post . '$$';
+                        if(!empty($post))
+                        {
+                            $params .= $key . '=' . $post . '$$';
+                            $i++;
+                        }
+                    }else{
+                        if($key=="module")
+                            $module .= $key . '=' . $post . '&';
+                        if($key=="action")
+                            $module .= $key . '=' . $post . '';
                         $i++;
                     }
                     if($i > 100)
@@ -598,6 +652,8 @@ and open the template in the editor.
                 $("#DateDebut").val("20" +$("#DateDebut").val().substr(4, 2) + "-" + $("#DateDebut").val().substr(2, 2)+ "-" +$("#DateDebut").val().substr(0, 2));
                 $("#DateFin").val("20" +$("#DateFin").val().substr(4, 2) + "-" + $("#DateFin").val().substr(2, 2)+ "-" +$("#DateFin").val().substr(0, 2));
                 $("#ArticleDebutParam").val($("#ArticleDebut").val())
+                $("#ClientDebutParam").val($("#ClientDebut").val())
+                $("#ClientFinParam").val($("#ClientFin").val())
                 value = reportForm.exportSelect.value;
                 reportForm.parameters.value = false;
                 if(reportForm.exportName.value == "" && !value.match("HTML."))
@@ -619,7 +675,10 @@ and open the template in the editor.
             function renderReportRTC($val) {
                 var ancienDebut = $("#DateDebut").val();
                 var ancienFin = $("#DateFin").val();
-
+                $("#ArticleDebut").val($("#ArticleDebutParam").val())
+                $("#ArticleFin").val($("#ArticleFinParam").val())
+                $("#ClientDebut").val($("#ClientDebutParam").val())
+                $("#ClientFin").val($("#ClientFinParam").val())
                 value = reportForm.exportSelect.value;
                 reportForm.parameters.value = false;
                 //$("#montant").val($("#montant").val().replace(/ /g,"").replace(",","."));
@@ -627,8 +686,12 @@ and open the template in the editor.
                     reportForm.action = "#";
                     //$("#DateDebut").val("20" + $("#DateDebut").val().substr(4, 2) + "-" + $("#DateDebut").val().substr(2, 2) + "-" + $("#DateDebut").val().substr(0, 2));
                     //$("#DateFin").val("20" + $("#DateFin").val().substr(4, 2) + "-" + $("#DateFin").val().substr(2, 2) + "-" + $("#DateFin").val().substr(0, 2));
-                    $("#DateDebut").val("20" + $("#DateDebut").val().substr(4, 2)  + "-" + $("#DateDebut").val().substr(2, 2)+ "-" + $("#DateDebut").val().substr(0, 2)) ;
-                    $("#DateFin").val("20" + $("#DateFin").val().substr(4, 2) + "-" + $("#DateFin").val().substr(2, 2)+ "-" + $("#DateFin").val().substr(0, 2));
+                    if($("#dateIndique").val()==0) {
+                        $("#DateDebut").val("20" + $("#DateDebut").val().substr(4, 2)  + "-" + $("#DateDebut").val().substr(2, 2)+ "-" + $("#DateDebut").val().substr(0, 2)) ;
+                        $("#DateFin").val("20" + $("#DateFin").val().substr(4, 2) + "-" + $("#DateFin").val().substr(2, 2) + "-" + $("#DateFin").val().substr(0, 2));
+                    }else{
+                        $("#DateDebut").val("2020-01-01")
+                    }
                     reportForm.submit();
                     reportForm.setAttribute("target", "");
                 }
@@ -639,7 +702,6 @@ and open the template in the editor.
                     reportForm.submit();
                     reportForm.setAttribute("target", "");
                 }
-
             }
 
             function submitenter(e)

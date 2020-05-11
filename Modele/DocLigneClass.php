@@ -478,6 +478,10 @@ class DocLigneClass Extends Objet
         $log->writeFacture($action, $docEntete->DO_Type, $docEntete->DO_Piece, $DE_No, $docEntete->DO_Domaine, $AR_Ref, $Qte, $Prix, $Remise, $Montant);
     }
 
+    public function supprLigneFacture($cbMarq,$cbMarqSec,$typeFacture,$protNo){
+        $this->getApiExecute("/supprLigneFacture&cbMarq=$cbMarq&cbMarqSec=$cbMarqSec&typeFacture=$typeFacture&protNo=$protNo");
+    }
+
     public function addDocligneEntreeMagasinProcess($AR_Ref, $cbMarqEntete, $DL_Qte, $MvtStock, $mvtEntree, $prix, $type_fac, $machine, $protNo)
     {
         return $this->ajout_ligneFacturation($DL_Qte,$AR_Ref,$cbMarqEntete,$type_fac,0,$prix,"",$machine,"ajout_ligne",$protNo);

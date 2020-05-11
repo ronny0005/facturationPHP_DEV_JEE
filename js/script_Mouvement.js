@@ -434,9 +434,10 @@ jQuery(function($){
 
         function supprElement(cbmarq_prem, cbmarq_sec) {
             $.ajax({
-                url: "traitement/" + fichierTraitement() + "?acte=suppr&PROT_No="+$("#PROT_No").val()+"&id=" + cbmarq_prem + "&id_sec=" + cbmarq_sec,
+                url: "traitement/Facturation.php?acte=suppr&PROT_No="+$("#PROT_No").val()+"&id=" + cbmarq_prem + "&id_sec=" + cbmarq_sec,
                 method: 'GET',
                 dataType: 'html',
+                data : "type_fac="+$("#typeFacture").val(),
                 success: function (data) {
                     modification = false;
                     $("#reference").prop('disabled', false);

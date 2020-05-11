@@ -736,7 +736,7 @@ jQuery(function($) {
                 title: "Choix du format",
                 buttons: {
                     "A4 CLIENT SOCIETE" : {
-                        class: 'btn btn-primary',
+                        class: 'btn btn-primary col-4',
                         text: 'A4 CLIENT SOCIETE',
                         click: function () {
                             window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
@@ -744,7 +744,7 @@ jQuery(function($) {
                         }
                     },
                     "A4 CLIENT DIVERS" : {
-                        class: 'btn btn-primary',
+                        class: 'btn btn-primary col-4',
                         text: 'A4 CLIENT DIVERS',
                         click: function () {
                             window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_DIVERS", '_blank');
@@ -752,7 +752,7 @@ jQuery(function($) {
                         }
                     },
                     "A4 PROFORMA" : {
-                        class: 'btn btn-primary',
+                        class: 'btn btn-primary col-4',
                         text: 'A4 PROFORMA',
                         click: function () {
                             window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
@@ -760,7 +760,7 @@ jQuery(function($) {
                         }
                     },
                     "A5 CLIENT SOCIETE" : {
-                        class: 'btn btn-primary',
+                        class: 'btn btn-primary col-4',
                         text: 'A5 CLIENT SOCIETE',
                         click: function () {
                             window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
@@ -768,7 +768,7 @@ jQuery(function($) {
                         }
                     },
                     "A5 CLIENT DIVERS" : {
-                        class: 'btn btn-primary',
+                        class: 'btn btn-primary col-4',
                         text: 'A5 CLIENT DIVERS',
                         click: function () {
                             window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_DIVERS", '_blank');
@@ -776,7 +776,7 @@ jQuery(function($) {
                         }
                     },
                     "A5 PROFORMA" : {
-                        class: 'btn btn-primary',
+                        class: 'btn btn-primary col-4',
                         text: 'A5 PROFORMA',
                         click: function () {
                             window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
@@ -796,7 +796,7 @@ jQuery(function($) {
                     title: "Choix du format",
                     buttons: {
                         "A4": {
-                            class: 'btn btn-primary',
+                            class: 'btn btn-primary col-4',
                             text: 'A4',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
@@ -807,7 +807,7 @@ jQuery(function($) {
                             }
                         },
                         "A5": {
-                            class: 'btn btn-primary',
+                            class: 'btn btn-primary col-4',
                             text: 'A5',
                             click: function() {
                                 if (societe != "CMI CAMEROUN SARL")
@@ -818,7 +818,7 @@ jQuery(function($) {
                             }
                         },
                         "A4 Facture": {
-                            class: 'btn btn-primary',
+                            class: 'btn btn-primary col-4',
                             text: 'A4 Facture',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
@@ -829,7 +829,7 @@ jQuery(function($) {
                             }
                         },
                         "A5 Facture": {
-                            class: 'btn btn-primary',
+                            class: 'btn btn-primary col-4',
                             text: 'A5 Facture',
                             click: function() {
                                 if (societe != "CMI CAMEROUN SARL")
@@ -851,7 +851,7 @@ jQuery(function($) {
                     title: "Choix du format",
                     buttons: {
                         "A4": {
-                            class: 'btn btn-primary',
+                            class: 'btn btn-primary col-4',
                             text: 'A4',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
@@ -862,7 +862,7 @@ jQuery(function($) {
                             }
                         },
                         "A5": {
-                            class: 'btn btn-primary',
+                            class: 'btn btn-primary col-4',
                             text: 'A5',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")

@@ -66,10 +66,4 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
     }
 }
 
-//suppression d'article
-if($_GET["acte"] =="suppr"){
-    $docligne = new DocLigneClass(0);
-    $docligne->supprTransfertDetail($_GET["id"],$_GET["id_sec"]);
-}
-
 ?>

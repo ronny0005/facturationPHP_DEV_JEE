@@ -677,6 +677,14 @@ if($_GET["acte"]=="confirmation_document"){
 
 if($_GET["acte"]=="ligneFactureStock"){
     $protNo = $_GET["PROT_No"];
+    $type = $_GET["typeFac"];
+    $flagPxRevient= $_GET["flagPxRevient"];
+    $totalht=0;
+    $totalqte=0;
+    $tva =0;
+    $precompte=0;
+    $marge=0;
+    $totalttc=0;
     $protection = new ProtectionClass("","");
     $protection->connexionProctectionByProtNo($protNo);
     $docEntete = new DocEnteteClass($_GET["cbMarqEntete"]);
@@ -684,31 +692,25 @@ if($_GET["acte"]=="ligneFactureStock"){
     $isVisu = $docEntete->isVisu($protection->PROT_Administrator,$protection->protectedType($typeDocument ),$protection->PROT_APRES_IMPRESSION);
     $docligne = new DocLigneClass(0);
     $totalqte = 0;
-    if($typeDocument=="Transfert")
-        $rows=$docEntete->getLigneTransfert();
-    else if($typeDocument=="Transfert_confirmation")
-        $rows=$docEntete->getLigneTransfert();
-    else if($typeDocument=="Transfert_detail")
-        $rows = $docEntete->getLigneTransfert_detail();
-    else if($typeDocument=="Transfert_valid_confirmation")
-        $rows=$docEntete->getLignetConfirmation();
-    else
-        $rows=$docEntete->getLigneFactureTransfert();
-    $flagPxRevient = $_GET["flagPxRevient"];
-    $i=0;
-    $id_sec=0;
-    $classe="";
-    $totalht=0;
-    $totalqte=0;
-    $tva = 0;
-    $precompte=0;
-    $marge=0;
-    $totalttc=0;
-    if($rows==null){
-    }else{
-        foreach ($rows as $row){
-            $i++;
-            $docligne = new DocLigneClass($row->cbMarq);
+
+      if($type=="Transfert")
+          $rows=$docEntete->getLigneTransfert();
+      else if($type=="Transfert_confirmation")
+          $rows=$docEntete->getLigneTransfert();
+      else if($type=="Transfert_valid_confirmation")
+          $rows=$docEntete->getLignetConfirmation();
+      else if($type=="Transfert_detail")
+          $rows = $docEntete-> getLigneTransfert_detail();
+        else
+            $rows=$docEntete->getLigneFactureTransfert();
+        $i=0;
+        $id_sec=0;
+        $classe="";
+        if($rows==null){
+        }else{
+            foreach ($rows as $row){
+                $docligne = new DocLigneClass($row->cbMarq);
+                $i++;
             $prix = $row->DL_PrixUnitaire;
             $remise = $row->DL_Remise;
             $qte=$row->DL_Qte;
@@ -717,7 +719,7 @@ if($_GET["acte"]=="ligneFactureStock"){
             if(strlen($remise)!=0){
                 if(strpos($remise, "%")){
                     $remise=str_replace("%","",$remise);
-                    $rem = $prix * $remise / 100;
+                $rem = $prix * $remise / 100;
                 }
                 if(strpos($remise, "U")){
                     $remise=str_replace("U","",$remise);
@@ -727,69 +729,56 @@ if($_GET["acte"]=="ligneFactureStock"){
             if($i%2==0)
                 $classe = "info";
             else $classe = "";
-            $a=round(($prix- $rem)*$qte,0);
-            $b=round(($a * $row->DL_Taxe1)/100,0);
-            $c=round(($a * $row->DL_Taxe2)/100,0);
-            $d=($row->DL_Taxe3 * $qte);
-            $totalht=$totalht+$a;
-            $totalqte=$totalqte+$qte;
-            $tva = $tva +$b;
-            $precompte=$precompte+$c;
-            $marge=$marge+$d;
-            $totalttc=$totalttc+round(($a+$b+$c)+$d,0);
+                $a=round(($prix- $rem)*$qte,0);
+                $b=round(($a * $row->DL_Taxe1)/100,0);
+                $c=round(($a * $row->DL_Taxe2)/100,0);
+                $d=($row->DL_Taxe3 * $qte);
+                $totalht=$totalht+$a;
+                $totalqte=$totalqte+$qte;
+                $tva = $tva +$b;
+                $precompte=$precompte+$c;
+                $marge=$marge+$d;
+                $totalttc=$totalttc+round(($a+$b+$c)+$d,0);
 
-            if($typeDocument!="Transfert_detail") {
-                echo "<tr class='facture $classe' id='article_{$row->cbMarq}'>
-                        <td id='AR_Ref' style='color:blue;text-decoration: underline'>{$row->AR_Ref}</td>
-                        <td id='DL_Design' style='align:left'>{$row->DL_Design}</td>
-                        <td id='DL_PrixUnitaire' style='";
-                if ($flagPxRevient != 0)
-                    echo "display:none';>{$objet->formatChiffre($row->DL_PrixUnitaire)}</td>";
-                echo "<td id='DL_Qte'>{$objet->formatChiffre($row->DL_Qte)}</td>";
-                if ($flagPxRevient == 0)
-                    echo "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
-                else "<td></td>";
-                echo "<td style='display:none' id='cbMarq'>{$row->cbMarq}</td>
-                        <td style='display:none' id='id_sec'>{$row->idSec}</td>";
+                echo "<tr class='facture $classe' id='article_{$row->cbMarq}'";
+                    echo "><td id='AR_Ref' style='color:blue;text-decoration: underline'>{$row->AR_Ref}</td>"
+                    . "<td id='DL_Design' style='align:left'>{$row->DL_Design}</td>";
+                    ?>
+                <td id='DL_PrixUnitaire'
+                    style="<?php
+                    if($flagPxRevient!=0)
+                        echo "display:none";?>">
+                    <?= $objet->formatChiffre(round($row->DL_PrixUnitaire, 2)); ?>
+                    <span style='display:none' id='cbMarq'><?= $row->cbMarq ?></span>
+                    <span style='display:none' id='id_sec'><?= $row->idSec ?></span>
+                </td>
 
-                    if(!$isVisu && $typeDocument!="Transfert" && $typeDocument!="Transfert_confirmation" && $typeDocument!="Transfert_detail")
-                        echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
-                    if(!$isVisu && $typeDocument!="Transfert_valid_confirmation")
-                        echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";
-
-                    if($protection->PROT_CBCREATEUR!=2)
-                        echo "<td>{$docligne->getcbCreateurName()}</td>";
-                    echo"</tr>";
-                }else{
-                $montantHT = $objet->formatChiffre($row->DL_MontantHT);
-                $montantHT_dest = $objet->formatChiffre($row->DL_MontantHT_dest);
-                ?>
-                <tr class='facture <?= $classe ?>' id='article_<?= $row->cbMarq ?>'>
-                    <td id='AR_Ref'><?= $row->AR_Ref ?></td>
-                    <td id='DL_Design'><?= $row->DL_Design ?></td>
-                    <td id='DL_PrixUnitaire'><?= $objet->formatChiffre($row->DL_PrixUnitaire); ?></td>
-                    <td id='DL_Qte'><?= $objet->formatChiffre($row->DL_Qte) ?></td>
-                    <td id='DL_MontantHT'><?= $montantHT ?></td>
-                    <td style='display:none' id='cbMarq'><?= $row->cbMarq ?></td>
-                    <td style='display:none' id='id_sec'><?= $row->idSec ?></td>
-                    <td id='AR_Ref_dest'><?= $row->AR_Ref_Dest ?></td>
-                             <td id='AR_Design_dest'><?= $row->DL_Design_Dest ?></td>
-                                <td id='DL_Qte_dest'><?= $objet->formatChiffre($row->DL_Qte_dest) ?></td>
-                                <td id='DL_MontantHT_dest'><?= $montantHT_dest ?></td>
                 <?php
-                if(!isset($_GET["visu"])) echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";
+                echo "<td id='DL_Qte'>{$objet->formatChiffre(round($row->DL_Qte*100)/100)}</td>";
+                if($flagPxRevient==0) echo    "<td id='DL_MontantHT'>{$objet->formatChiffre($row->DL_MontantHT)}</td>";
+                if($type=="Transfert_detail")
+                    echo "<td id='AR_Ref_dest'>{$row->AR_Ref_Dest}</td>
+                             <td id='AR_Design_dest'>{$row->DL_Design_Dest}</td>
+                                <td id='DL_Qte_dest'>{$objet->formatChiffre($row->DL_Qte_dest)}</td>
+                                <td id='DL_MontantHT_dest'>{$objet->formatChiffre($row->DL_MontantHT_dest)}</td>";
+                if(!$isVisu && $type!="Transfert" && $type!="Transfert_confirmation" && $type!="Transfert_detail")
+                    echo "<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td>";
+                if(!$isVisu && $type!="Transfert_valid_confirmation")
+                    echo "<td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>";
                 if($protection->PROT_CBCREATEUR!=2)
                     echo "<td>{$docligne->getcbCreateurName()}</td>";
-                echo "</tr>";
-            }
-        }
-    }
+                echo"</tr>";
+                }
+
+                }
+
 }
 //suppression d'article
 if($_GET["acte"] =="suppr"){
     $type_fac=$_GET["type_fac"];
+    $idSec = (isset($_GET["id_sec"])) ? $_GET["id_sec"] : 0;
     $docligne = new DocLigneClass(0);
-    $docligne->getApiExecute("/supprLigneFacture&cbMarq={$_GET["id"]}&typeFacture=$type_fac&protNo={$_SESSION["id"]}");
+    $docligne->supprLigneFacture($_GET["id"],$idSec,$type_fac,$_SESSION["id"]);
 }
 
 // mise à jour de la référence
