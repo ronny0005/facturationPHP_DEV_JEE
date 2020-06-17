@@ -7,6 +7,7 @@ include("controller/structure/TiersController.php");
             <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php if($type=="client") echo "Fiche client"; if($type=="fournisseur") echo "Fiche fournisseur"; if($type=="salarie") echo "Fiche salarié"; ?></h3>
         </section>
 
+        <div class="card p-3">
         <div class="row mt-3" >
             <div class="col" >
                     <input type="hidden" id="type" name="type" type="hidden" value="<?php if($type=="fournisseur") echo "1"; if($type=="client") echo "0";if($type=="salarie") echo "2"; ?>"/>
@@ -197,5 +198,8 @@ include("controller/structure/TiersController.php");
             </div>
         </div>
 
-        <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
-    </form>
+        <div>
+            <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
+        </div>
+        </div>
+</form>

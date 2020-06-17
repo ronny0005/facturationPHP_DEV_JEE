@@ -27,7 +27,7 @@ include("module/Menu/BarreMenu.php");
    
      <div class="col-md-12">
 
-<fieldset class="entete">
+<fieldset class="entete card p-3">
 <div class="form-group">
 <form action="indexMVC.php?module=2&action=2" method="GET">
         <?php if($flagNouveau){ ?>

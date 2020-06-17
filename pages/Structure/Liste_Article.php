@@ -37,7 +37,7 @@ $depot=$_SESSION["DE_No"];
     <input type="hidden" id="InputstockFlag" value="<?= (isset($_GET['stockFlag'])) ?  $_GET['stockFlag'] : -1 ?>"/>
     <div class="col-md-12">
 
-<fieldset class="entete">
+<fieldset class="entete card p-3">
 
 <div class="form-group">
 <form action="listeArticle" method="GET">
@@ -78,6 +78,7 @@ $depot=$_SESSION["DE_No"];
     if($flagNouveau){ ?>
     <?php } ?>
         </form>
+
     <?php
     $statut = $_GET["statut"];
     if(isset($_GET["AR_Ref"]) && $statut!=0) {

@@ -41,7 +41,9 @@
 .navbar-dark .navbar-brand, .navbar-dark .navbar-brand:focus, .navbar-dark .navbar-brand:hover {
   color: #024e05;
 }
-
+#content {
+  background-color: #f8f9fa;
+}
 #wrapper #content-wrapper {
   background-color: #ffffff;
   width: 100%;

@@ -15,7 +15,7 @@
                 <a class="nav-link fontApplication" id="contact-tab" data-toggle="tab" href="#Descriptif" role="tab" aria-controls="Descriptif" aria-selected="false">Descriptif</a>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content card p-3" id="myTabContent">
             <div class="tab-pane active" id="FichePrincipale" role="tabpanel" style="padding-top: 20px" aria-labelledby="home-tab">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-4">

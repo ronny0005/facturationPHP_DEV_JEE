@@ -4,7 +4,8 @@
 </section>
 <section style="margin-top: 20px;">
 <form id="valideLigne" action="listeFacture-<?= $type ?>" method="POST">
-    <div class="row m-1">
+    <div class="card p-3">
+    <div class="row p-2">
         <div class="col-6 col-sm-6 col-md-6 col-lg-2"><label>Début</label>
             <div class="input-group">
                 <input class="form-control" type="text" id="datedebut" name="datedebut" inputmode="numeric" maxlength="6" value="<?= $datedeb ?>">
@@ -54,13 +55,15 @@
         <div class="text-right">
             <button class="btn btn-primary" id="valider" type="button">Valider</button>
         </div>
+    </div>
 </form>
 </section>
 
 
-    <div>
+    <div class="card p-3 mt-3">
+        <div>
         <button <?= $afficheBoutonNouveau ?> class="btn btn-primary" id="nouveau" type="button">Nouveau</button>
-
+        </div>
         <div class="table-responsive" style="margin-top: 30px;clear:both">
             <table id="tableListeFacture" class="table table-striped">
                 <thead class="">
@@ -132,6 +135,7 @@
         </div>
 
     </div>
+
     <div style="text-align: center" id="menu_transform">
         <div class="form-group col-lg-4">
             <label>Type<br/></label>

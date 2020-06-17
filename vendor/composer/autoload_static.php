@@ -6,13 +6,44 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit138918fd879e5511bc4feb912f660744
 {
-    public static $files = array (
-        '75d4b1647cdbc77a59f72bcb74df0995' => __DIR__ . '/..' . '/spipu/html2pdf/html2pdf.class.php',
-        '766ddebdb359eb94f1ba3ece4f768b10' => __DIR__ . '/..' . '/spipu/html2pdf/_class/exception.class.php',
-        '585b118af784f8bbcc53fec65bb600cd' => __DIR__ . '/..' . '/spipu/html2pdf/_class/locale.class.php',
-        '4148c0c72e9cb9146c3692e138ddcedc' => __DIR__ . '/..' . '/spipu/html2pdf/_class/myPdf.class.php',
-        '24a5693ab78636f7a23448ee74523987' => __DIR__ . '/..' . '/spipu/html2pdf/_class/parsingHtml.class.php',
-        '30eee86291d721c2174ad40239331e78' => __DIR__ . '/..' . '/spipu/html2pdf/_class/parsingCss.class.php',
+    public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Spipu\\Html2Pdf\\' => 15,
+        ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'C' => 
+        array (
+            'ChartJs\\' => 8,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Spipu\\Html2Pdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spipu/html2pdf/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'ChartJs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ejdamm/chart.js-php/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'SSRS\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/chartblocks/php-ssrs/library',
+            ),
+        ),
     );
 
     public static $classMap = array (
@@ -35,6 +66,9 @@ class ComposerStaticInit138918fd879e5511bc4feb912f660744
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit138918fd879e5511bc4feb912f660744::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit138918fd879e5511bc4feb912f660744::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit138918fd879e5511bc4feb912f660744::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit138918fd879e5511bc4feb912f660744::$classMap;
 
         }, null, ClassLoader::class);

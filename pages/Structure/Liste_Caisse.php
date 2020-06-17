@@ -26,8 +26,7 @@ include("module/Menu/BarreMenu.php");
    
      <div class="col-md-12">
 
-<fieldset class="entete">
-    <legend class="entete">Liste dépôt</legend>
+<fieldset class="entete card p-3 mt-3">
 <div class="form-group">
 <form action="listeCaisse" method="GET">
     <table style="margin-bottom: 20px;width:100%">
@@ -58,7 +57,10 @@ include("module/Menu/BarreMenu.php");
       ?>
 </tbody>
 </table>
- </div>   
 </div>
- 
+</fieldset>
+</div>
+
+        </div>
+    </div>
 </div>

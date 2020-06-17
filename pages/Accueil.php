@@ -73,27 +73,65 @@ $etat = new EtatClass();
 <div style="clear:both">
     <h1 class="text-uppercase text-dark mb-0" style="color: rgb(2,78,5);font-weight: bold;">Bienvenue</h1>
 </div>
+<?php
 
+require 'vendor/autoload.php';
+use ChartJs\ChartJS;
+
+$dataCa = array();
+$dataLabels = array();
+$dataPoints = array();
+$etat = new EtatClass();
+$list =  $etat->menuCaParDepot($_SESSION['id']);
+foreach($list as $elt) {
+    array_push($dataLabels, $elt->DE_Intitule);
+    array_push($dataCa, $elt->TotCATTCNet);
+
+}
+
+$data = [
+    'labels' => $dataLabels,
+    'datasets' => [[
+        'data' =>$dataCa,
+        'backgroundColor' => ['blue', 'purple', 'red', 'black', 'brown', 'pink', 'green'],
+        'borderColor' => '#e5801d',
+        'label' => 'Legend'
+    ]]
+];
+
+
+
+
+$options = ['responsive' => true];
+$attributes = ['id' => 'example', 'width' => 500, 'height' => 500];
+$Line = new ChartJS('doughnut', $data, $options, $attributes);
+
+
+$Line1 = new ChartJS('bar', $data, $options, $attributes);
+
+?>
 
 <section>
     <div class="container">
         <div class="row" style="margin-bottom: 20px;">
-            <div class="col-md-6">
-                <div id="chartContainerLine" style="height: 300px; width: 100%;"></div>
+
+
+            <div class="card">
+                <div class=""><?= $Line ?></div>
             </div>
-            <div class="col-md-6">
-                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+            <div class="card">
+                <div class=""><?= $Line1 ?></div>
             </div>
+            <script src="vendor/Ejdamm/Chart.js-PHP/js/Chart.min.js"></script>
+            <script src="vendor/Ejdamm/Chart.js-PHP/js/driver.js"></script>
+            <script>
+                (function() {
+                    loadChartJsPhp();
+                })();
+            </script>
         </div>
     </div>
 </section>
-<div class="col offset-xl-1">
-    <div style="width: 773px;"><canvas data-bs-chart="{&quot;type&quot;:&quot;horizontalBar&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Revenue&quot;,&quot;backgroundColor&quot;:&quot;#4e73df&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[&quot;4500&quot;,&quot;5300&quot;,&quot;6250&quot;,&quot;7800&quot;,&quot;9800&quot;,&quot;15000&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:true,&quot;fontColor&quot;:&quot;#225c32&quot;,&quot;text&quot;:&quot;TOP 5 VENTE&quot;,&quot;fontSize&quot;:&quot;28&quot;}}}"></canvas></div>
-</div>
-<?php
-$html = file_get_contents('http://localhost:1822/Reports/powerbi/RapportCMI/pbiCmi?rs:embed=true');
-echo $html;
-?>
 <p>
     <br>Cette application est un outil de gestion de contenu.
     <br> Elle vous permettra de gérer des factures de ventes et d'achats, ainsi que les règlements associés

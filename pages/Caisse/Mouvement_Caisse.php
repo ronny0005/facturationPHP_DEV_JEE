@@ -7,7 +7,7 @@
 
     <input type="hidden" class="form-control" id="flagAffichageValCaisse" value="<?= $flagAffichageValCaisse;/*$flagModifSupprComptoir;*/ ?>" />
     <input type="hidden" class="form-control" id="flagCtrlTtCaisse" value="<?= $flagCtrlTtCaisse/*$flagModifSupprComptoir;*/ ?>" />
-        <fieldset class="entete">
+        <fieldset class="entete card p-3">
             <legend class="entete">Entete</legend>
             <form class="form-horizontal" action="mvtCaisse" method="POST">
                 <div class="row">
@@ -91,7 +91,7 @@
             </form>
         </fieldset>
 
-        <fieldset class="entete">
+        <fieldset class="entete card p-3">
             <legend class="entete">Ligne</legend>
             <?php
             if(1==1){

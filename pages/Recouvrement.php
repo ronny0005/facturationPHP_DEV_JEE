@@ -87,6 +87,7 @@ if($typeRegl=="Collaborateur"){
         <input type="hidden" value="" name="ValRGPiece" id="Val_RG_Piece" />
         <input type="hidden" value="<?php echo $_SESSION["CO_No"]; ?>" name="CO_NoSession" id="CO_NoSession" />
 
+        <fieldset class="card p-3 mt-3">
         <form action="<?php echo $lienForm; ?>" method="POST">
             <legend>Entête</legend>
             <input type="hidden" value="1" name="module"/>
@@ -208,9 +209,10 @@ if($typeRegl=="Collaborateur"){
             </div>
 </div>
         </form>
-        <div style="clear: both">
+        </fieldset>
+    <div style="clear: both">
         </div>
-        <fieldset class="entete">
+        <fieldset class="entete card p-3 mt-3">
             <form id="formValider" action="Traitement/Recouvrement.php" method="POST" class="form-horizontal">
                 <input type="hidden" value="1" name="module"/>
                 <input type="hidden" value="2" name="action"/>

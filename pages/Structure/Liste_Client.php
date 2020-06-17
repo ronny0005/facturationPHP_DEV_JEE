@@ -57,7 +57,7 @@ include("module/Menu/BarreMenu.php");
 
     <div class="col-md-12">
 
-<fieldset class="entete">
+<fieldset class="card p-3 entete">
     <legend class="entete">
 <?php
 $lien = "listeTiers";
@@ -75,59 +75,59 @@ if($type=="salarie") {
 }
 ?>
     </legend>
-<div class="form-group">
-<form action="indexMVC.php?module=2&action=2" method="GET">
-    <input type="hidden" id="typeTiers" name="typeTiers" value="<?= $type ?>" />
-    <input type="hidden" id="typeTiersNum" name="typeTiersNum" value="<?= $_GET["type"] ?>" />
-    <input type="hidden" id="lienTiers" name="lienTiers" value="<?= $lien ?>" />
-    <input type="hidden" id="ficheTiers" name="ficheTiers" value="<?= $fiche ?>" />
-    <input type="hidden" id="CT_Num" name="CT_Num" value="<?= (isset($_GET["CT_Num"])) ? $_GET["CT_Num"] : ""  ?>" />
-    <table style="margin-bottom: 20px;width:100%">
-    <thead>
-        <tr>
-            <td>
-                <select id="sommeil" style="width:100px" class="form-control">
-                    <option value="-1" <?php if($sommeil==-1) echo " selected "; ?> >Tout</option>
-                    <option value="1" <?php if($sommeil==1) echo " selected "; ?> >Sommeil</option>
-                    <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
-                </select>
-            </td>
-        <?php if($flagNouveau){ ?><td style="float:right"><a href="FicheTiers-<?= $_GET["type"] ?>"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
-        </tr>
+    <div class="form-group card p-3">
+        <form action="indexMVC.php?module=2&action=2" method="GET">
+            <input type="hidden" id="typeTiers" name="typeTiers" value="<?= $type ?>" />
+            <input type="hidden" id="typeTiersNum" name="typeTiersNum" value="<?= $_GET["type"] ?>" />
+            <input type="hidden" id="lienTiers" name="lienTiers" value="<?= $lien ?>" />
+            <input type="hidden" id="ficheTiers" name="ficheTiers" value="<?= $fiche ?>" />
+            <input type="hidden" id="CT_Num" name="CT_Num" value="<?= (isset($_GET["CT_Num"])) ? $_GET["CT_Num"] : ""  ?>" />
+            <table style="margin-bottom: 20px;width:100%">
+            <thead>
+                <tr>
+                    <td>
+                        <select id="sommeil" style="width:100px" class="form-control">
+                            <option value="-1" <?php if($sommeil==-1) echo " selected "; ?> >Tout</option>
+                            <option value="1" <?php if($sommeil==1) echo " selected "; ?> >Sommeil</option>
+                            <option value="0" <?php if($sommeil==-0) echo " selected "; ?> >Non Sommeil</option>
+                        </select>
+                    </td>
+                <?php if($flagNouveau){ ?><td style="float:right"><a href="FicheTiers-<?= $_GET["type"] ?>"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
+                </tr>
+            </table>
         </form>
-</table>
-    <?php
-    $statut = $_GET["statut"];
-    if(isset($_GET["CT_Num"]) && $statut!=0) {
-        $type = "La création ";
-        $alert = "alert-success";
-        if($statut == 3) {
-            $alert = "alert-danger";
-            $type = "La suppression ";
-        }
-
-        if($statut == 2)
-            $type = "La modification ";
-
-        ?>
-        <div class="alert <?= $alert ?>">
-            <?= $type ?>du tiers <?= $_GET["CT_Num"] ?> a été effectuée !
-        </div>
         <?php
-    }
-    ?>
-<table cellpadding="1" cellspacing="1" id="users" class="display table table-striped" width="100%">
-        <thead>
-            <th>Num</th>
-            <th>Intitulé</th>
-            <th>CG Num</th>
-            <th>Cat. Tarif</th>
-            <th>Cat. Compta</th>
-            <?php if($flagSuppr) echo "<th></th>"; ?>
-            <?php if($protection->PROT_Right==1) echo "<th>Créateur</th>"; ?>
-        </thead>
-</table>
- </div>   
+        $statut = $_GET["statut"];
+        if(isset($_GET["CT_Num"]) && $statut!=0) {
+            $type = "La création ";
+            $alert = "alert-success";
+            if($statut == 3) {
+                $alert = "alert-danger";
+                $type = "La suppression ";
+            }
+
+            if($statut == 2)
+                $type = "La modification ";
+
+            ?>
+            <div class="alert <?= $alert ?>">
+                <?= $type ?>du tiers <?= $_GET["CT_Num"] ?> a été effectuée !
+            </div>
+            <?php
+        }
+        ?>
+        <table cellpadding="1" cellspacing="1" id="users" class="display table table-striped" width="100%">
+                <thead>
+                    <th>Num</th>
+                    <th>Intitulé</th>
+                    <th>CG Num</th>
+                    <th>Cat. Tarif</th>
+                    <th>Cat. Compta</th>
+                    <?php if($flagSuppr) echo "<th></th>"; ?>
+                    <?php if($protection->PROT_Right==1) echo "<th>Créateur</th>"; ?>
+                </thead>
+        </table>
+     </div>
 </div>
  
 </div>

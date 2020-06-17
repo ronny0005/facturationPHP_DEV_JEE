@@ -9,7 +9,7 @@
         <div id="alertStatut" class="alert alert-danger" style="display:none " role="alert">Choississez un statut valide !</div>
         <div id="alertEntete" class="alert alert-danger" style="display:none " role="alert"></div>
     <!-- List alert -->
-    <fieldset class="">
+    <fieldset class="card p-3">
         <legend>Entête</legend>
         <form id="form-entete" action="Document-Facture<?=$type ?>" method="get">
             <input type="hidden" id="flagMinMax" value="<?= ($type=="Vente" || $type=="BonLivraison") ? $flag_minMax : "0" ?>"/>
@@ -142,7 +142,7 @@
         <div id="alertLigneMessage" class="alert alert-danger" style="display:none " role="alert"></div>
         <div id="alertLigne" class="alert alert-danger" style="display:none " role="alert"></div>
     <!-- List alert -->
-    <fieldset class="">
+    <fieldset class="card p-3">
         <legend>Ligne</legend>
         <form>
             <div>
@@ -295,7 +295,7 @@ if (!$isVisu)
             </div>
         </form>
     </fieldset>
-    <fieldset class="">
+    <fieldset class="card p-3">
         <legend>Pied</legend>
         <div id="piedPage"></div>
     </fieldset>

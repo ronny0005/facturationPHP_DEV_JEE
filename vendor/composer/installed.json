@@ -1,28 +1,259 @@
 [
     {
-        "name": "tecnickcom/tcpdf",
-        "version": "6.2.12",
-        "version_normalized": "6.2.12.0",
+        "name": "chartblocks/php-ssrs",
+        "version": "1.0.14",
+        "version_normalized": "1.0.14.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/tecnickcom/TCPDF.git",
-            "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f"
+            "url": "https://github.com/ChartBlocks/php-ssrs.git",
+            "reference": "a1f57cc4879893c10cdff028ae08f4ecc45023b3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/2f732eaa91b5665274689b1d40b285a7bacdc37f",
-            "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f",
+            "url": "https://api.github.com/repos/ChartBlocks/php-ssrs/zipball/a1f57cc4879893c10cdff028ae08f4ecc45023b3",
+            "reference": "a1f57cc4879893c10cdff028ae08f4ecc45023b3",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "*",
+            "phpunit/phpunit": "~3.7."
+        },
+        "suggest": {
+            "zendframework/zend-escaper": "Required for rendering forms with ZendFramework2",
+            "zendframework/zend-form": "Required for rendering forms with ZendFramework2",
+            "zendframework/zend-i18n": "Required for rendering forms with ZendFramework2",
+            "zendframework/zend-servicemanager": "Required for rendering forms with ZendFramework2",
+            "zendframework/zend-view": "Required for rendering forms with ZendFramework2"
+        },
+        "time": "2019-05-28T09:05:19+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "SSRS\\": "library/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Arron Woods",
+                "email": "aw@chartblocks.com"
+            }
+        ],
+        "description": "PHP library for connecting to SSRS SOAP"
+    },
+    {
+        "name": "ejdamm/chart.js-php",
+        "version": "v2.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Ejdamm/Chart.js-PHP.git",
+            "reference": "1caa5f9daa1eb4deb97edc8caae59c40d672f46b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Ejdamm/Chart.js-PHP/zipball/1caa5f9daa1eb4deb97edc8caae59c40d672f46b",
+            "reference": "1caa5f9daa1eb4deb97edc8caae59c40d672f46b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^5"
+        },
+        "time": "2018-03-10T08:51:00+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "ChartJs\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Hugo Heneault",
+                "email": "hugo.heneault@gmail.com",
+                "homepage": "https://github.com/HugoHeneault"
+            },
+            {
+                "name": "Adam Georgsson",
+                "email": "adamgeorgsson@gmail.com",
+                "homepage": "https://github.com/Ejdamm"
+            },
+            {
+                "name": "Christof Bachmann",
+                "email": "code@christof-b.de",
+                "homepage": "https://github.com/christof-b"
+            }
+        ],
+        "description": "PHP Wrapper for Chart.js.",
+        "homepage": "https://github.com/Ejdamm/Chart.js-PHP"
+    },
+    {
+        "name": "phpmailer/phpmailer",
+        "version": "v6.1.0",
+        "version_normalized": "6.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPMailer/PHPMailer.git",
+            "reference": "689d243f94f5bc66616d8a319e600e086c987446"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/689d243f94f5bc66616d8a319e600e086c987446",
+            "reference": "689d243f94f5bc66616d8a319e600e086c987446",
+            "shasum": ""
+        },
+        "require": {
+            "ext-ctype": "*",
+            "ext-filter": "*",
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "doctrine/annotations": "1.2.*",
+            "friendsofphp/php-cs-fixer": "^2.2",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "phpunit/phpunit": "^4.8 || ^5.7",
+            "zendframework/zend-eventmanager": "3.0.*",
+            "zendframework/zend-i18n": "2.7.3",
+            "zendframework/zend-serializer": "2.7.*"
+        },
+        "suggest": {
+            "ext-mbstring": "Needed to send email in multibyte encoding charset",
+            "hayageek/oauth2-yahoo": "Needed for Yahoo XOAUTH2 authentication",
+            "league/oauth2-google": "Needed for Google XOAUTH2 authentication",
+            "psr/log": "For optional PSR-3 debug logging",
+            "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
+            "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
+        },
+        "time": "2019-09-27T17:15:39+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PHPMailer\\PHPMailer\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-only"
+        ],
+        "authors": [
+            {
+                "name": "Marcus Bointon",
+                "email": "phpmailer@synchromedia.co.uk"
+            },
+            {
+                "name": "Jim Jagielski",
+                "email": "jimjag@gmail.com"
+            },
+            {
+                "name": "Andy Prevost",
+                "email": "codeworxtech@users.sourceforge.net"
+            },
+            {
+                "name": "Brent R. Matzelle"
+            }
+        ],
+        "description": "PHPMailer is a full-featured email creation and transfer class for PHP"
+    },
+    {
+        "name": "spipu/html2pdf",
+        "version": "v5.2.2",
+        "version_normalized": "5.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spipu/html2pdf.git",
+            "reference": "e6d8ca22347b6691bb8c2652212b1be2c89b3eff"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spipu/html2pdf/zipball/e6d8ca22347b6691bb8c2652212b1be2c89b3eff",
+            "reference": "e6d8ca22347b6691bb8c2652212b1be2c89b3eff",
+            "shasum": ""
+        },
+        "require": {
+            "ext-gd": "*",
+            "ext-mbstring": "*",
+            "php": "^5.6 || ^7.0",
+            "tecnickcom/tcpdf": "^6.2"
+        },
+        "require-dev": {
+            "phake/phake": "^2.0",
+            "phpunit/phpunit": "^5.0"
+        },
+        "suggest": {
+            "ext-gd": "Allows to embed images into the PDF",
+            "fagundes/zff-html2pdf": "if you need to integrate Html2Pdf with Zend Framework 2 (zf2)"
+        },
+        "time": "2020-03-22T16:23:26+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spipu\\Html2Pdf\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "OSL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Spipu",
+                "homepage": "https://github.com/spipu",
+                "role": "Developer"
+            }
+        ],
+        "description": "Html2Pdf is a HTML to PDF converter written in PHP5 (it uses TCPDF). OFFICIAL PACKAGE",
+        "homepage": "http://html2pdf.fr/",
+        "keywords": [
+            "html",
+            "html2pdf",
+            "pdf"
+        ]
+    },
+    {
+        "name": "tecnickcom/tcpdf",
+        "version": "6.3.5",
+        "version_normalized": "6.3.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/tecnickcom/TCPDF.git",
+            "reference": "19a535eaa7fb1c1cac499109deeb1a7a201b4549"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/19a535eaa7fb1c1cac499109deeb1a7a201b4549",
+            "reference": "19a535eaa7fb1c1cac499109deeb1a7a201b4549",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2015-09-12T10:08:34+00:00",
+        "time": "2020-02-14T14:20:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "classmap": [
-                "fonts",
                 "config",
                 "include",
                 "tcpdf.php",
@@ -43,13 +274,13 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "LGPLv3"
+            "LGPL-3.0-only"
         ],
         "authors": [
             {
                 "name": "Nicola Asuni",
                 "email": "info@tecnick.com",
-                "homepage": "http://nicolaasuni.tecnick.com"
+                "role": "lead"
             }
         ],
         "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
@@ -62,61 +293,6 @@
             "pdf",
             "pdf417",
             "qrcode"
-        ]
-    },
-    {
-        "name": "spipu/html2pdf",
-        "version": "v4.6.1",
-        "version_normalized": "4.6.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/spipu/html2pdf.git",
-            "reference": "4898439e170ebf032513b8d3a83f0f5ffe85fece"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/spipu/html2pdf/zipball/4898439e170ebf032513b8d3a83f0f5ffe85fece",
-            "reference": "4898439e170ebf032513b8d3a83f0f5ffe85fece",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2",
-            "tecnickcom/tcpdf": "~6.2.0"
-        },
-        "suggest": {
-            "ext-gd": "Allows to embed images into the PDF",
-            "fagundes/zff-html2pdf": "zff-html2pdf module ~0.1.1, if you need to integrate HTML2PDF with Zend Framework 2 (zf2)"
-        },
-        "time": "2016-04-05T12:25:17+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "html2pdf.class.php",
-                "_class/exception.class.php",
-                "_class/locale.class.php",
-                "_class/myPdf.class.php",
-                "_class/parsingHtml.class.php",
-                "_class/parsingCss.class.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL"
-        ],
-        "authors": [
-            {
-                "name": "Spipu",
-                "homepage": "https://github.com/spipu",
-                "role": "Developer"
-            }
-        ],
-        "description": "HTML2PDF is a HTML to PDF converter written in PHP5 (it uses TCPDF). OFFICIAL PACKAGE",
-        "homepage": "http://html2pdf.fr/",
-        "keywords": [
-            "html",
-            "html2pdf",
-            "pdf"
         ]
     }
 ]

@@ -22,7 +22,7 @@ include("module/Menu/BarreMenu.php");
         <input type="hidden" id="mdp" value="<?php echo $_SESSION["mdp"]; ?>"/>
         <input type="hidden" id="login" value="<?php echo $_SESSION["login"]; ?>"/>
 
-<fieldset class="entete">
+<fieldset class="entete card p-3">
 <div class="form-group">
 <form action="listeCollaborateur-0" method="GET">
     <table style="margin-bottom: 20px;width:100%">
