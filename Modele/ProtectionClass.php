@@ -8,7 +8,7 @@
 
 class ProtectionClass extends Objet{
     //put your code here
-    public $db,$PROT_User,$PROT_Pwd,$ProfilName,$PROT_Administrator,$PROT_Description,$PROT_Right,$Prot_No,$PROT_PwdStatus,$cbMarq,
+    public $db,$PROT_User,$PROT_Pwd,$ProfilName,$PROT_Administrator,$PROT_Email,$ProtectAdmin,$PROT_UserProfil,$PROT_Description,$PROT_Right,$Prot_No,$PROT_PwdStatus,$cbMarq,
         $PROT_CLIENT,$PROT_FOURNISSEUR,$PROT_COLLABORATEUR,$PROT_FAMILLE,$PROT_ARTICLE,$PROT_DOCUMENT_STOCK,
         $PROT_DOCUMENT_ACHAT ,$PROT_DOCUMENT_VENTE,$PROT_PX_ACHAT,$PROT_PX_REVIENT,$PROT_DOCUMENT_ACHAT_PREPARATION_COMMANDE,
         $PROT_DATE_VENTE,$PROT_DATE_ACHAT,$PROT_DATE_COMPTOIR,$PROT_DATE_RGLT,$PROT_DOCUMENT_VENTE_DEVIS,
@@ -40,11 +40,27 @@ class ProtectionClass extends Objet{
             $this->initParam($objhigher);
     }
 
+    public function getDepotUser($protNo)
+    {
+        return $this->getApiJson("/getDepotUser&protNo=$protNo");
+    }
+
+    public function allProfil(){
+        return $this->getApiJson("/allProfil");
+    }
+
+
     public function getNumContribuable()
     {
         $this->lien = "pdossier";
         return $this->getApiJson("/all");
     }
+
+    public function getUserList()
+    {
+        return $this->getApiJson("/getUserList");
+    }
+
 
 
     public function initParam($rows)
@@ -60,6 +76,9 @@ class ProtectionClass extends Objet{
             $this->PROT_Right = $rows->PROT_Right;
             $this->Prot_No = $rows->Prot_No;
             $this->PROT_CLIENT = $rows->PROT_CLIENT;
+            $this->PROT_Email = $rows->PROT_Email;
+            $this->ProtectAdmin = $rows->ProtectAdmin;
+            $this->PROT_UserProfil = $rows->PROT_UserProfil;
             $this->PROT_FOURNISSEUR = $rows->PROT_FOURNISSEUR;
             $this->PROT_COLLABORATEUR = $rows->PROT_COLLABORATEUR;
             $this->PROT_FAMILLE = $rows->PROT_FAMILLE;
@@ -441,6 +460,21 @@ class ProtectionClass extends Objet{
         return $this->getApiJson("/getSoucheDepotGrpSouche&protNo=$prot_no&type=$type");
     }
 
+    public function ajoutUser($securiteAdmin,$depot){
+        $protNo = $this->getApiJson("/ajoutUser&username={$this->formatString($this->PROT_User)}&description={$this->formatString($this->PROT_Description)}&password={$this->formatString($this->PROT_Pwd)}&email={$this->formatString($this->PROT_Email)}&protRight={$this->PROT_Right}&protUserProfil={$this->PROT_UserProfil}&protPwdStatus={$this->PROT_PwdStatus}&securiteAdmin=$securiteAdmin&protNo=".$_SESSION["id"]."}");
+        var_dump($protNo);
+        /*if($protNo!=-1){
+            if($depot!=""){
+                foreach($depot as $dep) {
+                    $this->ajoutDepotUser($protNo,$dep);
+                }
+            }
+        }*/
+    }
+
+    public function ajoutDepotUser($protNo,$depot){
+        $this->getApiExecute("/ajoutDepotUser&protNo=$protNo&depot=$depot");
+    }
 
     public function alerteDocumentCatComptaTaxe(){
         $rows = $this->getApiJson("/alerteDocumentCatComptaTaxe");
@@ -704,6 +738,7 @@ class ProtectionClass extends Objet{
         $result= $this->db->query($query);
         return $result->fetchAll(PDO::FETCH_OBJ);
     }
+
     public function getDataUserNo($te_no,$prot_no){
         $query = "  SELECT A.PROT_Cmd TE_No,TypeFlag,Libelle_Cmd TE_Intitule,CASE WHEN ISNULL(B.Prot_No,0)=0 THEN 0 ELSE 1 END Prot_No,EPROT_Right
                     FROM LIB_CMD A

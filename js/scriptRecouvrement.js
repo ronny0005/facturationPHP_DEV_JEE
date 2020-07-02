@@ -622,10 +622,10 @@ jQuery(function ($) {
                                 if ($("#protectionPage").html() == true) {
                                     $(this).dialog("close");
                                     $("#dateRemboursement").datepicker({
-                                        dateFormat: "yy-mm-dd",
-                                        altFormat: "yy-mm-dd"
+                                        dateFormat: "ddmmy",
+                                        altFormat: "ddmmy"
                                     });
-                                    $("#dateRemboursement").datepicker({dateFormat: "yy-mm-dd"}).datepicker("setDate", new Date());
+                                    $("#dateRemboursement").datepicker({dateFormat: "ddmmy"}).datepicker("setDate", new Date());
                                     $("#mttRemboursement").val(RA_Montant);
                                     $("#blocRemboursementRglt").dialog({
                                         resizable: false,
@@ -644,7 +644,7 @@ jQuery(function ($) {
                                                             method: 'GET',
                                                             dataType: '',
                                                             async: false,
-                                                            data: "RG_No=" + RG_No + "&RG_Montant=" + $("#mttRemboursement").val().replace(/ /g, "") + "&RG_Date=" + $("#dateRemboursement").val(),
+                                                            data: "RG_No=" + RG_No + "&RG_Montant=" + $("#mttRemboursement").val().replace(/ /g, "") + "&RG_Date=" + returnDate($("#dateRemboursement").val()),
                                                             success: function (data) {
                                                                 location.reload(true);
                                                             },

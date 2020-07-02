@@ -255,8 +255,8 @@ class ComptetClass Extends Objet{
     }
 
 
-    public function queryListeClient($type,$sommeil,$sql){
-        $url = "/queryListeClient&ctType=$type&ctSommeil=$sommeil&sql=".str_replace(" ","!","$sql");
+    public function queryListeClient($type,$sommeil,$searchString,$orderBy,$orderType ,$start , $length){
+        $url = "/queryListeClient&ctType=$type&ctSommeil=$sommeil&searchString=$searchString&orderBy=$orderBy&orderType=$orderType&start=$start&length=$length";
         return $this->getApiJson($url);
     }
     public function listeClientPagination(){
@@ -269,7 +269,7 @@ class ComptetClass Extends Objet{
             $start  = $_POST["start"];//Paging first record indicator.
             $length = $_POST['length'];//Number of records that the table can display in the current draw
             /* END of POST variables */
-            $recordsTotal = sizeof($this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],""));
+            $recordsTotal = sizeof($this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$this->formatString(""),"","","",""));
             /* SEARCH CASE : Filtered data */
             if(!empty($_POST['search']['value'])){
 
@@ -284,19 +284,19 @@ class ComptetClass Extends Objet{
                 /* End WHERE */
 
                 $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
-                $recordsFiltered = count($this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql));//Count of search result
+                $recordsFiltered = count($this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$this->formatString($_POST['search']['value']),$orderBy,$orderType ,$start , $length));//Count of search result
 
                 /* SQL Query for search with limit and orderBy clauses*/
                 $sql = sprintf("%s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
                 //$sql = sprintf("$query %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY %d , %d ", $where ,$orderBy, $orderType ,$start,$length  );
 //            $sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql);
+                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$this->formatString($_POST['search']['value']),$orderBy,$orderType ,$start , $length);
             }
             /* END SEARCH */
             else {
                 $sql = sprintf("ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
                 //$sql = $query." $where ORDER BY $orderBy $orderType OFFSET $start ROWS FETCH NEXT $length ROWS ONLY ";
-                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$sql);
+                $data = $this->queryListeClient($_GET['CT_Type'],$_GET['CT_Sommeil'],$this->formatString($_POST['search']['value']),$orderBy,$orderType ,$start , $length);
                 $recordsFiltered = $recordsTotal;
             }
 

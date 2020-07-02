@@ -323,8 +323,8 @@ class ArticleClass Extends Objet{
         $this->getApiJson("/updateF_ArtStockBorne&asQteMini=$QteMin&asQteMaxi=$QteMax&cbCreateur={$this->cbCreateur}&arRef=$AR_Ref&deNo=$DE_No");
     }
 
-    public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$sql){
-        $url = "/queryListeArticle&flagPxAchat=$flagPxAchat&flagPxRevient=$flagPxRevient&arSommeil=$ar_sommeil&prixFlag=$prixFlag&stockFlag=$stockFlag&sql=$sql";
+    public function queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$searchString,$orderBy,$orderType ,$start , $length){
+        $url = "/queryListeArticle&flagPxAchat=$flagPxAchat&flagPxRevient=$flagPxRevient&arSommeil=$ar_sommeil&prixFlag=$prixFlag&stockFlag=$stockFlag&searchString=$searchString&orderBy=$orderBy&orderType=$orderType&start=$start&length=$length";
         return $this->getApiJson($url);
     }
 
@@ -360,31 +360,28 @@ class ArticleClass Extends Objet{
             if(isset($_GET['prixFlag']))
                 $prixFlag = $_GET['prixFlag'];
 
-            $recordsTotal = sizeof($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString("")));
+            $recordsTotal = sizeof($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString(""),"","","",""));
             /* SEARCH CASE : Filtered data */
             if(!empty($_POST['search']['value'])){
                 /* WHERE Clause for searching */
                 for($i=0 ; $i<count($_POST['columns']);$i++){
                     $column = $_POST['columns'][$i]['data'];//we get the name of each column using its index from POST request
-                    $where[]=" (AR_Design like '%".$_POST['search']['value']."%' OR AR_Ref like '%".$_POST['search']['value']."%') ";
                 }
-                var_dump($_POST['columns']);
+                $where[]=" (AR_Design like '%".$_POST['search']['value']."%' OR AR_Ref like '%".$_POST['search']['value']."%') ";
 
                 $where = " WHERE ".implode(" OR " , $where);// id like '%searchValue%' or name like '%searchValue%' ....
                 /* End WHERE */
                 $sql = sprintf(" %s", $where);//Search query without limit clause (No pagination)
-                $recordsFiltered = count($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql)));//Count of search result
-                die();
-                var_dump($recordsFiltered);
+                $recordsFiltered = count($this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($_POST['search']['value']),"","","",""));//Count of search result
 
                 /* SQL Query for search with limit and orderBy clauses*/
                 $sql = sprintf(" %s ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$where,$orderBy,$orderType ,$start , $length);
-                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql));
+                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($_POST['search']['value']),$orderBy,$orderType ,$start , $length);
             }
             /* END SEARCH */
             else {
                 $sql = sprintf("ORDER BY %s %s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY",$orderBy,$orderType ,$start , $length);
-                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($sql));
+                $data = $this->queryListeArticle($flagPxAchat,$flagPxRevient,$ar_sommeil,$prixFlag,$stockFlag,$this->formatString($_POST['search']['value']),$orderBy,$orderType ,$start , $length);
                 $recordsFiltered = $recordsTotal;
             }
 

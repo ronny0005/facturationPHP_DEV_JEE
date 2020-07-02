@@ -30,4 +30,8 @@ class DepotUserClass Extends Objet{
         return $this->getApiJson("/user&protNo=$Prot_No");
     }
 
+    public function getPrincipalDepot($Prot_No){
+        return $this->getApiJson("/getPrincipalDepot&protNo=$Prot_No");
+    }
+
 }

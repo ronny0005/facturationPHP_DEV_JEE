@@ -538,7 +538,8 @@ switch ($val) {
         execRequete($objet->envoiSMSTest(($_GET['Code']), ($_GET['Nom']), ($_GET['Numero'])), $objet);
         break;
     case "getPrincipalDepot":
-        envoiRequete($objet->getPrincipalDepot($_GET['id']), $objet);
+        $depotUser = new DepotUserClass();
+        echo json_encode($depotUser->getPrincipalDepot($_GET['id']));
         break;
     case "equationStkVendeur":
         envoiRequete($objet->equationStkVendeur($_GET['DE_No'], $_GET['datedeb'], $_GET['datefin']), $objet);

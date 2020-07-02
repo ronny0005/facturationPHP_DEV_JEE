@@ -20,7 +20,7 @@ $docEntete = new DocEnteteClass(0);
                     <?php
                     if($protection->PROT_Right==1) {
                         ?>
-                        <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"Utilisateur") ?>" role="presentation" href="#">Utilisateur</a>
+                        <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"Utilisateur") ?>" role="presentation" href="utilisateur">Utilisateur</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Profil</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Droits</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Envoi mail</a>

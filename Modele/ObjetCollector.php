@@ -4174,7 +4174,8 @@ INSERT INTO [F_LIVRAISON]
                     LEFT JOIN Z_DEPOTCAISSE D ON C.DE_No=D.DE_No";
     }
     public function getDepotUserByUser($prot_no){
-        return "SELECT C.*,ISNULL(IsPrincipal,0) IsPrincipal, CASE WHEN $prot_no=Prot_No THEN 1 ELSE 0 END Valide_Depot
+        return "SELECT C.*,ISNULL(IsPrincipal,0) IsPrincipal
+                    , CASE WHEN $prot_no=Prot_No THEN 1 ELSE 0 END Valide_Depot
                     FROM F_DEPOT C 
                     LEFT JOIN (SELECT * FROM Z_DEPOTUSER WHERE PROT_No=$prot_no) D ON C.DE_No= D.DE_No";
     }
@@ -4476,16 +4477,6 @@ INSERT INTO [F_LIVRAISON]
         $query="UPDATE F_PROTECTIONCIAL SET Prot_Pwd='$mdp' WHERE Prot_No=$userid;
                 UPDATE F_PROTECTIONCPTA SET Prot_Pwd='$mdp' WHERE Prot_No=$userid;";
         return $query;
-    }
-
-    public function UsersByid($id){
-        return "SELECT P.*,DE_No,CA_No 
-                     FROM F_PROTECTIONCIAL P 
-                     LEFT JOIN (SELECT C.CO_No,CA.CA_No,DE_No,CA_Souche,PROT_No,CO_Nom
-                                        FROM ".$this->db->baseCompta.".dbo.F_COLLABORATEUR C 
-                                        LEFT JOIN F_CAISSECAISSIER CC ON C.CO_No= CC.CO_No
-                                        LEFT JOIN F_CAISSE CA ON CA.CA_No = CC.CA_No) A ON A.CO_Nom=P.PROT_User
-                     WHERE P.PROT_No=$id";
     }
 
     public function getAllProfils(){

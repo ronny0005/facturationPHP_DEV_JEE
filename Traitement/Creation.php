@@ -735,30 +735,19 @@ if(strcmp($_GET["acte"],"catalog_article") == 0){
 }
 
 if(strcmp($_GET["acte"],"ajout_user") == 0){
-    $username =$_GET["username"];
-    $description = $_GET["description"];
-    $password = $_GET["password"];
-    $email = $_GET["email"];
-    $groupeid = $_GET["groupeid"];
-    $changepass = $_GET["changepass"];
+    $protection = new ProtectionClass("","");
+    $protection->PROT_User = $_GET["username"];
+    $protection->PROT_Description = $_GET["description"];
+    $protection->PROT_Pwd = $_GET["password"];
+    $protection->PROT_Email = $_GET["email"];
+    $protection->PROT_Right = $_GET["groupeid"];
+    $protection->PROT_PwdStatus = $_GET["changepass"];
+    $profiluser = 0;
     if(isset($_GET["profiluser"])){
-        $profiluser = $_GET["profiluser"];        
+        $profiluser = $_GET["profiluser"];
     }
-    $result = $objet->db->requete($objet->createUser($username,$description,$password,$groupeid,$email,$profiluser,$changepass));
-    $result=$objet->db->requete($objet->connectSage2($username, $password));     
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-    }else{
-        if(isset($_GET["depot"])){
-            $depot = $_GET["depot"];
-            $objet->db->requete($objet->supprDepotUser($prot_user));
-            foreach($depot as $dep){
-                $objet->db->requete($objet->insertDepotUser($rows[0]->PROT_No,$dep));
-            }
-        }
-    }               
-    $data = array('Prot_No' => $username);
-    echo json_encode($data);
+    $protection->PROT_UserProfil = $profiluser;
+    $protection->ajoutUser($_GET["securiteAdmin"]);
 }
 
 if(strcmp($_GET["acte"],"ajout_depot") == 0){

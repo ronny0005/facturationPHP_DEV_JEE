@@ -1,10 +1,21 @@
-jQuery(function($){  
-   $('#table').dynatable();
+jQuery(function($){
+$("#table").DataTable(
+    {
+        scrollCollapse: true,
+        fixedColumns:   true,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        }
+        ,"initComplete": function(settings, json) {
+            $("#table_wrapper").addClass("row")
+            $("#table_length").addClass("col-6")
+            $("#table_filter").addClass("col-5")
+            $("#table_filter").find(":input").addClass("form-control");
+            $("#table_length").find(":input").addClass("form-control");
+        }
 
-$("table.table > tbody > tr").on('dblclick', function() {
-    iduser = $(this).find(".data-id").val();
-    document.location.href = "indexMVC.php?module=8&action=4&id="+iduser;
-}); 
-   
+    }
+);
+
+
 });
-
