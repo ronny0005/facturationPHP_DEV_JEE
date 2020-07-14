@@ -1,4 +1,5 @@
 <?php
+use Spipu\Html2Pdf\Html2Pdf;
 set_time_limit(0);
 ini_set('max_execution_time', 0);
 $daydate=date('d-m-Y H:i:s');

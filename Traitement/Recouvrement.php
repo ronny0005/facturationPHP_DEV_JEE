@@ -3,7 +3,6 @@ $login = "";
 $machine_pc = "";
 $latitude = 0;
 $longitude = 0;
-if(!isset($mobile)){
 session_start();
 include("../Modele/DB.php");
 include("../Modele/ObjetCollector.php");
@@ -21,10 +20,8 @@ $objet = new ObjetCollector();
 $login = $_SESSION["login"];
 $machine_pc = "";
 $mobile="";
-}
 
 if(strcmp($_POST["acte"],"addReglement") == 0){
-    var_dump($_POST);
     $reglement = new ReglementClass(0);
 
     $mobile=0;
@@ -43,10 +40,11 @@ if(strcmp($_POST["acte"],"addReglement") == 0){
     $impute = $_POST['impute'];
     $RG_Type = $_POST['RG_Type'];
     $typeRegl = $_POST["typeRegl"];
+    $protNo = $_POST["PROT_NoRecouvrement"];
     $type = $_POST["type"];
     $dateReglementEntete_deb = $_POST["dateReglementEntete_deb"];
     $dateReglementEntete_fin = $_POST["dateReglementEntete_fin"];
-    $reglement->addReglement($mobile,urlencode($jo_num),$rg_no_lier,urlencode($ct_num)
+    $reglement->addReglement($_SESSION["id"],urlencode($jo_num),$rg_no_lier,urlencode($ct_num)
         ,$ca_no,$boncaisse,urlencode($libelle),$caissier
         ,$date,$modeReglementRec,$montant,$impute,$RG_Type,true,$typeRegl);
     $valAction = 2;
@@ -56,7 +54,7 @@ if(strcmp($_POST["acte"],"addReglement") == 0){
         $valAction = 5;
     // -1 pose souci dans le lien
     if($type==-1)
-        $type =2;
+        $type = 2;
     header("Location: ../Reglement-$typeRegl-$caissier-$ct_num-$dateReglementEntete_deb-$dateReglementEntete_fin-$modeReglementRec-$jo_num-$ca_no-$type");
 }
 

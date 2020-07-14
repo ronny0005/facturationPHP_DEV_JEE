@@ -422,6 +422,7 @@ jQuery(function($) {
     $("#cat_tarif").change(function(){
         if($("#reference").val()!="")
             valideReference($("#reference").val());
+        majCatCompta();
     });
 
     $("#cat_compta").change(function(){
@@ -728,63 +729,118 @@ jQuery(function($) {
     function choixFormat(){
         doImprim();
         if(societe == "CMI CAMEROUN SARL" && typeFac!="Achat"){
-            $("<div></div>").dialog({
-                resizable: false,
-                height: "auto",
-                width: "400",
-                modal: true,
-                title: "Choix du format",
-                buttons: {
-                    "A4 CLIENT SOCIETE" : {
-                        class: 'btn btn-primary col-4',
-                        text: 'A4 CLIENT SOCIETE',
-                        click: function () {
-                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
-                            $("#redirectFacture").submit();
-                        }
-                    },
-                    "A4 CLIENT DIVERS" : {
-                        class: 'btn btn-primary col-4',
-                        text: 'A4 CLIENT DIVERS',
-                        click: function () {
-                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_DIVERS", '_blank');
-                            $("#redirectFacture").submit();
-                        }
-                    },
-                    "A4 PROFORMA" : {
-                        class: 'btn btn-primary col-4',
-                        text: 'A4 PROFORMA',
-                        click: function () {
-                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
-                            $("#redirectFacture").submit();
-                        }
-                    },
-                    "A5 CLIENT SOCIETE" : {
-                        class: 'btn btn-primary col-4',
-                        text: 'A5 CLIENT SOCIETE',
-                        click: function () {
-                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
-                            $("#redirectFacture").submit();
-                        }
-                    },
-                    "A5 CLIENT DIVERS" : {
-                        class: 'btn btn-primary col-4',
-                        text: 'A5 CLIENT DIVERS',
-                        click: function () {
-                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_DIVERS", '_blank');
-                            $("#redirectFacture").submit();
-                        }
-                    },
-                    "A5 PROFORMA" : {
-                        class: 'btn btn-primary col-4',
-                        text: 'A5 PROFORMA',
-                        click: function () {
-                            window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
-                            $("#redirectFacture").submit();
+            if((typeFac=="Vente" ||typeFac=="VenteC"  ||typeFac=="VenteT" ||  typeFac=="Devis") && $("#cat_tarif").val()==1) {
+
+                $("<div></div>").dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: "400",
+                    modal: true,
+                    title: "Choix du format",
+                    buttons: {
+                        "A4 CLIENT SOCIETE": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A4 CLIENT SOCIETE',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A5 CLIENT SOCIETE": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A5 CLIENT SOCIETE',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
+                                $("#redirectFacture").submit();
+                            }
                         }
                     }
-                }
-            });
+                });
+            }else if((typeFac=="Vente" || typeFac=="VenteC"  ||typeFac=="VenteT" || typeFac=="Devis") && $("#cat_tarif").val()==2){
+                $("<div></div>").dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: "400",
+                    modal: true,
+                    title: "Choix du format",
+                    buttons: {
+                        "A4 CLIENT DIVERS": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A4 CLIENT DIVERS',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_DIVERS", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A5 CLIENT DIVERS": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A5 CLIENT DIVERS',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_DIVERS", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        }
+                    }
+                });
+            }else{
+                $("<div></div>").dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: "400",
+                    modal: true,
+                    title: "Choix du format",
+                    buttons: {
+                        "A4 CLIENT SOCIETE": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A4 CLIENT SOCIETE',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A4 CLIENT DIVERS": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A4 CLIENT DIVERS',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_DIVERS", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A4 PROFORMA": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A4 PROFORMA',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-CMI-CLIENT_SOCIETE", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A5 CLIENT SOCIETE": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A5 CLIENT SOCIETE',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A5 CLIENT DIVERS": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A5 CLIENT DIVERS',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_DIVERS", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        },
+                        "A5 PROFORMA": {
+                            class: 'btn btn-primary col-4',
+                            text: 'A5 PROFORMA',
+                            click: function () {
+                                window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-CMI-CLIENT_SOCIETE", '_blank');
+                                $("#redirectFacture").submit();
+                            }
+                        }
+                    }
+                });
+            }
         }else{
             var words = societe.split(' ');
             if(societe=="BOUM CONSTRUCTION SARL"){
@@ -1474,7 +1530,7 @@ jQuery(function($) {
                         $('#imprimer').prop('disabled', true);
                         $('#annuler').prop('disabled', true);
                         $('#valider').prop('disabled', true);
-                        if(($_GET("cbMarq")!=undefined) || (!$_GET("cbMarq")!=undefined && protectDate !=0))
+                        if(($("#cbMarqEntete").val()!=0) || (!$("#cbMarq").val()!=0 && protectDate !=0))
                             $("#dateentete").prop('disabled', true);
                         else
                             $("#dateentete").prop('disabled', false);
@@ -1565,15 +1621,12 @@ jQuery(function($) {
         });
     }
 
-
     function majCatCompta() {
-        var typePage = "0";
-        if (typeFac == "Achat" || typeFac == "AchatRetour") typePage = "1";
         $.ajax({
-            url: "indexServeur.php?page=majCatCompta&N_CatTarif=" + typePage + "&N_CatCompta=" + $("#cat_compta").val(),
+            url: "indexServeur.php?page=majCatCompta&N_CatTarif=" + $("#cat_tarif").val() + "&N_CatCompta=" + $("#cat_compta").val(),
             method: 'GET',
             dataType: 'json',
-            data: "DO_Piece=" + $("#n_doc").val() + "&type=" + typeFac,
+            data: "cbMarq=" + $("#cbMarqEntete").val(),
             success: function (data) {
             }
         });

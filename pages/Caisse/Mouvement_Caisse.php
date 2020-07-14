@@ -124,16 +124,6 @@
                             <label>Caisse</label>
                             <select class="form-control" name="CA_No" id="caisseLigne" placeholder="caisse">
                                 <?php
-
-                                /*
-                                    $isPrincipal = 0;
-                                    if($admin==0){
-                                        $isPrincipal = 1;
-                                        $result=$objet->db->requete($objet->getCaisseDepot($_SESSION["id"]));
-                                    }else{
-                                        $result=$objet->db->requete($objet->caisse());
-                                    }
-                                */
                                 $caisseClass = new CaisseClass(0);
                                 if($admin==0){
                                     $isPrincipal = 1;

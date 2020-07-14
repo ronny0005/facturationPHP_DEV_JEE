@@ -141,6 +141,7 @@ if($rows==null){
 $accessSouche = "";
 $listeSouche="";
 if(isset($_GET["cbMarq"]) || $isVisu) $accessSouche = "disabled";
+$accesAffaire = ($isVisu || $readonly || (isset($_GET["cbMarq"]))) ? "disabled" : "";
 if($admin==1 && $type!="Retour" && $type!="BonLivraison"&& $type!="Devis")
     $listeSouche= $listeSouche."<option value=''></option>";
 $isPrincipal = 0;

@@ -1,4 +1,5 @@
 <?php
+use Spipu\Html2Pdf\Html2Pdf;
 set_time_limit(0);
 ini_set('max_execution_time', 0);
 $daydate=date('d-m-Y H:i:s');
@@ -99,12 +100,16 @@ if($protection->ProfilName=="GESTIONNAIRE")
             $cono=$docentete->CO_No;
             $dateenJMA = $objet->getDateDDMMYYYY($date);
             if($type=="Transfert_detail"){
-                $result=$objet->db->requete($objet->getDoPiece($entete,$do_domaine,41));
-                $rows = $result->fetchAll(PDO::FETCH_OBJ);
-                if($rows==null){
-                }else{
-                    $dotiers=$rows[0]->DE_No;
+                $listEntete = $docentete->enteteTransfertDetail($_GET["cbMarq"]);
+                foreach($listEntete as $elt)
+                {
+                    if($elt->DO_Type == 41)
+                        $docEntete = new DocEnteteClass($elt->cbMarq);
+                    if($elt->DO_Type == 40)
+                        $docEnteteTransfertDetail = new DocEnteteClass($elt->cbMarq);
                 }
+                $depot=$docEntete->DE_No;
+                $dotiers=$docEnteteTransfertDetail->DE_No;
             }
         }
         //intitule depot source
@@ -229,8 +234,7 @@ if($protection->ProfilName=="GESTIONNAIRE")
                     <th style='width:75px'>Montant TTC</th>
                 </tr>
                 <?php
-                $rows = $docentete->getLigneTransfert_detail();
-                var_dump($rows);
+                $rows = $docentete-> getLigneTransfert_detail();
                 //$result=$objet->db->requete($objet->getLigneTransfert_detail($entete));
                 //   $rows = $result->fetchAll(PDO::FETCH_OBJ);
                 $i=0;

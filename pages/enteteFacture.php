@@ -82,7 +82,7 @@ if(($type=="Achat" || $type=="AchatC" || $type=="AchatRetour" || $type=="AchatRe
                     foreach($cattarif->allCatTarif() as $row){
                         echo "<option value=".$row->cbIndice."";
                         if($row->cbIndice==$cat_tarif) echo " selected";
-                        echo ">".$row->CT_Intitule."</option>";
+                        echo ">{$row->CT_Intitule}</option>";
                     }
                     ?>
                 </select>
@@ -288,14 +288,15 @@ if(($type=="Achat" || $type=="AchatC" || $type=="AchatRetour" || $type=="AchatRe
             </select>
         </div>
     </div>
+
     <div class="form-group">
         <div class="col-sm-4">
             <label> R&eacute;f&eacute;rence : </label>
-            <input maxlength="17" type="text" class="form-control" name="reference" id="ref" placeholder="Référence" value="<?php echo $docEntete->DO_Ref; ?>"  <?php if($isVisu) echo "readonly"; ?>/>
+            <input maxlength="17" type="text" class="form-control" name="reference" id="ref" placeholder="Référence" value="<?= $docEntete->DO_Ref; ?>"  <?php if($isVisu) echo "readonly"; ?>/>
         </div>
         <div class="col-sm-4">
             <label>N Doc : </label>
-            <input type="text" class="form-control" id="n_doc" placeholder="N Document" value="<?php echo $docEntete->DO_Piece; ?>" disabled/>
+            <input type="text" class="form-control" id="n_doc" placeholder="N Document" value="<?= $docEntete->DO_Piece; ?>" disabled/>
             <input type="hidden" id="prot_no" class="prot_no" value="<?= $_SESSION["id"] ?>"/>
             <input type="hidden" id="modifClient" class="modifClient" value="<?= $flagModifClient ?>"/>
         </div>
@@ -317,9 +318,9 @@ if(($type=="Achat" || $type=="AchatC" || $type=="AchatRetour" || $type=="AchatRe
                     if($rows==null){
                     }else{
                         foreach($rows as $row){
-                            echo "<option value=".$row->Val."";
+                            echo "<option value='{$row->Val}'";
                             if($row->Val==$docEntete->DO_Statut) echo  " selected ";
-                            echo ">".$row->Lib."</option>";
+                            echo ">{$row->Lib}</option>";
                         }
                     }
                     ?>

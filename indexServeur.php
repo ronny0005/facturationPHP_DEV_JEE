@@ -634,13 +634,12 @@ switch ($val) {
         envoiRequete($objet->selectDefautCompte($_GET['ctype']), $objet);
         break;
     case "majCatCompta":
-        $docEntete = new DocEnteteClass(0);
-        $docEntete->setTypeFac($_GET["type"]);
-        $docEntete->type_fac = $_GET["type"];
-        $docEntete->DO_Piece = $_GET["DO_Piece"];
-        $docFac = $docEntete->getFactureByPieceTypeFac();
-        $docFac->N_CatCompta = $_GET["N_CatCompta"];
-        $docFac->maj_docEntete();
+        session_start();
+        if($_GET["cbMarq"]!="") {
+            $docEntete = new DocEnteteClass($_GET["cbMarq"]);
+            $docEntete->maj("N_CatCompta", $_GET["N_CatCompta"]);
+            $docEntete->maj("DO_Tarif", $_GET["N_CatTarif"]);
+        }
         break;
     case "getNextArticleByFam":
         $famille = new FamilleClass($_GET['codeFam']);
@@ -1315,13 +1314,12 @@ switch ($val) {
                     $nom = $row->CO_Prenom . " " . $row->CO_Nom;
                     $tiers = new ComptetClass($creglement->CT_NumPayeur);
                     $corpsMail = "
-                Le règlement " . $creglement->RG_Piece . " a été supprimé par " . $_SESSION["login"] . "<br/>
-                    Le règlement concerne le client " . $tiers->CT_Intitule . "<br/> 
-                    Libellé :" . $creglement->RG_Libelle . "<br/> 
-                    Montant du règlement : " . $objet->formatChiffre(ROUND($creglement->RG_Montant, 2)) . "<br/> 
-                    Date du règlement : " . $objet->getDateDDMMYYYY($creglement->RG_Date) . "<br/><br/>
+                Le règlement {$creglement->RG_Piece} a été supprimé par " . $_SESSION["login"] . "<br/>
+                    Le règlement concerne le client {$tiers->CT_Intitule}<br/> 
+                    Libellé : {$creglement->RG_Libelle}<br/> 
+                    Montant du règlement : {$objet->formatChiffre(ROUND($creglement->RG_Montant, 2))}<br/> 
+                    Date du règlement : {$objet->getDateDDMMYYYY($creglement->RG_Date)} <br/><br/>
                 Cordialement.<br/><br/>
-                
                 ";
                     if (preg_match('#^[\w.-]+@[\w.-]+\.[a-z]{2,6}$#i', $email))
                         $objet->envoiMail($corpsMail, "Modification mouvement de caisse " . $creglement->RG_Piece, $email);
@@ -1372,77 +1370,17 @@ switch ($val) {
         $reglement = new ReglementClass(0);
         $rows = $reglement->listeReglementCaisse($objet->getDate($_GET["datedeb"]),$objet->getDate($_GET["datefin"]),$_GET["ca_no"],$_GET["type"]);
         $reglement->afficheMvtCaisse($rows,$_GET["flagAffichageValCaisse"],$_GET["flagCtrlTtCaisse"]);
-/*
-        $reglement = new ReglementClass(0);
-
-        function typeCaisse($val)
-        {
-            if ($val == 5) return "Entrée";
-            if ($val == 4) return "Sortie";
-            if ($val == 2) return "Fond de caisse";
-            if ($val == 3) return "Vrst bancaire";
-        }
-
-        $itemTable = "";
-        $list = $reglement->listeReglementCaisse($_GET["datedeb"], $_GET["datefin"], $_GET["ca_no"], $_GET["type"]);
-        $i = 0;
-        $classe = "";
-        if ($i % 2 == 0)
-            $classe = "info";
-        $RG_Montant = 0;
-        $sommeTotal = 0;
-        foreach ($list as $element) {
-            $RG_Montant = $element->RG_Montant;
-            if ($element->RG_TypeReg == 4 || $element->RG_TypeReg == 3)
-                $RG_Montant = $element->RG_Montant * -1;
-            $sommeTotal = $sommeTotal + $RG_Montant;
-            $finTexte = "";
-            $fichier = "";
-            if ($element->Lien_Fichier != null)
-                $fichier = "<a target='_blank' href='upload/files/{$element->Lien_Fichier}' class='fa fa-download'></a>";
-            if ($element->RG_Banque == 1 && $element->RG_Type == 4)
-                $finTexte = "<td>{$fichier}</td><td><input id='check_vrst' type='checkbox' checked disabled/></td>";
-            else
-                if ($element->RG_TypeReg == 3)
-                    $finTexte = "<td>{$fichier}</td><td><input  id='check_vrst' type='checkbox' disabled/></td>";
-                else
-                    $finTexte = "<td></td>";
-            $blocAffaire = "";
-
-            $itemTable = "$itemTable 
-                            <tr class= 'reglement $classe' id='reglement_{$element->RG_No} '>
-                                <td style='color:blue;text-decoration:underline' id='RG_No'>{$element->RG_No}</td>
-                                <td id='RG_Piece'>{$element->RG_Piece}</td><td id='RG_Date'>{$element->RG_Date}</td>
-                                <td id='RG_Libelle'>{$element->RG_Libelle}</td><td id='RG_Montant'>{$objet->formatChiffre($RG_Montant)}</td>
-                                <td id='CA_Intitule'>{$element->CA_Intitule}</td><td id='CO_Nom'><span id='RG_No' style='visibility:hidden'>{$element->RG_No}</span>{$element->CO_Nom}</td>
-                                <td id='RG_TypeReg'>" . typeCaisse($element->RG_TypeReg) . "</td>";
-            if ($_GET["flagAffichageValCaisse"] == 0)
-                $itemTable = "$itemTable <td id='RG_Modif'><i class='fa fa-pencil fa-fw'></i></td>";
-            if ($_GET["flagCtrlTtCaisse"] == 0)
-                $itemTable = "$itemTable <td id='RG_Suppr'><i class='fa fa-trash-o'></i></td>";
-            $itemTable = "$itemTable $finTexte </tr>";
-        }
-
-        $itemTable ="$itemTable <tr class='reglement' style='background-color:grey;color:white'>
-                                        <td id='rgltTotal' colspan='4'><b>Total</b></td>
-                                        <td><b>{$objet->formatChiffre($sommeTotal)}</b></td>
-                                        <td colspan='5'></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                </tr>";
-        echo $itemTable ;
-*/
         break;
 
     case "getCompteEntree":
         $pparametrecial = new P_ParametreCialClass();
-        echo json_encode($pparametrecial->P_CreditCaisse);
+        $compteg = new CompteGClass($pparametrecial->P_CreditCaisse);
+        echo json_encode($compteg);
         break;
     case "getCompteSortie":
         $pparametrecial = new P_ParametreCialClass();
-        echo json_encode($pparametrecial->P_DebitCaisse);
+        $compteg = new CompteGClass($pparametrecial->P_DebitCaisse);
+        echo json_encode($compteg);
         break;
     case "getPPreference":
         envoiRequete($objet->getPPreference(),$objet);

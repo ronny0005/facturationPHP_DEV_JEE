@@ -72,6 +72,7 @@ RewriteRule ^impressionFactureCMI-([0-z]+)-([0-z]+)-([0-z]+)$ export/CMI/exportF
 
 
 RewriteRule ^impressionMouvement-Transfert-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtTransfertpdf.php?cbMarq=$1&type=$2&format=$3 [L]
+RewriteRule ^impressionMouvement-Transfert_detail-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtTransfertpdf.php?cbMarq=$1&type=$2&format=$3 [L]
 RewriteRule ^impressionMouvement-Entree-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtEntreepdf.php?cbMarq=$1&type=$2&format=$3 [L]
 RewriteRule ^impressionMouvement-Sortie-([0-z]+)-([0-z]+)-([0-z]+)$ etatspdf/MvtSortiepdf.php?cbMarq=$1&type=$2&format=$3 [L]
 

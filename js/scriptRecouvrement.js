@@ -1020,11 +1020,7 @@ jQuery(function ($) {
         var typeregl=0;
         if($("#typeRegl").val()=="Collaborateur"){
             typeregl=1;
-            //caissier = $("#CT_Num").val();
         }
-        var caisse = $("#caisse").val();
-        var rgType = 0;
-        if($("#typeRegl").val()!="Client") rgType = 1;
         $("#dateReglementEntete_deb_ligne").val($("#dateReglementEntete_deb").val());
         $("#dateReglementEntete_fin_ligne").val($("#dateReglementEntete_fin").val());
         $("#mode_reglement_ligne").val($("#mode_reglement").val());
@@ -1037,27 +1033,7 @@ jQuery(function ($) {
         $("#rgnolier_ligne").val(0);
         $("#typeRegl_ligne").val($("#typeRegl").val());
         $("#formValider").submit();
-        /*
-        $.ajax({
-            url: 'indexServeur.php?page=addReglement&boncaisse='+typeregl+'&RG_Type='+rgType+'&JO_Num='+$("#journal_choix").val()+'&CT_Num=' + $("#CT_Num").val()+"&montant="+ $("#montantRec").val().replace(/ /g,"")+"&libelle="+$("#libelleRec").val()+"&CO_No="+$("#co_no").val()+"&CA_No="+caisse+"&date="+returnDate($("#dateRec").val())+"&impute=0"+"&mode_reglementRec="+$("#mode_reglementRec").val()+"&caissier="+caissier,
-            method: 'GET',
-            dataType: 'json',
-            async : false,
-            success: function (data) {
-                if($("#mode_reglementRec").val()=="10"){
 
-                }
-                rechercher();
-                rechercherFacture(true);
-                $("#dateRec").val("");
-                $("#libelleRec").val("");
-                $("#montantRec").val("");
-            },
-            error: function (resultat, statut, erreur) {
-                alert(resultat.responseText);
-            }
-        });
-        */
     }
 
 });

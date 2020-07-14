@@ -1,4 +1,4 @@
-<script src="js/scriptRecouvrement.js?d=<?php echo time(); ?>"></script>
+<script src="js/scriptRecouvrement.js?d=<?= time(); ?>"></script>
 <?php
 include("module/Menu/BarreMenu.php");
 $objet = new ObjetCollector();
@@ -78,17 +78,17 @@ if($typeRegl=="Collaborateur"){
 }
 ?>
 
-<div id="protectionPage" style="visibility: hidden;"><?php echo $flagProtected;?></div>
-<div id="protectionSupprPage" style="visibility: hidden;"><?php echo $flagSuppr;?></div>
+<div id="protectionPage" style="visibility: hidden;"><?= $flagProtected;?></div>
+<div id="protectionSupprPage" style="visibility: hidden;"><?= $flagSuppr;?></div>
 
 <section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
-    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?php echo $texteMenu; ?></h3>
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?= $texteMenu; ?></h3>
 </section>
         <input type="hidden" value="" name="ValRGPiece" id="Val_RG_Piece" />
-        <input type="hidden" value="<?php echo $_SESSION["CO_No"]; ?>" name="CO_NoSession" id="CO_NoSession" />
+        <input type="hidden" value="<?= $_SESSION["CO_No"]; ?>" name="CO_NoSession" id="CO_NoSession" />
 
         <fieldset class="card p-3 mt-3">
-        <form action="<?php echo $lienForm; ?>" method="POST">
+        <form action="<?= $lienForm; ?>" method="POST">
             <legend>Entête</legend>
             <input type="hidden" value="1" name="module"/>
             <input type="hidden" value="<?= $actionForm; ?>" name="action"/>
@@ -98,7 +98,7 @@ if($typeRegl=="Collaborateur"){
             <input type="hidden" value="<?= $post; ?>" name="post" id="post" />
 <div class="row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-3" >
-                <label><?php echo $typeRegl; ?></label>
+                <label><?= $typeRegl; ?></label>
                 <input type="hidden" class="form-control" name="CT_Num" id="CT_Num" value="<?=$client ?>"/>
                 <input class="form-control" type="text" id="client" name="client" value="<?= $comptet->CT_Intitule ?>">
                 <?php
@@ -136,7 +136,7 @@ if($typeRegl=="Collaborateur"){
                     if($rows !=null){
                         foreach ($rows as $row){
                             echo "<option value='{$row->R_Code}' ";
-                            if ($row->R_Code == $treglement) echo "selected";
+                            if ($row->R_Code == $treglement) echo " selected ";
                             echo ">{$row->R_Intitule}</option>";
                         }
                     }
@@ -193,9 +193,9 @@ if($typeRegl=="Collaborateur"){
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Type réglement</label>
                 <select class="form-control" name="type" id="type">
-                    <option value="-1" <?= ($type==-1) ? "selected" :""; ?> >Tous les règlements</option>
-                    <option value="1"  <?= ($type==1) ? "selected" :""; ?> >Règlements imputés</option>
-                    <option value="0"  <?= ($type==0) ? "selected" :""; ?> >Règlements non imputés</option>
+                    <option value="-1" <?= ($type==-1) ? " selected " :""; ?> >Tous les règlements</option>
+                    <option value="1"  <?= ($type==1) ? " selected " :""; ?> >Règlements imputés</option>
+                    <option value="0"  <?= ($type==0) ? " selected " :""; ?> >Règlements non imputés</option>
                 </select>
             </div>
 
@@ -217,7 +217,7 @@ if($typeRegl=="Collaborateur"){
                 <input type="hidden" value="1" name="module"/>
                 <input type="hidden" value="2" name="action"/>
                 <input type="hidden" value="addReglement" name="acte"/>
-                <input type="hidden" value="<?=$client ?>" name="clientLigne" id="client_ligne" />
+                <input type="hidden" value="<?= $client ?>" name="clientLigne" id="client_ligne" />
                 <input type="hidden" value="" name="dateReglementEntete_deb" id="dateReglementEntete_deb_ligne" />
                 <input type="hidden" value="" name="dateReglementEntete_fin" id="dateReglementEntete_fin_ligne" />
                 <input type="hidden" value="" name="mode_reglement" id="mode_reglement_ligne" />
@@ -295,7 +295,7 @@ if($typeRegl=="Collaborateur"){
                             <th>Reste à imputer</th>
                             <th>Caisse</th>
                             <th>Caissier</th>
-                            <?php if($protection->PROT_Right==1) echo "<th>Créateur</th>"; ?>
+                            <?= ($protection->PROT_Right==1) ? "<th>Créateur</th>" : ""; ?>
                         </tr>
                         </thead>
                         <tbody>

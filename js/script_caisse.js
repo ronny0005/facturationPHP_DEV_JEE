@@ -89,21 +89,25 @@ jQuery(function ($) {
             event.preventDefault();
             $("#banque").val(ui.item.value)
             $("#CG_NumBanque").val(ui.item.CG_Num)
-            if(ui.item.CG_Analytique==1) {
-                $("#divCA_Num").show()
-                $("#CG_Analytique").val(1)
-                setCA_Num($("#caisseLigne").val())
-            }
-            else {
-                $("#divCA_Num").hide()
-                $("#CA_Intitule").val("")
-                $("#CA_Num").val("")
-                $("#CG_Analytique").val(0)
-            }
+            displayCG_NumAnalytique(ui.item.CG_Analytique)
         },
         focus: function(event, ui) {
         }
     })
+
+    function displayCG_NumAnalytique(value){
+        if(value==1) {
+            $("#divCA_Num").show()
+            $("#CG_Analytique").val(1)
+            setCA_Num($("#caisseLigne").val())
+        }
+        else {
+            $("#divCA_Num").hide()
+            $("#CA_Intitule").val("")
+            $("#CA_Num").val("")
+            $("#CG_Analytique").val(0)
+        }
+    }
 
     function setCA_Num(val){
         if($("#divCA_Num").is(":visible"))
@@ -143,11 +147,14 @@ jQuery(function ($) {
             $.ajax({
                 url: 'indexServeur.php?page=getCompteEntree',
                 method: 'GET',
-                dataType: 'html',
+                dataType: 'json',
                 async : false,
                 success: function (data) {
-                    $("#banque").val(data);
-                    $("#CG_NumBanque").val(data)
+                    $("#banque").val(data.CG_Num);
+                    $("#CG_NumBanque").val(data.CG_Num)
+                    $("#CG_Analytique").val(data.CG_Analytique)
+                    displayCG_NumAnalytique(data.CG_Analytique)
+
                 }
             });
             $("#libelleRec").prop("disabled",false);
@@ -166,11 +173,13 @@ jQuery(function ($) {
             $.ajax({
                 url: 'indexServeur.php?page=getCompteSortie',
                 method: 'GET',
-                dataType: 'html',
+                dataType: 'json',
                 async : false,
                 success: function (data) {
-                    $("#banque").val(data);
-                    $("#CG_NumBanque").val(data)
+                    $("#banque").val(data.CG_Num);
+                    $("#CG_NumBanque").val(data.CG_Num)
+                    $("#CG_Analytique").val(data.CG_Analytique)
+                    displayCG_NumAnalytique(data.CG_Analytique)
                 }
             });
             $("#libelleRec").attr("readonly", false);

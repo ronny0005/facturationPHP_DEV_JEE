@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-xs-6 col-sm-4 col-md-4"><label>Affaire</label>
-                        <select class="form-control" id="affaire" name="affaire">
+                        <select class="form-control" id="affaire" name="affaire" <?= $accesAffaire ?>>
                             <?= $listeAffaire ?>
                         </select>
                         <div
@@ -116,7 +116,7 @@
                     <div class="col-6 col-xs-12 col-sm-4 col-md-4">
                         <label>&nbsp;Référence</label>
                         <div id="datetimepicker1" class="input-group date">
-                            <input maxlength="17" value= "" class="form-control form-control" type="text" id="ref" name="reference" <?=$accessReference ?>>
+                            <input maxlength="17" class="form-control form-control" type="text" id="ref" value="<?= $docEntete->DO_Ref; ?>" name="reference" <?=$accessReference ?>>
                             <span class="input-group-addon">&nbsp;<span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
