@@ -130,8 +130,6 @@ switch ($val) {
         $client = new ComptetClass(0);
         echo json_encode($client->getTiersByNumIntitule($_GET["term"], $_GET["TypeFac"]));
         break;
-
-
     case "getTiersByNumIntituleSearch":
         $client = new ComptetClass(0);
         $searchTerm = "";
@@ -140,7 +138,6 @@ switch ($val) {
         $type = 0;
         if (isset($_GET['type']))
             $type = $_GET['type'];
-
         echo json_encode($client->getTiersByNumIntituleSearch($_GET["term"], $_GET["type"], $_GET["ctSommeil"]));
         break;
 

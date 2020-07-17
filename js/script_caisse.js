@@ -200,11 +200,13 @@ jQuery(function ($) {
             $.ajax({
                 url: 'indexServeur.php?page=getCompteSortie',
                 method: 'GET',
-                dataType: 'html',
+                dataType: 'json',
                 async : false,
                 success: function (data) {
-                    $("#banque").val(data);
-                    $("#CG_NumBanque").val(data)
+                    $("#banque").val(data.CG_Num);
+                    $("#CG_NumBanque").val(data.CG_Num)
+                    $("#CG_Analytique").val(data.CG_Analytique)
+                    displayCG_NumAnalytique(data.CG_Analytique)
                 }
             });
             $("#libelleRec").attr("readonly", false);

@@ -74,7 +74,7 @@ class TaxeClass Extends Objet{
     }
 
     public function allSearch($intitule="",$top=0){
-        return $this->getApiJson("/allSearch&intitule=".urlencode($intitule)."&top=$top");
+        return $this->getApiJson("/allSearch&intitule={$this->formatString($intitule)}&top=$top");
     }
 
     public function __toString() {

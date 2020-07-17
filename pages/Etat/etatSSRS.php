@@ -60,7 +60,7 @@ and open the template in the editor.
                 //get report parameters based on either defaults or changed values
                 $reportParameters = $ssrs_report->GetReportParameters($query, null, true, $parmVals, null);
                 $i=0;
-                $controls .= "\n<div class='row'>";
+                $controls .= "\n<div class=' p-3 card'> <h3 style='color:black'>Filtres</h3><div class='row'>";
 
                 foreach($reportParameters as $reportParameter)
                 {
@@ -302,7 +302,7 @@ and open the template in the editor.
                                 <label>Type d'impression:</label>
                                 <input class='form-control' name='exportName' value='$namerep' type='text' onkeypress='submitenter(event);' />
                             </div>";
-                $controls .= "\n</div>";
+                $controls .= "\n</div></div>";
                 //We need to get the list of available reports
                 //Play with the Types to create a hierarchical menu
 

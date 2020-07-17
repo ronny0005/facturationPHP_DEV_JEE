@@ -123,7 +123,8 @@ jQuery(function ($) {
         }
         if($("#filtre_lieu").val()==1){
             var rgType = 0;
-            if($("#typeRegl").val()!="Client") rgType = 1;
+            if($("#typeRegl").val()!="Client")
+                rgType = 1;
             $("#confirm_change").dialog({
                 resizable: false,
                 height: "auto",

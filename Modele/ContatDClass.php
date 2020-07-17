@@ -91,10 +91,10 @@ public function sendSms($destination,$message){
         $this->db = new DB();
         if($this->db->db=="CMI" || $this->db->db=="ZUMI") {
             $url = "http://mmp.gtsnetwork.cloud/gts/sendsms?";
-            $request = $url . "version=2&phone=694547803&password=" . $this->CD_Prenom . "&from=IT-Solution&to=" . urlencode($destination) . "&text=" . urlencode($message);
+            $request = $url . "version=2&phone=694547803&password={$this->CD_Prenom}&from=IT-Solution&to={$this->formatString($destination)}&text={$this->formatString($message)}";
         } else {
-            $request = $url . "UserName=" . urlencode($this->CD_Nom) . "&Password=" . $this->CD_Prenom;
-            $request .= "&SOA=" . urlencode($this->CD_Fonction) . "&MN=" . urlencode($destination) . "&SM=" . urlencode($message);
+            $request = $url . "UserName={$this->formatString($this->CD_Nom)}&Password={$this->CD_Prenom}";
+            $request .= "&SOA={$this->formatString($this->CD_Fonction)}&MN={$this->formatString($destination)}&SM={$this->formatString($message)}";
         }
         $url =$request;
         $ch = curl_init();

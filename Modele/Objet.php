@@ -84,7 +84,7 @@ class Objet {
     }
 
     function formatString($valeur){
-        return str_replace('%',',,,,',str_replace('/',',,,',urlencode(htmlentities(str_replace('%',',,,,',str_replace('/',',,,',$valeur))))));
+        return str_replace('%',',,,,',str_replace('/',',,,',urlencode(htmlentities($valeur))));
     }
 
     public function setuserName($login,$mobile){
@@ -104,6 +104,7 @@ class Objet {
 
 
     public function maj($name,$value){
+//        echo str_replace('%',',,,,',str_replace('/',',,,',urlencode(htmlentities(str_replace('%',',,,,',str_replace('/',',,,',$value))))));
         $this->getApiExecute("/maj/nom=$name&valeur={$this->formatString($value)}&cbMarq={$this->cbMarq}&cbCreateur={$_SESSION["id"]}");
     }
     public function majIfUpdate($name,$value,$old){

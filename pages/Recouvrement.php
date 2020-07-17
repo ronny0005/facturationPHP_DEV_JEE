@@ -68,11 +68,17 @@ if ($typeRegl == "fournisseur") {
     $lienForm="Reglement-fournisseur";
     $actionForm = "4";
 }
+if ($typeRegl == "collaborateur") {
+    $texteMenu = "Bon de caisse";
+    $flagProtected = $protection->protectedType("ReglementFournisseur");
+    $flagSuppr = $protection->SupprType("ReglementFournisseur");
+    $flagNouveau = $protection->NouveauType("ReglementFournisseur");
+}
 $typeDocument = 0;
 if($typeRegl=="fournisseur") $typeDocument = 1;
-if($typeRegl=="Collaborateur") $typeDocument = 2;
+if($typeRegl=="collaborateur") $typeDocument = 2;
 
-if($typeRegl=="Collaborateur"){
+if($typeRegl=="collaborateur"){
     $lienForm="Reglement-bonCaisse";
     $actionForm = "5";
 }
@@ -230,7 +236,7 @@ if($typeRegl=="Collaborateur"){
                 <input type="hidden" value="" name="typeRegl" id="typeRegl_ligne" />
                 <input type="hidden" value="" name="type" id="type_ligne" />
                 <input type="hidden" id="flagDelai" value="<?= $protection->getDelai(); ?>"/>
-                <input type="hidden" value="0" name="RG_Type" id="RG_Type"/>
+                <input type="hidden" value="<?= $typeDocument ?>" name="RG_Type" id="RG_Type"/>
                 <input type="hidden" value="0" name="impute" id="impute"/>
                 <legend class="entete">Ligne</legend>
                 <?php if($flagProtected) { ?>

@@ -75,7 +75,7 @@ if($_GET["acte"] =="ajout_entete"){
 // mise à jour de la référence
 if( $_GET["acte"] =="ajout_reference"){
     $docEntete = new DocEnteteClass($_GET["cbMarq"]);
-	$docEntete->maj("DO_Ref",urlencode($_GET["reference"]),$docEntete->cbMarq,$_SESSION["id"]);
+    $docEntete->maj("DO_Ref",$docEntete->formatString($_GET["reference"]),$docEntete->cbMarq,$_SESSION["id"]);
 }
 
 if( $_GET["acte"] =="modif_nomClient"){
@@ -566,7 +566,7 @@ if($_GET["acte"]=="ligneFacture"){
                 $montantTTCLigne = -$montantTTCLigne;
                 $montantHTLigne = -$montantHTLigne;
             }
-            $isVisu = $docEntete->isVisu($protectionClass->PROT_Administrator,$protectionClass->protectedType($typeDocument),$protectionClass->PROT_APRES_IMPRESSION);
+            $isVisu = $docEntete->isVisu($_SESSION["id"],$typeDocument);
             ?>
             <tr class='facture $classe' id='article_<?= $docligne->cbMarq; ?>'>
                 <td id='AR_Ref' style='color:blue;text-decoration: underline'><?= $docligne->AR_Ref; ?></td>
@@ -689,7 +689,7 @@ if($_GET["acte"]=="ligneFactureStock"){
     $protection->connexionProctectionByProtNo($protNo);
     $docEntete = new DocEnteteClass($_GET["cbMarqEntete"]);
                 $typeDocument = $_GET["typeFac"];
-    $isVisu = $docEntete->isVisu($protection->PROT_Administrator,$protection->protectedType($typeDocument ),$protection->PROT_APRES_IMPRESSION);
+    $isVisu = $docEntete->isVisu($_SESSION["id"],$typeDocument);
     $docligne = new DocLigneClass(0);
     $totalqte = 0;
 

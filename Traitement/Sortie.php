@@ -48,11 +48,11 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif"){
         $machine ="";
         if(isset($_GET["machineName"]))
             $machine = $_GET["machineName"];
-        $docEntete = new DocEnteteClass($cbMarqEntete,$objet->db);
+        $docEntete = new DocEnteteClass($cbMarqEntete);
         if (isset($_GET["PROT_No"])) {
-            $protection = new ProtectionClass("", "", $objet->db);
+            $protection = new ProtectionClass("", "");
             $protection->connexionProctectionByProtNo($_GET["PROT_No"]);
-            $isVisu = $docEntete->isVisu($protection->PROT_Administrator, $protection->protectedType("Sortie"), $protection->PROT_APRES_IMPRESSION);
+            $isVisu = $docEntete->isVisu($_SESSION["id"],"Sortie");
             if (!$isVisu) {
                 if ($_GET["acte"] == "ajout_ligne") {
                     $ref_article = $_GET["designation"];

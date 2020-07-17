@@ -53,7 +53,7 @@
             <select class="form-control" id="affaire" name="affaire">
                 <?php
                     if($admin==0){
-                        $rows = $protection->getSoucheDepotGrpAffaire($_SESSION["id"],$type,-1);
+                        $rows = $protection->getSoucheDepotGrpAffaire($_SESSION["id"],$type,0);
                     }else{
                         $rows = $protection->getAffaire(0);
                     }

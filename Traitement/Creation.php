@@ -572,7 +572,7 @@ if(strcmp($_GET["acte"],"ajout_client") == 0){
 if(strcmp($_GET["acte"],"modif_client") == 0){
     $ncompte = $_GET["CT_Num"];
     //$type = $_GET["type"];
-    $comptetClass = new ComptetClass($ncompte,$objet->db);
+    $comptetClass = new ComptetClass($ncompte);
 
     $comptetClass->CT_Intitule= str_replace("'", "''", $_GET["CT_Intitule"]);
     $comptetClass->CT_Adresse= str_replace("'", "''", $_GET["CT_Adresse"]);
@@ -592,7 +592,6 @@ if(strcmp($_GET["acte"],"modif_client") == 0){
     $comptetClass ->CT_Sommeil= $_GET["CT_Sommeil"];
     $comptetClass->CT_ControlEnc = $_GET["CT_ControlEnc"];
     $comptetClass->CT_Encours = str_replace(" ", "", $_GET["CT_Encours"]);
-
     if($_GET["CA_Num"]=="selected")
         $CA_Num= "";
     $comptetClass->maj_client();

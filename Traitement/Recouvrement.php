@@ -44,8 +44,8 @@ if(strcmp($_POST["acte"],"addReglement") == 0){
     $type = $_POST["type"];
     $dateReglementEntete_deb = $_POST["dateReglementEntete_deb"];
     $dateReglementEntete_fin = $_POST["dateReglementEntete_fin"];
-    $reglement->addReglement($_SESSION["id"],urlencode($jo_num),$rg_no_lier,urlencode($ct_num)
-        ,$ca_no,$boncaisse,urlencode($libelle),$caissier
+    $reglement->addReglement($_SESSION["id"],$reglement->formatString($jo_num),$rg_no_lier,$reglement->formatString($ct_num)
+        ,$ca_no,$boncaisse,$reglement->formatString($libelle),$caissier
         ,$date,$modeReglementRec,$montant,$impute,$RG_Type,true,$typeRegl);
     $valAction = 2;
     if($typeRegl=="Fournisseur")

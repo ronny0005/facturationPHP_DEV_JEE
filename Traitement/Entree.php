@@ -53,7 +53,7 @@ if($_GET["acte"] =="ajout_ligne"|| $_GET["acte"] =="modif") {
         if (isset($_GET["PROT_No"])) {
             $protection = new ProtectionClass("", "", $objet->db);
             $protection->connexionProctectionByProtNo($_GET["PROT_No"]);
-            $isVisu = $docEntete->isVisu($protection->PROT_Administrator, $protection->protectedType("Entree"), $protection->PROT_APRES_IMPRESSION);
+            $isVisu = $docEntete->isVisu($_SESSION["id"],"Entree");
             if (!$isVisu) {
                 if ($_GET["acte"] == "ajout_ligne") {
                     $ref_article = $_GET["designation"];

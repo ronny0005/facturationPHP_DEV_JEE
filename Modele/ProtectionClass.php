@@ -451,9 +451,11 @@ class ProtectionClass extends Objet{
     }
 
     public function getDelai(){
-
+        $lien = $this->lien;
         $this->lien="ppreference";
-        return $this->getApiJson("/info")->pr_DelaiPreAlert;
+        $var = $this->getApiJson("/info")->pr_DelaiPreAlert;
+        $this->lien = $lien ;
+        return $var;
     }
 
     public function getSoucheDepotGrpSouche($prot_no,$type){

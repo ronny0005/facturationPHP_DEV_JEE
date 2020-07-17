@@ -97,7 +97,7 @@ class ReglementClass Extends Objet{
     }
 
     public function majReglement($protNo,$bonCaisse,$rgNo,$rgLibelle,$montant,$rgDate,$joNum,$ctNum,$coNo){
-        $this->getApiExecute("/modifReglementTiers&protNo=$protNo&coNo=$coNo&bonCaisse=$bonCaisse&rgNo=$rgNo&rgLibelle=".urlencode($rgLibelle)."&montant=$montant&rgDate=$rgDate&joNum=".urlencode($joNum)."&ctNum=".urlencode($ctNum));
+        $this->getApiExecute("/modifReglementTiers&protNo=$protNo&coNo=$coNo&bonCaisse=$bonCaisse&rgNo=$rgNo&rgLibelle={$this->formatString($rgLibelle)}&montant=$montant&rgDate=$rgDate&joNum={$this->formatString($joNum)}&ctNum={$this->formatString($ctNum)}");
     }
 
     public function addEcheance($protNo,$rgNo,$typeRegl,$cbMarqEntete,$montant){
@@ -105,7 +105,7 @@ class ReglementClass Extends Objet{
     }
 
     public function insertMvtCaisse($rgMontant,$protNo,$caNum,$libelle,$rgTypeReg,$caNo,$cgNumBanque,$isModif,$rgDate,$joNum,$caNoDest,$cgAnalytique,$rgTyperegModif,$journalRec,$rgNoDest){
-        $this->getApiExecute("/insertMvtCaisse&rgMontant=$rgMontant&protNo=$protNo&caNum=$caNum&libelle=".urlencode($libelle)."&rgTypeReg=$rgTypeReg&caNo=$caNo&cgNumBanque=$cgNumBanque&isModif=$isModif&rgDate=$rgDate&joNum=$joNum&caNoDest=$caNoDest&cgAnalytique=$cgAnalytique&rgTyperegModif=$rgTyperegModif&journalRec=$journalRec&rgNoDest=$rgNoDest");
+        $this->getApiExecute("/insertMvtCaisse&rgMontant=$rgMontant&protNo=$protNo&caNum=$caNum&libelle={$this->formatString($libelle)}&rgTypeReg=$rgTypeReg&caNo=$caNo&cgNumBanque=$cgNumBanque&isModif=$isModif&rgDate=$rgDate&joNum=$joNum&caNoDest=$caNoDest&cgAnalytique=$cgAnalytique&rgTyperegModif=$rgTyperegModif&journalRec=$journalRec&rgNoDest=$rgNoDest");
     }
 
     public function  insertF_Reglement(){
