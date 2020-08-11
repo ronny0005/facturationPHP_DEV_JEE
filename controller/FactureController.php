@@ -362,6 +362,7 @@ $accessPrix = "";
 if ($flagPxVenteRemise != 0)
     $accessPrix =" readonly ";
 
+
 //Remise
 
 $accessRemise = "";
@@ -369,8 +370,11 @@ if($flagPxVenteRemise!=0) $accessRemise= " readonly ";
 
 //PU ttc
 $accessPUTTC = "";
-if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
-    $accessPUTTC ="style='display:none'";
+
+if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0)) {
+    $accessPUTTC = "style='display:none'";
+    $accessPrix ="style='display:none'";
+}
 $accessMontantHT = "";
 if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
     $accessMontantHT ="style='display:none'";
@@ -383,7 +387,7 @@ $listeReglement = "";
 $creglement  = new ReglementClass(0);
 $rows = $creglement->getReglementByClientFacture($docEntete->cbMarq);
 if($rows==null){
-    $listeReglement = $listeReglement. "<tr><td colspan='5' class='text-center'>Aucun élément trouvé ! </td></tr>";
+    $listeReglement = "";
 }else{
     foreach ($rows as $row){
         $date=date("d-m-Y", strtotime($row->RG_Date));

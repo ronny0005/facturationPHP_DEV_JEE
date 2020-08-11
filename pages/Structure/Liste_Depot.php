@@ -39,18 +39,31 @@ include("module/Menu/BarreMenu.php");
 </form>
 
     <?php
-        if(isset($_GET["DE_No"])){
-            $deNo = $_GET["DE_No"];
-            if($deNo=="0")
-                echo "<div class='alert alert-success'>Le depot a bien été crée !</div>";
-            else
-                echo "<div class='alert alert-success'>Le depot $deNo a bien été modifié !</div>";
-
+    $statut = (isset($_GET["statut"])) ? $_GET["statut"] : 0;
+    if(isset($_GET["DE_No"]) && $statut!=0) {
+        $type = "La création ";
+        $alert = "alert-success";
+        if($statut == 3) {
+            $type = "La suppression ";
         }
+        if($statut == 4) {
+            $alert = "alert-danger";
+            $type = "Echec de la suppression ";
+        }
+
+        if($statut == 2)
+            $type = "La modification ";
+
+        ?>
+        <div class="mt-3 alert <?= $alert ?>">
+            <?= $type ?>du dépot <?= $_GET["DE_No"] ?> a été effectuée !
+        </div>
+        <?php
+    }
     ?>
 <div class="err" id="add_err"></div>
-<table id="table" class="table mt-3">
-        <thead style="background-color: #dbdbed;">
+<table id="table" class="table table-striped">
+        <thead>
             <th>Intitulé</th>
             <th>Code postal</th>
             <th>Ville</th>
@@ -74,7 +87,7 @@ include("module/Menu/BarreMenu.php");
                     <?php
                         if($flagSuppr) {
                             ?>
-                            <td><a href="Traitement\Depot.php?acte=suppr&DE_No=<?= $row->DE_No ?>" onclick="if(window.confirm("Voulez-vous vraiment supprimer <?=$row->DE_Intitule ?>")){return true;}else{return false;}"><i class='fa fa-trash-o'></i></a></td>
+                            <td><a href="supprDepot-<?= $row->DE_No ?>" onclick="if(window.confirm("Voulez-vous vraiment supprimer <?=$row->DE_Intitule ?>")){return true;}else{return false;}"><i class='fa fa-trash-o'></i></a></td>
                         <?php }
                         ?>
                     </tr>

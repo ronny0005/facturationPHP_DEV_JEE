@@ -33,11 +33,35 @@ include("module/Menu/BarreMenu.php");
     <thead>
         <tr>
         <?php if($flagNouveau){ ?>
-            <td style="float:right"><a href=ficheCaisse"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
+            <td style="float:right">
+                <a href="ficheCaisse"><button type="button" id="nouveau" class="btn btn-primary">Nouveau</button></a></td> <?php } ?>
         </tr>
         </form>
 </table>
-<div class="err" id="add_err"></div>
+
+<?php
+$statut = (isset($_GET["statut"])) ? $_GET["statut"] : 0;
+if(isset($_GET["CA_No"]) && $statut!=0) {
+    $type = "La création ";
+    $alert = "alert-success";
+    if($statut == 3) {
+        $type = "La suppression ";
+    }
+    if($statut == 4) {
+        $alert = "alert-danger";
+        $type = "Echec de la suppression ";
+    }
+
+    if($statut == 2)
+        $type = "La modification ";
+
+    ?>
+    <div class="mt-3 alert <?= $alert ?>">
+        <?= $type ?>de la caisse <?= $_GET["CA_No"] ?> a été effectuée !
+    </div>
+    <?php
+}
+?>
 <table id="table" class="table table-striped">
         <thead>
             <th>Intitulé</th>
@@ -45,13 +69,12 @@ include("module/Menu/BarreMenu.php");
         </thead>
     <tbody id="liste_depot">
         <?php
-        
         $objet = new ObjetCollector();
         $caisseClass = new CaisseClass(0);
             foreach ($caisseClass->all() as $row){
                 echo "<tr class='article' id='article_{$row->CA_No}'>
                         <td><a href='ficheCaisse-{$row->CA_No}'>{$row->CA_Intitule}</a></td>";
-                        if($flagSuppr) echo "<td><a href='Traitement\Depot.php?acte=suppr&CA_No={$row->CA_No}' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer ".$row->CA_Intitule." ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
+                        if($flagSuppr) echo "<td><a href='supprCaisse-{$row->CA_No}' onclick=\"if(window.confirm('Voulez-vous vraiment supprimer ".$row->CA_Intitule." ?')){return true;}else{return false;}\"><i class='fa fa-trash-o'></i></a></td>";
                         echo "</tr>";
             }
       ?>

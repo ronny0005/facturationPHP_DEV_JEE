@@ -13,7 +13,7 @@ jQuery(function($){
                 dataType: 'json',
                 data : $("#formDepot").serialize(),
                 success: function(data) {
-                    window.location.replace("listeDepot-0");
+                    window.location.replace("listeDepot-1-"+data.DE_No);
                 } 
             }); 
         }else {
@@ -24,7 +24,7 @@ jQuery(function($){
                 data : $("#formDepot").serialize(),
                 success: function(data) {
                     
-                    window.location.replace("listeDepot-"+data.DE_No);
+                    window.location.replace("listeDepot-2-"+data.DE_No);
                 } 
             });
         }

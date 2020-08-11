@@ -49,8 +49,8 @@
                         <div class="col-12 col-sm-6 col-md-3">
                             <label>Prix de vente affiché</label>
                             <select id="AR_PrixTTC" name="AR_PrixTTC" class="form-control">
-                                <option value="0" <?php if($CT_PrixTTC==0) echo "selected"; ?> >PV HT</option>
-                                <option value="1" <?php if($CT_PrixTTC==1) echo "selected"; ?> >PV TTC</option>
+                                <option value="0" <?= ($CT_PrixTTC==0) ? "selected" : ""; ?> >PV HT</option>
+                                <option value="1" <?= ($CT_PrixTTC==1) ? "selected" : ""; ?> >PV TTC</option>
                             </select>
                             <input type="text" value="<?= $pxVtHT; ?>" name="pxHT" class="form-control" id="pxHT" placeholder="Prix de vente" <?php if(!$flagInfoLibreArticle  || (!$flagProtected)) echo "readonly"; ?>/>
                         </div>

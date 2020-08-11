@@ -15,6 +15,7 @@ include("../Modele/CatTarifClass.php");
 include("../Modele/F_TarifClass.php");
 include("../Modele/F_ArtClientClass.php");
 include("../Modele/ProtectionClass.php");
+include("../Modele/F_CatalogueClass.php");
 
 if(strcmp($_GET["acte"],"modif_article") == 0){
     $article = new ArticleClass(strtoupper($_GET["reference"]));
@@ -61,7 +62,7 @@ if(strcmp($_GET["acte"],"modif_article") == 0){
                     Ancien prix : ".$objet->formatChiffre($ancienPxMax)." Nouveau prix : ".$objet->formatChiffre($article->Prix_Max).". <br/><br/> Cordialement.";
         $titreMail = "Modification du prix maximum de l'article ".$article->AR_Ref." - ".$article->AR_Design;
     }
-
+/*
     if($msgMail!=""){
         $result = $objet->db->requete($objet->getInfoRAFControleur());
         $rows = $result->fetchAll(PDO::FETCH_OBJ);
@@ -74,17 +75,21 @@ if(strcmp($_GET["acte"],"modif_article") == 0){
             }
         }
     }
+*/
     $data = array('AR_Ref' => $article->AR_Ref);
     echo json_encode($data);
 }
 
 if(strcmp($_GET["acte"],"suppr_famille") == 0){
-    $result=$objet->db->requete($objet->isFamilleLigne($_GET["FA_CodeFamille"]));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
-        $result=$objet->db->requete($objet->supprFamille($_GET["FA_CodeFamille"]));
-        header('Location: ../indexMVC.php?module=3&action=6&acte=supprOK&codeFAM='.$_GET["FA_CodeFamille"]);
-    }else header('Location: ../indexMVC.php?module=3&action=6&acte=supprKO&codeFAM='.$_GET["FA_CodeFamille"]);
+    $famille = new FamilleClass($_GET["FA_CodeFamille"]);
+    $famille->supprFamille();
+    header('Location: listeFamille-3-'.$_GET["FA_CodeFamille"]);
+}
+
+if(strcmp($_GET["acte"],"suppr_caisse") == 0){
+    $caisse = new CaisseClass($_GET["CA_No"]);
+    $caisse->deleteCaisse();
+    header('Location: listeCaisse-3-'.$_GET["CA_No"]);
 }
 
 if(strcmp($_GET["acte"],"supprArtFournisseur") == 0) {
@@ -140,7 +145,7 @@ if(strcmp($_GET["acte"],"ajoutArtFournisseur") == 0){
                                     $af_remisenouv,$af_dateapplication);
     echo json_encode($item);
 }
- 
+
 if(strcmp($_GET["acte"],"suppr_client") == 0){
     $type = $_GET["type"];
     $result=$objet->db->requete($objet->isClientLigne($_GET["CT_Num"]));
@@ -178,10 +183,10 @@ if(strcmp($_GET["acte"],"modif_famille") == 0){
     if(isset($_GET["catal4"]))
     $catal4 = $_GET["catal4"];
     if(!isset($_GET["valide"]))
-        $famille = new FamilleClass($ref,$objet->db);
-        $famille->modifFamille($ref,$intitule,$catal1,$catal2,$catal3,$catal4);
-    $result=$objet->db->requete($objet->getCatalogueChildren($niv,$no));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
+        $famille = new FamilleClass($ref);
+    $famille->modifFamille($intitule,$catal1,$catal2,$catal3,$catal4);
+    $catalogue = new F_CatalogueClass(0);
+    $catalogue->getCatalogueByCL($niv,$no);
     $data = array('codeFAM' => $ref);
     echo json_encode($data);
 }
@@ -189,9 +194,8 @@ if(strcmp($_GET["acte"],"modif_famille") == 0){
 if(strcmp($_GET["acte"],"ajout_famille") == 0){
     $ref = strtoupper($_GET["FA_CodeFamille"]);
     $intitule = str_replace("'", "''", $_GET["intitule"]);
-    $result=$objet->db->requete($objet->getFamilleByCode($ref));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
-    if($rows==null){
+    $famille = new FamilleClass($ref);
+    if($famille->cbMarq==null){
     $catal1 = 0;
     $catal2 = 0;
     $catal3 = 0;
@@ -206,7 +210,7 @@ if(strcmp($_GET["acte"],"ajout_famille") == 0){
     $catal3 = $_GET["catal3"];
     if(isset($_GET["catal4"]))
     $catal4 = $_GET["catal4"];
-    $famille = new FamilleClass(0,$objet->db);
+    $famille = new FamilleClass(0);
     $famille->insertFamille($ref,$intitule,$catal1,$catal2,$catal3,$catal4);
     $data = array('codeFAM' => $ref);
     echo json_encode($data);
@@ -237,7 +241,7 @@ if(strcmp($_GET["acte"],"ListeClientRemise") == 0){
 }
 
 if(strcmp($_GET["acte"],"articleByDesign") == 0){
-    $article = new ArticleClass(0,$objet->db);
+    $article = new ArticleClass(0);
     $rows = $article->getArticleByIntitule($_POST["AR_Design"]);
     if (sizeof($rows)>0){
         echo "Ce nom est déjà utilisé pour un article !";
@@ -245,7 +249,7 @@ if(strcmp($_GET["acte"],"articleByDesign") == 0){
 }
 
 if(strcmp($_GET["acte"],"clientByIntitule") == 0){
-    $client = new ComptetClass(0,$objet->db);
+    $client = new ComptetClass(0);
     $rows = $client->getTiersByIntitule($_POST["CT_Intitule"]);
     if (sizeof($rows)>0){
         echo "Ce nom est déjà utilisé pour un tier !";
@@ -321,6 +325,49 @@ if(strcmp($_GET["acte"],"suppr_article") == 0){
         header('Location: ../listeArticle-3-'.$_GET["AR_Ref"]);
     }else
         header('Location: ../listeArticle-4-'.$_GET["AR_Ref"]);
+}
+var_dump($_POST);
+if(isset($_POST["acte"]))
+
+if(strcmp($_POST["acte"],"actionUser") == 0){
+
+    $protectionUser = new ProtectionClass("","");
+    $protectionUser->connexionProctectionByProtNo($_POST["id"]);
+    $protectionUser->PROT_User = $_POST["username"];
+    $protectionUser->PROT_Description = $_POST["description"];
+    $protectionUser->PROT_Pwd = $_POST["password"];
+    $protectionUser->PROT_Email = $_POST["email"];
+    $protectionUser->PROT_Right = $_POST["groupeid"];
+    $protectionUser->PROT_PwdStatus = $_POST["changepass"];
+
+    $protectionUser->PROT_UserProfil = (isset($_POST["profiluser"])) ? $_POST["profiluser"] : 0;
+    $depot = (isset($_POST["depot"])) ? $_POST["depot"] : 0;
+    $depotprincipal = (isset($_POST["depotprincipal"])) ? $_POST["depotprincipal"] : 0;
+    if($_POST["id"]!="")
+        $protectionUser->majProtectioncial($depot,$depotprincipal);
+    else
+        $protectionUser->ajoutUser($_POST["securiteAdmin"],$depot,$depotprincipal);
+    header("location : listeUser");
+}
+if(isset($_POST["acte"]))
+if(strcmp($_POST["acte"],"gestionProfil") == 0) {
+    if (isset($_POST["valider"])) {
+        if ($_POST["profilName"] != "") {
+            if ($_POST["update"] == 0) {
+                $protection = new ProtectionClass("", "");
+                $protection->PROT_User = $_POST["profilName"];
+                $protection->PROT_Right = 2;
+                $protection->PROT_PwdStatus = 0;
+                $value = $protection->createUser();
+                header('Location: ../listeProfil-1-0');
+            } else {
+                $protection = new ProtectionClass("", "");
+                $protection->connexionProctectionByProtNo($_POST["PROT_No"]);
+                $protection->maj("PROT_User", $_POST["profilName"]);
+                header('Location: ../listeProfil-2-' . $_POST["PROT_No"]);
+            }
+        }
+    }
 }
 
 if(strcmp($_GET["acte"],"liste_clientNum") == 0){
@@ -580,16 +627,16 @@ if(strcmp($_GET["acte"],"modif_client") == 0){
     //$comptetClass ->CT_CodePostal= "";//$_GET["CT_CodePostal"];
     $comptetClass->DE_No= $_GET["depot"];
     $comptetClass->CT_CodeRegion= str_replace("'", "''", $_GET["CT_CodeRegion"]);
-    $comptetClass ->CT_Ville= str_replace("'", "''",$_GET["CT_Ville"]);
+    $comptetClass->CT_Ville= str_replace("'", "''",$_GET["CT_Ville"]);
     $comptetClass->CT_Siret = $_GET["CT_Siret"];
-    $comptetClass ->CT_Identifiant= $_GET["CT_Identifiant"];
-    $comptetClass ->CT_Telephone= $_GET["CT_Telephone"];
-    $comptetClass ->N_CatCompta= $_GET["N_CatCompta"];
-    $comptetClass ->N_CatTarif= $_GET["N_CatTarif"];
-    $comptetClass ->MR_No= $_GET["mode_reglement"];
-    $comptetClass ->CA_Num= $_GET["CA_Num"];
-    $comptetClass ->CO_No= $_GET["CO_No"];
-    $comptetClass ->CT_Sommeil= $_GET["CT_Sommeil"];
+    $comptetClass->CT_Identifiant= $_GET["CT_Identifiant"];
+    $comptetClass->CT_Telephone= $_GET["CT_Telephone"];
+    $comptetClass->N_CatCompta= $_GET["N_CatCompta"];
+    $comptetClass->N_CatTarif= $_GET["N_CatTarif"];
+    $comptetClass->MR_No= $_GET["mode_reglement"];
+    $comptetClass->CA_Num= $_GET["CA_Num"];
+    $comptetClass->CO_No= $_GET["CO_No"];
+    $comptetClass->CT_Sommeil= $_GET["CT_Sommeil"];
     $comptetClass->CT_ControlEnc = $_GET["CT_ControlEnc"];
     $comptetClass->CT_Encours = str_replace(" ", "", $_GET["CT_Encours"]);
     if($_GET["CA_Num"]=="selected")
@@ -633,7 +680,7 @@ if(strcmp($_GET["acte"],"maj_prix_detail") == 0){
 }
 
 if(strcmp($_GET["acte"],"ajout_article") == 0){
-    $article = new ArticleClass(0,$objet->db);
+    $article = new ArticleClass(0);
     if(isset($_GET["reference"]))
         $article->AR_Ref = strtoupper($_GET["reference"]);
     if(isset($_GET["referenceAjout"]))
@@ -673,8 +720,10 @@ if(strcmp($_GET["acte"],"ajout_article") == 0){
     $article->CL_No2 = 0;
     $article->CL_No3 = 0;
     $article->CL_No4 = 0;
-    $article->Qte_Gros = 0;
-    $article->Qte_Gros = $_GET["qteGros"];
+    if(isset($_GET["pxMax"]))
+        $article->Qte_Gros = str_replace(" ","",str_replace(",",".",$_GET["qteGros"]));
+    else
+        $article->Qte_Gros = 0;
     if($article->Qte_Gros=="")
         $article->Qte_Gros=0;
     if(isset($_GET["AR_PrixTTC"]))
@@ -750,7 +799,7 @@ if(strcmp($_GET["acte"],"ajout_user") == 0){
 }
 
 if(strcmp($_GET["acte"],"ajout_depot") == 0){
-    $depot = new DepotClass(0,$objet->db);
+    $depot = new DepotClass(0);
     $depot->DE_Intitule = str_replace("'","''", $_GET["intitule"]);
     $depot->DE_Adresse = str_replace("'","''", $_GET["adresse"]);
     $depot->DE_Complement = str_replace("'","''", $_GET["complement"]);
@@ -784,46 +833,33 @@ if(strcmp($_GET["acte"],"ajout_depot") == 0){
     $affaire= str_replace("'","''", $_GET["affaire"]);
     $depot->DE_Telephone = $_GET["tel"];
     $depot->CA_CatTarif=$_GET["CA_CatTarif"];
-    $depot->insertFDepot();
-    $depot->insertFDepotTempl();
-    $depot->insertDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$affaire);
-    $depot->insertDepotCaisse($caisse);
-    if(isset($_GET["code_client"]))
-        foreach($codeClient as $code)
-            $depot->insertDepotClient($code);
-
+    $depot->insertFDepot($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$caisse,$codeClient);
     $data = array('DE_No' => $depot->DE_Intitule);
     echo json_encode($data);
 }  
 
 
 if(strcmp($_GET["acte"],"ajout_caisse") == 0){
-    $caisse = new CaisseClass(0,$objet->db);
+    $caisse = new CaisseClass(0);
     $caisse->CA_Intitule = str_replace("'","''", $_GET["intitule"]);
     $caisse->CO_NoCaissier = $_GET["caissier"];
     $caisse->JO_Num = $_GET["journal"];
     if(isset($_GET["depot"]))
-        $codeDepot=$_GET["depot"];
+        $codeDepot=join(",",$_GET["depot"]);
     else
         $codeDepot="";
-    $caisseVal = $caisse->insertCaisse();
-    $caisse = new CaisseClass($caisseVal->CA_No,$objet->db);
-    $caisse->supprDepotCaisse();
-    if(isset($_GET["depot"]))
-        foreach($codeDepot as $code)
-            $caisse->insertDepotCaisse($code);
-    $data = array('CA_No' => $caisse->CA_Intitule);
+    $caisseVal = $caisse->insertCaisse($codeDepot);
+    $data = array('CA_No' => 0);
     echo json_encode($data);
 }
 
 
 
 if(strcmp($_GET["acte"],"modif_caisse") == 0){
-    $caisse = $_GET["ca_no"];
-    $caisse = new CaisseClass($_GET["ca_no"],$objet->db);
+    $caisse = $_GET["CA_No"];
+    $caisse = new CaisseClass($_GET["CA_No"]);
     $caisse->CO_NoCaissier = $_GET["caissier"];
     $caisse->JO_Num = $_GET["journal"];
-    $caisse->CA_CatTarif = $_GET["CA_CatTarif"];
     $caisse->CA_Intitule = str_replace("'","''", $_GET["intitule"]);
     if(isset($_GET["depot"]))
         $codeDepot=$_GET["depot"];
@@ -834,7 +870,7 @@ if(strcmp($_GET["acte"],"modif_caisse") == 0){
     if(isset($_GET["depot"]))
         foreach($codeDepot as $code)
             $caisse->insertDepotCaisse($code);
-    $data = array('CA_No' => $caisse->CA_Intitule);
+    $data = array('CA_No' => $caisse->CA_No);
     echo json_encode($data);
 }
     
@@ -889,7 +925,13 @@ if(strcmp($_GET["acte"],"modif_depot") == 0){
     $depot->insertDepotCaisse($caisse);
     $data = array('DE_No' => $depot->DE_Intitule);
     echo json_encode($data);
-}   
+}
+
+if($_GET["acte"] =="supprDepot"){
+    $DE_No = $_GET["DE_No"];
+    $depot = new DepotClass($DE_No);
+    header('Location: listeDepot-3-'.$DE_No);
+}
 
 if(strcmp($_GET["acte"],"modif_user") == 0){
     $id =$_GET["id"];

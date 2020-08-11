@@ -9,49 +9,43 @@ include("controller/structure/TiersController.php");
 
         <div class="card p-3">
         <div class="row mt-3" >
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                     <input type="hidden" id="type" name="type" type="hidden" value="<?php if($type=="fournisseur") echo "1"; if($type=="client") echo "0";if($type=="salarie") echo "2"; ?>"/>
                 <input type="hidden" id="DE_No" name="DE_No" type="hidden" value="1"/>
                 <label for="inputfirstname" class="control-label"> Num&eacute;ro compte : </label>
                 <input value="<?= $cbMarqTiers ?>" type="hidden" name="cbMarqTiers" id="cbMarqTiers" />
 
-                <input maxlength="17" value="<?php echo $ncompte; ?>" style=";text-transform:uppercase" type="text" onkeyup="this.value=this.value.replace(' ','')" name="CT_Num" id="CT_Num" class="form-control only_alpha_num" placeholder="Numéro compte" <?php if(isset($_GET["CT_Num"])) echo "disabled"; ?> />
+                <input maxlength="17" value="<?= $ncompte; ?>" style=";text-transform:uppercase" type="text" onkeyup="this.value=this.value.replace(' ','')" name="CT_Num" id="CT_Num" class="form-control only_alpha_num" placeholder="Numéro compte" <?php if(isset($_GET["CT_Num"])) echo "disabled"; ?> />
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Intitul&eacute; : </label>
-                <input maxlength="35" value="<?php echo $intitule; ?>" style="text-transform:uppercase" type="text" name="CT_Intitule" class="form-control" id="intitule" placeholder="Intitulé" <?php if(!$flagProtected) echo "disabled"; ?>/>
+                <input maxlength="35" value="<?= $intitule; ?>" style="text-transform:uppercase" type="text" name="CT_Intitule" class="form-control" id="intitule" placeholder="Intitulé" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-        </div>
-        <div class="row" >
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Adresse : </label>
                 <input value="<?php echo $adresse; ?>" style="" name="CT_Adresse" type="text" class="form-control" id="adresse" placeholder="Adresse" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> R&eacute;gion : </label>
                 <input value="<?php echo $region; ?>" style="" type="text" class="form-control" name="CT_CodeRegion" id="CT_CodeRegion" placeholder="Région" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Ville : </label>
                 <input value="<?php echo $ville; ?>" style=""  type="text" class="form-control" name="CT_Ville" id="CT_Ville" placeholder="ville" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-        </div>
-        <div class="row">
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> T&eacute;l&eacute;phone : </label>
                 <input value="<?php echo $tel; ?>" style="" name="CT_Telephone" type="text" class="form-control only_phone_number" id="tel" placeholder="Téléphone" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> N Siret/NContrib : </label>
                 <input value="<?php echo $nsiret; ?>" style="" name="CT_Siret" type="text" class="form-control" id="CT_Siret" placeholder="N° Siret" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Identifiant/RC Num :  </label>
                 <input value="<?php echo $identifiant; ?>" style="" name="CT_Identifiant" type="text" class="form-control" id="CT_Identifiant" placeholder="Identifiant" <?php if(!$flagProtected) echo "disabled"; ?>/>
             </div>
-        </div>
-        <div class="row">
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Compteg : </label>
                 <select style="" name="CG_NumPrinc" class="form-control" id="CG_NumPrinc<?php if(!$flagProtected) echo "protected"?>" <?php if(!$flagProtected) echo "disabled"; ?>>
                     <?php
@@ -79,7 +73,7 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Cat Tarif : </label>
                 <select style="" name="N_CatTarif"  class="form-control" name="N_CatTarif" id="cattarif" <?php if(!$flagProtected) echo "disabled"; ?>>
                     <?php
@@ -92,7 +86,7 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Cat compta : </label>
                 <select style="" name="N_CatCompta" class="form-control" name="N_CatCompta" id="catcompta" <?php if(!$flagProtected) echo "disabled"; ?>>
                     <?php
@@ -110,7 +104,7 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Mode de règlement : </label>
                 <select style="" name="mode_reglement" class="form-control" name="mode_reglement" id="mode_reglement" <?php if(!$flagProtected) echo "disabled"; ?>>
                     <option value="0"></option>
@@ -125,11 +119,9 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-        </div>
-        <div class="row">
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Dépôt : </label>
-                <select style="" name="depot" class="form-control" name="depot" id="depot" <?php if(!$flagProtected) echo "disabled"; ?>>
+                <select style="width:100%"  name="depot" class="form-control" name="depot" id="depot" <?php if(!$flagProtected) echo "disabled"; ?>>
                     <?php
                     $depotClass = new DepotClass(0);
                     foreach($depotClass->all() as $row){
@@ -141,10 +133,10 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Collaborateur : </label>
                 <select style="" class="form-control" name="CO_No" id="CO_No" <?php if(!$flagProtected) echo "disabled"; ?>>
-                    <option value="0" <?php if($co_no==0) echo " selected"; ?>></option>
+                    <option value="0" <?php if($co_no==0) echo " selected"; ?>>-</option>
                     <?php
                     $collab = new CollaborateurClass(0);
                     $rows = $collab->allVendeur();
@@ -159,10 +151,10 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-            <div class="col" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Affaire : </label>
                 <select style="" name="CA_Num" class="form-control" name="CA_Num" id="CA_Num" <?php if(!$flagProtected) echo "disabled"; ?>>
-                    <option value=""></option>
+                    <option value="">-</option>
                     <?php
                     $comptea = new FCompteaClass(0);
                     foreach($comptea->getAffaire() as $row){
@@ -175,7 +167,7 @@ include("controller/structure/TiersController.php");
                     ?>
                 </select>
             </div>
-            <div class="col-lg-3" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Sommeil: </label>
                 <select style="" class="form-control" name="CT_Sommeil" id="CT_Sommeil" <?= (!$flagProtected) ? "disabled":""; ?>>
                     <option value="0" <?= ($ctSommeil==0) ? " selected" : "" ?>>Non</option>
@@ -183,12 +175,12 @@ include("controller/structure/TiersController.php");
                 </select>
             </div>
 
-            <div class="form-group col-lg-3" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Encours max autorisé : </label>
                 <input value="<?= $ctEncours ?>" style="" name="CT_Encours" type="text" class="form-control" id="CT_Encours" placeholder="" <?= (!$flagProtected) ? "disabled" : "" ?>/>
             </div>
 
-            <div class="col-lg-3" >
+            <div class="col-6 col-sm-6 col-md-6" >
                 <label for="inputfirstname" class="control-label"> Ctrle de l'encours client : </label>
                 <select style="" class="form-control" name="CT_ControlEnc" id="CT_ControlEnc" <?= (!$flagProtected) ? "disabled":""; ?>>
                     <option value="0" <?= ($CT_ControlEnc==0) ? " selected" : "" ?>>Contrôle automatique</option>
@@ -196,10 +188,10 @@ include("controller/structure/TiersController.php");
                     <option value="2" <?= ($CT_ControlEnc==2) ? " selected" : "" ?>>Compte bloqué</option>
                 </select>
             </div>
+            <div class="col-12 col-sm-12 col-md-12">
+                <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right mt-3" style="width:100%" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
+            </div>
         </div>
 
-        <div>
-            <button id="ajouterClient" name="ajouterClient" class="btn btn-primary float-right mt-3" <?php if(!$flagProtected) echo "disabled"; ?>>Valider</button>
-        </div>
         </div>
 </form>

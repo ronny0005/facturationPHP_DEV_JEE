@@ -28,138 +28,137 @@ if(isset($_POST["dateCloture"])){
                 echo "<div class='alert alert-success'>L'opération a été réalisé avec succès !</div>";
             ?>
             <form id="form-entete" class="form-horizontal" action="#" method="POST" >
-                <div class="form-row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-                        <label>Date</label>
-                        <input type="text" class="form-control" name="dateCloture" id="dateCloture" value="<?="" ?>" placeholder="Date"/>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-                        <label>Heure</label>
-                        <input type="text" class="form-control" name="heureCloture" id="heureCloture" value="<?="" ?>" placeholder="Heure" readonly/>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
-                        <label>Caisse de </label>
-                        <select id="caisseDebut" name="caisseDebut" class="form-control">
-                            <?php
-                            $isPrincipal = 0;
+                <div class="card p-3 mt-3">
+                    <div class="form-row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+                            <label>Date</label>
+                            <input type="text" class="form-control" name="dateCloture" id="dateCloture" value="<?="" ?>" placeholder="Date"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+                            <label>Heure</label>
+                            <input type="text" class="form-control" name="heureCloture" id="heureCloture" value="<?="" ?>" placeholder="Heure" readonly/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                            <label>Caisse de </label>
+                            <select id="caisseDebut" name="caisseDebut" class="form-control">
+                                <?php
+                                $isPrincipal = 0;
 
-                            $caisse = new CaisseClass(0);
-                            if($admin==0){
-                                $isPrincipal = 1;
-                                $rows = $caisse->getCaisseDepot($_SESSION["id"]);
-                            }else{
-                                $rows = $caisse->listeCaisseShort();
-                            }
-                            if($rows==null){
-                            }else{
-                                if(sizeof($rows)>1)
-                                    echo "<option value='0'></option>";
+                                $caisse = new CaisseClass(0);
+                                if($admin==0){
+                                    $isPrincipal = 1;
+                                    $rows = $caisse->getCaisseDepot($_SESSION["id"]);
+                                }else{
+                                    $rows = $caisse->listeCaisseShort();
+                                }
+                                if($rows==null){
+                                }else{
+                                    if(sizeof($rows)>1)
+                                        echo "<option value='0'></option>";
 
-                                foreach($rows as $row) {
-                                    if ($isPrincipal == 0) {
-                                        echo "<option value='{$row->CA_No}'>{$row->CA_Intitule}</option>";
-                                    } else {
-                                        if ($row->IsPrincipal != 0 ) {
+                                    foreach($rows as $row) {
+                                        if ($isPrincipal == 0) {
                                             echo "<option value='{$row->CA_No}'>{$row->CA_Intitule}</option>";
+                                        } else {
+                                            if ($row->IsPrincipal != 0 ) {
+                                                echo "<option value='{$row->CA_No}'>{$row->CA_Intitule}</option>";
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
-                        <label>à</label>
-                        <select id="caisseFin" name="caisseFin" class="form-control">
-                            <?php
-                            $isPrincipal = 0;
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                            <label>à</label>
+                            <select id="caisseFin" name="caisseFin" class="form-control">
+                                <?php
+                                $isPrincipal = 0;
 
-                            $caisse = new CaisseClass(0);
-                            if($admin==0){
-                                $isPrincipal = 1;
-                                $rows = $caisse->getCaisseDepot($_SESSION["id"]);
-                            }else{
-                                $rows = $caisse->listeCaisseShort();
-                            }
-                            if($rows==null){
-                            }else{
-                                if(sizeof($rows)>1)
-                                    echo "<option value='0'></option>";
+                                $caisse = new CaisseClass(0);
+                                if($admin==0){
+                                    $isPrincipal = 1;
+                                    $rows = $caisse->getCaisseDepot($_SESSION["id"]);
+                                }else{
+                                    $rows = $caisse->listeCaisseShort();
+                                }
+                                if($rows==null){
+                                }else{
+                                    if(sizeof($rows)>1)
+                                        echo "<option value='0'></option>";
 
-                                foreach($rows as $row) {
-                                    if ($isPrincipal == 0) {
-                                        echo "<option value='{$row->CA_No}'>{$row->CA_Intitule}</option>";
-                                    } else {
-                                        if ($row->IsPrincipal != 0 ) {
+                                    foreach($rows as $row) {
+                                        if ($isPrincipal == 0) {
                                             echo "<option value='{$row->CA_No}'>{$row->CA_Intitule}</option>";
+                                        } else {
+                                            if ($row->IsPrincipal != 0 ) {
+                                                echo "<option value='{$row->CA_No}'>{$row->CA_Intitule}</option>";
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-                        <label>Type</label>
-                        <select name="type" id="type" class="form-control">
-                            <option value="1">Clôturer</option>
-                            <?php
-                            if($protection->PROT_AFFICHAGE_VAL_CAISSE==0) {
                                 ?>
-                                <option value="0">Déclôturer</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+                            <label>Type</label>
+                            <select name="type" id="type" class="form-control">
+                                <option value="1">Clôturer</option>
                                 <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Génération des factures</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <label>Souche des factures générées</label>
-                        <select id="soucheGenere" name="soucheGenere" class="form-control">
-                            <?php
-                            foreach($soucheClass as $row){
+                                if($protection->PROT_AFFICHAGE_VAL_CAISSE==0) {
+                                    ?>
+                                    <option value="0">Déclôturer</option>
+                                    <?php
+                                }
                                 ?>
-                                <option value="<?=$row->cbIndice ?>"><?= $row->S_Intitule ?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label>Génération des factures</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label>Souche des factures générées</label>
+                            <select id="soucheGenere" name="soucheGenere" class="form-control">
                                 <?php
-                            }
-                            ?>
-                        </select>
+                                foreach($soucheClass as $row){
+                                    ?>
+                                    <option value="<?=$row->cbIndice ?>"><?= $row->S_Intitule ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label>Premier numéro</label>
+                            <input type="text" class="form-control" name="premierNumero" id="premierNumero" value="<?="" ?>" />
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <label>Premier numéro</label>
-                        <input type="text" class="form-control" name="premierNumero" id="premierNumero" value="<?="" ?>" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <label>Regroupements tickets</label>
-                        <select id="regrTicket" name="regrTicket" class="form-control">
-                            <option value="1">Par jour</option>
-                            <option value="2">Par semaine</option>
-                            <option value="3">Par quinzaine</option>
-                            <option value="4">Par mois</option>
-                            <option value="5">Une facutre par ticket</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <label>Regroupements réglements</label>
-                        <select id="regrReglt" name="regrReglt" class="form-control">
-                            <option value="1">Aucun regroupement</option>
-                            <option value="2">Regrouper les espèces uniquement</option>
-                            <option value="3">Regrouper tous les mode de règlements</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <label>&nbsp;</label>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <input type="submit" name="valide" id="valide" value="Valider" class="btn btn-primary"/>
+                    <div class="form-row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label>Regroupements tickets</label>
+                            <select id="regrTicket" name="regrTicket" class="form-control">
+                                <option value="1">Par jour</option>
+                                <option value="2">Par semaine</option>
+                                <option value="3">Par quinzaine</option>
+                                <option value="4">Par mois</option>
+                                <option value="5">Une facutre par ticket</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label>Regroupements réglements</label>
+                            <select id="regrReglt" name="regrReglt" class="form-control">
+                                <option value="1">Aucun regroupement</option>
+                                <option value="2">Regrouper les espèces uniquement</option>
+                                <option value="3">Regrouper tous les mode de règlements</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                            <input style="width: 100%" type="submit" name="valide" id="valide" value="Valider" class="btn btn-primary"/>
+                        </div>
                     </div>
                 </div>
             </form>

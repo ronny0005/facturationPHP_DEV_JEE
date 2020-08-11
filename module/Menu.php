@@ -34,6 +34,10 @@ class Menu {
                 case 6 :
                     $this->Mot_de_passe();
                     break;
+                case 7 :
+                    if($protection->PROT_Right==1)
+                        $this->createReport(); else header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
                 default :
                     $this->Accueil(); // On décide ce que l'on veut faire
             }
@@ -43,6 +47,10 @@ class Menu {
 
     public function Accueil() {
         include("pages/Accueil.php");
+    }
+
+    public function createReport() {
+        include("pages/createReport.php");
     }
     
     public function Recouvrement() {

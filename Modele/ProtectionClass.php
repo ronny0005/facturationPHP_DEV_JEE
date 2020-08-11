@@ -75,6 +75,7 @@ class ProtectionClass extends Objet{
             $this->PROT_Description = $rows->PROT_Description;
             $this->PROT_Right = $rows->PROT_Right;
             $this->Prot_No = $rows->Prot_No;
+            $this->PROT_No = $rows->Prot_No;
             $this->PROT_CLIENT = $rows->PROT_CLIENT;
             $this->PROT_Email = $rows->PROT_Email;
             $this->ProtectAdmin = $rows->ProtectAdmin;
@@ -157,6 +158,22 @@ class ProtectionClass extends Objet{
         $this->initParam($this->getApiJson("/connexionProctectionByProtNo&protNo=$prot_no"));
     }
 
+    public function majProtectioncial($depot,$depotPrincipal){
+        parent::maj('PROT_User', $this->PROT_User);
+        parent::maj('PROT_Description', $this->PROT_Description);
+        parent::maj('PROT_Pwd', $this->PROT_Pwd);
+        parent::maj('PROT_Email', $this->PROT_Email);
+        parent::maj('PROT_Right', $this->PROT_Right);
+        parent::maj('PROT_PwdStatus', $this->PROT_PwdStatus);
+        if($depot!=0){
+            $this->ajoutDepotUser($this->PROT_No,implode( ",",$depot));
+            $this->setDepotUser($this->PROT_No,implode( ",",$depotPrincipal));
+        }
+    }
+
+    public function createUser() {
+        return $this->getApiJson("/createUser/protUser={$this->PROT_User}&protPwd={$this->PROT_Pwd}&protDescription={$this->PROT_Description}&protRight={$this->PROT_Right}&protEmail={$this->PROT_Email}&protUserProfil={$this->PROT_UserProfil}&ProtPwdStatus={$this->PROT_PwdStatus}");
+    }
 
     public function getInfoRAFControleur(){
         return"";
@@ -462,20 +479,17 @@ class ProtectionClass extends Objet{
         return $this->getApiJson("/getSoucheDepotGrpSouche&protNo=$prot_no&type=$type");
     }
 
-    public function ajoutUser($securiteAdmin,$depot){
-        $protNo = $this->getApiJson("/ajoutUser&username={$this->formatString($this->PROT_User)}&description={$this->formatString($this->PROT_Description)}&password={$this->formatString($this->PROT_Pwd)}&email={$this->formatString($this->PROT_Email)}&protRight={$this->PROT_Right}&protUserProfil={$this->PROT_UserProfil}&protPwdStatus={$this->PROT_PwdStatus}&securiteAdmin=$securiteAdmin&protNo=".$_SESSION["id"]."}");
-        var_dump($protNo);
-        /*if($protNo!=-1){
-            if($depot!=""){
-                foreach($depot as $dep) {
-                    $this->ajoutDepotUser($protNo,$dep);
-                }
-            }
-        }*/
+    public function ajoutUser($securiteAdmin,$depot,$depotPrincipal){
+        $protNo = $this->getApiJson("/ajoutUser&username={$this->formatString($this->PROT_User)}&description={$this->formatString($this->PROT_Description)}&password={$this->formatString($this->PROT_Pwd)}&email={$this->formatString($this->PROT_Email)}&protRight={$this->PROT_Right}&protUserProfil={$this->PROT_UserProfil}&protPwdStatus={$this->PROT_PwdStatus}&securiteAdmin=$securiteAdmin&protNo=".$_SESSION["id"]."&depot=$depot");
+        $this->setDepotUser($this->PROT_No,implode( ",",$depotPrincipal));
     }
 
     public function ajoutDepotUser($protNo,$depot){
         $this->getApiExecute("/ajoutDepotUser&protNo=$protNo&depot=$depot");
+    }
+
+    public function setDepotUser($protNo,$depot){
+        $this->getApiExecute("/setDepotUser&protNo=$protNo&depot=$depot");
     }
 
     public function alerteDocumentCatComptaTaxe(){
@@ -502,6 +516,10 @@ class ProtectionClass extends Objet{
     public function getAffaire($sommeil=-1) {
         $this->lien = "fcomptea";
         return $this->getApiJson("/affaire&sommeil=$sommeil");
+    }
+
+    public function getAllProfils() {
+        return $this->getApiJson("/getAllProfils");
     }
 
     public function getSoucheAchat(){
@@ -717,17 +735,7 @@ class ProtectionClass extends Objet{
         return $result->fetchAll(PDO::FETCH_OBJ);
     }
     public function getUtilisateurAdminMain(){
-        $query="select *,CASE WHEN userName='' THEN ProfilName ELSE userName END Prot_User
-                from (
-                SELECT ROW_NUMBER() OVER (ORDER BY A.PROT_No,A.PROT_User)position,A.PROT_No,B.PROT_No PROT_No_User,A.PROT_User ProfilName,B.Prot_User as userName --PROT_No,Prot_User 
-                FROM F_Protectioncial A
-                LEFT JOIN F_PROTECTIONCIAL B ON A.PROT_No=B.PROT_UserProfil
-                WHERE A.PROT_UserProfil=0
-                AND B.Prot_User is not null
-                ) A
-                order by 2,1";
-        $result=$this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getUtilisateurAdminMain");
     }
 
 

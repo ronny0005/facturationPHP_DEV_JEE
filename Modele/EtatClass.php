@@ -28,6 +28,10 @@ class EtatClass Extends Objet
         return $dataPoints;
     }
 
+    public function createReport($param){
+        return $this->getApiJson("/createReport&param={$this->formatString($param)}");
+    }
+
     public function menuLineCA($protNo){
         return $this->getApiJson("/menuCaParDepot&protNo=$protNo");
     }

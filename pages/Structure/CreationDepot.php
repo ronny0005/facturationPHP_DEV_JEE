@@ -63,10 +63,10 @@ include("module/Menu/BarreMenu.php");
     </h3>
 </section>
 
-<form id="formDepot" class="formDepot" action="ficheDepot" method="GET">
-    <input type="hidden" name="DE_No" id="DE_No" value="<?= (isset($_GET["DE_No"])) ? isset($_GET["DE_No"]) : "0" ?>" />
-<fieldset class="entete">
-<legend class="entete">Informations</legend>
+<form id="formDepot" class="card p-3 formDepot" action="ficheDepot" method="GET">
+    <input type="hidden" name="DE_No" id="DE_No" value="<?= (isset($_GET["DE_No"])) ? $_GET["DE_No"] : "0" ?>" />
+<fieldset class=" entete">
+<legend class="entete ">Informations</legend>
     <div class="row">
         <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
             <label> Intitul&eacute; : </label>
@@ -144,7 +144,7 @@ include("module/Menu/BarreMenu.php");
                 foreach($rows as $row){
                     ?>
                     <option value="<?= $row->cbIndice ?>"
-                        <?php if(isset($_GET["DE_No"]) && $row->cbIndice == $depotItem ->CA_CatTarif) echo " selected "; ?>>
+                        <?php if(isset($_GET["DE_No"]) && $row->cbIndice == $depotItem->CA_CatTarif) echo " selected "; ?>>
                         <?= $row->CT_Intitule ?>
                     </option>
                     <?php
@@ -218,7 +218,7 @@ include("module/Menu/BarreMenu.php");
 </select>
 
 </fieldset>
-<div class="col-lg-4 mt-3" >
-    <input type="button" id="ajouterDepot" name="ajouterDepot" class="btn btn-primary bgcolorApplication" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+<div class="col-lg-12 mt-3" >
+    <input style="width:100%" type="button" id="ajouterDepot" name="ajouterDepot" class="btn btn-primary bgcolorApplication" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
 </div>        
 </form>

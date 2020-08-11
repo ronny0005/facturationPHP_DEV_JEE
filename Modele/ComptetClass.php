@@ -138,28 +138,28 @@ class ComptetClass Extends Objet{
 
     public function maj_client(){
 
-        parent::maj("CT_Intitule" , $this->CT_Intitule);
-        parent::maj("CG_NumPrinc" , $this->CG_NumPrinc);
-        parent::maj("CT_Contact" , $this->CT_Contact);
-        parent::maj("CT_Adresse" , $this->CT_Adresse);
-        parent::maj("CT_Complement" , $this->CT_Complement);
-        parent::maj("CT_CodePostal" , $this->CT_CodePostal);
-        parent::maj("CT_Ville" , $this->CT_Ville);
-        parent::maj("CT_CodeRegion" , $this->CT_CodeRegion);
-        parent::maj("CT_Pays" , $this->CT_Pays);
-        parent::maj("CT_Ape" , $this->CT_Ape);
-        parent::maj("CT_Identifiant" , $this->CT_Identifiant);
-        parent::maj("CT_Siret" , $this->CT_Siret);
+        parent::maj("CT_Intitule" , $this->formatString($this->CT_Intitule));
+        parent::maj("CG_NumPrinc" , $this->formatString($this->CG_NumPrinc));
+        parent::maj("CT_Contact" , $this->formatString($this->CT_Contact));
+        parent::maj("CT_Adresse" , $this->formatString($this->CT_Adresse));
+        parent::maj("CT_Complement" , $this->formatString($this->CT_Complement));
+        parent::maj("CT_CodePostal" , $this->formatString($this->CT_CodePostal));
+        parent::maj("CT_Ville" , $this->formatString($this->CT_Ville));
+        parent::maj("CT_CodeRegion" , $this->formatString($this->CT_CodeRegion));
+        parent::maj("CT_Pays" , $this->formatString($this->CT_Pays));
+        parent::maj("CT_Ape" , $this->formatString($this->CT_Ape));
+        parent::maj("CT_Identifiant" , $this->formatString($this->CT_Identifiant));
+        parent::maj("CT_Siret" , $this->formatString($this->CT_Siret));
         parent::maj("CO_No" , $this->CO_No);
         parent::maj("N_CatTarif" , $this->N_CatTarif);
         parent::maj("N_CatCompta" , $this->N_CatCompta);
         parent::maj("N_Expedition" , $this->N_Expedition);
         parent::maj("N_Condition" , $this->N_Condition);
         parent::maj("DE_No" , $this->DE_No);
-        parent::maj("CA_Num" , $this->CA_Num);
-        parent::maj("CT_Telephone" , $this->CT_Telephone);
-        parent::maj("CT_Telecopie" , $this->CT_Telecopie);
-        parent::maj("CT_EMail" , $this->CT_EMail);
+        parent::maj("CA_Num" , $this->formatString($this->CA_Num));
+        parent::maj("CT_Telephone" , $this->formatString($this->CT_Telephone));
+        parent::maj("CT_Telecopie" , $this->formatString($this->CT_Telecopie));
+        parent::maj("CT_EMail" , $this->formatString($this->CT_EMail));
         parent::maj("MR_No" , $this->MR_No);
 /*
         parent::maj("CT_Encours" , $this->CT_Encours);
@@ -196,7 +196,7 @@ class ComptetClass Extends Objet{
     }
 
     public function getTiersByIntitule($intitule){
-        return $this->getApiJson("/tiersByCTIntitule&ctIntitule=$intitule");
+        return $this->getApiJson("/tiersByCTIntitule&ctIntitule={$this->formatString($intitule)}");
     }
 
     public function getDepotClient($deNo,$ctType) {
@@ -205,7 +205,7 @@ class ComptetClass Extends Objet{
 
     public function createClientMin(){
 		
-        $this->getApiJson("/createClientMin&ctNum={$this->CT_Num}&ctIntitule={$this->CT_Intitule}&ctType={$this->CT_Type}&cgNumPrinc={$this->CG_NumPrinc}&ctAdresse={$this->CT_Adresse}&ctCodePostal={$this->CT_CodePostal}&ctVille={$this->CT_Ville}&ctCodeRegion={$this->CT_CodeRegion}&ctIdentifiant={$this->CT_Identifiant}&ctSiret={$this->CT_Siret}&coNo={$this->CO_No}&nCatTarif={$this->N_CatTarif}&nCatCompta={$this->N_CatCompta}&deNo={$this->DE_No}&caNum={$this->CA_Num}&ctTelephone={$this->CT_Telephone}&mrNo={$this->MR_No}&cbCreateur={$this->cbCreateur}");
+        $this->getApiJson("/createClientMin&ctNum={$this->formatString($this->CT_Num)}&ctIntitule={$this->formatString($this->CT_Intitule)}&ctType={$this->CT_Type}&cgNumPrinc={$this->formatString($this->CG_NumPrinc)}&ctAdresse={$this->formatString($this->CT_Adresse)}&ctCodePostal={$this->formatString($this->CT_CodePostal)}&ctVille={$this->formatString($this->CT_Ville)}&ctCodeRegion={$this->formatString($this->CT_CodeRegion)}&ctIdentifiant={$this->formatString($this->CT_Identifiant)}&ctSiret={$this->formatString($this->CT_Siret)}&coNo={$this->CO_No}&nCatTarif={$this->N_CatTarif}&nCatCompta={$this->N_CatCompta}&deNo={$this->DE_No}&caNum={$this->formatString($this->CA_Num)}&ctTelephone={$this->formatString($this->CT_Telephone)}&mrNo={$this->MR_No}&cbCreateur={$this->formatString($this->cbCreateur)}");
     }
 
     public function allFournisseurSelect() {

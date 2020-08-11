@@ -47,13 +47,13 @@ jQuery(function($){
     protection();  
     
     function ajouterFamille(){
-        if($_GET("FA_CodeFamille")!=null){
+        if($("#cbMarqFamille").val()!=0){
             $.ajax({
-                url: 'traitement/Creation.php?acte=modif_famille&FA_CodeFamille='+$_GET("FA_CodeFamille")+'&intitule='+$("#designation").val()+'&niv=1&catal1='+$("#catalniv1").val()+'&catal2='+$("#catalniv2").val()+'&catal3='+$("#catalniv3").val()+'&catal4='+$("#catalniv4").val()+'&val='+$("#catalniv1").val(),
+                url: 'traitement/Creation.php?acte=modif_famille&FA_CodeFamille='+$("#reference").val()+'&intitule='+$("#designation").val()+'&niv=1&catal1='+$("#catalniv1").val()+'&catal2='+$("#catalniv2").val()+'&catal3='+$("#catalniv3").val()+'&catal4='+$("#catalniv4").val()+'&val='+$("#catalniv1").val(),
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    window.location.replace("indexMVC.php?module=3&action=6&acte=modifOK&codeFAM="+data.codeFAM);
+                    window.location.replace("listeFamille-2-"+data.codeFAM);
                 }
             });
         }   else{ 
@@ -62,7 +62,7 @@ jQuery(function($){
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    window.location.replace("indexMVC.php?module=3&action=6&acte=ajoutOK&codeFAM="+data.codeFAM);
+                    window.location.replace("listeFamille-1-"+data.codeFAM);
                 },
                 error : function(resultat, statut, erreur){
                     alert(resultat.responseText);

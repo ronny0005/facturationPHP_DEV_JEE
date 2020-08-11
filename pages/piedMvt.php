@@ -4,12 +4,13 @@ if($type=="Transfert_detail")
     $compl = "(Dépôt source)";
 ?>
 
-<fieldset class="entete">
+<fieldset class="entete card p-3">
     <legend class="entete">Pied</legend>
     <div id="piedPage" class="form-group">
     </div>
 </fieldset>
-<div  class="row mb-3">
+
+<div  class="row mt-3">
 <form action="indexMVC.php?action=1&module=4" method="GET" name="form-valider" id="form-valider">
     <input type="hidden" value="4" name="module"/>
     <input type="hidden" value="1" name="action"/>

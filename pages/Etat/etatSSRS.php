@@ -66,7 +66,7 @@ and open the template in the editor.
                 {
                     //are we opening or continuing a row?
                     //get the default value
-                    $controls .= '<div class="col-3">';
+                    $controls .= '<div class="col-6">';
                     $default = null;
                     foreach($reportParameter->DefaultValues as $vals)
                         foreach($vals as $key=>$def)
@@ -138,8 +138,8 @@ and open the template in the editor.
                             $isPrincipal = 0;
                             if($admin==0){
                                 $isPrincipal = 1;
-                                $result=$objet->db->requete($objet->getCaisseDepot($_SESSION["id"]));
-                                $rows = $result->fetchAll(PDO::FETCH_OBJ);
+                                $caisseDepot = new CaisseClass(0);
+                                $rows = $caisseDepot->getCaisseDepot($_SESSION["id"]);
                             }
                             else {
                                 $caisseClass = new CaisseClass(0,$objet->db);
@@ -288,17 +288,17 @@ and open the template in the editor.
                 $reportNameTab = explode("/", $query);
                 $namerep=$reportNameTab[sizeof($reportNameTab)-1];
                 $controls .= "\n</div>";
-                $controls .= "\n<div class='form-inline' style='display:inline; float: right'>";
-                $controls .= "\n<input type='button' onclick=\"renderReportRTC('HTML5');\" class='btn btn-primary' value='Valider' style='float: right;' />";
-                $controls .= "\n<input type='button' onclick=\"renderReportRTC('EXCEL');\" class='btn btn-primary' value='Export excel' style='margin-right:10px ;float: right;' />";
-                $controls .= "\n<input type='button' onclick=\"renderReportRTC('PDF');\" class='btn btn-primary' value='Imprimer' style='margin-right:10px ;float: right;' />";
+                $controls .= "\n<div class='float-right row mt-3' >";
+                $controls .= "\n<div class='col-6 col-lg-2'><input type='button' onclick=\"renderReportRTC('HTML5');\" class='w-100 btn btn-primary' value='Valider' /></div>";
+                $controls .= "\n<div class='col-6 col-lg-2'><input type='button' onclick=\"renderReportRTC('EXCEL');\" class='w-100 btn btn-primary' value='Export excel' /></div>";
+                $controls .= "\n<div class='col-6 col-lg-2 mt-3  mt-sm-3 mt-lg-0'><input type='button' onclick=\"renderReportRTC('PDF');\" class='w-100 btn btn-primary' value='Imprimer' /></div>";
                 $controls .= getExportFormats($ssrs_report);
                 //$controls .= "\n<a style='float: right;' href='indexMVC.php?module=5&action=1'>Liste des états</a>";
                 $controls .= "\n</div>";
 
                 $controls .= "\n<input type='hidden' value='' name='parameters' id='parameters' />";
                 $controls .= "\n<div id='exportReportDiv' style='visibility: hidden; ' >";
-                $controls .= "\n<div class='form-group col-lg-3' >
+                $controls .= "\n<div class='col-6' >
                                 <label>Type d'impression:</label>
                                 <input class='form-control' name='exportName' value='$namerep' type='text' onkeypress='submitenter(event);' />
                             </div>";

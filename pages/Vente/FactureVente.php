@@ -1,5 +1,5 @@
 <script src="js/scriptFactureVente.js?d=<?= time(); ?>"></script>
-<div class="container-fluid">
+
     <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
         <h3 class="text-center text-uppercase bgcolorApplication"><?= $protection->listeFactureNom($type) ?></h3>
     </section>
@@ -164,7 +164,7 @@
                             <div class="field"></div>
                         </div>
                         <div class="col-6 col-sm-3 col-md-2 col-lg-1 <?= $classQte; ?>"><label>Qté</label><input class="form-control" type="text" id="quantite" placeholder="<?= $libQte ?>" name="quantite" <?=$accessQte ?>></div>
-                        <div class="col-6 col-sm-5 col-md-4 col-lg-2"><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
+                        <div class="col-6 col-sm-5 col-md-4 col-lg-2" <?= $accessPrix ?>><label>Prix unitaire</label><input class="form-control" type="text" id="prix" placeholder="P.U." name="prix" <?= $accessPrix ?>></div>
                         <div class="col-6 col-sm-3 col-md-2 col-lg-2"><label>Qté en stock</label><input class="form-control" type="text" id="quantite_stock" placeholder="Qté en stock" name="quantite_stock" disabled></div>
                         <div class="col-6 col-sm-4 col-md-4 col-lg-2"><label>Remise</label><input class="form-control only_remise" type="text" id="remise" placeholder="Remise" name="remise" <?= $accessRemise ?>></div>
                         <input type="hidden" name="taxe1" id="taxe1" value="0" />
@@ -185,12 +185,12 @@
                             <tr>
                                 <th>Référence</th>
                                 <th>Désignation</th>
-                                <th>PU HT</th>
+                                <th <?= $accessPUTTC ?>>PU HT</th>
                                 <th>Qté</th>
                                 <th>Remise</th>
-                                <th <?=$accessPUTTC ?>>PU TTC</th>
-                                <th <?=$accessMontantHT ?>>Montant HT</th>
-                                <th <?=$accessMontantTTC ?>>Montant TTC</th>
+                                <th <?= $accessPUTTC ?>>PU TTC</th>
+                                <th <?= $accessMontantHT ?>>Montant HT</th>
+                                <th <?= $accessMontantTTC ?>>Montant TTC</th>
                                 <th></th>
                                 <?php if ($type=="AchatPreparationCommande" && !$isVisu)
                                     echo "<th></th>";
@@ -244,8 +244,7 @@ if (!$isVisu)
                   <tr class='facture <?= $classe; ?>' id='article_<?= $docligne->cbMarq; ?>'>
                       <td id='AR_Ref' style='color:blue;text-decoration: underline'><?= $docligne->AR_Ref; ?></td>
                       <td id='DL_Design' style='align:left'><?= $docligne->DL_Design; ?></td>
-                    <td id='DL_PrixUnitaire'
-                    style="<?php
+                      <td id='DL_PrixUnitaire' style="<?php
                     if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
                         echo "display:none";?>">
                         <?= $objet->formatChiffre(round($docligne->DL_PrixUnitaire, 2)); ?></td>
@@ -299,9 +298,9 @@ if (!$isVisu)
         <legend>Pied</legend>
         <div id="piedPage"></div>
     </fieldset>
-</div>
-<div class="container-fluid">
-    <fieldset id="liste_reglement" class="" style="<?php if($isVisu == 0) echo "display:none"; ?>">
+
+<div class="table-responsive">
+    <fieldset id="liste_reglement" class="card p-3 " style="<?php if($isVisu == 0) echo "display:none"; ?>">
         <legend>R&egrave;glement</legend>
         <table class="table table-striped" id="tableRecouvrement">
             <thead>
@@ -314,12 +313,12 @@ if (!$isVisu)
             </tr>
             </thead>
             <tbody>
-            <?=$listeReglement ?>
+            <?= $listeReglement ?>
             </tbody>
         </table>
     </fieldset>
 </div>
-<div class="container" <?=$accessListeSaisie ?>>
+<div class="container" <?= $accessListeSaisie ?>>
     <fieldset id="liste_saisieEC" class="entete">
         <legend class="entete">Création écriture compta</legend>
         <table class="table" id="tableEC">

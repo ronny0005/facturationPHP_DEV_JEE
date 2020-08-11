@@ -15,21 +15,6 @@
         $id=$_GET["PROT_No"];
         $protectioncial->connexionProctectionByProtNo($_GET["PROT_No"]);
     }
-    if(isset($_POST["id"])){
-        $protectionUser = new ProtectionClass("","");
-        $protectionUser->PROT_User = $_POST["username"];
-        $protectionUser->PROT_Description = $_POST["description"];
-        $protectionUser->PROT_Pwd = $_POST["password"];
-        $protectionUser->PROT_Email = $_POST["email"];
-        $protectionUser->PROT_Right = $_POST["groupeid"];
-        $protectionUser->PROT_PwdStatus = $_POST["changepass"];
-        $profiluser = 0;
-        if(isset($_POST["profiluser"])){
-            $profiluser = $_POST["profiluser"];
-        }
-        $protectionUser->PROT_UserProfil = $profiluser;
-        $protectionUser->ajoutUser($_POST["securiteAdmin"],$_POST["depot"]);
-    }
 
 ?>
 <script src="js/script_creationUser.js?d=<?php echo time(); ?>"></script>
@@ -38,9 +23,10 @@
     </section>
     <section class="mt-2">
     <div class="err" id="add_err"></div>
-    <form id="formUser" class="formUser card" action="#" method="POST">
+    <form id="formUser" class="formUser card" action="traitement/Creation.php" method="POST">
         <input name="action" value="4" type="hidden"/>
         <input name="module" value="8" type="hidden"/>
+        <input name="acte" value="actionUser" type="hidden"/>
 		<input name="id" id="id" value="<?= $protectioncial->Prot_No ?>" type="hidden"/>
 
         <div class=" row p-3">
@@ -122,8 +108,8 @@
                 ?>
             </select>
         </div>
-        <div class="col-6 mt-3" >
-            <input type="submit" id="ajouterUser" name="ajouterUser" class="btn btn-primary" <?= (isset($_GET["id"])) ? 'value="Modifier"' : 'value="Ajouter"'; ?> />
+        <div class="col-12 mt-3" >
+            <input style="width: 100%" type="submit" id="ajouterUser" name="ajouterUser" class="btn btn-primary" <?= (isset($_GET["id"])) ? 'value="Modifier"' : 'value="Ajouter"'; ?> />
         </div>
         </div>
     </form>

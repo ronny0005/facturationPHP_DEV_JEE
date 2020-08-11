@@ -6,24 +6,41 @@ jQuery(function($) {
 //    $("#formSelectCompte").hide();
     $("#CodeSelect").combobox();
     $("#CodeSelect").parent().find(".custom-combobox :input").attr("id", "codeSelection");
-    $("#famille").combobox();
-    $("#famille").parent().find(".custom-combobox :input").addClass("comboclient");
 
-
-    function $_GET(param) {
-        var vars = {};
-        window.location.href.replace(location.hash, '').replace(
-            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-            function (m, key, value) { // callback
-                vars[key] = value !== undefined ? value : '';
+    $("#famille").select2({
+        theme: "bootstrap"
+    }).on("select2:select", function (e) {
+        $.ajax({
+            url: "indexServeur.php?page=getNextArticleByFam&codeFam="+$( "#famille" ).val(),
+            method: 'GET',
+            dataType: 'json',
+            async : false,
+            success: function(data) {
+                $("#reference").val(data[0].AR_Ref);
+                createReference();
             }
-        );
-
-        if (param) {
-            return vars[param] ? vars[param] : null;
+        });
+        if(protect!=1){
+            $.ajax({
+                url: 'traitement/Creation.php?acte=catalog_article&famille='+$("#famille").val(),
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $("#catalniv1").html("<option value='0'></option>");
+                    $("#catalniv2").html("<option value='0'></option>");
+                    $("#catalniv3").html("<option value='0'></option>");
+                    $("#catalniv4").html("<option value='0'></option>");
+                    if(data.CL_No1!=0){
+                        $("#catalniv1").append("<option value="+data.CL_No1+">"+data.CL_Intitule1+"</option>");
+                        $('#catalniv1').unbind('click');
+                        $('#catalniv1').click(function(){
+                            catalniv1();
+                        });
+                    }
+                }
+            });
         }
-        return vars;
-    }
+    });
 
     function isNumber(donnee, event) {
         if (event.shiftKey == true) {
@@ -159,10 +176,10 @@ jQuery(function($) {
                 dataType: 'json',
                 data: $("#formArticle").serialize(),
                 success: function (data) {
-                    if($_GET("window")==undefined)
+                    //if($_GET("window")==undefined)
                         window.location.replace("listeArticle-2-" + data.AR_Ref);
-                    else
-                        window.close();
+                    //else
+                    //    window.close();
                 }
             });
         } else {
@@ -188,10 +205,6 @@ jQuery(function($) {
         createReference();
     });
     $("#designation").focusout(function () {
-        createReference();
-    });
-
-    $(".comboclient").focusout(function () {
         createReference();
     });
 
@@ -604,52 +617,6 @@ jQuery(function($) {
        $("#reference").prop('disabled', true);
     }
 
-    $( ".comboclient" ).focusout(function() {
-        if(protect!=1){
-        
-            $.ajax({
-                url: 'traitement/Creation.php?acte=catalog_article&famille='+$("#famille").val(),
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    $("#catalniv1").html("<option value='0'></option>");
-                    $("#catalniv2").html("<option value='0'></option>");
-                    $("#catalniv3").html("<option value='0'></option>");
-                    $("#catalniv4").html("<option value='0'></option>");
-                    if(data.CL_No1!=0){
-                        $("#catalniv1").append("<option value="+data.CL_No1+">"+data.CL_Intitule1+"</option>");
-                        $('#catalniv1').unbind('click');
-                        $('#catalniv1').click(function(){
-                            catalniv1();
-                        });
-                    }
-                }
-            });
-        }
-     });
-
-    $( ".comboclient" ).focusout(function() {
-        $.ajax({
-            url: "indexServeur.php?page=getNextArticleByFam&codeFam="+$( "#famille" ).val(),
-            method: 'GET',
-            dataType: 'json',
-            async : false,
-            success: function(data) {
-                $("#reference").val(data[0].AR_Ref);
-            }
-        });
-    });
-/*
-    $("#famille").autocomplete({
-        source: "indexServeur.php?page=getNextArticleByFam&codeFam="+$( "#famille" ).val(),
-        autoFocus: true,
-        closeOnSelect: true,
-        select: function (event, ui) {
-            event.preventDefault();
-            $("#reference").val(data[0].AR_Ref)
-        }
-    })
-*/
     $("#compteGSelectInput").autocomplete({
         source: "indexServeur.php?page=getComptegByCGNum",
         autoFocus: true,

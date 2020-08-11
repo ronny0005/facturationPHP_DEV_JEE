@@ -63,7 +63,7 @@ include("module/Menu/BarreMenu.php");
         Fiche collaborateur
     </h3>
 </section>
-        <form action="ficheCollaborateur" method="GET" name="formCollab" id="formCollab">
+        <form action="ficheCollaborateur" class="card p-3" method="GET" name="formCollab" id="formCollab">
             <div class="row">
         <div class="col-lg-3" >
             <label>Nom</label>
@@ -142,7 +142,7 @@ include("module/Menu/BarreMenu.php");
             <label>Chrg. Recouvr.</label>
             <input type="checkbox" style="margin: auto" class="checkbox" <?php if($btnRecouv==1) echo " checked "; ?> name="recouvrement" id="recouvrement" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
-        <div class="col-12">
-            <input type="button"  class="btn btn-primary" value="Valider" name="valider" id="valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        <div class="col-12 mt-2">
+            <input type="button" style="width:100%" class="btn btn-primary" value="Valider" name="valider" id="valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
         </div>
         </form>

@@ -1,5 +1,29 @@
 jQuery(function($){
 
+    $("#depot").select2({
+        theme: "bootstrap"
+    }).on("select2:select", function (e) {
+
+    })
+
+    $("#CO_No").select2({
+        theme: "bootstrap"
+    }).on("select2:select", function (e) {
+
+    })
+
+    $("#CA_Num").select2({
+        theme: "bootstrap"
+    }).on("select2:select", function (e) {
+
+    })
+
+    $("#CG_NumPrinc").select2({
+        theme: "bootstrap"
+    }).on("select2:select", function (e) {
+
+    })
+
     $('#ajouterClient').click(function(e){
         e.preventDefault();
         if($("#cbMarqTiers").val()==0) {

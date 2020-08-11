@@ -28,15 +28,23 @@
             </form>
     </table>
     <?php
+
     $statut = $_GET["statut"];
-    if(isset($_GET["FA_CodeFamille"]) && $statut!=0) {
+
+    if (isset($_GET["FA_CodeFamille"]) && $statut != 0) {
         $type = "La création ";
         $alert = "alert-success";
-        if($statut == 3) {
+
+        if ($statut == 3) {
             $type = "La suppression ";
         }
 
-        if($statut == 2)
+        if ($statut == 4) {
+            $alert = "alert-danger";
+            $type = "Echec de la suppression ";
+        }
+
+        if ($statut == 2)
             $type = "La modification ";
 
         ?>

@@ -19,7 +19,7 @@ $objet = new ObjetCollector();
     $cl_no2 = 0;
     $cl_no3 = 0;
     $cl_no4 = 0;
-    
+    $famille = new FamilleClass(0);
     if(isset($_GET["FA_CodeFamille"])){
         $objet = new ObjetCollector();
         $famille = new FamilleClass($_GET["FA_CodeFamille"]);
@@ -40,6 +40,7 @@ $objet = new ObjetCollector();
                 <input type="hidden" value="1" name="action"/>
                 <label for="inputfirstname" class="control-label"> Code : </label>
                 <input maxlength="11" onkeyup="this.value=this.value.replace(' ','')" type="text" value="<?php echo $ref; ?>" name="reference" class="form-control only_alpha_num" id="reference" placeholder="Référence" <?php if(isset($_GET["FA_CodeFamille"])) echo "disabled"; ?>/>
+                <input type="hidden" value="<?= (isset($_GET["FA_CodeFamille"])) ? $famille->cbMarq : 0 ; ?>" name="cbMarqFamille" class="form-control" id="cbMarqFamille"  />
             </div>
             <div class="col-lg-6" >
                 <label for="inputfirstname" class="control-label"> Intitulé     : </label>
@@ -164,7 +165,7 @@ $objet = new ObjetCollector();
             </div>
         </div>
     </div>
-        <input style="float: left;clear: both;" type="button" id="ajouter" name="<?php if(isset($_GET["AR_Ref"])) echo "modifier"; else echo "ajouter"; ?>" class="btn btn-success" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
+        <input style="float: left;clear: both;" type="button" id="ajouter" name="<?php if(isset($_GET["AR_Ref"])) echo "modifier"; else echo "ajouter"; ?>" class="btn btn-primary" value="Valider" <?php if(!$flagProtected) echo "disabled"; ?>/>
     </form>
 
         

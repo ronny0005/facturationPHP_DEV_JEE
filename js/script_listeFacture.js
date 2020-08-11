@@ -4,22 +4,6 @@ jQuery(function($){
     if($("#PROT_CbCreateur").val()!=2)
         $('[data-toggle="tooltip"]').tooltip();
 $("#menu_transform").hide();
-    function $_GET(param) {
-	var vars = {};
-	window.location.href.replace( location.hash, '' ).replace(
-            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-            function( m, key, value ) { // callback
-                vars[key] = value !== undefined ? value : '';
-            }
-        );
-
-	if ( param ) {
-            return vars[param] ? vars[param] : null;
-	}
-	return vars;
-    }
-
-    var type = $_GET("type");
 
     function lien (){
         return $("#lienMenuNouveau").val();
@@ -35,7 +19,7 @@ $("table.table > tbody > tr #transform").on('click', function() {
                 title : "Transformation du document "+entete,
                 resizable: false,
                 height: "auto",
-                width: 600,
+                width: 200,
                 modal: true,
                 buttons: {
                     "Valider": {
@@ -56,7 +40,7 @@ $("table.table > tbody > tr #transform").on('click', function() {
         if($('#conserv_copie').is(':checked')) check=1;
 
         $.ajax({
-            url: "Traitement/BonLivraison.php?acte=transBLFacture&type_trans="+$("#type_trans").val()+"&type="+type+"&cbMarq="+cbMarq+"&date="+$("#date_transform").val()+"&conserv_copie="+check+"&reference="+$("#reference").val(),
+            url: "Traitement/BonLivraison.php?acte=transBLFacture&type_trans="+$("#type_trans").val()+"&type="+$("#typeDoc").val()+"&cbMarq="+cbMarq+"&date="+$("#date_transform").val()+"&conserv_copie="+check+"&reference="+$("#reference").val(),
             method: 'GET',
             dataType: 'html',
             success: function(data) {
@@ -68,15 +52,15 @@ $("table.table > tbody > tr #transform").on('click', function() {
                         dataType: 'html',
                         success: function(data) {
                             alert("La transormation a été effectuée !");
-                            if(type=="Devis")
-                                window.location.replace("indexMVC.php?module=2&action=2&type="+type+"&depot="+$("#depot").val());
+                            if($("#typeDoc").val()=="Devis")
+                                window.location.replace("indexMVC.php?module=2&action=2&type="+$("#typeDoc").val()+"&depot="+$("#depot").val());
                             else
-                                window.location.replace("indexMVC.php?module=2&action=5&type="+type+"&depot="+$("#depot").val());
+                                window.location.replace("indexMVC.php?module=2&action=5&type="+$("#typeDoc").val()+"&depot="+$("#depot").val());
                         }
                     });
                 } else{
                     alert("La transormation du document a été effectuée !");
-                    window.location.replace("indexMVC.php?module=2&action=5&type="+type+"&depot="+$("#depot").val());
+                    window.location.replace("indexMVC.php?module=2&action=5&type="+$("#typeDoc").val()+"&depot="+$("#depot").val());
                 }
             }
         });
@@ -123,9 +107,9 @@ $("table.table > tbody > tr #transform").on('click', function() {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
             }
             ,"initComplete": function(settings, json) {
-                $("#tableListeFacture_wrapper").addClass("row")
+                $("#tableListeFacture_wrapper").addClass("row").addClass("p-3")
                 $("#tableListeFacture_length").addClass("col-6")
-                $("#tableListeFacture_filter").addClass("col-5")
+                $("#tableListeFacture_filter").addClass("col-6")
                 $("#tableListeFacture_filter").find(":input").addClass("form-control");
                 $("#tableListeFacture_length").find(":input").addClass("form-control");
             }

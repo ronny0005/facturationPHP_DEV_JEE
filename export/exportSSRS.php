@@ -10,7 +10,7 @@ session_start();
 $login = $_SESSION["login"];
 
 if($societe!="BOUM") {
-    define("REPORT", "/MF$societe/Reports/".$format."_".$type);
+    define("REPORT", "/MF$societe/Reports/".$format."_Facture");
     $saveName = "{$type}_{$format}.pdf";
 }
 

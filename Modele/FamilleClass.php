@@ -209,62 +209,24 @@ class FamilleClass Extends Objet{
         return $result->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function modifFamille($code, $intitule, $catal1, $catal2, $catal3, $catal4)
+    public function modifFamille($intitule, $catal1, $catal2, $catal3, $catal4)
     {
-        $requete = "UPDATE F_FAMILLE SET FA_Intitule='$intitule', CL_No1=$catal1,cbCL_No1=(SELECT CASE WHEN $catal1=0 THEN NULL ELSE $catal1 END),
-                CL_No2=$catal2,cbCL_No2=(SELECT CASE WHEN $catal2=0 THEN NULL ELSE $catal2 END),cbModification=GETDATE(),
-                CL_No3=$catal3,cbCL_No3=(SELECT CASE WHEN $catal3=0 THEN NULL ELSE $catal3 END),
-                CL_No4=$catal4,cbCL_No4=(SELECT CASE WHEN $catal4=0 THEN NULL ELSE $catal4 END)
-                WHERE FA_CodeFamille='$code'";
-        $this->db->query($requete);
+        parent::maj("FA_Intitule" , $this->formatString($intitule));
+        parent::maj("CL_No1" , $catal1);
+        parent::maj("CL_No2" , $catal2);
+        parent::maj("CL_No3" , $catal3);
+        parent::maj("CL_No4" , $catal4);
     }
 
     public function insertFamille($code, $intitule, $catal1, $catal2, $catal3, $catal4)
     {
-        $requete = "INSERT INTO [dbo].[F_FAMILLE]
-           ([FA_CodeFamille],[FA_Type],[FA_Intitule],[FA_UniteVen]
-           ,[FA_Coef],[FA_SuiviStock],[FA_Garantie],[FA_Central]
-           ,[FA_Stat01],[FA_Stat02],[FA_Stat03],[FA_Stat04]
-           ,[FA_Stat05],[FA_CodeFiscal],[FA_Pays],[FA_UnitePoids]
-           ,[FA_Escompte],[FA_Delai],[FA_HorsStat],[FA_VteDebit]
-           ,[FA_NotImp],[FA_Frais01FR_Denomination],[FA_Frais01FR_Rem01REM_Valeur],[FA_Frais01FR_Rem01REM_Type]
-           ,[FA_Frais01FR_Rem02REM_Valeur],[FA_Frais01FR_Rem02REM_Type],[FA_Frais01FR_Rem03REM_Valeur],[FA_Frais01FR_Rem03REM_Type]
-           ,[FA_Frais02FR_Denomination],[FA_Frais02FR_Rem01REM_Valeur],[FA_Frais02FR_Rem01REM_Type],[FA_Frais02FR_Rem02REM_Valeur]
-           ,[FA_Frais02FR_Rem02REM_Type],[FA_Frais02FR_Rem03REM_Valeur],[FA_Frais02FR_Rem03REM_Type],[FA_Frais03FR_Denomination]
-           ,[FA_Frais03FR_Rem01REM_Valeur],[FA_Frais03FR_Rem01REM_Type],[FA_Frais03FR_Rem02REM_Valeur],[FA_Frais03FR_Rem02REM_Type]
-           ,[FA_Frais03FR_Rem03REM_Valeur],[FA_Frais03FR_Rem03REM_Type],[FA_Contremarque],[FA_FactPoids]
-           ,[FA_FactForfait],[FA_Publie],[FA_RacineRef],[FA_RacineCB]
-           ,[CL_No1],[cbCL_No1],[CL_No2],[cbCL_No2],[CL_No3],[cbCL_No3],[CL_No4],[cbCL_No4]
-           ,[cbProt],[cbCreateur],[cbModification],[cbReplication],[cbFlag])
-     VALUES
-           (/*FA_CodeFamille*/'$code',/*FA_Type*/0,/*FA_Intitule, */'$intitule',/*FA_UniteVen*/4
-           ,/*FA_Coef*/0,/*FA_SuiviStock*/2,/*FA_Garantie*/0,/*FA_Central*/''
-           ,/*FA_Stat01*/'',/*FA_Stat02*/'',/*FA_Stat03*/'',/*FA_Stat04*/''
-           ,/*FA_Stat05*/'',/*FA_CodeFiscal*/'',/*FA_Pays, */'',/*FA_UnitePoids*/2
-           ,/*FA_Escompte*/0,/*FA_Delai*/0,/*FA_HorsStat*/0,/*FA_VteDebit*/0
-           ,/*FA_NotImp*/0,/*FA_Frais01FR_Denomination*/'Coût de stockage'
-           ,/*FA_Frais01FR_Rem01REM_Valeur*/0,/*FA_Frais01FR_Rem01REM_Type*/0
-           ,/*FA_Frais01FR_Rem02REM_Valeur*/0,/*FA_Frais01FR_Rem02REM_Type*/0
-           ,/*FA_Frais01FR_Rem03REM_Valeur*/0,/*FA_Frais01FR_Rem03REM_Type*/0
-           ,/*FA_Frais02FR_Denomination*/'Coût de transport',/*FA_Frais02FR_Rem01REM_Valeur*/0
-           ,/*FA_Frais02FR_Rem01REM_Type*/0,/*FA_Frais02FR_Rem02REM_Valeur*/0
-           ,/*FA_Frais02FR_Rem02REM_Type*/0,/*FA_Frais02FR_Rem03REM_Valeur*/0
-           ,/*FA_Frais02FR_Rem03REM_Type*/0,/*FA_Frais03FR_Denomination*/0
-           ,/*FA_Frais03FR_Rem01REM_Valeur*/0,/*FA_Frais03FR_Rem01REM_Type*/0
-           ,/*FA_Frais03FR_Rem02REM_Valeur*/0,/*FA_Frais03FR_Rem02REM_Type*/0
-           ,/*FA_Frais03FR_Rem03REM_Valeur*/0,/*FA_Frais03FR_Rem03REM_Type*/0
-           ,/*FA_Contremarque*/0,/*FA_FactPoids*/0,/*FA_FactForfait*/0,/*FA_Publie*/0
-           ,/*FA_RacineRef*/'$code',/*FA_RacineCB*/''
-           ,/*CL_No1*/$catal1,/*cbCL_No1*/(SELECT CASE WHEN $catal1=0 THEN NULL ELSE $catal1 END),/*CL_No2*/$catal2,/*cbCL_No2*/(SELECT CASE WHEN $catal2=0 THEN NULL ELSE $catal2 END)
-           ,/*CL_No3*/$catal3,/*cbCL_No3*/(SELECT CASE WHEN $catal3=0 THEN NULL ELSE $catal3 END),/*CL_No4*/$catal4,/*cbCL_No4*/(SELECT CASE WHEN $catal4=0 THEN NULL ELSE $catal4 END)
-           ,/*cbProt*/0,/*cbCreateur, char(4)*/'AND',/*cbModification, smalldatetime*/CAST(GETDATE() AS DATE),/*cbReplication*/0,/*cbFlag*/0)
-";
-        $this->db->query($requete);
-
+        return $this->getApiExecute("/insertFamille&code=$code&intitule=$intitule&clNo1=$catal1&clNo2=$catal2&clNo3=$catal3&clNo4=$catal4&protNo={$_SESSION["id"]}");
     }
 
-
-    public function __toString() {
+    public function supprFamille(){
+        return $this->getApiExecute("/supprFamille&codeFamille={$this->FA_CodeFamille}");
+    }
+public function __toString() {
         return "";
     }
 

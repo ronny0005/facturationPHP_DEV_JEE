@@ -3,7 +3,7 @@ $do_domaine = $docEntete->DO_Domaine;
 $do_type = $docEntete->DO_Type;
 ?>
 
-<fieldset class="entete mt-3">
+<fieldset class="card p-3 entete mt-3">
 <legend class="entete">Ligne</legend>
 <div class="err" id="add_err"></div>
 <form action="indexMVC.php?action=5&module=4" method="GET" name="form-ligne" id="form-ligne">
@@ -27,7 +27,7 @@ $do_type = $docEntete->DO_Type;
     <div class="col-6 col-sm-4 col-md-8 col-lg-2" style="<?php if($flagPxRevient!=0) echo "display:none" ?>">
         <input type="text" class="form-control" id="prix"  value="" name="prix" placeholder="P.U" <?php if(!isset($_GET["cbMarq"]) || $isVisu) echo "disabled" ?>/>
     </div>
-    <div class="col-12 col-sm-4 col-md-4 col-lg-2">
+    <div class="col-6 col-sm-4 col-md-4 col-lg-2">
         <input type="text" class="form-control" id="quantite_stock"  value="" placeholder="Quantité en stock" disabled />
     </div>
 

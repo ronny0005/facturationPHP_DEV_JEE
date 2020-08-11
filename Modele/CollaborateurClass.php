@@ -107,5 +107,4 @@ class CollaborateurClass Extends Objet{
 		$this->getApiJson("/modifCollaborateur/coNom={$this->formatString($nom)}&coPrenom={$this->formatString($prenom)}&codePostal=$codepostal&coFonction={$this->formatString($fonction)}&coAdresse={$this->formatString($adresse)}&coComplement={$this->formatString($complement)}&coVille={$this->formatString($ville)}&coCodeRegion={$this->formatString($region)}&coPays={$this->formatString($pays)}&coService={$this->formatString($service)}&coVendeur=$vendeur&coCaissier=$caissier&coAcheteur=$acheteur&coTelephone=$telephone&coTelecopie=$telecopie&coEmail={$this->formatString($email)}&coReceptionnaire=$controleur&coChargeRecouvr=$recouvrement&cbCreateur=$cbCreateur&coNo=$coNo");
     }
 
-
 }

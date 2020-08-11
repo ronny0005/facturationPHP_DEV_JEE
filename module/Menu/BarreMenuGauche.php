@@ -21,7 +21,7 @@ $docEntete = new DocEnteteClass(0);
                     if($protection->PROT_Right==1) {
                         ?>
                         <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"Utilisateur") ?>" role="presentation" href="utilisateur">Utilisateur</a>
-                        <a class="dropdown-item customDropdown-item" role="presentation" href="#">Profil</a>
+                        <a class="dropdown-item customDropdown-item" role="presentation" href="listeProfil">Profil</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Droits</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Envoi mail</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Envoi SMS</a>
@@ -30,9 +30,9 @@ $docEntete = new DocEnteteClass(0);
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Config. profil&nbsp;</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Déconnexion</a>
                         <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"], $_GET["action"], $_GET["type"], "FusionClient") ?>"
-                           role="presentation" href="#">Fusion client</a>
-                        <a class="dropdown-item customDropdown-item" role="presentation" href="#">Fusion article</a>
-                        <a class="dropdown-item customDropdown-item" role="presentation" href="#">Calendrier connexion</a>
+                           role="presentation" href="fusionClient">Fusion client</a>
+                        <a class="dropdown-item customDropdown-item" role="presentation" href="fusionArticle">Fusion article</a>
+                        <a class="dropdown-item customDropdown-item" role="presentation" href="calendrierConnexion">Calendrier connexion</a>
                     <?php
                     }
                     ?>
@@ -255,9 +255,15 @@ $docEntete = new DocEnteteClass(0);
                         inventaire</a></li>
                 <?php
             }
+            if(($protection->PROT_Right==1 || ($protection->PROT_CLOTURE_CAISSE!=2))) {
+                ?>
+                <li class="nav-item <?= $docEntete->activeMenu($_GET["module"], $_GET["action"], $_GET["type"], "ClotureCaisse") ?>"
+                    role="presentation"><a class="nav-link" href="clotureDeCaisse" style="color: rgb(2,78,5);">Cloture de caisse</a></li>
+                <?php
+            }
             ?>
         </ul>
-        <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button" style="background-color: rgb(2,78,5);color: rgb(255,255,255);"></button></div>
+       <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button" style="background-color: rgb(2,78,5);color: rgb(255,255,255);"></button></div>
         <div><input id="machineName" style="visibility:hidden;" value="<?= gethostname(); ?>"/></div>
     </div>
 </nav>

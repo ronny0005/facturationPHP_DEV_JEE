@@ -128,13 +128,13 @@ class Etat {
                     break;
                 case 18 :
                     if($protection->PROT_Right==1 || (0==0))
-                        $this->stat_article_achat();
+                        $this->stat_article_achatCA();
                     else
                         header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 19 :
                     if($protection->PROT_Right==1 || (0==0))
-                        $this->stat_article_achatCA();
+                        $this->stat_article_achat();
                     else
                         header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
@@ -213,12 +213,23 @@ class Etat {
                     //else
                     //     header('Location: accueil'); //rechercher un étudiant par domaine d'activité
                     break;
+                case 39 :
+                    if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_CAISSE_ARTICLE==0))
+                        $this->statClientParArticle();
+                    else
+                        header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
 
                 default :
                     $this->Mouvement_stk(); // On décide ce que l'on veut faire
             }
         } else
             header('Location: accueil');
+    }
+
+    public function statClientParArticle(){
+        $query = "/".$this->RapportsSSRS."/Rapports/Statistique client par article";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
     }
 
     public function Ecriture_comptable() {
@@ -238,9 +249,9 @@ class Etat {
     }
 
     public function Caisse_dexploitation() {
-        include("pages/Etat/EtatMvtStock.php");
-//        $query = "/".$this->RapportsSSRS."/Rapports/Caisse d'exploitation";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/EtatMvtStock.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Caisse d'exploitation";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
     }
 
     public function inventaire_prep() {
@@ -277,10 +288,9 @@ class Etat {
                 $query = "/".$this->RapportsSSRS."/Rapports/Echeance client";//$_REQUEST["reportName"];
         if(isset($_POST["reportName"]))
             $query = $_POST["reportName"];//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/echeance_client.php");
+        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/echeance_client.php");
     }
-
 
     public function echeance_client_age() {
         $query = "/".$this->RapportsSSRS."/Rapports/Echeance client age";//$_REQUEST["reportName"];
@@ -313,9 +323,9 @@ class Etat {
     }
 
     public function releveComtpeClient() {
-        //$query = "/".$this->RapportsSSRS."/Relevé compte client";//$_REQUEST["reportName"];
-        //include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/releveCompteClient.php");
+        $query = "/".$this->RapportsSSRS."/Relevé compte client";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+        //include("pages/Etat/releveCompteClient.php");
     }
 
     public function etatCaisse() {
@@ -325,9 +335,9 @@ class Etat {
     }
 
     public function etatDette() {
-        //    $query = "/".$this->RapportsSSRS."/Rapports/Etat des dettes";//$_REQUEST["reportName"];
-        //    include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/etatDette.php");
+            $query = "/".$this->RapportsSSRS."/Rapports/Etat des dettes";//$_REQUEST["reportName"];
+            include("pages/Etat/etatSSRS.php");
+        //include("pages/Etat/etatDette.php");
     }
 
     public function stat_collaborateur() {
@@ -345,20 +355,20 @@ class Etat {
     public function livret_inventaire() {
         $dateIndique = 1;
         $query = "/".$this->RapportsSSRS."/Rapports/Livre d'inventaire";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/livret_inventaire.php");
+        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/livret_inventaire.php");
     }
 
     public function vrst_distant() {
-//        $query = "/".$this->RapportsSSRS."/Rapports/Versement distant";//$_REQUEST["reportName"];
-//        include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/vrst_distant.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Versement distant";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+//        include("pages/Etat/vrst_distant.php");
     }
 
     public function vrst_bancaire() {
-        //$query = "/".$this->RapportsSSRS."/Rapports/Versement bancaire";//$_REQUEST["reportName"];
-        //include("pages/Etat/etatSSRS.php");
-        include("pages/Etat/vrst_bancaire.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Versement bancaire";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+        //include("pages/Etat/vrst_bancaire.php");
     }
 
     public function etat_fondCaisse() {

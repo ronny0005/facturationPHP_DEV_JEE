@@ -20,8 +20,26 @@ jQuery(function ($) {
         setInfo();
     });
 
+    function init(jour){
+        $("#check"+jour+"").prop('checked', false);
+        heureDebut = "00:00";
+        heureFin = "00:00";
+        $("#heureDebut"+jour).val(heureDebut);
+        $("#heureFin"+jour).val(heureFin);
+    }
+    function eachDay(){
+        init("Lundi")
+        init("Mardi")
+        init("Mercredi")
+        init("Jeudi")
+        init("Vendredi")
+        init("Samedi")
+        init("Dimanche")
+    }
+
     $("#PROT_NoUser").val($('#user').select2('data')[0].id);
     function setInfo(){
+        eachDay()
         $.ajax({
             url: "indexServeur.php?page=getCalendarUser",
             method: 'GET',

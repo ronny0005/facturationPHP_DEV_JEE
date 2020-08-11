@@ -1,6 +1,6 @@
 .navbar.navbar-expand-lg.navbar-light.bg-light {
 }
-
+/*
 .dropdown-submenu {
   position: relative;
 }
@@ -11,12 +11,21 @@
   right: 6px;
   top: .8em;
 }
-
-.dropdown-submenu .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-left: .1rem;
-  margin-right: .1rem;
+@media (min-width:576px) {
+  .menuBar {
+    width: 300px
+  }
 }
 
+.dropdown-item{
+  background: white;
+}
 
+*/
+.topbar.navbar-light .navbar-nav .nav-item .nav-link {
+  color: rgb(2,78,5);
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
+  color: rgb(2,78,5);
+}

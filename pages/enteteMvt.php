@@ -1,4 +1,4 @@
-<fieldset class="entete">
+<fieldset class="card p-3 entete">
 <legend class="entete">Entete</legend>
                 <div class="err" id="add_err"></div>
 		<form id="form-entete" class="form-horizontal" action="indexMVC.php?module=4&action=5" method="GET" >

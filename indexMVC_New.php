@@ -23,6 +23,7 @@ if(!isset($_SESSION["login"]))
     <link rel="stylesheet" href="css/select2.min.css">
     <link rel="stylesheet" href="css/select2-bootstrap.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="css/bootstrap-clockpicker.css"/>
 
 </head>
     <script src="assets/js/jquery.min.js"></script>
@@ -39,8 +40,9 @@ if(!isset($_SESSION["login"]))
     <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/bs-charts.js"></script>
     <script src="js/scriptFonctionUtile.js"></script>
-    <script src="js/dataTables.fixedHeader.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
     <script src="js/select2.min.js"></script>
+    <script src="js/bootstrap-clockpicker.js"></script>
 
 <?php
     include("module/includeHeader.php");
@@ -59,7 +61,7 @@ if(isset($_SESSION["login"]))
         <div class="d-flex flex-column" id="content-wrapper" style="background-color : white">
             <div id="content">
                 <?php include ("module/Menu/barreMenuHaut.php"); ?>
-                <div class="container-fluid">
+                <div class="container-fluid p-1 p-md-4 p-lg-4">
                     <div class=" justify-content-between align-items-center">
 
                     <?php
@@ -124,7 +126,7 @@ if(isset($_SESSION["login"]))
                 </div>
             </div>
         </div>
-        <footer class="bg-white sticky-footer">
+        <footer class="bg-white sticky-footer navbar-fixed-bottom">
             <div class="container my-auto">
                 <div class="text-center my-auto copyright"><span>Copyright © IT-Solution 2020</span></div>
             </div>

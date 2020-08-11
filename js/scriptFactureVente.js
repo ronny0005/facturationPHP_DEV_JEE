@@ -1,32 +1,32 @@
 jQuery(function($) {
-    var latitude = 0;
-    var longitude = 0;
-    var pmin = 0;
-    var pmax = 0;
-    var qtegros= 0;
-    var protect = 0;
-    var modification = false;
-    var listeFacture = "";
-    var impressionFacture = "";
-    var impressionFactureTTC = "";
-    var societe = "";
-    var profilvendeur = 0;
-    var EC_MontantImpute = 0;
-    var totalMontantA = 0;
-    var EC_QteImpute = 0;
-    var totalQteA = 0;
-    var cbMarqLigne = 0;
-    var admin = 0;
-    var typeStock = 0;
-    var isModif = $("#isModif").val()
-    var isVisu = $("#isVisu").val()
-    var protectDate = $("#protectDate").val()
-    var typeFac = $("#typeFacture").val();
+    let latitude = 0;
+    let longitude = 0;
+    let pmin = 0;
+    let pmax = 0;
+    let qtegros= 0;
+    let protect = 0;
+    let modification = false;
+    let listeFacture = "";
+    let impressionFacture = "";
+    let impressionFactureTTC = "";
+    let societe = "";
+    let profilvendeur = 0;
+    let EC_MontantImpute = 0;
+    let totalMontantA = 0;
+    let EC_QteImpute = 0;
+    let totalQteA = 0;
+    let cbMarqLigne = 0;
+    let admin = 0;
+    let typeStock = 0;
+    let isModif = $("#isModif").val()
+    let isVisu = $("#isVisu").val()
+    let protectDate = $("#protectDate").val()
+    let typeFac = $("#typeFacture").val();
     //var protectionprix = 0;
-    var negatif = true;
-    var prot_no = $("#PROT_No").val()
+    let negatif = true;
+    let prot_no = $("#PROT_No").val()
 
-    if((typeFac=="Vente" || typeFac=="BonLivraison" || typeFac=="VenteC" || typeFac=="Achat" || typeFac=="AchatC")&& $("#qte_negative").val()!=0)
+    if((typeFac==="Vente" || typeFac==="BonLivraison" || typeFac==="VenteC" || typeFac==="Achat" || typeFac==="AchatC")&& $("#qte_negative").val()!==0)
         negatif = false;
 
 
@@ -468,7 +468,7 @@ jQuery(function($) {
                             },
                             error : function(resultat, statut, erreur){
                                 $("#alertEntete").show("slow", function() {
-                                    $("#alertEntete").html("Erreur technique !<br/> Si celle si ce reproduit, veuillez contacter IT-Solution en envoyant le message suivant : <br/>"+resultat.responseText);
+                                    $("#alertEntete").html(resultat.responseText);
                                     $(this).fadeTo(12000, 500).slideUp(500, function(){
                                     })
                                 })
@@ -933,8 +933,6 @@ jQuery(function($) {
             }
         }
     }
-
-
     $("#ligneFacture").DataTable(
         {
             scrollY:        "300px",
@@ -949,7 +947,25 @@ jQuery(function($) {
         }
     );
 
+    $("#tableRecouvrement").DataTable(
+        {
+            scrollY:        "300px",
+            autoWidth:      true,
+            paging:         false,
+            searching:      false,
+            info:           false,
+            scrollCollapse: true,
+            fixedColumns:   true,
+            "language": {
+                "url":      "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            }
+        }
+    );
+/*
 
+
+
+*/
     function ajout_ligne(e){
         if(e.keyCode == 13 && isVisu ==0){
             var valfloat = parseFloat(Math.round(($("#prix").val()).replace(/ /g,"")*100)/100);

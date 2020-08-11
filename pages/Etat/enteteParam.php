@@ -2,9 +2,10 @@
 $objet = new ObjetCollector();
 $datedeb=date("dmy");
 $datefin=date("dmy");
+$protection = new ProtectionClass("","");
+$protection->connexionProctectionByProtNo($_SESSION["id"]);
 if($admin==0){
-    $result=$objet->db->requete($objet->getDepotUser($_SESSION["id"]));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
+    $rows = $protection->getDepotUser($_SESSION["id"]);
     if($rows!=null)
         $depot_no =$rows[0]->DE_No;
     else
@@ -47,8 +48,8 @@ if(isset($_GET["choix_inv"])) $choix_inv=$_GET["choix_inv"];
 
 $client="0";
 if($admin==0){
-    $result=$objet->db->requete($objet->getCaisseDepot($_SESSION["id"]));
-    $rows = $result->fetchAll(PDO::FETCH_OBJ);
+    $caisseDepot = new CaisseClass(0);
+    $rows = $caisseDepot->getCaisseDepot($_SESSION["id"]);
     if($rows!=null)
         $caisse = $rows[0]->CA_No;
     else

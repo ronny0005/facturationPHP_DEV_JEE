@@ -316,7 +316,7 @@ class ArticleClass Extends Objet{
         parent::maj("AR_Prevision" , $this->AR_Prevision);
     }
     public function insertArticle(){
-        return $this->getApiJson("/ajout_article&reference={$this->formatString($this->AR_Ref)}&designation={$this->formatString($this->AR_Design)}&pxAchat={$this->AR_PrixAch}&faCodeFamille={$this->formatString($this->FA_CodeFamille)}&condition={$this->AR_Condition}&pxHt={$this->AR_PrixTTC}&pxMin={$this->Prix_Min}&pxMax={$this->Prix_Max}&qteGros={$this->Qte_Gros}&arPrixTTC={$this->AR_PrixTTC}&clNo1={$this->CL_No1}&clNo2={$this->CL_No2}&clNo3={$this->CL_No3}&clNo4={$this->CL_No4}&cbCreateur={$this->cbCreateur}");
+        return $this->getApiJson("/ajout_article&reference={$this->formatString($this->AR_Ref)}&designation={$this->formatString($this->AR_Design)}&pxAchat={$this->formatString($this->AR_PrixAch)}&faCodeFamille={$this->formatString($this->FA_CodeFamille)}&condition={$this->formatString($this->AR_Condition)}&pxHt={$this->formatString($this->AR_PrixVen)}&pxMin={$this->formatString($this->Prix_Min)}&pxMax={$this->formatString($this->Prix_Max)}&qteGros={$this->formatString($this->Qte_Gros)}&arPrixTTC={$this->formatString($this->AR_PrixTTC)}&clNo1={$this->formatString($this->CL_No1)}&clNo2={$this->formatString($this->CL_No2)}&clNo3={$this->formatString($this->CL_No3)}&clNo4={$this->formatString($this->CL_No4)}&cbCreateur={$this->formatString($this->cbCreateur)}");
     }
 
     public function updateF_ArtStockBorne($AR_Ref,$DE_No,$QteMin,$QteMax){

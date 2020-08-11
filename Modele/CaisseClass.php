@@ -8,7 +8,7 @@
 
 class CaisseClass Extends Objet{
     //put your code here
-    public $db,$CA_No,$CA_Intitule,$DE_No,$CO_No,$CO_NoCaissier,$CT_Num,$JO_Num,$CA_Souche,$cbCreateur;
+    public $db,$CA_No,$CA_Intitule,$DE_No,$CO_No,$CO_NoCaissier,$CT_Num,$JO_Num,$CA_Souche,$cbCreateur,$cbMarq;
     public $table = 'F_CAISSE';
     public $lien ="fcaisse";
     function __construct($id)
@@ -25,6 +25,7 @@ class CaisseClass Extends Objet{
             $this->JO_Num = stripslashes($this->data[0]->JO_Num);
             $this->CA_Souche = $this->data[0]->CA_Souche;
             $this->cbCreateur = $this->data[0]->cbCreateur;
+            $this->cbMarq = $this->data[0]->cbMarq;
 
         }
     }
@@ -39,7 +40,7 @@ class CaisseClass Extends Objet{
     }
 
     public function insertDepotCaisse($DE_No){
-		$this->getApiJson("/insertDepotCaisse&caNo={$this->CA_No}&deNo={$DE_No}");
+		$this->getApiJson("/insertDepotCaisse/caNo={$this->CA_No}&deNo={$DE_No}");
     }
 
     public function allCaisse(){
@@ -59,19 +60,20 @@ class CaisseClass Extends Objet{
         parent::maj('CT_Num', $this->CT_Num);
         parent::maj('JO_Num', $this->JO_Num);
         parent::maj('CA_Souche', $this->CA_Souche);
-        parent::maj('cbCreateur', $this->userName);
-        parent::majcbModification();
-
     }
 
-    public function insertCaisse(){
-		 $this->getApiJson("/insertCaisse&caIntitule={$this->CA_Intitule}&coNoCaissier={$this->CO_NoCaissier}&joNum={$this->JO_Num}&cbCreateur={$this->cbCreateur}");
-//        return $row[0];
+    public function insertCaisse($codeDepot){
+		 $this->getApiJson("/insertCaisse/caIntitule={$this->formatString($this->CA_Intitule)}&coNoCaissier={$this->CO_NoCaissier}&joNum={$this->formatString($this->JO_Num)}&cbCreateur=".$this->formatString($_SESSION["id"])."&codeDepot=$codeDepot");
+    }
+
+    public function deleteCaisse()
+    {
+        $this->getApiJson("/deleteCaisse/caNo={$this->CA_No}");
     }
 
     public function supprDepotCaisse()
     {
-		$this->getApiJson("/supprDepotCaisse&caNo={$this->CA_No}");
+        $this->getApiJson("/supprDepotCaisse&caNo={$this->CA_No}");
     }
 
     public function listeCaisseShort(){

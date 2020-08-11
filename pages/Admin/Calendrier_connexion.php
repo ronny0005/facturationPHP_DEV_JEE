@@ -2,29 +2,24 @@
     $objet = new ObjetCollector();
 ?>
 <script src="js/Admin/Calendrier_connexion.js?d=<?php echo time(); ?>"></script>
-</head>
-<body>
 <?php
 include("module/Menu/BarreMenu.php");
 
 ?>
-</head>
-<div id="milieu">
-    <div class="container">
-<div class="container clearfix">
-    <h4 id="logo" style="text-align: center;background-color: #eee;padding: 10px;text-transform: uppercase">
-        <?php echo $texteMenu; ?>
-    </h4>
-</div>
+<section class="bgApplication mb-3" style="margin: 0px;padding: 5px;">
+    <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);">
+        Calendrier de connexion
+    </h3>
+</section>
 <?php
     if($action==1){
         echo "<div class='alert alert-success'>La modification a bien été effectuée !</div>";
     }
 ?>
-        <form action="#" name="calendar" method="POST">
+        <form class="" action="#" name="calendar" method="POST">
+            <div class="card p-3">
             <div class="row">
-
-                <div class="col-lg-2">
+                <div class="col-2">
                     <label>Utilisateur</label>
                     <input type="hidden" class="btn btn-primary" id="PROT_NoUser" name="PROT_NoUser" value=""/>
                     <select class="form-control" name="user" id="user">
@@ -34,7 +29,7 @@ include("module/Menu/BarreMenu.php");
                             $rows = $protectionClass->getUtilisateurAdminMain();
                             if ($rows != null) {
                                 foreach ($rows as $row) {
-                                    echo "<option value='".$row->PROT_No_User."'";
+                                    echo "<option value='{$row->PROT_No_User}'";
                                     if($prot_no==$row->PROT_No_User) echo "selected";
                                     echo ">".$row->Prot_User;
                                         echo "</option>";
@@ -75,7 +70,8 @@ include("module/Menu/BarreMenu.php");
                     <?php
                 }
                 ?>
-            <div class="row">
-                <input type="button" class="btn btn-primary" id="valider" name="valider" value="Valider"/>
+            <div class="col-12 mt-3">
+                <input type="button" class="w-100 btn btn-primary" id="valider" name="valider" value="Valider"/>
+            </div>
             </div>
         </form>

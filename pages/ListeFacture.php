@@ -2,7 +2,7 @@
 <section class="bgcolorApplication" style="margin: 0px;padding: 5px;">
     <h3 class="text-center text-uppercase" style="color: rgb(255,255,255);"><?= $protection->listeFactureNom($type) ?></h3>
 </section>
-<section style="margin-top: 20px;">
+<section class="mt-3">
 <form id="valideLigne" action="listeFacture-<?= $type ?>" method="POST">
     <div class="card p-3">
     <div class="row p-2">
@@ -51,10 +51,10 @@
                 <?= $listeTypeFacture ?>
             </select>
         </div>
-    </div>
-        <div class="text-right">
-            <button class="btn btn-primary" id="valider" type="button">Valider</button>
+        <div class="col-12 col-lg-0 text-right mt-3">
+            <button class="w-100 btn btn-primary" id="valider" type="button">Valider</button>
         </div>
+    </div>
     </div>
 </form>
 </section>
@@ -70,6 +70,7 @@
                     <tr>
                         <th>Numéro Pièce</th>
                         <th>Reference</th>
+                        <th style="display: none">Reference</th>
                         <th>Date</th>
                         <th <?= ($protection->afficheClientListe($type)) ?>>Client</th>
                         <th <?= ($protection->afficheDepotListe($type)) ?>>Dépot</th>
@@ -106,7 +107,7 @@
                         class='facture' id='article_<?= $row->DO_Piece ?>'>
                         <td id='entete'><a href='<?= lienfinal($row->DO_Piece,$type,$row->cbMarq,$row->DO_Domaine,$row->DO_Type,$protected) ?>'><?= $row->DO_Piece ?></a></td>
                         <td><?= $row->DO_Ref ?></td>
-                        <span style='display:none' id='cbMarq'><?= $row->cbMarq ?></span>
+                        <td style='display:none' id='cbMarq'><?= $row->cbMarq ?></td>
                         <span style='display:none' id='cbCreateur'><?= $row->PROT_User ?></span>
                         <td><?= $date->format('d-m-Y') ?></td>
                         <td <?= ($protection->afficheClientListe($type)) ?>><?= $row->CT_Intitule ?></td>
@@ -114,7 +115,7 @@
                         <td <?= ($protection->afficheFournisseurListe($type)) ?>><?= $row->CT_Intitule ?></td>
                         <td <?= ($protection->afficheFournisseurListe($type)) ?>><?= $row->DE_Intitule ?></td>
                         <td <?= ($protection->afficheDepotDestListe($type)) ?>><?= $row->DE_Intitule ?></td>
-                        <td <?= ($protection->afficheDepotDestListe($type)) ?>><?= $row->DE_Intitule_dest ?></td>
+                        <td <?= ($protection->afficheDepotDestListe($type)) ?>><?= (isset($row->DE_Intitule_dest)) ? $row->DE_Intitule_dest : " " ?></td>
                         <td><?= $objet->formatChiffre(round($row->ttc)) ?></td>
                         <td <?= ($protection->afficheStatutListe ($type)) ?>><?= $objet->formatChiffre($avance) ?></td>
                         <td <?= ($protection->afficheStatutListe ($type)) ?>><?= $message ?></td>
@@ -136,23 +137,25 @@
 
     </div>
 
-    <div style="text-align: center" id="menu_transform">
-        <div class="form-group col-lg-4">
-            <label>Type<br/></label>
-            <select id="type_trans" name="type_trans" class="form-control">
-                <option value="6">Facture</option>
-                <?php
-                if($type=="Devis")
-                    echo "<option value='3'>Bon de livraison</option>";
-                ?>
-            </select>
-        </div>
-        <div class="form-group col-lg-4">
-            <label>Choisisser une nouvelle date</label>
-            <input class="form-control" type="text" id="date_transform"/>
-        </div>
-        <div class="form-group col-lg-4">
-            <label>Choisisser une nouvelle référence</label>
-            <input class="form-control" type="text" id="reference"/>
+    <div id="menu_transform">
+        <div class="row">
+            <div class="col-12">
+                <label>Type<br/></label>
+                <select id="type_trans" name="type_trans" class="form-control">
+                    <option value="6">Facture</option>
+                    <?php
+                    if($type=="Devis")
+                        echo "<option value='3'>Bon de livraison</option>";
+                    ?>
+                </select>
+            </div>
+            <div class="col-12">
+                <label>Nouvelle date</label>
+                <input class="form-control" type="text" id="date_transform"/>
+            </div>
+            <div class="col-12">
+                <label>Nouvelle référence</label>
+                <input class="form-control" type="text" id="reference"/>
+            </div>
         </div>
     </div>

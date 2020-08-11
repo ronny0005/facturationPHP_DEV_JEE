@@ -1290,7 +1290,9 @@ SELECT DISTINCT 0 DL_NoIn,0 cbMarq,fArt.AR_Ref,fArt.AR_Design DL_Design,0 AG_No1
     }
 
     public function formatChiffre($chiffre){
-        return number_format($chiffre, 2, '.', ' ');
+        if($chiffre!="")
+            return number_format($chiffre, 2, '.', ' ');
+        return 0;
     }
 
     public function echeance_client($centre, $datedeb, $datefin,$clientdebut,$clientfin,$type_reg,$facCompta,$typeTiers) {
@@ -3643,10 +3645,6 @@ LEFT JOIN (SELECT cbMarq,DO_Piece AS DO_Piece_Dest,DL_PrixUnitaire AS DL_PrixUni
                 WHERE A.AR_Ref='" . $ar_ref . "'";
     }
 
-    public function getFamilleByCode($code) {
-        return "SELECT * FROM F_FAMILLE WHERE FA_CodeFamille='" . $code . "'";
-    }
-
     public function getCollaborateur($type) {
         return "SELECT CO_No, CO_Nom FROM ".$this->db->baseCompta.".dbo.f_collaborateur WHERE CO_ACHETEUR=$type AND CO_Vendeur=1 ORDER BY CO_Nom";
     }
@@ -4292,14 +4290,6 @@ INSERT INTO [F_LIVRAISON]
         return "DELETE FROM F_TarifCond WHERE AR_Ref='$ar_ref' AND CO_No='$co_no'";
     }
 
-    public function supprFamille($codeFam){
-        return "IF EXISTS(SELECT * FROM sys.objects WHERE NAME='TG_CBDEL_F_FAMILLE')
-                    ALTER TABLE F_ARTICLE DISABLE TRIGGER TG_CBDEL_F_FAMILLE;
-                    DELETE FROM F_FAMILLE WHERE FA_CodeFamille='$codeFam';
-                    IF EXISTS(SELECT * FROM sys.objects WHERE NAME='TG_CBDEL_F_FAMILLE')
-                    ALTER TABLE F_ARTICLE ENABLE TRIGGER TG_CBDEL_F_FAMILLE;";
-    }
-
     public function supprClient($ct_num){
         return  "BEGIN 
                     DELETE FROM F_COMPTETG WHERE CT_Num='$ct_num';
@@ -4477,21 +4467,6 @@ INSERT INTO [F_LIVRAISON]
         $query="UPDATE F_PROTECTIONCIAL SET Prot_Pwd='$mdp' WHERE Prot_No=$userid;
                 UPDATE F_PROTECTIONCPTA SET Prot_Pwd='$mdp' WHERE Prot_No=$userid;";
         return $query;
-    }
-
-    public function getAllProfils(){
-        return "SELECT *
-            FROM F_PROTECTIONCIAL
-            WHERE PROT_UserProfil=0
-            AND PROT_Right=2";
-    }
-
-    public function getAllProfilsByid($id){
-        return "SELECT *
-            FROM F_PROTECTIONCIAL
-            WHERE PROT_UserProfil=0
-            AND Prot_No!=".$id." 
-            AND PROT_Right=2";
     }
 
     public function getProfilByid($id){

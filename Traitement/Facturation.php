@@ -12,6 +12,7 @@ include("../Modele/ReglementClass.php");
 include("../Modele/CaisseClass.php");
 include("../Modele/ArticleClass.php");
 include("../Modele/ProtectionClass.php");
+include("../Modele/EtatClass.php");
 $objet = new ObjetCollector();
 
 function dateDiff($date1, $date2){
@@ -67,7 +68,7 @@ if($_GET["acte"] =="ajout_entete"){
     }
     else
         if($cloture > 0)
-            echo "Cette journée est déjà cloturée !";
+            echo "Cette journée est déjà cloturée ! Contacter la direction où le superviseur !";
         else
             echo "la date doit être comprise entre $limitmoinsDate et $limitplusDate.";
 }
@@ -76,6 +77,28 @@ if($_GET["acte"] =="ajout_entete"){
 if( $_GET["acte"] =="ajout_reference"){
     $docEntete = new DocEnteteClass($_GET["cbMarq"]);
     $docEntete->maj("DO_Ref",$docEntete->formatString($_GET["reference"]),$docEntete->cbMarq,$_SESSION["id"]);
+}
+
+if( $_GET["acte"] =="createReport"){
+    $etat = new EtatClass();
+    $data = $etat->createReport($_GET["param"]);
+    if(sizeof($data)>0){
+        $content = "<table class='table table-striped'><thead>";
+        foreach($data[0] as $key => $val){
+            $content = $content."<th>$key</th>";
+    ;    }
+        $content = $content."</thead><tbody>";
+        foreach($data as $row) {
+            $first = $row;
+            $content = $content."<tr>";
+            foreach($row as $key => $val) {
+                $content = $content."<td>$val</td>";
+            }
+            $content = $content."</tr>";
+        }
+        echo $content."</tbody></table>";
+    }else
+        echo "";
 }
 
 if( $_GET["acte"] =="modif_nomClient"){
