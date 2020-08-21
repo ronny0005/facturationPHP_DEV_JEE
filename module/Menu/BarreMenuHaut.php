@@ -1,10 +1,9 @@
 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
     <div class="container-fluid">
         <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-
         <ul class="navbar-nav">
             <li class="nav-item dropdown menuBar">
-                <a class="nav-link dropdown-toggle active" href="#" data-toggle="dropdown">  Etats  </a>
+                <a class="nav-link dropdown-toggle active" href="#" data-toggle="dropdown">Etats</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" role="presentation" href="etatMvtStock">Mvt de stock</a></li>
                     <li><a class="dropdown-item" role="presentation" href="etatEqStock">Equation de stock</a></li>
@@ -58,6 +57,19 @@
                     <li><a class="dropdown-item" role="presentation" href="etatFichierCentralRap">Fichier Central Rap</a></li>
                     <li><a class="dropdown-item" role="presentation" href="etatEcritureComptable">Ecriture Comptable</a></li>
                     <li><a class="dropdown-item" role="presentation" href="etatGrandLivreTiersCommercial">Grand Livre Tiers Commercial</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown menuBar">
+                <a class="nav-link dropdown-toggle active" href="#" data-toggle="dropdown">Etats Compta</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" role="presentation" href="etatGrandLivreTiersCommercial">Grand livre tiers commercial</a></li>
+                    <li><a class="dropdown-item" role="presentation" href="etatBalanceAnalytique">Balance Analytique</a></li>
+                    <li><a class="dropdown-item" role="presentation" href="etatBalanceDesComptes">Balance des comptes</a></li>
+                    <li><a class="dropdown-item" role="presentation" href="etatGrandLivreAnalytique">Grand livre analytique</a></li>
+                    <li><a class="dropdown-item" role="presentation" href="etatJournal">Journal</a></li>
                 </ul>
             </li>
         </ul>

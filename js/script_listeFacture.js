@@ -80,7 +80,7 @@ $("table.table > tbody > tr #transform").on('click', function() {
 
 
     $("#client").autocomplete({
-        source: "indexServeur.php?page=getTiersByNumIntitule&TypeFac=" + $("#typeDoc").val(),
+        source: "indexServeur.php?page=getTiersByNumIntitule&TypeFac=" + $("#typeDoc").val()+"&all=1",
         autoFocus: true,
         select: function (event, ui) {
             event.preventDefault();

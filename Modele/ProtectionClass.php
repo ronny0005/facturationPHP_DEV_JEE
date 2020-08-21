@@ -165,10 +165,11 @@ class ProtectionClass extends Objet{
         parent::maj('PROT_Email', $this->PROT_Email);
         parent::maj('PROT_Right', $this->PROT_Right);
         parent::maj('PROT_PwdStatus', $this->PROT_PwdStatus);
-        if($depot!=0){
+        if($depot!=0)
             $this->ajoutDepotUser($this->PROT_No,implode( ",",$depot));
+        if($depotPrincipal!=0)
             $this->setDepotUser($this->PROT_No,implode( ",",$depotPrincipal));
-        }
+
     }
 
     public function createUser() {

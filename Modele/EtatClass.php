@@ -20,6 +20,18 @@ class EtatClass Extends Objet
         return $this->getApiJson("/menuCaParDepot&protNo=$protNo");
     }
 
+    public function top10Vente($period){
+        return $this->getApiJson("/top10Vente&period=$period");
+    }
+
+    public function statCaisseDuJour($protNo){
+        return $this->getApiJson("/statCaisseDuJour&protNo=$protNo");
+    }
+
+    public function detteDuJour($protNo){
+        return $this->getApiJson("/detteDuJour&protNo=$protNo");
+    }
+
     public function menuCaParDepotXml($protNo){
         $dataPoints = array();
         $list =  $this->menuCaParDepot($protNo);

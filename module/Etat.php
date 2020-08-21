@@ -16,7 +16,7 @@ class Etat {
     public $RapportsSSRS = "";
 
     public function __construct(){
-        $this->RapportsSSRS= "RapportCMI";
+        $this->RapportsSSRS= "RapportMIMOSA";
     }
 
     public function doAction($action) {
@@ -212,6 +212,45 @@ class Etat {
                     $this->grand_livre_tiers_commercial();
                     //else
                     //     header('Location: accueil'); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 33 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->articleAbsentBoutique();
+                    //else
+                    //     header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 34 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->articleDormant();
+                    //else
+                    //     header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
+
+                case 35 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->BalanceAnalytique();
+                    //else
+                    //     header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
+
+                case 36 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->BalanceDesComptes();
+                    //else
+                    //     header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
+
+                case 37 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->GrandLivreAnalytique();
+                    //else
+                    //     header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
+                    break;
+                case 38 :
+                    //if($protection->PROT_Right==1 || ($protection->PROT_ETAT_RELEVE_ECH_CLIENT == 0))
+                    $this->EtatJournal();
+                    //else
+                    //     header('Location: indexMVC.php?module=1&action=1'); //rechercher un étudiant par domaine d'activité
                     break;
                 case 39 :
                     if($protection->PROT_Right==1 || ($protection->PROT_ETAT_STAT_CAISSE_ARTICLE==0))
@@ -433,7 +472,37 @@ class Etat {
         include("pages/Etat/etatSSRS.php");
     }
 
+    public function articleAbsentBoutique() {
+//        include("pages/Etat/EtatMvtStock.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Article Absent Boutique";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
+
+    public function articleDormant() {
+//        include("pages/Etat/EtatMvtStock.php");
+        $query = "/".$this->RapportsSSRS."/Rapports/Articles dormants";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
 
 
+    public function BalanceAnalytique(){
+        $query = "/".$this->RapportsSSRS."/Rapports/Balance analytique";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
+
+    public function BalanceDesComptes(){
+        $query = "/".$this->RapportsSSRS."/Rapports/Balance des comptes";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
+
+    public function GrandLivreAnalytique(){
+        $query = "/".$this->RapportsSSRS."/Rapports/Grand livre analytique";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
+
+    public function EtatJournal(){
+        $query = "/".$this->RapportsSSRS."/Rapports/Etat journal";//$_REQUEST["reportName"];
+        include("pages/Etat/etatSSRS.php");
+    }
 }
 ?>

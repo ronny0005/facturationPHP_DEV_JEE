@@ -320,9 +320,9 @@ class ComptetClass Extends Objet{
         return $this->getApiJson("/TiersDoublons");
     }
 
-    public function getTiersByNumIntitule($term,$typeFac){
+    public function getTiersByNumIntitule($term,$typeFac,$all){
         $value =str_replace(" ","%",$term);
-        $value= $this->getApiJson("/getTiersByNumIntitule&typeFacture=$typeFac&term=$value");
+        $value= $this->getApiJson("/getTiersByNumIntitule&typeFacture=$typeFac&term=$value&all=$all");
 
         foreach ($value as $val){
             $rows[] = array("label" => $val->CT_Intitule

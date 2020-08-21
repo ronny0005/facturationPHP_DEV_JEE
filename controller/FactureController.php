@@ -392,8 +392,8 @@ if($rows==null){
     foreach ($rows as $row){
         $date=date("d-m-Y", strtotime($row->RG_Date));
         $dr_date=date("d-m-Y", strtotime($row->DR_Date));
-        if($date=="01-01-1970") $date="";
-        if($dr_date=="01-01-1970") $dr_date="";
+        if($date=="01-01-1970" || $date=="01-01-1900") $date="";
+        if($dr_date=="01-01-1970" || $dr_date=="01-01-1900") $dr_date="";
         $listeReglement =  $listeReglement ."<tr>
                                                     <td>$date</td>
                                                     <td>$dr_date</td>

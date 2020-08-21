@@ -23,7 +23,7 @@
     </section>
     <section class="mt-2">
     <div class="err" id="add_err"></div>
-    <form id="formUser" class="formUser card" action="traitement/Creation.php" method="POST">
+    <form id="formUser" class="formUser card" action="traitement/CreationUser.php" method="POST">
         <input name="action" value="4" type="hidden"/>
         <input name="module" value="8" type="hidden"/>
         <input name="acte" value="actionUser" type="hidden"/>
@@ -109,7 +109,7 @@
             </select>
         </div>
         <div class="col-12 mt-3" >
-            <input style="width: 100%" type="submit" id="ajouterUser" name="ajouterUser" class="btn btn-primary" <?= (isset($_GET["id"])) ? 'value="Modifier"' : 'value="Ajouter"'; ?> />
+            <input style="width: 100%" type="submit" id="ajouterUser" name="ajouterUser" class="btn btn-primary" <?= (isset($_GET["PROT_No"])) ? 'value="Modifier"' : 'value="Ajouter"'; ?> />
         </div>
         </div>
     </form>

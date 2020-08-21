@@ -53,10 +53,10 @@ include("module/Menu/BarreMenu.php");
 
         if($statut == 2)
             $type = "La modification ";
-
+        $depotClass= new DepotClass($_GET["DE_No"] );
         ?>
         <div class="mt-3 alert <?= $alert ?>">
-            <?= $type ?>du dépot <?= $_GET["DE_No"] ?> a été effectuée !
+            <?= $type ?>du dépot <?= $depotClass->DE_Intitule ?> a été effectuée !
         </div>
         <?php
     }

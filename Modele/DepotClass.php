@@ -79,7 +79,7 @@ class DepotClass Extends Objet{
 
     public function insertFDepot($caSoucheVente,$caSoucheAchat,$caSoucheInterne,$caisse,$codeClient)
     {
-        $this->getApiExecute("/insertDepot&deIntitule={$this->formatString($this->DE_Intitule)}&deAdresse={$this->formatString($this->DE_Adresse)}&deComplement={$this->formatString($this->DE_Complement)}&deCodePostal={$this->formatString($this->DE_CodePostal)}&deVille={$this->formatString( $this->DE_Ville)}&deContact={$this->formatString($this->DE_Contact)}&deRegion={$this->formatString($this->DE_Region)}&dePays={$this->formatString($this->DE_Pays)}&deEmail={$this->formatString($this->DE_EMail)}&deTelephone={$this->formatString($this->DE_Telephone)}&deTelecopie={$this->formatString($this->DE_Telecopie)}&protNo=".$_SESSION["id"]."&caSoucheVente=$caSoucheVente&caSoucheAchat=$caSoucheAchat&caSoucheInterne=$caSoucheInterne&affaire={$this->formatString($this->CA_Num)}&caisse=$caisse&codeClient={$this->formatString($codeClient)}");
+        return $this->getApiJson("/insertDepot&deIntitule={$this->formatString($this->DE_Intitule)}&deAdresse={$this->formatString($this->DE_Adresse)}&deComplement={$this->formatString($this->DE_Complement)}&deCodePostal={$this->formatString($this->DE_CodePostal)}&deVille={$this->formatString( $this->DE_Ville)}&deContact={$this->formatString($this->DE_Contact)}&deRegion={$this->formatString($this->DE_Region)}&dePays={$this->formatString($this->DE_Pays)}&deEmail={$this->formatString($this->DE_EMail)}&deTelephone={$this->formatString($this->DE_Telephone)}&deTelecopie={$this->formatString($this->DE_Telecopie)}&protNo=".$_SESSION["id"]."&caSoucheVente=$caSoucheVente&caSoucheAchat=$caSoucheAchat&caSoucheInterne=$caSoucheInterne&affaire={$this->formatString($this->CA_Num)}&caisse=$caisse&codeClient={$this->formatString($codeClient)}");
 
 //        $this->majCatTarif();
     }
@@ -87,6 +87,11 @@ class DepotClass Extends Objet{
     public function insertDepotClient($codeClient)
     {
         $this->getApiExecute("/insertDepotClient&deNo={$this->DE_No}&value=$codeClient");
+    }
+
+    public function deleteDepot()
+    {
+        $this->getApiExecute("/deleteDepot&deNo={$this->DE_No}");
     }
 
 

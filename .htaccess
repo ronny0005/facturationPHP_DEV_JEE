@@ -86,6 +86,12 @@ RewriteRule ^etatEqStock$ indexMVC_New.php?module=5&action=3 [L]
 RewriteRule ^etatStatArticle$ indexMVC_New.php?module=5&action=4 [L]
 RewriteRule ^etatStatArticleFournisseur$ indexMVC_New.php?module=5&action=20 [L]
 
+RewriteRule ^etatGrandLivreTiersCommercial$ indexMVC_New.php?module=5&action=32 [L]
+RewriteRule ^etatBalanceAnalytique$ indexMVC_New.php?module=5&action=35 [L]
+RewriteRule ^etatBalanceDesComptes$ indexMVC_New.php?module=5&action=36 [L]
+RewriteRule ^etatGrandLivreAnalytique$ indexMVC_New.php?module=5&action=37 [L]
+RewriteRule ^etatJournal indexMVC_New.php?module=5&action=38 [L]
+
 
 
 RewriteRule ^etatStatClient$ indexMVC_New.php?module=5&action=5 [L]

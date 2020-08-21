@@ -326,29 +326,7 @@ if(strcmp($_GET["acte"],"suppr_article") == 0){
     }else
         header('Location: ../listeArticle-4-'.$_GET["AR_Ref"]);
 }
-var_dump($_POST);
-if(isset($_POST["acte"]))
 
-if(strcmp($_POST["acte"],"actionUser") == 0){
-
-    $protectionUser = new ProtectionClass("","");
-    $protectionUser->connexionProctectionByProtNo($_POST["id"]);
-    $protectionUser->PROT_User = $_POST["username"];
-    $protectionUser->PROT_Description = $_POST["description"];
-    $protectionUser->PROT_Pwd = $_POST["password"];
-    $protectionUser->PROT_Email = $_POST["email"];
-    $protectionUser->PROT_Right = $_POST["groupeid"];
-    $protectionUser->PROT_PwdStatus = $_POST["changepass"];
-
-    $protectionUser->PROT_UserProfil = (isset($_POST["profiluser"])) ? $_POST["profiluser"] : 0;
-    $depot = (isset($_POST["depot"])) ? $_POST["depot"] : 0;
-    $depotprincipal = (isset($_POST["depotprincipal"])) ? $_POST["depotprincipal"] : 0;
-    if($_POST["id"]!="")
-        $protectionUser->majProtectioncial($depot,$depotprincipal);
-    else
-        $protectionUser->ajoutUser($_POST["securiteAdmin"],$depot,$depotprincipal);
-    header("location : listeUser");
-}
 if(isset($_POST["acte"]))
 if(strcmp($_POST["acte"],"gestionProfil") == 0) {
     if (isset($_POST["valider"])) {
@@ -620,7 +598,6 @@ if(strcmp($_GET["acte"],"modif_client") == 0){
     $ncompte = $_GET["CT_Num"];
     //$type = $_GET["type"];
     $comptetClass = new ComptetClass($ncompte);
-
     $comptetClass->CT_Intitule= str_replace("'", "''", $_GET["CT_Intitule"]);
     $comptetClass->CT_Adresse= str_replace("'", "''", $_GET["CT_Adresse"]);
     $comptetClass->CG_NumPrinc= $_GET["CG_NumPrinc"];
@@ -833,8 +810,8 @@ if(strcmp($_GET["acte"],"ajout_depot") == 0){
     $affaire= str_replace("'","''", $_GET["affaire"]);
     $depot->DE_Telephone = $_GET["tel"];
     $depot->CA_CatTarif=$_GET["CA_CatTarif"];
-    $depot->insertFDepot($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$caisse,$codeClient);
-    $data = array('DE_No' => $depot->DE_Intitule);
+    $info = $depot->insertFDepot($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$caisse,$codeClient);
+    $data = array('DE_No' => $info->de_No);
     echo json_encode($data);
 }  
 
@@ -930,6 +907,7 @@ if(strcmp($_GET["acte"],"modif_depot") == 0){
 if($_GET["acte"] =="supprDepot"){
     $DE_No = $_GET["DE_No"];
     $depot = new DepotClass($DE_No);
+    $depot->deleteDepot();
     header('Location: listeDepot-3-'.$DE_No);
 }
 

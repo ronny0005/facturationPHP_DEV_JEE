@@ -1,7 +1,6 @@
 <script src="js/scriptFactureVente.js?d=<?= time(); ?>"></script>
-
     <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
-        <h3 class="text-center text-uppercase bgcolorApplication"><?= $protection->listeFactureNom($type) ?></h3>
+        <h3 class="text-center text-uppercase bgcolorApplication" style="color:white"><?= $protection->listeFactureNom($type) ?></h3>
     </section>
     <!-- List alert -->
         <div id="alertDate" class="alert alert-danger" style="display:none " role="alert">Saisissez une date !</div>
@@ -191,7 +190,6 @@
                                 <th <?= $accessPUTTC ?>>PU TTC</th>
                                 <th <?= $accessMontantHT ?>>Montant HT</th>
                                 <th <?= $accessMontantTTC ?>>Montant TTC</th>
-                                <th></th>
                                 <?php if ($type=="AchatPreparationCommande" && !$isVisu)
                                     echo "<th></th>";
 
@@ -275,7 +273,7 @@ if (!$isVisu)
                             </td>
                             <td id='suppr_{$docligne->cbMarq}'><i class='fa fa-trash-o'></i></a></td>";
                   if($protection->PROT_CBCREATEUR!=2)
-                      echo "<td></td><td>{$docligne->getcbCreateurName()}</td>";
+                      echo "<td>{$docligne->getcbCreateurName()}</td>";
                   echo "</tr>";
                   $totalht = $totalht + ROUND($docligne->DL_MontantHT, 2);
                   $tva = $tva + ROUND($docligne->MT_Taxe1, 2);

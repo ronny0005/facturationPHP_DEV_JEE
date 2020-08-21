@@ -207,7 +207,7 @@ jQuery(function($) {
         entete_document();
     }
 
-    if($_GET("cbMarq")==undefined)
+    if($("#cbMarqEntete").val()==0)
         getDepotSoucheCaisse(0, $("#depot").val(), -1, "");
 
     function setArticle(){
@@ -367,7 +367,7 @@ jQuery(function($) {
         $("#date_rglt").datepicker({dateFormat: "ddmmy", altFormat: "ddmmy"})
 
     $("#client").autocomplete({
-        source: "indexServeur.php?page=getTiersByNumIntitule&TypeFac="+typeFac,
+        source: "indexServeur.php?page=getTiersByNumIntitule&TypeFac="+typeFac+"&all=0",
         autoFocus: true,
         select: function(event, ui) {
             event.preventDefault();
@@ -843,6 +843,9 @@ jQuery(function($) {
             }
         }else{
             var words = societe.split(' ');
+            var result = words[0];
+            if (result =="STE")
+                result = "MIMOSA";
             if(societe=="BOUM CONSTRUCTION SARL"){
                 $("<div></div>").dialog({
                     resizable: false,
@@ -856,7 +859,7 @@ jQuery(function($) {
                             text: 'A4',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4-0", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + result + "-A4-0", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A4", '_blank');
                                 $("#redirectFacture").submit();
@@ -867,7 +870,7 @@ jQuery(function($) {
                             text: 'A5',
                             click: function() {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5-0", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + result + "-A5-0", '_blank');
                                 else
                                     window.open(impressionFacture + "&format=A5", '_blank');
                                 $("#redirectFacture").submit();
@@ -878,7 +881,7 @@ jQuery(function($) {
                             text: 'A4 Facture',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4-0", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + result + "-A4-0", '_blank');
                                 else
                                     window.open(impressionFacture + "-A4", '_blank');
                                 $("#redirectFacture").submit();
@@ -889,7 +892,7 @@ jQuery(function($) {
                             text: 'A5 Facture',
                             click: function() {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5-1", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + result + "-A5-1", '_blank');
                                 else
                                     window.open("impressionFactureCMI-" + "-A5", '_blank');
                                 $("#redirectFacture").submit();
@@ -911,7 +914,7 @@ jQuery(function($) {
                             text: 'A4',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + words[0] + "-A4", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A4-" + result + "-A4", '_blank');
                                 else
                                     window.open(impressionFacture + "-A4", '_blank');
                                 $("#redirectFacture").submit();
@@ -922,7 +925,7 @@ jQuery(function($) {
                             text: 'A5',
                             click: function () {
                                 if (societe != "CMI CAMEROUN SARL")
-                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + words[0] + "-A5", '_blank');
+                                    window.open("impressionFacture-" + $("#cbMarqEntete").val() + "-A5-" + result + "-A5", '_blank');
                                 else
                                     window.open(impressionFacture + "-A5", '_blank');
                                 $("#redirectFacture").submit();
