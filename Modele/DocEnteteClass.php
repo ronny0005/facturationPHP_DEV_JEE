@@ -1425,6 +1425,12 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
             return "active";
         if($type=="majAnalytique" && $typeMenu == $type && $module==9 && $action == 17)
             return "active";
+        if($type=="InterrogationLettrage" && $typeMenu == $type && $module==9 && $action == 19)
+            return "active";
+        if($type=="InterrogationTiers" && $typeMenu == $type && $module==9 && $action == 19)
+            return "active";
+
+
 
         return "";
     }

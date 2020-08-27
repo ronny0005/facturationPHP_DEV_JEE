@@ -597,6 +597,71 @@ switch ($val) {
     case "getTypePlanComptableValue":
         envoiRequete($objet->getClientByCTNum($_GET['CT_Num']), $objet);
         break;
+    case "getJournalLastDate":
+        $journal = new JournalClass(0);
+        $result = $journal->getJournalLastDate($_GET['JO_Num'],$_GET['Mois'],$_GET['Annee']);
+        echo json_encode($result);
+        break;
+    case "getTotalJournal":
+        $journal = new JournalClass(0);
+        $ctNum = "";
+        $cgNum = "";
+        $dateDebut = "";
+        $dateFin = "";
+        $lettrage =-1;
+        $typeInterrogation ="";
+        if(isset($_GET["typeInterrogation"]))
+            $typeInterrogation = $_GET["typeInterrogation"];
+        if(isset($_GET["CT_Num"]))
+            $ctNum = $_GET["CT_Num"];
+        if(isset($_GET["dateDebut"]))
+            $dateDebut = $journal->formatDateSageToDate($_GET["dateDebut"]);
+        if(isset($_GET["dateFin"]))
+            $dateFin = $journal->formatDateSageToDate($_GET["dateFin"]);
+        if(isset($_GET["lettrage"]))
+            $lettrage = $_GET["lettrage"];
+        if($typeInterrogation!="Tiers"){
+            $cgNum = $ctNum;
+            $ctNum = "";
+        }
+        $result = $journal->getTotalJournal($_GET['JO_Num'],$_GET['Mois'],$_GET['Annee'],$_GET['EC_Sens'],$ctNum,$dateDebut,$dateFin,$lettrage,$cgNum);
+        echo json_encode($result);
+        break;
+    case "getLettrage":
+        $journal = new JournalClass(0);
+        $ctNum = "";
+        $cgNum = "";
+        $dateDebut = "";
+        $dateFin = "";
+        $typeInterrogation ="";
+        if(isset($_GET["CT_Num"]))
+            $ctNum = $_GET["CT_Num"];
+        if(isset($_GET["dateDebut"]))
+            $dateDebut =  $journal->formatDateSageToDate($_GET["dateDebut"]);
+        if(isset($_GET["dateFin"]))
+            $dateFin = $journal->formatDateSageToDate($_GET["dateFin"]);
+        if(isset($_GET["typeInterrogation"]))
+            $typeInterrogation = $_GET["typeInterrogation"];
+        if($typeInterrogation!="Tiers"){
+            $cgNum = $ctNum;
+            $ctNum = "";
+        }
+        $result = $journal-> getLettrage($ctNum,$dateDebut,$dateFin,$cgNum);
+        echo json_encode($result);
+        break;
+    case "calculSoldeLettrage" :
+        $journal = new JournalClass(0);
+        echo json_encode($journal->calculSoldeLettrage($_GET["listCbMarq"]));
+        break;
+    case "pointerEcriture" :
+        $journal = new JournalClass(0);
+        echo json_encode($journal->pointerEcriture($_GET["annuler"],$_GET["listCbMarq"],$_GET["ecLettrage"]));
+        break;
+    case "getJournalPiece":
+        $journal = new JournalClass(0);
+        $result = $journal->getJournalPiece($_GET['JO_Num'],$_GET['Mois'],$_GET['Annee']);
+        echo json_encode($result);
+        break;
     case "getArticle":
         $article = new ArticleClass(0);
         echo json_encode($article->getShortList());

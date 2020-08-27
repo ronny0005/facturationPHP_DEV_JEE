@@ -36,10 +36,10 @@ if(!isset($_SESSION["login"]))
     <script src="assets/js/menu.js"></script>
     <script src="js/jquery.fileupload.js"></script>
     <script src="assets/js/Bootstrap-DateTime-Picker-2.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script src="assets/js/chart.min.js"></script>
-    <script src="assets/js/bs-charts.js"></script>
-    <script src="js/scriptFonctionUtile.js"></script>
+    <script src="assets/js/theme.js?d=<?= time(); ?>"></script>
+    <script src="assets/js/chart.min.js?d=<?= time(); ?>"></script>
+    <script src="assets/js/bs-charts.js?d=<?= time(); ?>"></script>
+    <script src="js/scriptFonctionUtile.js?d=<?= time(); ?>"></script>
     <script src="//cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
     <script src="js/select2.min.js"></script>
     <script src="js/bootstrap-clockpicker.js"></script>

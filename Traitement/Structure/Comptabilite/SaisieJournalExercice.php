@@ -6,6 +6,7 @@ if(!isset($mobile)){
     include("../../../Modele/ObjetCollector.php");
     include("../../../Modele/Objet.php");
     include("../../../Modele/CompteGClass.php");
+    include("../../../Modele/JournalClass.php");
     
     $objet = new ObjetCollector();
     if(isset($_GET["JO_Num"]))
@@ -131,25 +132,63 @@ function afficheLigne($JO_Num,$mois,$annee){
     $rows = $result->fetchAll(PDO::FETCH_OBJ);
     if($rows !=null){
         foreach ($rows as $row){
-            echo "<tr id='emodeler_".$row->cbMarq."'>
-                    <td id='tabEC_Jour'>".$row->EC_Jour."</td>
-                    <td id='tabEC_Piece'>".$row->EC_Piece."</td>
-                    <td id='tabEC_Facture'>".$row->EC_RefPiece."</td>
-                    <td id='tabEC_RefPiece'>".$row->EC_Reference."</td>
-                    <td id='tabCG_Num'>".$row->CG_Num."</td>
-                    <td id='tabCT_Num'>".$row->CT_Num."</td>
-                    <td id='tabEC_Intitule'>".$row->EC_Intitule."</td>
+            echo "<tr id='emodeler_{$row->cbMarq}'>
+                    <td id='tabEC_Jour'>{$row->EC_Jour}</td>
+                    <td id='tabEC_Piece'>{$row->EC_Piece}</td>
+                    <td id='tabEC_Facture'>{$row->EC_RefPiece}</td>
+                    <td id='tabEC_RefPiece'>{$row->EC_Reference}</td>
+                    <td id='tabCG_Num'>{$row->CG_Num}</td>
+                    <td id='tabCT_Num'>{$row->CT_Num}</td>
+                    <td id='tabEC_Intitule'>{$row->EC_Intitule}</td>
                     <td id='tabEC_Echeance'>"; if($row->EC_Echeance_C=="1900-01-01") echo ""; else echo $row->EC_Echeance_C; echo "</td>
-                    <td id='tabEC_MontantDebit'>".ROUND($row->EC_MontantDebit,2)."</td>
-                    <td id='tabEC_MontantCredit'>".ROUND($row->EC_MontantCredit,2)."</td>";
+                    <td id='tabEC_MontantDebit'>{$objet->formatChiffre($row->EC_MontantDebit)}</td>
+                    <td id='tabEC_MontantCredit'>{$objet->formatChiffre($row->EC_MontantCredit)}</td>";
                     if($row->Lien_Fichier!="")
-                        echo "<td><a target='_blank' href='upload/files/".$row->Lien_Fichier."' class='fa fa-download'></a></td>";
-                    echo"<td id='modif_".$row->cbMarq."'><i class='fa fa-pencil fa-fw'></i></td><td id='suppr_".$row->cbMarq."'><i class='fa fa-trash-o'></i></td>
-                    <td id='data' style='visibility:hidden' ><span style='visibility:hidden' id='tabCG_Analytique'>".$row->CG_Analytique."</span><span style='visibility:hidden' id='tabEC_No'>".$row->EC_No."</span></td>
+                        echo "<td><a target='_blank' href='upload/files/{$row->Lien_Fichier}' class='fa fa-download'></a></td>";
+                    echo"<td id='modif_{$row->cbMarq}'><i class='fa fa-pencil fa-fw'></i></td><td id='suppr_{$row->cbMarq}'><i class='fa fa-trash-o'></i></td>
+                    <td id='data' class='d-none' ><span class='d-none' id='tabCG_Analytique'>{$row->CG_Analytique}</span><span class='d-none' id='tabEC_No'>{$row->EC_No}</span></td>
                 </tr>";                    
         }
     }
 }
 
+if(strcmp($_GET["acte"],"afficheLigneTiers") == 0){
+    $ctNum = $_GET["CT_Num"];
+    $cgNum = "";
+    if($_GET["typeInterrogation"] != "Tiers"){
+        $cgNum = $_GET["CT_Num"];
+        $ctNum = "";
+    }
+    afficheLigneTiers($ctNum,$_GET["dateDebut"],$_GET["dateFin"],$_GET["typeEcriture"],$cgNum);
+}
+
+function afficheLigneTiers($ctTiers,$dateDebut,$dateFin,$typeEcriture,$cgNum){
+    $journal = new JournalClass(0);
+    $objet = new ObjetCollector();
+    $listItem = $journal->getSaisieJournalExercice("",0,2020/*$_SESSION["annee"]*/,$ctTiers,$objet->getDate($dateDebut),$objet->getDate($dateFin),$typeEcriture,$cgNum);
+    foreach ($listItem as $row){
+        echo "<tr>
+                <td><input type='checkbox' name='selectLigne' id='selectLigne' /></td>
+                <td>{$row->JO_Num}</td>
+                <td>{$row->EC_Jour}</td>
+                <td>{$row->EC_Piece}</td>
+                <td>{$row->EC_RefPiece}</td>
+                <td>{$row->EC_Reference}</td>
+                <td>{$row->CT_Num}</td>
+                <td>{$row->EC_Intitule}</td>
+                <td>";
+        if($row->EC_Echeance_C=="1900-01-01")
+            echo "";
+        else
+            echo $objet->getDateDDMMYYYY($row->EC_Echeance_C);
+        echo"</td>
+                <td>{$row->EC_Lettrage}</td>
+                <td></td>
+                <td  id='amountDebit'>{$objet->formatChiffre($row->EC_MontantDebit)}</td>
+                <td  id='amountCredit'>{$objet->formatChiffre($row->EC_MontantCredit)}</td>
+                <td class='d-none' id='cbMarq'>{$row->cbMarq}</td>
+              </tr>";
+    }
+}
 
 ?>

@@ -197,6 +197,8 @@ $docEntete = new DocEnteteClass(0);
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"FactureAchat") ?>" role="presentation" href="#">Ctrle de caisse</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"majComptable") ?>" role="presentation" href="majComptable">Maj compta</a>
                     <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"majAnalytique") ?>" role="presentation" href="majAnalytique">Maj analytique</a>
+                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"InterrogationTiers") ?>" role="presentation" href="InterrogationTiers">Interrogation tiers</a>
+                    <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"InterrogationLettrage") ?>" role="presentation" href="InterrogationLettrage">Interrogation et lettrage</a>
                     <?php
                     if(($protection->PROT_Right==1 || ($protection->PROT_CLOTURE_CAISSE!=2))) {
                         ?>

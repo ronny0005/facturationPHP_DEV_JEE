@@ -80,6 +80,8 @@ RewriteRule ^clotureDeCaisse$ indexMVC_New.php?module=9&action=18 [L]
 
 RewriteRule ^majAnalytique$ indexMVC_New.php?module=9&action=17 [L]
 RewriteRule ^majComptable$ indexMVC_New.php?module=9&action=16 [L]
+RewriteRule ^InterrogationTiers$ indexMVC_New.php?module=9&action=19&type=Tiers [L]
+RewriteRule ^InterrogationLettrage$ indexMVC_New.php?module=9&action=19&type=Lettrage [L]
 
 RewriteRule ^etatMvtStock$ indexMVC_New.php?module=5&action=1 [L]
 RewriteRule ^etatEqStock$ indexMVC_New.php?module=5&action=3 [L]

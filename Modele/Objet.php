@@ -149,6 +149,11 @@ class Objet {
         return $date->format('dmy');
     }
 
+    public function formatDateSageToDate($val){
+        $date = DateTime::createFromFormat('dmy', $val);
+        return $date->format('Y-m-d');
+    }
+
     public function formatSageToSqlDate($val){
         $date = DateTime::createFromFormat('dmy', $val);
         return $date->format('Y-m-d');

@@ -68,6 +68,41 @@ class JournalClass Extends Objet{
         return $this->getApiJson("/getJournauxType&joType=$type");
     }
 
+    function getJournauxSaisieSelect($ouvert,$mois,$journal){
+        return $this->getApiJson("/getJournauxSaisieSelect/ouvert=$ouvert&mois=$mois&joNum={$this->formatString($journal)}");
+    }
+
+    function getJournauxSaisie($ouvert,$NomMois,$JO_Num,$annee){
+            return $this->getApiJson("/getJournauxSaisie/ouvert=$ouvert&NomMois=$NomMois&joNum={$this->formatString($JO_Num)}&annee=$annee");
+    }
+
+    public function calculSoldeLettrage($listCbMarq){
+        return $this->getApiJson("/calculSoldeLettrage/listCbMarq=$listCbMarq");
+    }
+    public function getSaisieJournalExercice($JO_Num,$Mois,$Annee,$CT_Num,$dateDebut,$dateFin,$lettrage,$CG_Num){
+        return $this->getApiJson("/getSaisieJournalExercice/joNum={$this->formatString($JO_Num)}&mois=$Mois&annee=$Annee&ctNum={$this->formatString($CT_Num)}&dateDebut=$dateDebut&dateFin=$dateFin&lettrage=$lettrage&cgNum={$this->formatString($CG_Num)}");
+    }
+
+    public function getTotalJournal($JO_Num,$Mois,$Annee,$sens,$CT_Num,$dateDebut,$dateFin,$lettrage,$CG_Num){
+        return $this->getApiJson("/getTotalJournal/joNum={$this->formatString($JO_Num)}&mois=$Mois&annee=$Annee&sens=$sens&ctNum={$this->formatString($CT_Num)}&dateDebut=$dateDebut&dateFin=$dateFin&lettrage=$lettrage&cgNum={$this->formatString($CG_Num)}");
+    }
+
+    public function getJournalLastDate($JO_Num,$Mois,$Annee){
+        return $this->getApiJson("/getJournalLastDate/joNum={$this->formatString($JO_Num)}&mois=$Mois&annee=$Annee");
+    }
+
+    public function getJournalPiece($JO_Num,$Mois,$Annee){
+        return $this->getApiJson("/getJournalPiece/joNum={$this->formatString($JO_Num)}&mois=$Mois&annee=$Annee");
+    }
+
+    public function getLettrage($CT_Num,$dateDebut,$dateFin,$CG_Num){
+        return $this->getApiJson("/getLettrage/ctNum={$this->formatString($CT_Num)}&dateDebut=$dateDebut&dateFin=$dateFin&cgNum={$this->formatString($CG_Num)}");
+    }
+
+    public function pointerEcriture($annuler,$listCbMarq,$ecLettrage){
+        return $this->getApiJson("/pointerEcriture/annuler=$annuler&listCbMarq=$listCbMarq&ecLettrage=$ecLettrage");
+    }
+
     public function __toString() {
         return "";
     }

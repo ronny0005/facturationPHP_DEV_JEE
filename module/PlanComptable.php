@@ -76,12 +76,44 @@ class PlanComptable {
                     else
                         header('accueil');
                     break;
+                case 19 :
+                    $this->interrogationTiers(); //rechercher un étudiant par domaine d'activité
+                    break;
+
                 default :
                     $this->Plan_comptable(); // On décide ce que l'on veut faire
             }
         }
         else
             header('accueil');
+    }
+
+
+    public function interrogationTiers() {
+
+        $objet = new ObjetCollector();
+        $depot=$_SESSION["DE_No"];
+        $annee = 2020;//$_SESSION["annee"];
+        $protected = 0;
+        $val=0;
+        $action=0;
+        $module=0;
+        $typeInterrogation="Tiers";
+        if(isset($_GET["action"])) $action = $_GET["action"];
+        if(isset($_GET["module"])) $module = $_GET["module"];
+
+        if(isset($_GET["type"]))
+            $typeInterrogation=$_GET["type"];
+        $protection = new ProtectionClass($_SESSION["login"], $_SESSION["mdp"]);
+        $compteg = new CompteGClass(0,$objet->db);
+        $journal = new JournalClass("0");
+
+        if($_GET["module"]==9 && $_GET["action"]==19 && $_GET["type"]=="Tiers")
+            $texteMenu="Interrogation tiers";
+        if($_GET["module"]==9 && $_GET["action"]==19 && $_GET["type"]=="Lettrage")
+            $texteMenu="Interrogation générale";
+        $listItem = $journal->getSaisieJournalExercice("",0,$annee,"-1","","",0,"-1");
+        include("pages/Structure/PlanComptable/InterrogationTiers.php");
     }
 
     public function Plan_comptable() {
