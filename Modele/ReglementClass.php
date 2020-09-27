@@ -476,8 +476,10 @@ public function afficheMvtCaisse($rows,$flagAffichageValCaisse,$flagCtrlTtCaisse
     }
 
     public function getReglementByClient($ct_num,$ca_no,$type,$treglement,$datedeb,$datefin,$caissier,$collab,$typeSelectRegl=0) {
-
-        return $this->getApiJson("/getReglementByClient&dateDeb={$datedeb}&dateFin={$datefin}&rgImpute={$type}&ctNum={$ct_num}&collab={$collab}&nReglement={$treglement}&caNo={$ca_no}&coNoCaissier={$caissier}&rgType={$typeSelectRegl}");
+        $treglementParam = 0;
+        if($treglement!="")
+            $treglementParam = $treglement;
+        return $this->getApiJson("/getReglementByClient&dateDeb={$datedeb}&dateFin={$datefin}&rgImpute={$type}&ctNum={$ct_num}&collab={$collab}&nReglement={$treglementParam}&caNo={$ca_no}&coNoCaissier={$caissier}&rgType={$typeSelectRegl}");
     }
 
     public function addCReglementFacture($cbMarqEntete, $montant,$rg_type,$mode_reglement,$caisse,$date_reglt,$lib_reglt,$date_ech,$protNo) {

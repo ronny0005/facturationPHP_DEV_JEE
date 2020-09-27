@@ -4,12 +4,15 @@ jQuery(function($) {
     var protect = 0;
     var emodelerComplement;
 //    $("#formSelectCompte").hide();
-    $("#CodeSelect").combobox();
-    $("#CodeSelect").parent().find(".custom-combobox :input").attr("id", "codeSelection");
+//    $("#CodeSelect").combobox();
+//    $("#CodeSelect").parent().find(".custom-combobox :input").attr("id", "codeSelection");
 
     $("#famille").select2({
         theme: "bootstrap"
     }).on("select2:select", function (e) {
+        updateReference()
+    });
+    function updateReference(){
         $.ajax({
             url: "indexServeur.php?page=getNextArticleByFam&codeFam="+$( "#famille" ).val(),
             method: 'GET',
@@ -40,8 +43,8 @@ jQuery(function($) {
                 }
             });
         }
-    });
-
+    }
+    updateReference()
     function isNumber(donnee, event) {
         if (event.shiftKey == true) {
             event.preventDefault();
@@ -184,7 +187,7 @@ jQuery(function($) {
             });
         } else {
             $.ajax({
-                url: 'traitement/Creation.php?acte=ajout_article',
+                url: 'traitement/Creation.php?acte=ajout_article&reference='+$("#reference").val(),
                 method: 'GET',
                 dataType: 'json',
                 data: $("#formArticle").serialize(),
@@ -295,7 +298,7 @@ jQuery(function($) {
                                 modification = 1;
                             }).on('click', '#suppr_' + ec_enum, function () {
                                 $.ajax({
-                                    url: 'traitement/Creation.php?acte=suppr_conditionnement&enumere=' + ec_enum + '&AR_Ref=' + $_GET("AR_Ref"),
+                                    url: 'traitement/Creation.php?acte=suppr_conditionnement&enumere=' + ec_enum + '&AR_Ref=' + $("#reference").val(),
                                     method: 'GET',
                                     dataType: 'html',
                                     success: function (data) {
@@ -580,7 +583,7 @@ jQuery(function($) {
             if($("#prixV_cond").val()!="" && $("#titre_cond").val()!="" && $("#qte_cond").val()!=""){
                 if(modification==1){
                     $.ajax({
-                        url: 'traitement/Creation.php?acte=maj_cond_detail&prix='+$("#prixV_cond").val()+'&val='+$("#val_cond").val()+'&enum='+$("#titre_cond").val()+'&AEnum='+$("#Atitre_cond").val()+'&qte='+$("#qte_cond").val()+'&ref='+$_GET("AR_Ref"),
+                        url: 'traitement/Creation.php?acte=maj_cond_detail&prix='+$("#prixV_cond").val()+'&val='+$("#val_cond").val()+'&enum='+$("#titre_cond").val()+'&AEnum='+$("#Atitre_cond").val()+'&qte='+$("#qte_cond").val()+'&ref='+$("#reference").val(),
                         method: 'GET',
                         dataType: 'html',
                         success: function(data) {
@@ -593,7 +596,7 @@ jQuery(function($) {
                     modification=0;
                 }else {
                     $.ajax({
-                        url: 'traitement/Creation.php?acte=creation_conditionnement&prix='+$("#prixV_cond").val()+'&nbCat='+prixCond+'&enumere='+$("#titre_cond").val()+'&qte='+$("#qte_cond").val()+'&AR_Ref='+$_GET("AR_Ref"),
+                        url: 'traitement/Creation.php?acte=creation_conditionnement&prix='+$("#prixV_cond").val()+'&nbCat='+prixCond+'&enumere='+$("#titre_cond").val()+'&qte='+$("#qte_cond").val()+'&AR_Ref='+$("#reference").val(),
                         method: 'GET',
                         dataType: 'html',
                         success: function(data) {
@@ -613,7 +616,7 @@ jQuery(function($) {
         } else alert("veuillez choisir un conditionnement !");
     }
     }
-    if($_GET("AR_Ref")!=null){
+    if($("#cbMarqArticle").val()==0){
        $("#reference").prop('disabled', true);
     }
 

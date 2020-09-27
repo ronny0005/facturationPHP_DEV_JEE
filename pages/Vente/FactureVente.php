@@ -190,13 +190,13 @@
                                 <th <?= $accessPUTTC ?>>PU TTC</th>
                                 <th <?= $accessMontantHT ?>>Montant HT</th>
                                 <th <?= $accessMontantTTC ?>>Montant TTC</th>
-                                <?php if ($type=="AchatPreparationCommande" && !$isVisu)
-                                    echo "<th></th>";
+                                <?php
+                                    if (!$isVisu && ($type == "PreparationCommande" || $type == "AchatPreparationCommande"))
+                                        echo "<th></th>";
 
 if (!$isVisu)
     echo "<th></th>
             <th></th>";
-
         if($protection->PROT_CBCREATEUR!=2)
                 echo "<th>Createur</th>";
 ?>
@@ -242,30 +242,30 @@ if (!$isVisu)
                   <tr class='facture <?= $classe; ?>' id='article_<?= $docligne->cbMarq; ?>'>
                       <td id='AR_Ref' style='color:blue;text-decoration: underline'><?= $docligne->AR_Ref; ?></td>
                       <td id='DL_Design' style='align:left'><?= $docligne->DL_Design; ?></td>
-                      <td id='DL_PrixUnitaire' style="<?php
+                      <td id='DL_PrixUnitaire' class="text-right" style="<?php
                     if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
                         echo "display:none";?>">
                         <?= $objet->formatChiffre(round($docligne->DL_PrixUnitaire, 2)); ?></td>
-                    <td id='DL_Qte'><?= $objet->formatChiffre($qteLigne); ?></td>
-                      <td id='DL_Remise'><?= $remiseLigne ?></td> <td id='PUTTC'
-                          style="<?php
+                    <td id='DL_Qte'class="text-right" ><?= $objet->formatChiffre($qteLigne); ?></td>
+                      <td id='DL_Remise' class="text-right" ><?= $remiseLigne ?></td>
+                      <td id='PUTTC' style="<?php
                           if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
-                              echo "display:none";?>"><?= $objet->formatChiffre($puttcLigne); ?></td>
+                              echo "display:none";?>" class="text-right"><?= $objet->formatChiffre($puttcLigne); ?></td>
 
-                      <td id='DL_MontantHT' style="<?php
+                      <td id='DL_MontantHT' class="text-right" style="<?php
                       if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
                           echo "display:none";?>"><?= $objet->formatChiffre($montantHTLigne); ?></td>
-                      <td id='DL_MontantTTC' style="<?php
+                      <td id='DL_MontantTTC' class="text-right" style="<?php
                           if((($type=="Achat" || $type=="AchatC" || $type=="AchatT" || $type=="AchatPreparationCommande"|| $type=="PreparationCommande")&& $flagPxAchat!=0))
                               echo "display:none";?>">
 
-                          <span style='display:none' id='DL_NoColis'><?= $docligne->DL_NoColis; ?></span>
-                          <span style='display:none' id='cbMarq'><?= $docligne->cbMarq; ?></span>
-                          <span style='display:none' id='DL_CMUP'><?= $docligne->DL_CMUP; ?></span>
-                          <span style='display:none' id='DL_TYPEFAC'><?= $typefac; ?></span>
+                          <span class="d-none" id='DL_NoColis'><?= $docligne->DL_NoColis; ?></span>
+                          <span class="d-none" id='cbMarq'><?= $docligne->cbMarq; ?></span>
+                          <span class="d-none" id='DL_CMUP'><?= $docligne->DL_CMUP; ?></span>
+                          <span class="d-none" id='DL_TYPEFAC'><?= $typefac; ?></span>
                       <?= $objet->formatChiffre($montantTTCLigne); ?></td>
                   <?php
-                  if (!$isVisu && ($typefac == "PreparationCommande" || $typefac == "AchatPreparationCommande"))
+                  if (!$isVisu && ($type == "PreparationCommande" || $type == "AchatPreparationCommande"))
                       echo "<td id='lignea_{$docligne->cbMarq}'><i class='fa fa-sticky-note fa-fw'></i></td>";
                   if (!$isVisu)
                       echo "<td id='modif_{$docligne->cbMarq}'>
@@ -383,11 +383,11 @@ if (!$isVisu)
     </form>
 </div>
 
-<div id="dialog-confirm" title="Suppression" style="display: none;">
+<div id="dialog-confirm" title="Suppression" style="display:none">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Voulez vous supprimez cette ligne ?</p>
 </div>
 
-<div class="validFacture" style="display: none">
+<div class="validFacture" style="display:none">
     <form action="Traitement/Facturation.php" method="GET" id="redirectFacture">
         <input type="hidden" value="<?= $type ?>" id="typeFacture" name="typeFacture" />
         <input type="hidden" value="redirect" id="acte" name="acte" />
@@ -395,11 +395,11 @@ if (!$isVisu)
 </div>
 
 
-<div class="valideReglement"  style="display:none">
+<div class="valideReglement" style="display:none">
     <form action="Traitement/Facturation.php" method="GET" id="valideRegltForm">
         <input type="hidden" value="0" id="DO_Imprim" name="DO_Imprim" />
         <!-- Lists alert -->
-        <div id="alertValideReglement" class="alert alert-danger" style="display:none " role="alert"></div>
+        <div id="alertValideReglement" class="alert alert-danger" style="display:none" role="alert"></div>
         <!-- Lists alert -->
         <div class="row">
         <div style=" text-align: center<?php if($bloqueReglement) echo";display:none"; ?>" class="col-lg-6" >

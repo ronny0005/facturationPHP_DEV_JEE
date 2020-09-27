@@ -630,7 +630,6 @@ jQuery(function($) {
         }
 
         getdateecheance();
-
         $("#libelle_rglt").val(("Rglt "+$("#n_doc").val()+"_"+$("#ref").val()).substr(0,34));
         //$("#mode_reglement").val(1);
         $(".valideReglement").dialog({

@@ -890,6 +890,7 @@ if(strcmp($_GET["acte"],"modif_depot") == 0){
     else 
         $codeClient="";
     $depot->CA_CatTarif=$_GET["CA_CatTarif"];
+    $depot->DE_Code = $_GET["code_depot"];
     $depot->setuserName("","");
     $depot->maj_depot();
     $depot->supprDepotClient();
@@ -900,7 +901,7 @@ if(strcmp($_GET["acte"],"modif_depot") == 0){
 
     $depot->insertDepotSouche($CA_SoucheVente,$CA_SoucheAchat,$CA_SoucheInterne,$affaire);
     $depot->insertDepotCaisse($caisse);
-    $data = array('DE_No' => $depot->DE_Intitule);
+    $data = array('DE_No' => $_GET["DE_No"]);
     echo json_encode($data);
 }
 

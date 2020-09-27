@@ -120,19 +120,7 @@ class DepotClass Extends Objet{
 
 
     public function getDepotUser($Prot_No){
-        $query = "  SELECT  A.DE_No
-                            ,DE_Intitule
-                            ,IsPrincipal
-                    FROM    F_DEPOT A
-                    INNER JOIN Z_DEPOTUSER B ON A.DE_No = B.DE_No
-                    WHERE   Prot_No=$Prot_No
-                    GROUP BY A.DE_No
-                            ,DE_Intitule
-                            ,IsPrincipal";
-        $result= $this->db->query($query);
-        $this->list = Array();
-        $this->list = $result->fetchAll(PDO::FETCH_OBJ);
-        return $this->list;
+        return $this->getApiJson("/getDepotUser&protNo=$Prot_No");
     }
 
     public function getDepotUserSearch($Prot_No,$depotExclude,$searchTerm,$principal=1){
@@ -140,21 +128,7 @@ class DepotClass Extends Objet{
     }
 
     public function getDepotUserPrincipal($Prot_No){
-        $query = "  SELECT  A.DE_No
-                            ,DE_Intitule
-                            ,IsPrincipal
-                    FROM    F_DEPOT A
-                    INNER JOIN (SELECT *
-                                FROM Z_DEPOTUSER 
-                                WHERE IsPrincipal = 1) B ON A.DE_No = B.DE_No
-                    WHERE   Prot_No=$Prot_No
-                    GROUP BY A.DE_No
-                            ,DE_Intitule
-                            ,IsPrincipal";
-        $result= $this->db->query($query);
-        $this->list = Array();
-        $this->list = $result->fetchAll(PDO::FETCH_OBJ);
-        return $this->list;
+        return $this->getApiJson("/getDepotUserPrincipal&protNo=$Prot_No");
     }
 
     public function delete() {

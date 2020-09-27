@@ -40,6 +40,9 @@ if(isset($_GET["client"])) $client=$_GET["client"];
 if(isset($_GET["type"])) $type=$_GET["type"];
 if(isset($_GET["caisse"])) $caisse=$_GET["caisse"];
 
+
+
+
 if(isset($_POST["mode_reglement"])) $treglement=$_POST["mode_reglement"];
 if(isset($_GET["mode_reglement"])) $treglement=$_GET["mode_reglement"];
 
@@ -126,7 +129,6 @@ if($typeRegl=="collaborateur"){
                     <span class="input-group-append"><span class="input-group-text bg-transparent"><i class="far fa-calendar"></i></span></span>
                 </div>
             </div>
-
             <!-- Text input-->
             <div class="col-6 col-sm-4 col-md-3 col-lg-2" >
                 <label>Type Règlement</label>

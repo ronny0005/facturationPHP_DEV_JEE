@@ -31,7 +31,9 @@ include("../Modele/F_CatalogueClass.php");
         $depotprincipal = (isset($_POST["depotprincipal"])) ? $_POST["depotprincipal"] : 0;
         if($_POST["id"]!="")
             $protectionUser->majProtectioncial($depot,$depotprincipal);
-        else
-            $protectionUser->ajoutUser($_POST["securiteAdmin"],$depot,$depotprincipal);
+        else {
+            $protectionUser->ajoutUser($_POST["securiteAdmin"], $depot, $depotprincipal);
+            die();
+        }
         header("Location: ../utilisateur");
     }

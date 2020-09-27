@@ -48,7 +48,7 @@ if(isset($_GET["DE_No"])){
     $soucheachat= $depotItem->CA_SoucheAchat;
     $souchevente= $depotItem->CA_SoucheVente;
     $soucheinterne= $depotItem->CA_SoucheStock;
-    $codedepot = $depotItem->DE_Complement;
+    $codedepot = $depotItem->DE_Code;
     $affaire = $depotItem->CA_Num;
 }
 ?>

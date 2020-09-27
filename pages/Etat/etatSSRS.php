@@ -103,7 +103,7 @@ and open the template in the editor.
 
                         if($reportParameter->Name=="Agence"){
                             $isPrincipal = 0;
-                            $depotClass = new DepotClass(0,$objet->db);
+                            $depotClass = new DepotClass(0);
                             if($admin==0){
                                 $isPrincipal = 1;
                                 $rows = $depotClass->getDepotUser($_SESSION["id"]);

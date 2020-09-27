@@ -19,13 +19,17 @@ class Objet {
     public $url;
     public $settings;
     public $class;
-    public $racineApi='http://localhost:8088/rest/';
+    public $racineApi;
     public $lien;
+
+    function setPort(){
+        $this->settings = parse_ini_file(__DIR__."\..\config\app.config", 1);
+        return $this->settings["SERVICE_API"];
+    }
 
     function getFromApi($url){
         header('Access-Control-Allow-Origin: *');
-        $this->settings = parse_ini_file("config/app.config", 1);
-        $this->url = $this->settings["SERVICE_API"];
+        $this->setPort();
         $this->url =$this->url.$url;
         $response = file_get_contents($this->url);
         return $response;
@@ -33,7 +37,9 @@ class Objet {
 
     public function getApiJson($url){
         ini_set("allow_url_fopen", 1);
+        $this->racineApi= $this->setPort();
         $url = $this->racineApi.$this->lien.$url;
+
         $response = file_get_contents($url);
         $objhigher=json_decode($response); //converts to an object
         return $objhigher;
@@ -48,6 +54,7 @@ class Objet {
         );
         $context = stream_context_create($options);
         ini_set("allow_url_fopen", 1);
+        $this->racineApi= $this->setPort();
         $url = $this->racineApi.$this->lien.$url;
         $response = file_get_contents($url/*,false,$context*/);
         return $response;
@@ -55,12 +62,16 @@ class Objet {
 
     public function getApiExecute($url){
         ini_set("allow_url_fopen", 1);
+
+        $this->racineApi= $this->setPort();
         $url = $this->racineApi.$this->lien.$url;
         file_get_contents($url);
     }
 
     public function getApiString($url){
         ini_set("allow_url_fopen", 1);
+
+        $this->racineApi= $this->setPort();
         $url = $this->racineApi.$this->lien.$url;
         $response = file_get_contents($url);
         return $response; //converts to an object
