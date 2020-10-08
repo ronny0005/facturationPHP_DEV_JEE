@@ -7,31 +7,47 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" role="presentation" href="etatMvtStock">Mvt de stock</a></li>
                     <li><a class="dropdown-item" role="presentation" href="etatEqStock">Equation de stock</a></li>
-                    <li><a class="dropdown-item" href="#"> Statistique article &raquo </a>
+                    <li class="d-none d-lg-block d-xl-block"><a class="dropdown-item" href="#"> Statistique article &raquo </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" role="presentation" href="etatStatArticle">Par agence</a></li>
                             <li><a class="dropdown-item" role="presentation" href="etatStatArticleFournisseur">Par fournisseur</a></li>
                         </ul>
                     </li>
-                    <li><a class="dropdown-item" href="#"> Statistique client &raquo </a>
+
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatArticle">Stat Art. Par agence</a></li>
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatArticleFournisseur">Stat Art. Par fournisseur</a></li>
+
+                    <li class="d-none d-lg-block d-xl-block"><a class="dropdown-item" href="#"> Statistique client &raquo </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" role="presentation" href="etatStatClient">Par agence</a></li>
                             <li><a class="dropdown-item" role="presentation" href="etatStatClientArticle">Par article</a></li>
                         </ul>
                     </li>
-                    <li><a class="dropdown-item" href="#"> Statistique Collaborateur &raquo </a>
+
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatClient">Stat Cl. Par agence</a></li>
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatClientArticle">Stat Cl. Par article</a></li>
+
+                    <li class="d-none d-lg-block d-xl-block"><a class="dropdown-item" href="#"> Statistique Collaborateur &raquo </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" role="presentation" href="etatStatCollaborateurParArticle">Par article</a></li>
                             <li><a class="dropdown-item" role="presentation" href="etatStatCollaborateurParClient">Par client</a></li>
                         </ul>
                     </li>
-                    <li><a class="dropdown-item" href="#"> Statistique Achats &raquo </a>
+
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatCollaborateurParArticle">Stat Collab. Par article</a></li>
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatCollaborateurParClient">Stat Collab. Par client</a></li>
+
+                    <li class="d-none d-lg-block d-xl-block"><a class="dropdown-item" href="#"> Statistique Achats &raquo </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" role="presentation" href="etatStatAchat">Achat </a></li>
                             <li><a class="dropdown-item" role="presentation" href="etatStatAchatAnalytique">Achat Analytique</a></li>
                         </ul>
                     </li>
-                    <li><a class="dropdown-item" href="#"> Echéance &raquo </a>
+
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatAchat">Stat Ach. Par Achat</a></li>
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatStatAchatAnalytique">Stat Ach. Par Achat Analytique</a></li>
+
+                    <li class="d-none d-lg-block d-xl-block"><a class="dropdown-item" href="#"> Echéance &raquo </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" role="presentation" href="etatEcheanceClient">Client</a></li>
                             <li><a class="dropdown-item" role="presentation" href="etatEcheanceClientAgee">Client Agé</a></li>
@@ -39,6 +55,9 @@
                         </ul>
                     </li>
 
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatEcheanceClient">Echeance Client</a></li>
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatEcheanceClientAgee">Echeance Agé</a></li>
+                    <li class="d-lg-none d-xl-none"><a class="dropdown-item" role="presentation" href="etatEcheanceClient2">Echeance Client 2</a></li>
 
                     <li><a class="dropdown-item" role="presentation" href="etatRgltClient">Règlement Client</a></li>
                     <li><a class="dropdown-item" role="presentation" href="etatReleveCompteClient">Relevé Compte Client</a></li>
