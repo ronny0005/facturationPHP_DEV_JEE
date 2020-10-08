@@ -17,7 +17,7 @@ if(isset($_POST["dateCloture"])){
 <script src="js/Structure/Comptabilite/script_clotureCaisse.js?d=<?= time(); ?>"></script>
 
 <div class="container-fluid">
-    <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: rgb(255,255,255);">
+    <section style="margin: 0px;padding: 5px;background-color: rgb(19,72,34);color: white;">
         <h3 class="text-center text-uppercase bgcolorApplication">Clôture de caisse</h3>
     </section>
 
@@ -30,15 +30,15 @@ if(isset($_POST["dateCloture"])){
             <form id="form-entete" class="form-horizontal" action="#" method="POST" >
                 <div class="card p-3 mt-3">
                     <div class="form-row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+                        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-2">
                             <label>Date</label>
                             <input type="text" class="form-control" name="dateCloture" id="dateCloture" value="<?="" ?>" placeholder="Date"/>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+                        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-2">
                             <label>Heure</label>
                             <input type="text" class="form-control" name="heureCloture" id="heureCloture" value="<?="" ?>" placeholder="Heure" readonly/>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-3">
                             <label>Caisse de </label>
                             <select id="caisseDebut" name="caisseDebut" class="form-control">
                                 <?php
@@ -69,7 +69,7 @@ if(isset($_POST["dateCloture"])){
                                 ?>
                             </select>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-3">
                             <label>à</label>
                             <select id="caisseFin" name="caisseFin" class="form-control">
                                 <?php
@@ -115,12 +115,12 @@ if(isset($_POST["dateCloture"])){
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-6 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label>Génération des factures</label>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-6 col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <label>Souche des factures générées</label>
                             <select id="soucheGenere" name="soucheGenere" class="form-control">
                                 <?php
@@ -132,13 +132,13 @@ if(isset($_POST["dateCloture"])){
                                 ?>
                             </select>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-6 col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <label>Premier numéro</label>
                             <input type="text" class="form-control" name="premierNumero" id="premierNumero" value="<?="" ?>" />
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-6 col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <label>Regroupements tickets</label>
                             <select id="regrTicket" name="regrTicket" class="form-control">
                                 <option value="1">Par jour</option>
@@ -148,7 +148,7 @@ if(isset($_POST["dateCloture"])){
                                 <option value="5">Une facutre par ticket</option>
                             </select>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-6 col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <label>Regroupements réglements</label>
                             <select id="regrReglt" name="regrReglt" class="form-control">
                                 <option value="1">Aucun regroupement</option>
