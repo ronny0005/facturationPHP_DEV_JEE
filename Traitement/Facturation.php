@@ -81,7 +81,7 @@ if( $_GET["acte"] =="ajout_reference"){
 
 if( $_GET["acte"] =="createReport"){
     $etat = new EtatClass();
-    $data = $etat->createReport($_GET["param"]);
+    $data = $etat->createReport($_GET["param"],$_GET["filter"]);
     if(sizeof($data)>0){
         $content = "<table class='table table-striped'><thead>";
         foreach($data[0] as $key => $val){

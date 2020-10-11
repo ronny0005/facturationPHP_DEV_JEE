@@ -90,15 +90,15 @@
                 <label>Filtre :</label>
                 <div id="listFilter">
                     <div id="filter" class="row">
-                        <select class="col-5 form-control">
+                        <select id="selection" class="col-5 form-control">
                             <option value=""></option>
                             <option value="date">Date</option>
                             <option value="client">Client</option>
                             <option value="fournisseur">Fournisseur</option>
                             <option value="article">Article</option>
                         </select>
-                        <input type="text" class="ml-2 col-3 form-control"/>
-                        <input type="text" class="ml-2 col-3 form-control"/>
+                        <input id="item1" type="text" class="ml-2 col-3 form-control"/>
+                        <input id="item2" type="text" class="ml-2 col-3 form-control"/>
                         <span class="ml-2"><i id="removeFilter" class="fas fa-close" style="color:red;font-size: 25px"></i></span>
                     </div>
                 </div>

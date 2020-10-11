@@ -39,7 +39,6 @@ class Objet {
         ini_set("allow_url_fopen", 1);
         $this->racineApi= $this->setPort();
         $url = $this->racineApi.$this->lien.$url;
-
         $response = file_get_contents($url);
         $objhigher=json_decode($response); //converts to an object
         return $objhigher;

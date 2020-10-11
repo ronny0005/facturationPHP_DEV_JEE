@@ -20,7 +20,7 @@ $docEntete = new DocEnteteClass(0);
                     <?php
                     if($protection->PROT_Right==1) {
                         ?>
-                        <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],$_GET["type"],"Utilisateur") ?>" role="presentation" href="utilisateur">Utilisateur</a>
+                        <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"],$_GET["action"],"Utilisateur") ?>" role="presentation" href="utilisateur">Utilisateur</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="listeProfil">Profil</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Droits</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Envoi mail</a>
@@ -29,7 +29,7 @@ $docEntete = new DocEnteteClass(0);
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Config. accès</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Config. profil&nbsp;</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="#">Déconnexion</a>
-                        <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"], $_GET["action"], $_GET["type"], "FusionClient") ?>"
+                        <a class="dropdown-item customDropdown-item <?= $docEntete->activeMenu($_GET["module"], $_GET["action"], "FusionClient") ?>"
                            role="presentation" href="fusionClient">Fusion client</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="fusionArticle">Fusion article</a>
                         <a class="dropdown-item customDropdown-item" role="presentation" href="calendrierConnexion">Calendrier connexion</a>

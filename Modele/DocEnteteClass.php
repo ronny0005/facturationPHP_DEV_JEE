@@ -1377,57 +1377,57 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
         return $this->getApiJson("/getFactureCORecouvrement&collab={$collab}&ctNum={$ctNum}");
     }
 
-    public function activeMenu($module,$action,$typeMenu,$type){
-        if($type=="Vente" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+    public function activeMenu($module,$action,$type){
+        if($type=="Vente"  && $module==2 && ($action == 3 || $action==1))
             return "active";
-        if($type=="Devis" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+        if($type=="Devis"  && $module==2 && ($action == 3 || $action==1))
             return "active";
-        if($type=="BonLivraison" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+        if($type=="BonLivraison" && $module==2 && ($action == 3 || $action==1))
             return "active";
-        if($type=="VenteAvoir" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+        if($type=="VenteAvoir" && $module==2 && ($action == 3 || $action==1))
             return "active";
-        if($type=="VenteRetour" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
+        if($type=="VenteRetour" && $module==2 && ($action == 3 || $action==1))
             return "active";
-        if($type=="Ticket" && $typeMenu == $type && $module==2 && ($action == 3 || $action==1))
-            return "active";
-
-        if($type=="Achat"  && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
-            return "active";
-        if($type=="PreparationCommande" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
-            return "active";
-        if($type=="AchatPreparationCommande" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
-            return "active";
-        if($type=="AchatRetour" && $typeMenu == $type && $module==2 && ($action == 1 || $action==2))
+        if($type=="Ticket" && $module==2 && ($action == 3 || $action==1))
             return "active";
 
-        if($type=="listeArticle" && $typeMenu == $type && $module==3 && ($action == 3 || $action == 1))
+        if($type=="Achat"  && $module==2 && ($action == 1 || $action==2))
             return "active";
-        if($type=="listeClient" && $typeMenu == $type && $module==3 &&  ($action == 4 || $action == 2))
+        if($type=="PreparationCommande" && $module==2 && ($action == 1 || $action==2))
             return "active";
-        if($type=="listeFournisseur" && $typeMenu == $type && $module==3 &&  ($action == 4 || $action == 2))
+        if($type=="AchatPreparationCommande" && $module==2 && ($action == 1 || $action==2))
             return "active";
-        if($type=="listeFamille" && $typeMenu == $type && $module==3  &&  ($action == 7 || $action == 6))
-            return "active";
-        if($type=="listeDepot" && $typeMenu == $type && $module==3  &&  ($action == 11 || $action == 10))
-            return "active";
-        if($type=="listeCollaborateur" && $typeMenu == $type && $module==3  &&  ($action == 13 || $action == 12))
-            return "active";
-        if($type=="listeCaisse" && $typeMenu == $type && $module==3  &&  ($action == 15 || $action == 14))
-            return "active";
-        if($type=="listeSalarie" && $typeMenu == $type && $module==3  &&  ($action == 4 || $action == 2))
-            return "active";
-        if($type=="RabaisRemiseRistourne" && $typeMenu == $type && $module==3  &&  ($action == 4 || $action == 2))
+        if($type=="AchatRetour" && $module==2 && ($action == 1 || $action==2))
             return "active";
 
-        if($type=="ClotureCaisse" && $typeMenu == $type && $module==9 && $action == 18)
+        if($type=="listeArticle" && $module==3 && ($action == 3 || $action == 1))
             return "active";
-        if($type=="majComptable" && $typeMenu == $type && $module==9 && $action == 16)
+        if($type=="listeClient" && $module==3 &&  ($action == 4 || $action == 2))
             return "active";
-        if($type=="majAnalytique" && $typeMenu == $type && $module==9 && $action == 17)
+        if($type=="listeFournisseur" && $module==3 &&  ($action == 4 || $action == 2))
             return "active";
-        if($type=="InterrogationLettrage" && $typeMenu == $type && $module==9 && $action == 19)
+        if($type=="listeFamille" && $module==3  &&  ($action == 7 || $action == 6))
             return "active";
-        if($type=="InterrogationTiers" && $typeMenu == $type && $module==9 && $action == 19)
+        if($type=="listeDepot" && $module==3  &&  ($action == 11 || $action == 10))
+            return "active";
+        if($type=="listeCollaborateur" && $module==3  &&  ($action == 13 || $action == 12))
+            return "active";
+        if($type=="listeCaisse" && $module==3  &&  ($action == 15 || $action == 14))
+            return "active";
+        if($type=="listeSalarie" && $module==3  &&  ($action == 4 || $action == 2))
+            return "active";
+        if($type=="RabaisRemiseRistourne" && $module==3  &&  ($action == 4 || $action == 2))
+            return "active";
+
+        if($type=="ClotureCaisse" && $module==9 && $action == 18)
+            return "active";
+        if($type=="majComptable" && $module==9 && $action == 16)
+            return "active";
+        if($type=="majAnalytique" && $module==9 && $action == 17)
+            return "active";
+        if($type=="InterrogationLettrage" && $module==9 && $action == 19)
+            return "active";
+        if($type=="InterrogationTiers" && $module==9 && $action == 19)
             return "active";
 
 
