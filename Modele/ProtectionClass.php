@@ -312,7 +312,8 @@ class ProtectionClass extends Objet{
 
     function afficheDepotListe($type){
         if(!($type=="Achat" || $type=="AchatC" || $type=="AchatT" ||
-                $type=="AchatRetour" || $type=="AchatRetourC" || $type=="AchatRetourT" || $type=="PreparationCommande"|| $type=="AchatPreparationCommande")
+                $type=="AchatRetour" || $type=="AchatRetourC" || $type=="AchatRetourT"
+                || $type=="PreparationCommande"|| $type=="AchatPreparationCommande")
             || $type=="Entree"|| $type=="Sortie")
             return "";
         return "style='display:none'";

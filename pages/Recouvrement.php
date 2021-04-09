@@ -98,7 +98,7 @@ if($typeRegl=="collaborateur"){
 
         <fieldset class="card p-3 mt-3">
         <form action="<?= $lienForm; ?>" method="POST">
-            <legend>Entête</legend>
+            <legend class="text-uppercase">Entête</legend>
             <input type="hidden" value="1" name="module"/>
             <input type="hidden" value="<?= $actionForm; ?>" name="action"/>
             <input type="hidden" value="<?= $caissier; ?>" name="caissier" id="caissier" />
@@ -240,7 +240,7 @@ if($typeRegl=="collaborateur"){
                 <input type="hidden" id="flagDelai" value="<?= $protection->getDelai(); ?>"/>
                 <input type="hidden" value="<?= $typeDocument ?>" name="RG_Type" id="RG_Type"/>
                 <input type="hidden" value="0" name="impute" id="impute"/>
-                <legend class="entete">Ligne</legend>
+                <legend class="text-uppercase">Ligne</legend>
                 <?php if($flagProtected) { ?>
                     <div class="row">
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2">

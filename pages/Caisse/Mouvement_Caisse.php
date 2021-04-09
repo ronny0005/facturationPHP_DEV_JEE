@@ -236,7 +236,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2  mt-4">
+                        <div class="col-md-2">
                             <button type="button" class="btn btn-primary" id = "validerRec" name= "validerRec">Valider</button>
                         </div>
                 </div>

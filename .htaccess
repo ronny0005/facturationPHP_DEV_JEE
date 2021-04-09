@@ -16,6 +16,7 @@ RewriteRule ^Document-Mvt([A-z]+)$  indexMVC_New.php?module=4&action=7&type=$1 [
 RewriteRule ^Document-Facture([A-z]+)-([0-9]+)$  indexMVC_New.php?module=2&action=3&type=$1&cbMarq=$2 [L]
 RewriteRule ^Document-Mvt([A-z]+)-([0-9]+)$  indexMVC_New.php?module=4&action=7&type=$1&cbMarq=$2 [L]
 
+RewriteRule ^listeArticle$  indexMVC_New.php?module=3&action=3&statut=$1 [L]
 RewriteRule ^listeArticle-([0-z]+)$  indexMVC_New.php?module=3&action=3&statut=$1 [L]
 RewriteRule ^listeArticle-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=3&statut=$1&AR_Ref=$2 [L]
 RewriteRule ^listeArticle-([0-z]+)-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=3&statut=$1&acte=$2&AR_Ref=$3 [L]
@@ -29,7 +30,7 @@ RewriteRule ^ficheFamille$ indexMVC_New.php?module=3&action=7 [L]
 RewriteRule ^ficheFamille-([0-z]+)$ indexMVC_New.php?module=3&action=7&FA_CodeFamille=$1 [L]
 
 RewriteRule ^ficheArticle$  indexMVC_New.php?module=3&action=1 [L]
-RewriteRule ^ficheArticle-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
+RewriteRule ^ficheArticle-([0-9a-zA-Z-_]+)/?$  indexMVC_New.php?module=3&action=1&AR_Ref=$1 [L]
 RewriteRule ^ficheArticle-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=1&AR_Ref=$1&window=$2 [L]
 
 RewriteRule ^listeTiers-([0-z]+)-([0-z]+)$  indexMVC_New.php?module=3&action=4&statut=$1&type=$2 [L]

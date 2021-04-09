@@ -35,18 +35,18 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-4 col-sm-6 col-md-3">
+                    <div class="col-sm-4">
                         <label>Référence </label>
                         <input maxlength="19" style="text-transform: uppercase" onkeyup="this.value=this.value.replace(' ','')" type="text" value="<?= $ref; ?>" name="reference" class="form-control only_alpha_num" id="reference" placeholder="Référence" <?php if(isset($_GET["AR_Ref"])) echo "readonly"; ?>/>
                         <input type="hidden" value="<?= (isset($_GET["AR_Ref"])) ? $article->cbMarq : 0 ; ?>" name="cbMarqArticle" class="form-control" id="cbMarqArticle"  />
                     </div>
-                    <div class="col-8 col-sm-6 col-md-5">
+                    <div class="col-sm-6">
                         <label>Désignation </label>
                         <input maxlength="69" type="text" value="<?= $design; ?>"  name="designation" class="form-control" id="designation" placeholder="Désignation"/>
                     </div>
                 </div>
                 <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-sm-2">
                             <label>Prix de vente affiché</label>
                             <select id="AR_PrixTTC" name="AR_PrixTTC" class="form-control">
                                 <option value="0" <?= ($CT_PrixTTC==0) ? "selected" : ""; ?> >PV HT</option>
@@ -55,21 +55,21 @@
                             <input type="text" value="<?= $pxVtHT; ?>" name="pxHT" class="form-control" id="pxHT" placeholder="Prix de vente" <?php if(!$flagInfoLibreArticle  || (!$flagProtected)) echo "readonly"; ?>/>
                         </div>
                     <?php if($flagPxAchat==0){?>
-                        <div class="col-4 col-sm-6 col-md-3">
+                        <div class="col-sm-2">
                             <label>Prix d'achat </label>
                             <input type="text" value="<?= $pxAch; ?>" name="pxAchat" class="form-control" id="pxAchat" placeholder="Prix d'achat" <?php if(!$flagInfoLibreArticle) echo "readonly"; ?>/>
                         </div>
                     <?php }?>
 
-                        <div class="col-4 col-sm-6 col-md-3">
+                        <div class="col-sm-2">
                             <label>Prix gros </label>
                             <input type="text" value="<?= $pxMin; ?>" name="pxMin" class="form-control" id="pxMin" placeholder="Prix gros" <?php if(!$flagInfoLibreArticle || (!$flagProtected)) echo " readonly"; ?>/>
                         </div>
-                        <div class="col-4 col-sm-6 col-md-3">
+                        <div class="col-sm-2">
                             <label>Prix détails</label>
                             <input type="text" value="<?= $pxMax; ?>" name="pxMax" class="form-control" id="pxMax" placeholder="Prix détails" <?php if(!$flagInfoLibreArticle==2  || (!$flagProtected)) echo "readonly"; ?>/>
                         </div>
-                    <div class="col-6 col-sm-6 col-md-3">
+                    <div class="col-sm-2">
                         <label>Conditionnement</label>
                         <select id="conditionnement" name="conditionnement" class="form-control" <?php if(!$flagProtected) echo "readonly"; ?>>
                             <?php
@@ -78,13 +78,11 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-6 col-sm-6 col-md-3">
+                    <div class="col-sm-2">
                         <label>Qté min gros</label>
                         <input type="texte" name="qteGros" id="qteGros" class="form-control" value="<?= $qte_gros; ?>" <?php if(!$flagInfoLibreArticle  || (!$flagProtected)) echo "readonly"; ?>/>
                     </div>
                 </div>
-
-                <div style="clear:both"></div>
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding-top: 20px">
                     <li class="nav-item">

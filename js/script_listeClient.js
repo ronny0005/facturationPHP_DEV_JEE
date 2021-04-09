@@ -48,21 +48,20 @@ jQuery(function($){
         scrollCollapse: true,
         fixedColumns:   true,
         "columns": donnee,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },
-
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        },
         "processing": true,
-            "serverSide": true,
-            "ajax": {
-                url: 'traitement/Creation.php?acte=listeClient&CT_Type='+typeTiers+'&CT_Sommeil='+sommeil,
-                type: 'POST'
-            },
-            "initComplete": function(settings, json) {
-                $("#users_filter").find(":input").addClass("form-control");
-                $("#users_length").find(":input").addClass("form-control");
-            }
-        });
+        "serverSide": true,
+        "ajax": {
+            url: 'traitement/Creation.php?acte=listeClient&CT_Type='+typeTiers+'&CT_Sommeil='+sommeil,
+            type: 'POST'
+        },
+        "initComplete": function(settings, json) {
+            $("#users_filter").find(":input").addClass("form-control");
+            $("#users_length").find(":input").addClass("form-control");
+        }
+    });
 
 
 $("#sommeil").change(function(){

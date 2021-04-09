@@ -400,7 +400,7 @@ and open the template in the editor.
                 echo "\n<div  align='left'>";
                 echo $controls;
                 echo "\n</div>";
-                echo "<div style='margin-top: 5%;margin-right: 10%;margin-left: 10%;'>$result_html</div>";
+                echo "<div>$result_html</div>";
                 echo "\n" . '</div>';
                 echo "\n" . '</div>';
             }
