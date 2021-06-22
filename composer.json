@@ -1,6 +1,6 @@
 {
     "require": {
-        "phpmailer/phpmailer": "6.1",
+        "phpmailer/phpmailer": "6.5.0",
         "spipu/html2pdf": "v5.2.2",
         "ejdamm/chart.js-php": "v2.0",
         "chartblocks/php-ssrs": "1.0.14"
