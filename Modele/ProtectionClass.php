@@ -681,122 +681,49 @@ class ProtectionClass extends Objet{
     }
 
     public function getUser(){
-        $query="SELECT PROT_No,Prot_User 
-                FROM F_Protectioncial";
-        $result=$this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getUser");
     }
 
     public function getProtectionListTitre(){
-        $query="SELECT PROT_Cmd TE_No,Libelle_Cmd TE_Intitule 
-                FROM LIB_CMD
-                WHERE Parent=-1";
-        $result=$this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getProtectionListTitre");
     }
 
     public function getProtectionListElement($idParent){
-        $query="SELECT PROT_Cmd TE_No,Libelle_Cmd TE_Intitule 
-                FROM LIB_CMD
-                WHERE Parent=$idParent AND Actif=1
-                ORDER BY PROT_Cmd";
-        $result=$this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getProtectionListElement&parent=$idParent");
     }
 
     public function getUserAdminMain(){
-        $query="select *,CASE WHEN userName='' THEN ProfilName ELSE userName END Prot_User
-                from (
-                SELECT 0 as position,PROT_No,0 PROT_No_User,PROT_User as ProfilName,'' as userName
-                FROM F_Protectioncial
-                WHERE PROT_UserProfil=0
-                union
-                SELECT ROW_NUMBER() OVER (ORDER BY A.Prot_No,A.PROT_User),A.Prot_No,B.Prot_No Prot_No_User,A.PROT_User,B.Prot_User--PROT_No,Prot_User 
-                FROM F_Protectioncial A
-                LEFT JOIN F_PROTECTIONCIAL B ON A.PROT_No=B.PROT_UserProfil
-                WHERE A.PROT_UserProfil=0
-                AND B.Prot_User is not null
-                ) A
-                order by 2,1";
-        $result=$this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getUserAdminMain");
     }
 
     public function getProfilAdminMain(){
-        $query="select *,CASE WHEN userName='' THEN ProfilName ELSE userName END Prot_User
-                from (
-                SELECT 0 as position,PROT_No,0 PROT_No_User,PROT_User as ProfilName,'' as userName
-                FROM F_Protectioncial
-                WHERE PROT_UserProfil=0
-                ) A
-                order by 2,1";
-        $result=$this->db->requete($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getProfilAdminMain");
     }
     public function getUtilisateurAdminMain(){
         return $this->getApiJson("/getUtilisateurAdminMain");
     }
 
-
-    public function getDataUser($prot_no){
-        $query = "  SELECT A.PROT_Cmd TE_No,Libelle_Cmd TE_Intitule,CASE WHEN ISNULL(B.Prot_No,0)=0 THEN 0 ELSE 1 END Prot_No,EPROT_Right
-                    FROM LIB_CMD A
-                    LEFT JOIN (SELECT * FROM F_EPROTECTIONCIAL WHERE Prot_No=$prot_no) B on A.PROT_Cmd=B.EPROT_Cmd
-                    WHERE Actif=1 
-                    ORDER BY A.PROT_Cmd";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
-    }
-
     public function getDataUserNo($te_no,$prot_no){
-        $query = "  SELECT A.PROT_Cmd TE_No,TypeFlag,Libelle_Cmd TE_Intitule,CASE WHEN ISNULL(B.Prot_No,0)=0 THEN 0 ELSE 1 END Prot_No,EPROT_Right
-                    FROM LIB_CMD A
-                    LEFT JOIN (SELECT * FROM F_EPROTECTIONCIAL WHERE Prot_No=$prot_no) B on A.PROT_Cmd=B.EPROT_Cmd
-                    WHERE Actif=1 AND $te_no = A.PROT_Cmd
-                    ORDER BY A.PROT_Cmd";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getDataUserNo&teNo=$te_no&protNo=$prot_no");
     }
     public function getPrixParCatCompta(){
-        $query = "  SELECT P_ReportPrixRev
-                    FROM P_PARAMETRECIAL";
-        $result= $this->db->query($query);
-        $rows = $result->fetchAll(PDO::FETCH_OBJ);
+        $this->lien='pparametrecial';
+        $rows = $this->getApiJson("/getPrixParCatCompta");
         return $rows[0]->P_ReportPrixRev;
     }
 
     public function getDataUserProfil($prot_no){
-        $query = "  SELECT A.PROT_No TE_No,A.PROT_User TE_Intitule,CASE WHEN ISNULL(B.Prot_No,0)=0 THEN 0 ELSE 1 END Prot_No
-                    FROM F_PROTECTIONCIAL A
-                    LEFT JOIN (SELECT * FROM F_PROTECTIONCIAL WHERE PROT_No=$prot_no) B on A.PROT_No=B.PROT_UserProfil
-                    WHERE A.PROT_UserProfil=0
-                    ORDER BY A.PROT_No";
-        $result= $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_OBJ);
+        return $this->getApiJson("/getDataUserProfil&protNo=$prot_no");
     }
 
 
     public function updateEProtection($prot_no,$eprot_cmd,$prot_right){
-        $query = "IF $prot_right=-1 
-              DELETE FROM F_EPROTECTIONCIAL
-                    WHERE PROT_No = $prot_no AND EPROT_Cmd = $eprot_cmd
-              ELSE IF EXISTS(SELECT 1 FROM F_EPROTECTIONCIAL WHERE PROT_No = $prot_no AND EPROT_Cmd = $eprot_cmd)
-                    UPDATE F_EPROTECTIONCIAL SET EPROT_Right = $prot_right, cbModification = GETDATE()
-                        WHERE PROT_No = $prot_no AND EPROT_Cmd = $eprot_cmd;
-                    ELSE
-                        INSERT INTO F_EPROTECTIONCIAL(PROT_No,EPROT_Cmd,EPROT_Right,cbCreateur,cbModification)
-                            VALUES($prot_no,$eprot_cmd,$prot_right,'COLU',GETDATE())";
-        $this->db->query($query);
+        return $this->getApiExecute("/updateEProtection&protNo=$prot_no&eprotCmd=$eprot_cmd&protRight=$prot_right");
     }
 
     public function updateProfil($prot_no,$prot_no_profil){
-        $query = "UPDATE F_PROTECTIONCIAL SET PROT_UserProfil= $prot_no_profil, cbModification = GETDATE()
-                        WHERE PROT_No = $prot_no;";
-        $this->db->query($query);
-    }
-
-    public function majCompta(){
-
+        $this->PROT_No=$prot_no;
+        $this->maj("PROT_UserProfil",$prot_no_profil);
     }
 
     public function insertIntoZ_Calendar_user($PROT_No,$ID_JourDebut,$ID_JourFin,$ID_HeureDebut,$ID_MinDebut,$ID_HeureFin,$ID_MinFin){
@@ -845,6 +772,7 @@ class ProtectionClass extends Objet{
                  WHERE PROT_No = $PROT_No";
         $this->db->query($query);
     }
+
     public function updateLastLogin(){
         $this->getApiExecute("/updateLastLogin/{$this->Prot_No}");
     }

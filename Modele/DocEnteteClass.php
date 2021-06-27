@@ -1092,6 +1092,7 @@ public function setValueMvtEntree (){
         return $this->getApiJson("/getlisteTransfert&client={$this->formatString($do_tiers)}&dateDeb=$datedeb&dateFin=$datefin");
     }
     public function listeTransfertConfirmation($do_tiers, $datedeb, $datefin){
+        return $this->getApiJson("/getlisteTransfertConfirmation&dateDeb={dateDeb}&dateFin={dateFin}&doDomaine={doDomaine}&doType={doType}&protNo={protNo}&typeFac={typeFac}");
         $query = "SELECT PROT_User,DO_Imprim,CASE WHEN ABS(DATEDIFF(d,GETDATE(),E.DO_Date))>= (select PR_DelaiPreAlert
 from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Type,E.DO_Domaine,E.DO_Piece,E.DO_Ref,ISNULL(MAX(E.N_CatCompta),1) N_CatCompta,CAST(CAST(E.DO_Date AS DATE) AS VARCHAR(10)) AS DO_Date,E.DO_Tiers as CT_Num, ISNULL(SUM(L.DL_MontantTTC),0) AS ttc,
                 MAX(DS.DE_Intitule) AS CT_Intitule,MAX(DS.DE_Intitule) AS DE_Intitule_dest,MAX(DE.DE_Intitule) AS DE_Intitule,0 as avance,MAX(latitude) latitude,MAX(longitude) longitude,'' as statut
@@ -1136,7 +1137,6 @@ from P_PREFERENCES) THEN 1 ELSE 0 END DO_Modif,E.cbModification,E.cbMarq,E.DO_Ty
     public function getStatutAchat($type){
         return $this->getApiJson("/statutAchat&type=$type");
     }
-
 
     public function getStatutVente($type){
         return $this->getApiJson("/statutVente&type=$type");

@@ -117,7 +117,6 @@ class DocLigneClass Extends Objet
         }
     }
 
-
     public function getcbCreateurName(){
         return $this->userName;
     }
